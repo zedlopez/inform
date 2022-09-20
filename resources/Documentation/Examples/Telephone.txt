@@ -101,7 +101,7 @@ And finally we want to make sure that calling random other numbers produces a se
 	After deciding the scope of the player while the player reaches someone:
 		place the other party of the player in scope, but not its contents.
 
-A note about this scope addition: the player can refer to the other party whenever he has the other person on the phone. He can't, however, see or refer to anything that person might be holding or wearing, thanks to the "but not its contents" option.
+A note about this scope addition: the player can refer to the other party whenever he has the other person on the phone. He can't, however, see or refer to anything that person might be carrying or wearing, thanks to the "but not its contents" option.
 
 Furthermore, the player can't actually do anything to that person that requires touching. That's because of the reaching inside rules, which govern whether the player can reach through intervening barriers such as rooms. (See the Advanced Actions chapter for more about changing reachability.) There are two things we might want to be careful about, though. 
 

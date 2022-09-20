@@ -1008,7 +1008,7 @@ The player's first sight of something is the text used as its "initial appearanc
 
 	The plain ring is here. "Cast aside, as if worthless, is a plain brass ring."
 
-This text appears as a separate paragraph in the text describing the Painted Room. It will continue to be used until the first time player picks the ring up (if this ever happens), so it normally describes things in their original, undisturbed context. (Inform uses an either/or property called "handled" for this: something is "handled" if it has at some point been held by the player.)
+This text appears as a separate paragraph in the text describing the Painted Room. It will continue to be used until the first time player picks the ring up (if this ever happens), so it normally describes things in their original, undisturbed context. (Inform uses an either/or property called "handled" for this: something is "handled" if it has at some point been carried or worn by the player.)
 
 Thus when a piece of text stands alone as a sentence in its own right, then this is either the "description" of the most recently discussed room, or the "initial appearance" of the most recently discussed thing. Either way, it is used verbatim as a paragraph in the text shown to the player visiting the room in question.
 
@@ -1053,7 +1053,7 @@ In real life, most doors are two-sided, and can be used from either of the rooms
 So much for creating and describing individual doors. Once we need to write about doors in general, we are likely to want a way to find out where a given door sits in the map. The following phrases reveal this:
 
 {defn ph_frontside}front side of (object) ... room
-This phrase produces the first of the one or two rooms containing a door - first in the order given in the source text. Example: if
+This phrase produces the first of the one or two rooms enclosing a door - first in the order given in the source text. Example: if
 
 	The red rock stair is east of the Orchard and above the Undertomb.
 
@@ -1061,7 +1061,7 @@ then "front side of the red rock stair" produces the Orchard. For a one-sided do
 {end}
 
 {defn ph_backside}back side of (object) ... room
-This phrase produces the last of the one or two rooms containing a door - last in the order given in the source text. Example: if
+This phrase produces the last of the one or two rooms enclosing a door - last in the order given in the source text. Example: if
 
 	The red rock stair is east of the Orchard and above the Undertomb.
 
@@ -1399,7 +1399,7 @@ Whether or not something is concealed is not like the either/or properties we ha
 
 But straightforward cases are easy to write, if only by imitating the following examples.
 
-Here we make the Cloaked Villain invariably conceal anything she is holding or wearing:
+Here we make the Cloaked Villain invariably conceal anything she is carrying or wearing:
 
 	Rule for deciding the concealed possessions of the Cloaked Villain: yes.
 
@@ -1409,7 +1409,7 @@ At which point we think about it more carefully, and then rewrite:
 
 (A rule which says neither "yes" nor "no" will decide yes, but it's best to spell out exactly what's wanted.)
 
-Parts are treated exactly as if clothes or items being held, and the following will make the face and inscription on a coin invisible unless the player is holding it - the idea being that they are too small to be seen from farther away.
+Parts are treated exactly as if clothes or items being held, and the following will make the face and inscription on a coin invisible unless the player is carrying it - the idea being that they are too small to be seen from farther away.
 
 	{*}The coin is in the Roman Villa. The face and inscription are parts of the coin. Rule for deciding the concealed possessions of the coin: if the coin is carried, no; otherwise yes.
 
@@ -1424,34 +1424,43 @@ Note that the "undescribed" property is automatically removed from anything carr
 ^^{out of play}
 ^^{things+kind+: location of}
 ^^{enclosure+rel+} ^^{enclosure+relcat+}
+^^{holding+rel+} ^^{holding+relcat+}
 ^^{indirect containment}
 ^^{containment+rel+: indirect}
 ^^{location (— object)+glob+}
 ^^{Inform 6 equivalent: `IndirectlyContains}
 
-The model world created by Inform is partitioned into rooms. This means that everything which exists in the model world, exists in one of the rooms. If we write a sentence such as
+The model world created by Inform is partitioned into rooms. If we write a sentence such as
 
 	Professor Wilderspin is a man.
 
-and say nothing more about Wilderspin, then he does not physically exist at the start of the story: he is said to be "out of play", and stays that way until we move him into one of the rooms. A better metaphor might be that he is waiting in the wings, ready to come onto the stage.
+and say nothing more about Wilderspin, then he does not physically exist at the start of the story: he is said to be "out of play" or "off-stage", and stays that way until we move him into one of the rooms. A better metaphor might be that he is waiting in the wings, ready to come onto the stage.
 
-Every thing is either out of play, or can be found in one of the rooms, and the property "location of X" gives us the room in question. The following condition tests, in effect, whether Wilderspin is in play:
+Every thing is either out of play, or can be found in one of the rooms, and the property "location of X" gives us the room in question. The following condition tests, in effect, whether a thing is in play:
 
 	if the location of Wilderspin is a room, ...
 
 Which uses a new phrase:
 
 {defn ph_locationof}location of (object) ... room
-This phrase produces the room which, perhaps indirectly, contains the object given. Example: if the player stands in Biblioll College and wears a waistcoat, inside which is a fob watch, then
+This phrase produces the room in which, perhaps indirectly, the object given resides. Example: if the player stands in Biblioll College and wears a waistcoat, inside which is a fob watch, then
 
 	location of the fob watch
 
-is Biblioll College. In general, a thing cannot be in two rooms at once, but there are two exceptions: two-sided doors, present on both sides, and backdrops. The "location of" a door is its front side, but a backdrop has no location. (Objects which are not things at all, such as rooms and directions, also have no location.)
+is Biblioll College, the same as for the waistcoat or player.
+
+The location of a room is itself. Regions and directions don't have a location, so for them "location of" produces the special object value nowhere, the same as for things that are off-stage.
+
+Location is more complicated for two kinds of things: backdrops and doors. The location of a door is usually its front side, but for two-way doors, if the location of the player is the room that's the door's back side, that's the location of the door.
+
+The location of a backdrop that's not off-stage is always some specific room. Before play begins, a backdrop's location is whatever room the backdrop is "in" that was mentioned first in the story. Thereafter, whatever room the player was most recently in that the backdrop is in becomes the backdrop's location. So, the location of a backdrop that is everywhere ends up always being the location of the player.
 {end}
 
 We very often want to know the location of the player, and this is more simply called just "the location". (This is actually a value that varies rather than a phrase, but that's a technicality we can ignore here.)
 
-The idea of indirect containment is useful enough to have a name: Inform calls it "enclosure". A thing encloses whatever is a part of itself, or inside itself, or on top of itself, and it also encloses anything that they enclose. And when something moves around, anything it encloses will move with it. In the example above, Biblioll College (a room) and the player (a person) both enclose the fob watch and the waistcoat. (The small print: a door is enclosed by the rooms on both sides; a backdrop is never enclosed.)
+We say that one object "holds" another if it contains it, supports it, wears it, carries it, or incorporates it (i.e., that the other object is a part of it). An object cannot be held by more than one object, but it can be held by nothing.
+
+The idea of indirect holding is useful enough to have a name: Inform calls it "enclosure". A thing encloses whatever it holds, and whatever those things hold, and so on. When something moves around, anything it encloses will move with it. In the example above, Biblioll College (a room) holds the player, the player holds the waistcoat, and the waistcoat holds the fob watch. Also, the waistcoat encloses the fob watch, the player encloses both the waistcoat and the fob watch, and Biblioll College encloses all three of the player, the waistcoat, and the fob watch. 
 
 Enclosure is only useful when being used as a question. So the following is fine:
 
@@ -1461,7 +1470,13 @@ But these will produce problem messages:
 
 	The player encloses the fob watch. The location of the trilobite is the Museum.
 
-because they are too vague. Inform needs to know exactly where the fob watch and the trilobite will begin the story, whereas these sentences leave room for doubt about who or what is actually holding them.
+because they are too vague. Inform needs to know exactly where the fob watch and the trilobite will begin the story, whereas these sentences leave room for doubt about in what way the thing would be enclosed. (You might expect the same to hold true for holding, but "holds" <i>can</i> be used in assertions, where it means carrying.)
+
+It's normally true that a thing's location encloses it. But though a room's location is itself, it neither holds nor encloses itself. A door is enclosed by the rooms on both sides of it, but is contained and thus held only by its location, i.e., either the room that is its front side, or the room at its back side if that room is the player's location. Backdrops that are either everywhere or in a region are held and enclosed by the same room as their locations. Backdrops that are specified as being in a specific room or rooms are held and enclosed by nothing until the player has been to one of those rooms; from then on, they are held and enclosed by their location, like other backdrops. Regions [todo]
+
+(Enclosure is analogous to what the IndirectlyContains function in the Inform 6 library tests.)
+
+(See Looking at holding by hand for more details on holding.)
 
 [x] Directions {kind_direction} {PM_TooManyDirections} {PM_ImproperlyMadeDirection} {PM_DirectionTooLong} {PM_NamelessDirection}
 
@@ -3383,6 +3398,11 @@ That sometimes makes meaning 2 difficult to express. If we ever need it, and thi
 
 because "regionally in" is always meaning 2 of "in".
 
+"To be in" is functionally the inverse of "to contain", so all the different meanings "is in" might have also apply to "contains". This will be explored further in the chapter on Relations.
+
+([TODO See...]
+
+
 [x] A word about nothing
 
 ^^{`nothing: as a value}
@@ -4793,7 +4813,7 @@ or if we were to define
 
 then "the number of colours" would evaluate to 7. As with other ways of talking about whole ranges of values, this only works if the range is manageable. "The number of numbers" cannot sensibly be worked out: there are infinitely many, for all practical purposes, and similarly for "the number of texts".
 
-[x] Looking at containment by hand
+[x] Looking at holding by hand
 
 ^^{siblings, in containment hierarchy}
 ^^{containment+rel+: hierarchy, low-level interface}
@@ -4803,19 +4823,21 @@ then "the number of colours" would evaluate to 7. As with other ways of talking 
 ^^{held by –– first thing held by (object)+phr+}
 ^^{held by –– next thing held after (object)+phr+}
 
-The descriptions outlined in the last few sections are intended to deal with almost all of the routine questions we might have about what currently resides where. It should be a last resort to use the following more primitive way to inspect the world.
+The descriptions outlined in the last few sections are intended to deal with almost all of the routine questions we might have about what currently resides where.
 
 {defn ph_holder}holder of (object) ... object
-This phrase produces the container, supporter, carrier, wearer or room in which the object resides.
+This phrase produces the object that holds an object, thus the person who carries or wears a thing, or the supporter that supports a thing, or the thing it's a part of, or the thing or room that contains it, or, for regions, the region that contains it. If nothing holds the object, holder of produces the special object value nothing. 
 {end}
 
-It's sometimes useful to go the other way. When something has possessions, we can find them out one at a time by running through a list.
+It's sometimes useful to go the other way. When something has possessions, we can find them out one at a time by running through a list. But there is an important caveat to using the following phrases: they exclude incorporation, thus "held by" means something different in these phrases than it does everywhere else.
 
 {defn ph_firstheld}first thing held by (object) ... object
 This phrase produces the first of the list of things held by the object. Example:
 
 	first thing held by Baroness Orczy	
 {end}
+
+[todo nothing held by]
 
 {defn ph_nextheld}next thing held after (object) ... object
 This phrase produces the next item of the list of things held by something. Example: suppose Baroness Orczy is carrying a lapdog and a string of pearls.
@@ -4824,6 +4846,9 @@ This phrase produces the next item of the list of things held by something. Exam
 
 is then the string of pearls.
 {end}
+
+
+
 
 [x] Randomness
 
@@ -7596,6 +7621,8 @@ all of which boil down to saying that the coin and purse satisfy the containment
 ^^^{components <-- incorporation+relcat+}
 ^^^{support+rel+ <-- on+relverb+ <-- on top of+relverb+}
 
+[todo add holding]
+
 Inform has altogether five mutually exclusive ways in which one thing can be physically joined to another one:
 
 	containment relation - The coin is in the purse.
@@ -7747,12 +7774,16 @@ It is all very well to define new relations, but this does nothing if there is n
 	to carry - carrying relation
 	to wear - wearing relation
 	to incorporate - incorporation relation
-
-Two of Inform's built-in relations are expressed using prepositions instead:
+        
+        
+Some of Inform's built-in relations are expressed using prepositions:
 
 	<b>Preposition - Relation</b>
 	to be part of - (reversed) incorporation relation
 	to be adjacent to - adjacency relation
+        to be in - (reversed) containment relation
+        to be on - (reversed) support relation
+        
 
 It would be easy to make verbs for these if we wanted ("to adjoin", say) using the techniques of the next section.
 
@@ -7760,7 +7791,7 @@ The verb <i>to be</i> is grammatically different from any other, and its meaning
 
 	if the score is 20, ...
 
-but <i>to be</i> can have more complicated implications - "if Mr Wickham is hungry" clearly doesn't test whether two quantities are equal. Fortunately the other verbs are much simpler.
+but <i>to be</i> can have more complicated implications - "if Mr Wickham is hungry" clearly doesn't test whether two quantities are equal. Likewise, to have, to hold, and to contain/to be in have different meanings in different contexts.
 
 There are a few other built-in verbs, as can be seen in the Index, but these are mostly for experts only. For example:
 
@@ -7768,7 +7799,10 @@ There are a few other built-in verbs, as can be seen in the Index, but these are
 	to mean - meaning relation
 	to provide - provision relation
 
-"To mean" can be used to make new verbs, as we'll soon see. Provision is to do with whether something can have a given property: for example, "if R provides the property lighted" tests whether R is able to have this property, not whether it actually has it at the moment. 
+"To mean" can be used to make new verbs, as we'll soon see. Provision is to do with whether something can have a given property: for example, "if R provides the property lighted" tests whether R is able to have this property, not whether it actually has it at the moment.
+
+
+
 
 [x] Defining new assertion verbs {PM_VerbRelationVague} {PM_VerbUnknownMeaning} {PM_VerbRelationUnknown} {PM_PresentPluralTwice} {PM_VerbMalformed} {PM_DuplicateVerbs1} {PM_PrepositionConjugated} {PM_PrepositionLong}
 
@@ -7812,6 +7846,11 @@ With that defined, these two sentences have identical meanings:
 	A Tory rosette graces Mr Wickham.
 
 Reversed in this sense means that the things related - the subject and object of the verb - are the other way round.
+
+This is so convenient, that when you define a verb meaning a relation, Inform automatically creates a "to be (verbed) by" verb meaning that relation reversed. So the following are also equivalent:
+
+     A Tory rosette is sported by Mr Wickham.
+     Mr Wickham is graced by a Tory rosette.
 
 The Phrasebook index contains all the verbs associated with assertions, in the Verbs section. When we add new verbs to our source, those will appear in the Phrasebook as well.
 
