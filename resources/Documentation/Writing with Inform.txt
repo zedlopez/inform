@@ -1472,7 +1472,11 @@ But these will produce problem messages:
 
 because they are too vague. Inform needs to know exactly where the fob watch and the trilobite will begin the story, whereas these sentences leave room for doubt about in what way the thing would be enclosed. You might expect the same to hold true for holding, but "holds" <i>can</i> be used in assertions, where it means just carrying (and so it must have a person as the subject).
 
-Normally, a thing's location encloses it. But though a room's location is itself, it neither holds nor encloses itself. A door is enclosed by the rooms on both sides of it, but is contained and thus held only by its location, i.e., either the room that is its front side, or the room at its back side if that room is the player's location. Backdrops that are either everywhere or in a region are held and enclosed by the same room as their locations. Backdrops defined to be in a specific room or rooms are held and enclosed by nothing until the player has been to one of those rooms; from then on, they are held and enclosed by their location, like other backdrops. Regions [todo]
+Normally, a thing's location encloses it. But though a room's location is itself, it neither holds nor encloses itself. A door is enclosed by the rooms on both sides of it, but is contained and thus held only by its location, i.e., either the room that is its front side, or the room at its back side if that room is the player's location. 
+
+Backdrops that are either everywhere or in a region are held by the same room as their locations. Backdrops defined to be in a specific room or rooms are held by nothing until the player has been to one of those rooms; from then on, they are held by their location, like other backdrops. Backdrops are exceptional in that their holder <i>does not</i> enclose them: it is always the case that nothing encloses a backdrop.
+
+Regions [todo]
 
 (See Looking at holding by hand for more details on holding.)
 
@@ -3660,7 +3664,7 @@ are allowed because the built-in kind of value "scene" (of which much more later
 
 Lastly, note that the "the" in text like "two of the doors" matters: without it, the phrase will not be recognised as a requirement on the number. (This is to make sure that names of things like "two of hearts" are not misinterpreted.)
 
-With a proposition like "if all doors are open" or "if no doors are open", or any specific number of doors, you can count on it being the case that if it's true, then its negation ("if all doors are not open", "unless no doors are open") is false, and vice versa. But beware of the logical error of expecting that to be true of "some doors" or "a door" or anything else that isn't specific as to quantity. As clear as it may be that "some doors are open" and "some doors are closed" can both be true, it can be a surprisingly easy trap to expect "if a door is open" and "unless a door is closed" to be opposite, which they fail to be as soon as you have more than one door.
+With a proposition like "if all doors are open" or "if no doors are open", or any specific number of doors, you can count on it being the case that if it's true, then its negation ("if all doors are not open", "unless no doors are open") is false, and vice versa. But beware of the logical error of expecting that to be true of "some doors" or "a door" or anything else that isn't specific as to quantity. That "some doors are open" and "some doors are closed" can both be true may sound too obvious to bother stating. Yet it can be a surprisingly easy trap to expect "if a door is open" and "unless a door is closed" to be opposites, though there's no guarantee of that if there are two or more doors.
 
 [Chapter: Basic Actions] Actions {ACTIONS} {kind_actionname} {PM_APWithNoParticiple} {PM_APUnknown} {PM_NonActionIn}
 
