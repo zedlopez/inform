@@ -1451,9 +1451,9 @@ is Biblioll College, the same as for the waistcoat or player.
 
 The location of a room is itself. Regions and directions don't have a location, so for them "location of" produces the special object value nowhere, the same as for things that are off-stage.
 
-Location is more complicated for two kinds of things: backdrops and doors. The location of a door is usually its front side, but for two-way doors, if the location of the player is the room that's the door's back side, that's the location of the door.
+The location of a door is usually its front side, but for two-sided doors, it's subject to change. When the player visits a two-sided door's back side room, the door's location becomes <i>that</i> room and it remains the back side room until the player visits the front side room again.
 
-The location of a backdrop that's not off-stage is always some specific room. Before play begins, a backdrop's location is whatever room the backdrop is "in" that was mentioned first in the story. Thereafter, whatever room the player was most recently in that the backdrop is in becomes the backdrop's location. The location of a backdrop that is everywhere thus ends up always being the location of the player.
+The location of phrase should not be used with backdrops: its results aren't meaningful.
 {end}
 
 We very often want to know the location of the player, and this is more simply called just "the location". (This is actually a value that varies rather than a phrase, but that's a technicality we can ignore here.)
@@ -1468,15 +1468,16 @@ Enclosure is only useful when being used as a question. So the following is fine
 
 But these will produce problem messages:
 
-	The player encloses the fob watch. The location of the trilobite is the Museum.
+	The player encloses the fob watch.
+	The location of the trilobite is the Museum.
 
 because they are too vague. Inform needs to know exactly where the fob watch and the trilobite will begin the story, whereas these sentences leave room for doubt about in what way the thing would be enclosed. You might expect the same to hold true for holding, but "holds" <i>can</i> be used in assertions, where it means just carrying (and so it must have a person as the subject).
 
-Normally, a thing's location encloses it. But though a room's location is itself, it neither holds nor encloses itself. A door is enclosed by the rooms on both sides of it, but is contained and thus held only by its location, i.e., either the room that is its front side, or the room at its back side if that room is the player's location. 
+In general, a thing's location encloses it. But a two-way door is enclosed by the rooms on <i>both</i> sides of it, though it is contained and thus held only by its location (which varies, as noted above).
 
-Backdrops that are either everywhere or in a region are held by the same room as their locations. Backdrops defined to be in a specific room or rooms are held by nothing until the player has been to one of those rooms; from then on, they are held by their location, like other backdrops. Backdrops are exceptional in that their holder <i>does not</i> enclose them: it is always the case that nothing encloses a backdrop.
+Backdrops are usually held by the room where the player most recently encountered it, but backdrops are never enclosed, a unique exception to the generality that the holder of a thing encloses it.
 
-Regions [todo]
+Though a room's location is itself, it neither holds nor encloses itself.
 
 (See Looking at holding by hand for more details on holding.)
 
@@ -3400,7 +3401,7 @@ That sometimes makes meaning 2 difficult to express. If we ever need it, and thi
 
 because "regionally in" is always meaning 2 of "in".
 
-"To be in" is functionally the inverse of "to contain", so all the different meanings "is in" might have also apply to "contains". This will be explored further in the chapter on Relations.
+"To be in" is functionally the inverse of "to contain", so all the different meanings "is in" might have also apply to "contains", but in the other direction. This will be explored further in the chapter on Relations.
 
 ([TODO See...]
 
@@ -3416,11 +3417,11 @@ Like "in", "nothing" has two slightly different meanings, though here there's mu
 
 <b>Meaning 1.</b> "Nothing" as "no thing". This is the meaning in sentences like:
 
-	Definition: a container is bare if nothing is in it.
+	Definition: a container is bare if there is nothing in it.
 
 And similar for conditions like "if the box contains nothing". It's a word which describes the absence of things: it says that, though there might have been many possible items here, it turned out that there were none.
 
-That the thing that nothing is no of is a <i>thing</i> per se has results that may seem odd at first glimpse. If the player is held by a room, "nothing holds the player" is <i>true</i>. It's a room, so it's not the case that there is a thing that holds the player: literally, no <i>thing</i> holds the player. "nowhere holds the player" will be false, however. [todo: not today] (Similarly, the kind that nobody, no one, and no-one are <i>not</i> is a person.)
+That the thing that nothing is no of is a <i>thing</i> per se has results that may seem odd at first glimpse. If the player is held by a room, "nothing holds the player" is <i>true</i>. It's a room, so it's not the case that there is a thing that holds the player: a <i>room</i> but no <i>thing</i> holds the player. "nowhere holds the player" will be false, however. [TODO: not today] (Similarly, what nobody, no one, and no-one are <i>not</i> is a person.)
 
 <b>Meaning 2.</b> "Nothing" as a value. This is much less commonly seen, but sometimes Inform stores a value such as a property (or a variable) which always has to be an object. In some circumstances, "nothing" is then a special value meaning that this is not set at present. For instance,
 
@@ -3429,8 +3430,6 @@ That the thing that nothing is no of is a <i>thing</i> per se has results that m
 The "matching key" property of a container is always an object, but is allowed to be "nothing" when there isn't a matching key anywhere. (If such a container is locked, nobody will ever be able to unlock it.)
 
 <b>How Inform decides.</b> So which meaning does Inform use, and when? The answer is that it depends on the relationship being talked about. When this is "is", values are being compared and we are using meaning 2. But when it is any other relationship, like "is in" - which talks about containment - then we are using meaning 1.
-
-
 
 [x] To be able to see and touch
 
@@ -3457,13 +3456,14 @@ This tests whether the room is dark, of itself; Helen may in fact be able to see
 We can also talk about what other people can see and touch:
 
 	something which can be seen by Helen
+        something which can be touched by Paris
 
-are synonymous. Similarly for touch; and we can write such conditions as
+And we can write such conditions as
 
 	if Helen cannot see Agamemnon, ...
 	if Cressida can see Troilus, ...
 
-Note that it is essential to establish who does the seeing and touching: so "something which can be seen" will not be allowed, whereas "something which can be seen by Helen" will.
+Note that it is essential to establish who does the seeing and touching: so "something which can be seen" will not be allowed, whereas "something which can be seen by Helen" will. Note also that to test the negative we use "cannot": either of "can not" or "can't" will result in a compiler error.
 
 In fact, inside Inform the adjective "invisible" (for instance) has the following straightforward definition:
 
@@ -4873,9 +4873,9 @@ As noted, the above would never yield any parts the Baroness may have. If she *d
 	repeat through the list of things held by Baroness Orczy:
 		[...]
 
-to borrow a phrase we'll see later of in the chapter on Lists.
+to borrow a phrase we'll see later on in the chapter on Lists.
 
-Another caveat is that the verbs "to be held in" and "to be held inside" are associated with *containment*, not with holding. If an object is *held inside* another object, you know it is also *held by* that object, but the reverse is not necessarily true. [TODO check how true this is with regions ]
+Another caveat is that the verbs "to be held in" and "to be held inside" are associated with *containment*, not with holding. If an object is *held inside* another object, you know it is also *held by* that object, but the reverse is not necessarily true. (There is an exception here: a region contains the rooms that are directly within it, but does not hold them.)
 
 [x] Randomness
 
@@ -7663,7 +7663,7 @@ This is why we cannot have
 
 simultaneously, and it is a rare exception to the general rule that having one relation does not affect having another.
 
-We have discussed how the holding relation applies if any one of those relations does, but another relation similarly is the union of two of them.
+We have discussed how the holding relation applies if any one of those relations does. Another relation, similarly, is the union of two of them.
 
 The possession relation is the meaning of the verb "to have". At first sight this seems the same as the carrying relation, but in fact it is a convenient shorthand for carrying <i>or</i> wearing, provided for conditions rather than assertions:
 
@@ -7699,7 +7699,7 @@ In such a definition, we have to say what kind of thing appears on the left and 
 
 	Loving relates various people to one person.
 
-what we are saying is that only people love; that they only love people; and that each person loves only one other person (at any given moment).
+what we are saying is that only people love, that they only love people, and that each person loves only one other person (at any given moment).
 
 The "various" part comes in because, for instance, it might be the case that Verenka loves Stankevich *and* Liubov loves Stankevich. So, various people (Verenka and Liubov, to name but two) love one person (Stankevich). But we are forbidding anyone to love two other people at the same time: Stankevich must decide which of them to love, or pick someone else, or no-one at all.
 
@@ -7796,8 +7796,7 @@ But this is a phrase - not a typed command.
 
 It is all very well to define new relations, but a verb makes it useful. In fact, a relation is nothing more than what Inform uses as the "meaning" of a verb. The assertion verbs built in to Inform have the following built-in relations as their meanings:
 
-
-[todo - more verbs, more discussion of exceptions ]
+[TODO - more verbs, more discussion of exceptions ]
 
 	<b>Verb - Relation</b>
 	to be - equality relation
@@ -7859,8 +7858,8 @@ which will do the the same thing as
 
 because both verbs have the same relation as their meaning.
 
-[ todo contradicts the description in 3.20 of these being participles ]
-One can also use the present progressive (at least for verbs that don't begin with "to be", which includes "to be" itself):
+[ TODO contradicts the description in 3.20 of these being participles ]
+One can also use the present progressive (but not with "to be" or other verbs beginning "to be"):
 
 	Mr Wickham is sporting a Tory rosette.
 
@@ -7883,7 +7882,7 @@ With that defined, these two sentences have identical meanings:
 
 Reversed in this sense means that the things related - the subject and object of the verb - are the other way round.
 
-This is so convenient, that when you define a verb meaning a relation, Inform automatically creates a "to be (verbed) by" verb meaning that relation reversed. So the following are *also* equivalent to the above:
+This is so convenient that when you define a verb meaning a relation, Inform automatically creates a "to be (verbed) by" verb that means that relation reversed. So the following are *also* equivalent to the above:
 
      A Tory rosette is sported by Mr Wickham.
      Mr Wickham is graced by a Tory rosette.
@@ -7902,7 +7901,7 @@ Or, in the negative:
 
 While "does *not*" can be used in negatives, "does" or "do" cannot be used in a positive: one cannot say "if Mr Wickham does sport a Tory rosette".
 
-[todo - not in 10.1 it doesn't. ]
+[TODO - not in 10.1 it doesn't. ]
 The Phrasebook index contains all the verbs associated with assertions, in the Verbs section. When we add new verbs to our source, those will appear in the Phrasebook as well.
 
 The verbs above are short ones, but we're free to make them longer than that. For example:
@@ -7957,7 +7956,7 @@ Now we can ask if Poirot "can approach" Hotchkiss, and so on.
 
 
 
-[todo] not all verbs are created equal.
+[TODO] not all verbs are created equal.
 
 
 
@@ -8087,7 +8086,7 @@ We now find that "2 divides 12", "5 is not a factor of 12" and "12 is divisible 
 ^^^{+to+(name of kind) that/which/whom (value) relates to by (relation of values to values) --> that/which/whom relates to by}
 ^^^{+to+(name of kind) to which/whom (value) relates by (relation of values to values) --> to which/whom relates by}
 
-[ todo verb equivalents ]
+[ TODO verb equivalents ]
 
 
 Although most of the examples in this chapter have involved objects, relations can connect almost any values together. We can create relations in groups, one to various relations, various to one relations, one to one relations, and various to various relations for any combination of kinds. For example:
@@ -8270,7 +8269,7 @@ Inform 7's focus on relations between objects is unusual as an approach to inter
 
 This is because the stone, and the table, have no opinions, emotions, knowledge or memory. If the stone is taken away and then put back, nothing has changed. People, on the other hand, tend to remember having met each other before; they like being in some places, but not others; their behaviour depends on who, or what, is nearby. Being conscious, they have internal states, unlike the stone. Relations are a simple but powerful way to express and talk about such connections, and although they have numerous uses in physical contexts too, they are at their most powerful when helping to make the characters of interactive fiction come alive.
 
-A note of caution: perfectly innocent conditionals involving relations can prove to be woefully inefficient in practice: testing a relationship among things may end up comparing a thing to every other thing. If that's occurring in multiple Every Turn rules and your things number in the hundreds, you may find your game slowing to a crawl. There can be dramatic differences that are impossible to anticipate. "If the first thing held by the box is nothing" is fast. "if there is nothing in the box" isn't terrible. "if nothing is in the box", however, can be very slow if there are a lot of objects in the game. In an ideal world, this would be beneath an author's concerns. In this world, it's a problem you could encounter in a large game. [todo some statement of what to do about it? ]
+A note of caution: perfectly innocent conditionals involving relations can prove to be woefully inefficient in practice: testing a relationship among things may end up comparing a thing to every other thing. If that's occurring in multiple Every Turn rules and your things number in the hundreds, you may find your game slowing to a crawl. There can be dramatic differences that are impossible to anticipate. "If the first thing held by the box is nothing" is fast; "if there is nothing in the box" isn't terrible; "if nothing is in the box", however, can be very slow if there are a lot of objects in the game. In an ideal world, this would be beneath an author's concerns. In this world, it's a problem you could encounter in a large game. [TODO some statement of what to do about it? ]
 
 (See Which and who for a review of things that can be done with relations, along with the remainder of the chapter on Descriptions.)
 
