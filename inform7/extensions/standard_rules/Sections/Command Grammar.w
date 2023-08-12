@@ -176,7 +176,7 @@ Understand "wake" or "wake up" as waking up.
 Understand "wake [someone]" or "wake [someone] up" or "wake up [someone]" as waking.
 Understand the commands "awake" and "awaken" as "wake".
 
-Understand "kiss [someone]" as kissing.
+Understand "kiss [something]" as kissing.
 Understand the commands "embrace" and "hug" as "kiss".
 
 Understand "think" as thinking.

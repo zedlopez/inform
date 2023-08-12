@@ -147,7 +147,7 @@ answer would be no.)
 =
 Definition: Something is on-stage rather than off-stage if I6 routine "OnStage"
 	makes it so (it is indirectly in one of the rooms).
-Definition: Something is offstage if it is off-stage.
+Definition: Something is offstage if it is not on-stage.
 
 Definition: a scene is happening if I6 condition "scene_status-->(*1-1)==1"
 	says so (it is currently taking place).
@@ -1031,3 +1031,41 @@ The description property is defined by Inter as "description".
 The initial appearance property is defined by Inter as "initial".
 The map region property is defined by Inter as "map_region".
 The matching key property is defined by Inter as "with_key".
+
+@ Embodiment and Retaining
+
+=
+Section 17 - Embodiment and Retaining
+
+
+To decide what person is the embodier of (t - thing): (- Embodier({t}) -).
+
+[ direct or indirect incorporation. A thing is embodied either by one person or by nothing.
+It's ultimately possible for a person to be a part of another person; the embodier is the
+*first* person encountered as we climb the component_parent hierarchy. ]
+
+Embodiment relates a person (called body) to a thing (called piece) when the body is the embodier of the piece.
+The verb to embody means the embodiment relation.
+
+[ a thing is a body part if it is assimilated by a person.]
+Definition: a thing is a body part if I6 condition "Embodier(*1)" says so (it is embodied). [i.e., its embodier is not nothing]
+
+Definition: a thing is corporeal if it is a person or it is a body part.
+
+To decide what person is the corpus of (t - a thing):
+  if t is a person, decide on t;
+  decide on the embodier of t;
+
+[ either the first person encountered while climbing the HolderOf chain or nothing]
+To decide what person is the retainer of (t - thing): (- Retainer({t}) -).
+
+Retention relates a person (called the steward) to a thing (called the item) when the steward is the retainer of the item.
+The verb to retain means the retention relation.
+
+To decide if (t - thing) assimilates (u - thing): (- TestAmalgamates({t}, {u}) -).
+Amalgamation relates a thing (called the assimilator) to a thing (called the assimilated) when the assimilator assimilates the assimilated.
+The verb to amalgamate means the amalgamation relation.
+
+To decide what person is the custodian of (t - thing):
+	if t is a person, decide on t;
+        decide on the retainer of t;

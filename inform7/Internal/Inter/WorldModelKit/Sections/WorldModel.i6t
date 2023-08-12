@@ -929,3 +929,42 @@ which cannot be asserted true or false.
 	}
 	rfalse;
 ];
+
+@ Retaining Relation
+
+=
+
+[ Retainer t x;
+  if ((~~t) || (~~(t ofclass K2_thing))) return 0;
+  while (t = HolderOf(t)) if (t ofclass K8_person) return t;
+  return 0;
+];
+
+@ Amalgamation Relation
+
+=
+
+[ TestAmalgamates x y i;
+  if (x && y && x ofclass K2_thing && y ofclass K2_thing) {
+    while (y) {
+      if (y provides component_parent) y = y.component_parent;
+      else return 0;
+      if (y == x) return 1;
+    }
+  }
+  return 0;
+];
+  
+@ Embodiment Relation
+
+=
+
+[ Embodier t;
+  if ((~~t) || (~~(t ofclass K2_thing))) return 0;
+   while (t) {
+    if (t provides component_parent) t = t.component_parent;
+    else return 0;
+    if (t ofclass K8_person) return t;
+  }        
+  return 0;
+];
