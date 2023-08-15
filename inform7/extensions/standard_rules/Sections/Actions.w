@@ -27,6 +27,7 @@ To pull is a verb. To push is a verb. To put is a verb. To rub is a verb.
 To say is a verb. To search is a verb. To see is a verb. To seem is a verb.
 To set is a verb. To smell is a verb. To sniff is a verb. To squeeze is a verb.
 To switch is a verb. To take is a verb. To talk is a verb. To taste is a verb.
+To throw is a verb.
 To touch is a verb. To turn is a verb. To wait is a verb. To wave is a verb.
 To win is a verb.
 
@@ -97,6 +98,18 @@ Check an actor taking (this is the can't take yourself rule):
 		if the actor is the player, say "[We] [are] always self-possessed." (A);
 		stop the action.
 
+Check an actor taking (this is the can't take items out of play rule):
+	if the noun is off-stage:
+		if the actor is the player:
+			say "[regarding the noun][Those] [aren't] available." (A);
+		stop the action.
+
+Check an actor taking (this is the can only take things rule):
+	if the noun is not a thing:
+		if the actor is the player:
+			say "[We] [cannot] carry [the noun]." (A);
+		stop the action.
+
 Check an actor taking (this is the can't take other people rule):
 	if the noun is a person:
 		if the actor is the player, say "I don't suppose [the noun] [would care] for that." (A);
@@ -114,15 +127,6 @@ Check an actor taking (this is the can't take people's possessions rule):
 		if the actor is the player:
 			say "[regarding the noun][Those] [seem] to belong to [the owner]." (A);
 		stop the action;
-
-Check an actor taking (this is the can't take items out of play rule):
-	let H be the noun;
-	while H is not nothing and H is not a room:
-		let H be the not-counting-parts holder of H;
-	if H is nothing:
-		if the actor is the player:
-			say "[regarding the noun][Those] [aren't] available." (A);
-		stop the action.
 
 Check an actor taking (this is the can't take what you're inside rule):
 	let the local ceiling be the common ancestor of the actor with the noun;
@@ -142,12 +146,6 @@ Check an actor taking (this is the can't take scenery rule):
 	if the noun is scenery:
 		if the actor is the player:
 			say "[regarding the noun][They're] hardly portable." (A);
-		stop the action.
-
-Check an actor taking (this is the can only take things rule):
-	if the noun is not a thing:
-		if the actor is the player:
-			say "[We] [cannot] carry [the noun]." (A);
 		stop the action.
 
 Check an actor taking (this is the can't take what's fixed in place rule):
@@ -273,24 +271,35 @@ Check an actor dropping something embodied by the actor (this is the
 	stop the action.
 
 Check an actor dropping (this is the can't drop what's already dropped rule):
-	if the noun is in the holder of the actor:
+	if the noun is held by the holder of the actor:
 		if the actor is the player:
 			say "[The noun] [are] already [here]." (A);
 		stop the action.
 
+Check an actor dropping (this is the can't drop other people's things rule):
+	let owner be the retainer of the noun;
+	if the owner is a person who is not the actor:
+		if the actor is the player:
+			say "But [the owner] [have] [regarding the noun][those].";
+		stop the action;
+
+Check an actor dropping (this is the can't drop parts rule):
+	let basis be the foundation of the noun;
+	if basis is not nothing:
+		if the actor is the player:
+			say "[regarding the noun][Those] [seem] to be a part of [the basis]." (A);
+		stop the action;
+
 Check an actor dropping (this is the can't drop what's not held rule):
-	if the actor is the holder of the noun, continue the action;
-	if the noun is not enclosed by the player:
+	if the actor holds the noun, continue the action;
+	if the actor retains the noun:
+		try the actor taking the noun;
+		if the actor holds the noun:
+			continue the action;
+	else:
 		if the actor is the player:
 			say "[We] [haven't] got [regarding the noun][those]." (A);
-	else:
-		if the noun is part of something (called the whole):
-			say "[regarding the noun][Those] [seem] to be a part of [the whole]." (B);
-		else:
-			try the actor taking the noun;
-			if the player holds the noun, continue the action;
-			say "[We] [couldn't] take [regarding the noun][those]." (C);
-	stop the action.
+	stop the action;                        
 
 Check an actor dropping (this is the can't drop clothes being worn rule):
 	if the actor is wearing the noun:
@@ -348,15 +357,14 @@ on a table."
 @ Check.
 
 =
-Check an actor putting something on (this is the convert put to drop where possible rule):
-	if the second noun is down or the actor is on the second noun,
-		convert to the dropping action on the noun.
+Check an actor putting something on (this is the convert put to drop when putting down rule):
+	if the second noun is down, convert to the dropping action on the noun.
 
-Check an actor putting something on (this is the can't put what's not held rule):
-	if the actor is carrying the noun, continue the action;
-	if the actor is wearing the noun, continue the action;
-	carry out the implicitly taking activity with the noun;
-	if the actor is not carrying the noun, stop the action.
+Check an actor putting something on (this is the can't put what's already there rule):
+	if the noun is on the second noun:
+		if the actor is the player:
+			say "[The noun] [are] already there." (A);
+		stop the action.
 
 Check an actor putting something on (this is the can't put something on itself rule):
 	let the noun-CPC be the component parts core of the noun;
@@ -364,8 +372,18 @@ Check an actor putting something on (this is the can't put something on itself r
 	let the transfer ceiling be the common ancestor of the noun-CPC with the second-CPC;
 	if the transfer ceiling is the noun-CPC:
 		if the actor is the player:
-			say "[We] [can't put] something on top of itself." (A);
+			say "[We] [can't put] something on top of [regarding the noun][themselves]." (A);
 		stop the action.
+
+Check an actor putting something on (this is the can't put what's not held rule):
+	if the actor is carrying the noun, continue the action;
+	if the actor is wearing the noun, continue the action;
+	carry out the implicitly taking activity with the noun;
+	if the actor is not carrying the noun, stop the action.
+
+Check an actor putting something on (this is the convert put to drop where possible rule):
+	if the actor is on the second noun,
+		convert to the dropping action on the noun.
 
 Check an actor putting something on (this is the can't put onto other people or their things rule):
 	let the bearer be the custodian of the second noun;
@@ -430,11 +448,6 @@ collection box."
 @ Check.
 
 =
-Check an actor inserting something into (this is the convert insert to drop where
-	possible rule):
-	if the second noun is down or the actor is in the second noun,
-		convert to the dropping action on the noun.
-
 Check an actor inserting something into (this is the can't insert what's already inserted rule):
 	if the noun is in the second noun:
 		if the actor is the player:
@@ -447,8 +460,13 @@ Check an actor inserting something into (this is the can't insert something into
 	let the transfer ceiling be the common ancestor of the noun-CPC with the second-CPC;
 	if the transfer ceiling is the noun-CPC:
 		if the actor is the player:
-			say "[We] [can't put] something inside itself." (A);
+			say "[We] [can't put] something inside [regarding the noun][themselves]." (A);
 		stop the action.
+
+Check an actor inserting something into (this is the convert insert to drop where
+	possible rule):
+	if the actor is in the second noun,
+		convert to the dropping action on the noun.
 
 Check an actor inserting something into (this is the can't insert what's not held rule):
 	if the actor is carrying the noun, continue the action;
@@ -1001,7 +1019,7 @@ Check an actor getting off (this is the can't get off things rule):
 	if the actor is carried by the noun, continue the action;
 	if the actor is the player:
 		let time-indicator be "[if story tense is present
-			tense]moment[otherwise]time[end if]"        
+			tense]moment[otherwise]time[end if]";        
 		say "But [we] [aren't] on [the noun][if the noun is an enterable supporter] at the [time-indicator][end if]." (A);
 	stop the action.
 
@@ -1304,9 +1322,16 @@ it is easy to add instead rules ('Instead of searching Dr Watson: ...') or
 even a new carry out rule ('Check searching someone (called the suspect): ...')
 to extend the way searching normally works."
 
+@ Before.
+
+=
+
+Before searching the player, instead try taking inventory (this is the search me rule).
+
 @ Check.
 
 =
+
 Check an actor searching (this is the can't search other people rule):
 	let the searched be the custodian of the noun;
 	if the searched is a person who is not the actor:
@@ -1330,7 +1355,7 @@ Check an actor searching (this is the can't search closed opaque containers rule
 
 =
 Report searching a container (this is the standard search containers rule):
-	if the noun contains a described thing which is not scenery:
+	if the noun is obviously-nonscenery-occupied:
 		say "In [the noun] " (A);
 		list the contents of the noun, as a sentence, tersely, not listing
 			concealed items, prefacing with is/are;
@@ -1339,7 +1364,7 @@ Report searching a container (this is the standard search containers rule):
 		say "[The noun] [are] empty." (B).
 
 Report searching a supporter (this is the standard search supporters rule):
-	if the noun supports a described thing which is not scenery:
+	if the noun is obviously-nonscenery-occupied:
 		say "On [the noun] " (A);
 		list the contents of the noun, as a sentence, tersely, not listing
 			concealed items, prefacing with is/are;
@@ -1671,6 +1696,13 @@ interesting for this kind."
 @ Check.
 
 =
+
+Check an actor opening (this is the can't open what's already open rule):
+	if the noun is open:
+		if the actor is the player:
+			say "[regarding the noun][They're] already open." (A);
+		stop the action.
+
 Check an actor opening (this is the can't open unless openable rule):
 	if the noun provides the property openable and the noun is openable:
 		continue the action;
@@ -1689,12 +1721,6 @@ Check an actor opening (this is the can't open what's locked rule):
 	if the noun provides the property lockable and the noun is locked:
 		if the actor is the player:
 			say "[regarding the noun][They] [seem] to be locked." (A);
-		stop the action.
-
-Check an actor opening (this is the can't open what's already open rule):
-	if the noun is open:
-		if the actor is the player:
-			say "[regarding the noun][They're] already open." (A);
 		stop the action.
 
 @ Carry out.
@@ -1872,10 +1898,25 @@ carried by its former wearer, rather than being (say) dropped onto the floor."
 @ Check.
 
 =
+Check an actor taking off (this is the can't take off a part rule):
+	if the noun is part of something (called the whole):
+		if the actor is the player:
+			say "[regarding the noun][Those] [seem] to be a part of [the whole]." (A);
+		stop the action;
+
+Check an actor taking off (this is the can't wear what's not wearable rule):
+	if the noun is not wearable:
+		if the actor is the player:
+			say "[regarding the noun][Those] [can't] be worn." (A);
+		stop the action;                     
+
 Check an actor taking off (this is the can't take off what's not worn rule):
 	if the actor is not wearing the noun:
 		if the actor is the player:
-			say "[We] [aren't] wearing [the noun]." (A);
+			if the noun is not worn by anyone:
+				say "[We] [aren't] wearing [the noun]." (A);
+			else:
+				say "[The holder of the noun] might not like that." (B);
 		stop the action.
 
 Check an actor taking off (this is the can't exceed carrying capacity when taking off rule):
@@ -2084,8 +2125,14 @@ Check an actor throwing something at (this is the implicitly remove thrown cloth
 
 Check an actor throwing something at (this is the can't throw at yourself rule):
 	if the actor is the second noun or the actor embodies the second noun:
-        	if the actor is the player:
+		if the actor is the player:
 			say "[We] [would achieve] nothing by this." (A);
+		stop the action;
+
+Check an actor throwing something at (this is the can't throw things at themselves rule):
+	if the noun is the second noun:
+		if the actor is the player:
+			say "[We] [can't throw] something at [regarding the noun][themselves]." (A);        
 
 Check an actor throwing something at (this is the futile to throw things at inanimate
 	objects rule):
@@ -2348,7 +2395,7 @@ people provoke a special reply."
 
 Check an actor touching (this is the player can't touch other people or their things rule):
 	if the actor is the player:
-        	let the touched be the custodian of the noun;
+		let the touched be the custodian of the noun;
 		if the touched is a person who is not the actor:
 			if the action is not silent:
 				say "[The touched] [might not like] that." (A);

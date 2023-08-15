@@ -125,10 +125,16 @@ an author adds to do so, so the details are left to the author.
 
 =
 Definition: a container is obviously-occupied rather than possibly-unoccupied if
-I6 routine "ObviouslyOccupied" says so (it contains at least one obvious thing).
+Inter routine "ObviouslyOccupied" says so (it contains at least one obvious thing).
 
 Definition: a supporter is obviously-occupied rather than possibly-unoccupied if
-I6 routine "ObviouslyOccupied" says so (it supports at least one obvious thing).
+Inter routine "ObviouslyOccupied" says so (it supports at least one obvious thing).
+
+Definition: a container is obviously-nonscenery-occupied rather than possibly-nonscenery-unoccupied if
+Inter routine "ObviouslyOccupied(*1,1)" says so (it contains at least one obvious thing).
+
+Definition: a supporter is obviously-nonscenery-occupied rather than possibly-nonscenery-unoccupied if
+Inter routine "ObviouslyOccupied(*1,1)" says so (it supports at least one obvious thing).
 
 Definition: a container (called c) is falsely-unoccupied:
   if the first thing held by it is nothing, no;
@@ -1065,6 +1071,17 @@ The verb to retain means the retention relation.
 To decide if (t - thing) assimilates (u - thing): (- TestAmalgamates({t}, {u}) -).
 Amalgamation relates a thing (called the assimilator) to a thing (called the assimilated) when the assimilator assimilates the assimilated.
 The verb to amalgamate means the amalgamation relation.
+
+Definition: a thing is fundamental if it is incorporated by nothing.
+
+[ TODO: check ]
+To decide what thing is the foundation of (t - thing):
+[if t is not a part of something, decide on a random thing that incorporates t;]
+while t is a thing begin;
+if the holder of t is nothing, break;
+now t is the holder of t;
+end while;
+decide on t;
 
 To decide what person is the custodian of (t - thing):
 	if t is a person, decide on t;
