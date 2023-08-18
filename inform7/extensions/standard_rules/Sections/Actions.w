@@ -353,7 +353,7 @@ Putting it on is an action applying to two things.
 The putting it on action is accessible to Inter as "PutOn".
 
 The specification of the putting it on action is "By this action, an actor puts
-something he is holding on top of a supporter: for instance, putting an apple
+something they are holding on top of a supporter: for instance, putting an apple
 on a table."
 
 @ Check.
@@ -444,7 +444,7 @@ Inserting it into is an action applying to two things.
 The inserting it into action is accessible to Inter as "Insert".
 
 The specification of the inserting it into action is "By this action, an actor puts
-something he is holding into a container: for instance, putting a coin into a
+something they are holding into a container: for instance, putting a coin into a
 collection box."
 
 @ Check.
@@ -467,7 +467,7 @@ Check an actor inserting something into (this is the can't insert something into
 
 Check an actor inserting something into (this is the convert insert to drop where
 	possible rule):
-	if the actor is in the second noun,
+	if the actor is the wrapper of the second noun and the common holder of the actor with the second noun holds the actor:
 		convert to the dropping action on the noun.
 
 Check an actor inserting something into (this is the can't insert what's not held rule):
@@ -636,15 +636,19 @@ Rule for setting action variables for going (this is the standard set going vari
 @ Check.
 
 =
-Check an actor going when the actor is on a supporter (called the chaise)
-	(this is the stand up before going rule):
-	if the actor is the player:
-		say "(first getting off [the chaise])[command clarification break]" (A);
-	silently try the actor exiting.
+Check an actor going (this is the stand up before going rule):
+	if the actor is on a supporter (called the chaise):
+[		if the actor is the player:
+			say "(first getting off [the chaise])[command clarification break]" (A);]
+		if the actor is not the player and the chaise does not hold the actor:
+			say "([The actor] first getting off [the chaise])[command clarification break]" (A);
+		silently try the actor exiting;
 
 Check an actor going (this is the can't travel in what's not a vehicle rule):
 	let nonvehicle be the holder of the actor;
 	if nonvehicle is the room gone from, continue the action;
+        [	if nonvehicle is an enterable vehicle and nonvehicle is not the vehicle gone by:
+		now the vehicle gone by is the nonvehicle; ]        
 	if nonvehicle is the vehicle gone by, continue the action;
 	if the actor is the player:
 		if nonvehicle is a supporter:
@@ -700,13 +704,13 @@ Carry out an actor going (this is the move player and vehicle rule):
 		now the location is the location of the player.
 
 Carry out an actor going (this is the move floating objects rule):
-	if the actor is the player or the player is within the vehicle gone by
-		or the player is within the thing gone with:
+	if the actor is the player or the player is enclosed by the vehicle gone by
+		or the player is enclosed by the thing gone with:
 		update backdrop positions.
 
 Carry out an actor going (this is the check light in new location rule):
-	if the actor is the player or the player is within the vehicle gone by
-		or the player is within the thing gone with:
+	if the actor is the player or the player is enclosed by the vehicle gone by
+		or the player is enclosed by the thing gone with:
 		surreptitiously reckon darkness.
 
 @ Report.
@@ -718,8 +722,8 @@ Report an actor going (this is the describe room gone into rule):
 			produce a room description with going spacing conventions;
 	otherwise:
 		if the noun is a direction:
-			if the location is the room gone from or the player is within the
-				vehicle gone by or the player is within the thing gone with:
+			if the location is the room gone from or the player is enclosed by the
+				vehicle gone by or the player is enclosed by the thing gone with:
 				if the room gone from is the room gone to:
 					continue the action;
 				otherwise:
@@ -764,16 +768,16 @@ Report an actor going (this is the describe room gone into rule):
 			otherwise:
 				say "in [the vehicle gone by]" (N);
 		if the thing gone with is not nothing:
-			if the player is within the thing gone with:
+			if the player is enclosed by the thing gone with:
 				say ", pushing [the thing gone with] in front, and [us] along too" (O);
-			otherwise if the player is within the vehicle gone by:
+			otherwise if the player is enclosed by the vehicle gone by:
 				say ", pushing [the thing gone with] in front" (P);
 			otherwise if the location is the room gone from:
 				say ", pushing [the thing gone with] away" (Q);
 			otherwise:
 				say ", pushing [the thing gone with] in" (R);
-		if the player is within the vehicle gone by and the player is not
-			within the thing gone with:
+		if the player is enclosed by the vehicle gone by and the player is not
+			enclosed by the thing gone with:
 			say ", taking [us] along" (S);
 			say ".";
 			try looking;
@@ -872,8 +876,9 @@ Check an actor entering (this is the can't enter something carried rule):
 		stop the action.
 
 Check an actor entering (this is the implicitly pass through other barriers rule):
-	if the holder of the actor is the holder of the noun, continue the action;
+	if the holder of the actor is the holder of the foundation of the noun, continue the action; [modified]
 	let the local ceiling be the common holder of the actor with the noun;
+[	if the local ceiling is the wrapper of the actor, continue the action;]
 	while the holder of the actor is not the local ceiling:
 		let the current home be the holder of the actor;
 		if the player is the actor:
@@ -881,14 +886,14 @@ Check an actor entering (this is the implicitly pass through other barriers rule
 				say "(getting off [the current home])[command clarification break]" (A);
 			otherwise:
 				say "(getting out of [the current home])[command clarification break]" (B);
-		silently try the actor trying exiting;
+		silently try the actor exiting;
 		if the holder of the actor is the current home, stop the action;
-	if the holder of the actor is the noun, stop the action;
-	if the holder of the actor is the holder of the noun, continue the action;
-	let the target be the holder of the noun;
+[	if the holder of the actor is the holder of the foundation of the noun, stop the action;]
+	let the target be the holder of the foundation of the noun;
+	if the holder of the actor is the target, continue the action;
 	if the noun is part of the target, let the target be the holder of the target;
 	while the target is a thing:
-		if the holder of the target is the local ceiling:
+		if the holder of the foundation of the target is the local ceiling:
 			if the player is the actor:
 				if the target is a supporter:
 					say "(getting onto [the target])[command clarification break]" (C);
@@ -900,7 +905,7 @@ Check an actor entering (this is the implicitly pass through other barriers rule
 			if the holder of the actor is not the target, stop the action;
 			convert to the entering action on the noun;
 			continue the action;
-		let the target be the holder of the target;
+		let the target be the holder of the foundation of the target;
 
 @ Carry out.
 
@@ -978,6 +983,13 @@ Check an actor exiting (this is the convert exit into get off rule):
 @ Carry out.
 
 =
+
+[ 	let the former exterior be the holder of the holder of the actor;
+	while the former exterior is not enterable and the former exterior is not a room:
+		now the former exterior is the holder of the former exterior;
+ 	surreptitiously move the actor to the former exterior.
+] 
+
 Carry out an actor exiting (this is the standard exiting rule):
 	let the former exterior be the holder of the foundation of the container exited from;
 	surreptitiously move the actor to the former exterior.
@@ -1028,6 +1040,14 @@ Check an actor getting off (this is the can't get off things rule):
 @ Carry out.
 
 =
+
+[ Carry out an actor getting off (this is the standard getting off rule):
+	let the former exterior be the holder of the holder of the actor;
+	while the former exterior is not enterable and the former exterior is not a room:
+		now the former exterior is the holder of the former exterior;
+ 	surreptitiously move the actor to the former exterior.]
+
+
 Carry out an actor getting off (this is the standard getting off rule):
 	let the former exterior be the holder of the foundation of the noun;
 	surreptitiously move the actor to the former exterior.
@@ -1102,6 +1122,14 @@ Setting action variables for looking (this is the determine visibility ceiling
 	now the visibility ceiling is the visibility ceiling calculated;
 	now the room-describing action is the looking action.
 
+@ Before
+
+=
+Before looking (this is the don't double report looking when someone pushes you rule):
+	if the player is enclosed by something enclosed by a person
+	who is not enterable:
+		instead do nothing.
+
 @ Carry out.
 
 =
@@ -1122,12 +1150,17 @@ Carry out looking (this is the room description heading rule):
 		say "[The visibility ceiling]";
 	say roman type;
 	let intermediate level be the visibility-holder of the actor;
+	let the previous intermediate level be the intermediate level;
 	repeat with intermediate level count running from 2 to the visibility level count:
 		if the intermediate level is a supporter or the intermediate level is an animal:
 			say " (on [the intermediate level])" (B);
 		otherwise:
-			say " (in [the intermediate level])" (C);
-		let the intermediate level be the visibility-holder of the intermediate level;
+			unless the previous intermediate level is part of the intermediate level:
+				say " (in [the intermediate level])" (C);
+			otherwise:
+				say " (attached to [the intermediate level])" (D);
+		now the previous intermediate level is the intermediate level;
+		now the intermediate level is the visibility-holder of the intermediate level;
 	say line break;
 	say run paragraph on with special look spacing.
 
@@ -1272,7 +1305,7 @@ model does not have a concept of things being under other things, so this
 action is only minimally provided by the Standard Rules, but it exists here
 for traditional reasons (and because, after all, LOOK UNDER TABLE is the
 sort of command which ought to be recognised even if it does nothing useful).
-The action ordinarily either tells the player he finds nothing of interest,
+The action ordinarily either tells the player they find nothing of interest,
 or reports that somebody else has looked under something.
 
 The usual way to make this action do something useful is to write a rule
@@ -1601,10 +1634,10 @@ Check an actor switching on (this is the can't switch on what's already on rule)
 		stop the action.
 
 Check an actor switching on (this is the can't switch on other people's things rule):
-	let the bearer be the retainer of the noun;
-	if the bearer is a person who is not the actor:
+[	let the bearer be the retainer of the noun;]
+	if the first custodian is a person who is not the actor:
 		if the actor is the player:
-			say "[The bearer] might not like that." (A);
+			say "[The first custodian] might not like that." (A);
 		stop the action;
 
 @ Carry out.
@@ -1651,10 +1684,10 @@ Check an actor switching off (this is the can't switch off what's already off ru
 		stop the action.
 
 Check an actor switching off (this is the can't switch off other people's things rule):
-	let the bearer be the retainer of the noun;
-	if the bearer is a person who is not the actor:
+[	let the bearer be the retainer of the noun;]
+	if the first custodian is a person who is not the actor:
 		if the actor is the player:
-			say "[The bearer] might not like that." (A);
+			say "[The first custodian] might not like that." (A);
 		stop the action;
 
 @ Carry out.
@@ -1671,7 +1704,6 @@ Report an actor switching off (this is the standard report switching off rule):
 		say "[The actor] [switch] [the noun] off." (A).
 
 @h Opening.
-
 =
 Opening is an action applying to one thing.
 The opening action is accessible to Inter as "Open".
@@ -1718,10 +1750,10 @@ Check an actor opening (this is the can't open unless openable rule):
 	stop the action.
 
 Check an actor opening (this is the can't open other people's things rule):
-	let the bearer be the retainer of the noun;
-	if the bearer is a person who is not the actor:
+[	let the bearer be the retainer of the noun;]
+	if the first custodian is a person who is not the actor:
 		if the actor is the player:
-			say "[The bearer] might not like that." (A);
+			say "[The first custodian] might not like that." (A);
 		stop the action;
 
 Check an actor opening (this is the can't open what's locked rule):
@@ -1760,6 +1792,12 @@ Report an actor opening (this is the standard report opening rule):
 		say "[The actor] [open] [the noun]." (B);
 	otherwise:
 		say "[The noun] [open]." (C);
+
+Report opening the visibility ceiling calculated when not in darkness (this
+	is the reveal any newly visible exterior rule):
+		try looking.
+
+
 
 @h Closing.
 
@@ -1803,10 +1841,10 @@ Check an actor closing (this is the can't close unless openable rule):
 	stop the action.
 
 Check an actor closing (this is the can't close other people's things rule):
-	let the bearer be the retainer of the second noun;
-	if the bearer is a person who is not the actor:
+[	let the bearer be the retainer of the second noun;]
+	if the first custodian is a person who is not the actor:
 		if the actor is the player:
-			say "[The bearer] might not like that." (A);
+			say "[The first custodian] might not like that." (A);
 		stop the action;
 
 @ Carry out.
@@ -2083,7 +2121,7 @@ Waking is an action applying to one thing.
 The waking action is accessible to Inter as "WakeOther".
 
 The specification of the waking action is "This is the act of jostling
-a sleeping person to wake him or her up, and it finds its way into the
+a sleeping person to wake them up, and it finds its way into the
 Standard Rules only for historical reasons. Inform does not by default
 provide any model for people being asleep or awake, so this action does
 not do anything in the standard implementation: instead, it is always
@@ -2171,7 +2209,7 @@ The attacking action is accessible to Inter as "Attack".
 The specification of the attacking action is "Violence is seldom the answer,
 and attempts to attack another person are normally blocked as being unrealistic
 or not seriously meant. (I might find a shop assistant annoying, but IF is
-not Grand Theft Auto, and responding by killing him is not really one of
+not Grand Theft Auto, and responding by killing them is not really one of
 my options.) So the Standard Rules simply block attempts to fight people,
 but the action exists for rules to make exceptions."
 
@@ -2558,6 +2596,16 @@ cases: say, pulling a lever. ('The big red lever is a fixed in place device.
 Instead of pulling the big red lever, try switching on the lever. Instead
 of pushing the big red lever, try switching off the lever.')"
 
+@ Before
+
+Before an actor pushing someone (called the pushee) to a direction
+	(called where the wind blows) (this is the push their encloser rule):
+	let h be the holder of the pushee;
+	while h is not enterable or h is not pushable between rooms:
+		now h is the holder of h;
+	if h is a pushable between rooms thing that encloses the pushee,
+		instead try the actor pushing h to where the wind blows.
+
 @ Check.
 
 =
@@ -2691,9 +2739,10 @@ Check an actor pushing something to (this is the can't push vertically rule):
 		stop the action.
 
 Check an actor pushing something to (this is the can't push from within rule):
-	if the noun encloses the actor:
+[ TODO ]
+	if the common ancestor of the actor with the noun is not the holder of the noun:
 		if the actor is the player:
-			say "[The noun] [cannot] be pushed from [here]." (A);
+			say "[The noun] [are] [if the holder of the noun is a supporter]on[else]in[end if] [the holder of the noun]." (A);
 		stop the action.
 
 Check an actor pushing something to (this is the standard pushing in directions rule):

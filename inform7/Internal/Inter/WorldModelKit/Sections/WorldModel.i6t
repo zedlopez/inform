@@ -984,3 +984,15 @@ which cannot be asserted true or false.
   }        
   return 0;
 ];
+
+[ SetAllThingsUnmentioned obj;
+	objectloop(obj ofclass K2_thing) {
+		give obj ~mentioned;
+	}
+];
+
+[ SetAllThingsNoWorkflag obj;
+	objectloop(obj ofclass K2_thing) {
+		give obj ~workflag;
+	}
+];

@@ -18,11 +18,15 @@ only by the two rules below; |HasLightSource| is called also in determining
 the scope, that is, what is visible to the player.
 
 =
-[ OffersLight obj j;
+
+[ OffersLight obj j prev_obj;	! MODIFIED
+    prev_obj = obj;			! ADDED
     while (obj) {
 		if (obj has light) rtrue;
 		objectloop (j in obj) if (HasLightSource(j)) rtrue;
-		if ((obj has container) && (obj hasnt open) && (obj hasnt transparent)) rfalse;
+		if ((obj has container) && (obj hasnt open) && (obj hasnt transparent))
+			if (~~prev_obj.component_parent == obj) rfalse;	! MODIFIED
+		prev_obj = obj;	! ADDED
 		if ((obj provides component_parent) && (obj.component_parent))
 			obj = obj.component_parent;
 		else
@@ -184,9 +188,13 @@ surface of a container, so that if |o| is part of a closed opaque container
 then the visibility parent of |o| is its actual parent.
 
 =
-[ VisibilityParent o;
-    if (o && (o has container) && (o hasnt open) && (o hasnt transparent)) return nothing;
-	if (o) o = CoreOfParentOfCoreOf(o);
+
+[ VisibilityParent o prev_obj;					! MODIFIED
+    if (prev_obj == nothing) prev_obj = NULL;	! ADDED
+    if (o && (o has container) && (o hasnt open) && (o hasnt transparent))
+	if ((prev_obj ~= NULL) && (~~prev_obj.component_parent == o))		! ADDED
+        	return nothing;
+    if (o) o = HolderOf(o);	! MODIFIED
     return o;
 ];
 
@@ -198,15 +206,18 @@ steps of |VisibilityParent| needed to reach this ceiling; or 0 if the
 player cannot see at all.
 
 =
-[ FindVisibilityLevels lc up;
+
+[ FindVisibilityLevels lc up prev_vc;	! MODIFIED
 	if (location == thedark) {
 		visibility_ceiling = thedark;
-		visibility_levels = 0;
+		visibility_levels = 0;	
 	} else {
 		visibility_ceiling = player;
+		prev_vc = player;			! ADDED
 		while (true) {
-			up = VisibilityParent(visibility_ceiling);
+			up = VisibilityParent(visibility_ceiling, prev_vc);	! MODIFIED
 			if (up == 0) break;
+			prev_vc = visibility_ceiling;	! ADDED
 			visibility_ceiling = up;
 			lc++;
 		}
@@ -214,14 +225,18 @@ player cannot see at all.
 	}
 ];
 
+
 @h Touchability Ceiling.
 Analogously:
 
 =
+
 [ TouchabilityCeiling original o p;
 	o = original;
 	while (o) {
-	    p = CoreOfParentOfCoreOf(o);
+	    ! p = CoreOfParentOfCoreOf(o);
+	    p = ParentOfCoreOf(o);	! MODIFIED
+	    ! print "<next step = ", (name) p, ">";	! ADDED
 	    if (p ofclass K1_room) return p;
 	    if (p == nothing) return o;
 	    if ((FollowRulebook(REACHING_OUTSIDE_RB, p)) && (RulebookFailed()))
