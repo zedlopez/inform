@@ -320,6 +320,8 @@ what rulebooks we consult next depends on what the action is (hence "specific")
 Action-processing rules is a rulebook.
 The action-processing rulebook is accessible to Inter as "ACTION_PROCESSING_RB".
 The action-processing rulebook has a person called the actor.
+The action-processing rulebook has a thing called the first custodian.
+The action-processing rulebook has a thing called the second custodian.
 Setting action variables is a rulebook.
 The setting action variables rulebook is accessible to Inter as "SETTING_ACTION_VARIABLES_RB".
 The specific action-processing rules is a rulebook.

@@ -748,6 +748,13 @@ To decide which object is the common ancestor of (O - an object) with
 	 (- (CommonAncestor({O}, {P})) -).
 To decide which object is the not-counting-parts holder of (O - an object):
 	 (- (CoreOfParentOfCoreOf({O})) -).
+
+To decide which object is the holder of the/-- foundation of  (O - object):
+	(- ParentOfCoreOf({O}) -).
+
+To decide which object is the common holder of (O - an object) with (P - an object):
+	 (- (CommonHolder({O}, {P})) -).
+         
 To decide which object is the visibility-holder of (O - object):
 	(- VisibilityParent({O}) -).
 To calculate visibility ceiling at low level:

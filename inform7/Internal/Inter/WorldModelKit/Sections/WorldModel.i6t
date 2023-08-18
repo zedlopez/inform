@@ -62,6 +62,12 @@ case.
 	return o;
 ];
 
+[ ParentOfCoreOf o;
+	while (o && (o provides component_parent) && (o.component_parent)) o = o.component_parent;
+	if (o) o = parent(o);
+	return o;
+];
+
 [ CoreOfParentOfCoreOf o;
 	while (o && (o provides component_parent) && (o.component_parent)) o = o.component_parent;
 	if (o) o = parent(o);
@@ -129,6 +135,16 @@ of |CommonAncestor| from the I6 library, adapted to work on the core tree.)
 	}
 	return nothing;
 ];
+
+[ CommonHolder o1 o2 i j;
+	for (i=o1: i: i = ParentOfCoreOf(i))
+		for (j=o2: j: j = ParentOfCoreOf(j)) {
+			!print "<checking ", (name) i, " <-> ", (name) j, ">^";	! ADDED
+			if (j == i) return j;
+		}
+	return nothing;
+];
+
 
 [ CommonAncestor o1 o2 i j;
 	o1 = CoreOf(o1);
