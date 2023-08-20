@@ -1077,3 +1077,7 @@ Definition: a thing is fundamental if Inter condition "(~~PartOf(*1))" says so (
 To decide what person is the custodian of (t - thing):
 	if t is a person, decide on t;
         decide on the retainer of t;
+
+Definition: a person is someone else if it is not the actor.
+Definition: a person is somebody else if it is not the actor.
+Definition: a person is another if it is not the actor.

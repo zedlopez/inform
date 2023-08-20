@@ -98,34 +98,19 @@ Check an actor taking (this is the can't take yourself rule):
 		if the actor is the player, say "[We] [are] always self-possessed." (A);
 		stop the action.
 
-Check an actor taking (this is the can't take items out of play rule):
-	if the noun is off-stage:
-		if the actor is the player:
-			say "[regarding the noun][Those] [aren't] available." (A);
-		stop the action.
-
-Check an actor taking (this is the can only take things rule):
-	if the noun is not a thing:
-		if the actor is the player:
-			say "[We] [cannot] carry [the noun]." (A);
-		stop the action.
-
-Check an actor taking (this is the can't take other people rule):
-	if the noun is a person:
-		if the actor is the player, say "I don't suppose [the noun] [would care] for that." (A);
-		stop the action.
-
 Check an actor taking (this is the can't take component parts rule):
 	if the noun is part of something (called the whole):
 		if the actor is the player:
 			say "[regarding the noun][Those] [seem] to be a part of [the whole]." (A);
 		stop the action.
 
+[
 Check an actor taking (this is the can't take people's possessions rule):
 	if the first custodian is a person who is not the actor:
 		if the actor is the player:
 			say "[regarding the noun][Those] [seem] to belong to [the first custodian]." (A);
 		stop the action;
+]
 
 Check an actor taking (this is the can't take what you're inside rule):
 	let the local ceiling be the common holder of the actor with the noun;
@@ -226,6 +211,7 @@ Check an actor removing something from (this is the can't remove what's not insi
 			say "But [regarding the noun][they] [aren't] there [now]." (A);
 		stop the action.
 
+[
 Check an actor removing something from (this is the can't remove from people rule):
 	let the owner be the holder of the noun;
 	if the owner is a person:
@@ -233,6 +219,7 @@ Check an actor removing something from (this is the can't remove from people rul
 		if the actor is the player:
 			say "[regarding the noun][Those] [seem] to belong to [the owner]." (A);
 		stop the action.
+]
 
 Check an actor removing something from (this is the convert remove to take rule):
 	convert to the taking action on the noun.
@@ -278,12 +265,14 @@ Check an actor dropping (this is the can't drop what's already dropped rule):
 			say "[The noun] [are] already [here]." (A);
 		stop the action.
 
+[
 Check an actor dropping (this is the can't drop other people's things rule):
 	let owner be the retainer of the noun;
 	if the owner is a person who is not the actor:
 		if the actor is the player:
 			say "But [the owner] [have] [regarding the noun][those].";
 		stop the action;
+]
 
 Check an actor dropping (this is the can't drop parts rule):
 	let basis be the component parts core of the noun;
@@ -387,12 +376,14 @@ Check an actor putting something on (this is the convert put to drop where possi
 	if the actor is on the second noun,
 		convert to the dropping action on the noun.
 
+[
 Check an actor putting something on (this is the can't put onto other people or their things rule):
 [	let the bearer be the custodian of the second noun;]
 	if the second custodian is a person who is not the actor:
 		if the actor is the player:
 			say "[The second custodian] might not like that." (A);
 		stop the action;
+]
 
 Check an actor putting something on (this is the can't put onto what's not a supporter rule):
 	if the second noun is not a supporter:
@@ -476,12 +467,14 @@ Check an actor inserting something into (this is the can't insert what's not hel
 	carry out the implicitly taking activity with the noun;
 	if the actor is not carrying the noun, stop the action.
 
+[
 Check an actor inserting something into (this is the can't insert into other people or their things rule):
 [	let the bearer be the custodian of the second noun;]
 	if the second custodian is a person who is not the actor:
 		if the actor is the player:
 			say "[The second custodian] might not like that." (A);
 		stop the action;
+]
 
 Check an actor inserting something into (this is the can't insert into closed containers rule):
 	if the second noun is a closed container:
@@ -567,12 +560,14 @@ Check an actor eating (this is the can't eat clothing without removing it first 
 		try the actor trying taking off the noun;
 		if the actor is wearing the noun, stop the action.
 
+[
 Check an actor eating (this is the can't eat other people's food rule):
 	let the owner be the retainer of the noun;
 	if the owner is a person who is not the actor:
 		if the actor is the player and the action is not silent:
 			say "[The owner] [might not appreciate] that." (A);
 		stop the action;
+]
 
 Check an actor eating (this is the can't eat portable food without carrying it rule):
 	if the noun is portable and the actor is not carrying the noun:
@@ -1125,10 +1120,13 @@ Setting action variables for looking (this is the determine visibility ceiling
 @ Before
 
 =
-Before looking (this is the don't double report looking when someone pushes you rule):
+
+The action-processing rules do nothing when looking and the player is enclosed by something retained by a not enterable person.
+
+[Before looking (this is the don't double report looking when someone pushes you rule):
 	if the player is enclosed by something enclosed by a person
 	who is not enterable:
-		instead do nothing.
+		instead do nothing.]
 
 @ Carry out.
 
@@ -1316,13 +1314,15 @@ player has the silver key; say ...' and so on."
 
 =
 
+[
 Check an actor looking under (this is the can't look under other people rule):
 [	let the looked-under be the custodian of the noun;]
 	if the first custodian is a person who is not the actor:
 		if the actor is the player:
 			say "[The first custodian] might not like that." (A);
 		stop the action;
-                
+]
+
 Carry out an actor looking under (this is the standard looking under rule):
 	if the player is the actor:
 		say "[We] [find] nothing of interest." (A);
@@ -1368,12 +1368,14 @@ Before searching the player (this is the search me rule):
 
 =
 
+[
 Check an actor searching (this is the can't search other people rule):
 [	let the searched be the custodian of the noun;]
 	if the first custodian is a person who is not the actor:
 		if the actor is the player:
 			say "[The first custodian] [might not like] that." (A);
 		stop the action.
+]
 
 Check an actor searching (this is the can't search unless container or supporter rule):
 	if the noun is not a container and the noun is not a supporter:
@@ -1437,6 +1439,9 @@ using rules like 'Instead of consulting the history book about...'"
 @ Report.
 
 =
+
+[ todo: personal boundaries ? ]
+
 Report an actor consulting something about (this is the block consulting rule):
 	if the actor is the player:
 		say "[We] [discover] nothing of interest in [the noun]." (A);
@@ -1633,12 +1638,14 @@ Check an actor switching on (this is the can't switch on what's already on rule)
 			say "[regarding the noun][They're] already on." (A);
 		stop the action.
 
+[
 Check an actor switching on (this is the can't switch on other people's things rule):
 [	let the bearer be the retainer of the noun;]
 	if the first custodian is a person who is not the actor:
 		if the actor is the player:
 			say "[The first custodian] might not like that." (A);
 		stop the action;
+]
 
 @ Carry out.
 
@@ -1683,12 +1690,14 @@ Check an actor switching off (this is the can't switch off what's already off ru
 			say "[regarding the noun][They're] already off." (A);
 		stop the action.
 
+[
 Check an actor switching off (this is the can't switch off other people's things rule):
 [	let the bearer be the retainer of the noun;]
 	if the first custodian is a person who is not the actor:
 		if the actor is the player:
 			say "[The first custodian] might not like that." (A);
 		stop the action;
+]
 
 @ Carry out.
 
@@ -1749,12 +1758,14 @@ Check an actor opening (this is the can't open unless openable rule):
 		say "[regarding the noun][They] [aren't] something [we] [can] open." (A);
 	stop the action.
 
+[
 Check an actor opening (this is the can't open other people's things rule):
 [	let the bearer be the retainer of the noun;]
 	if the first custodian is a person who is not the actor:
 		if the actor is the player:
 			say "[The first custodian] might not like that." (A);
 		stop the action;
+]
 
 Check an actor opening (this is the can't open what's locked rule):
 	if the noun provides the property lockable and the noun is locked:
@@ -3503,3 +3514,30 @@ Setting action variables:
 	if the action requires a touchable noun, now the first custodian is the custodian of the noun;
        	if the action requires a touchable second noun, now the second custodian is the custodian of the second noun;
 
+This is the first basic personal boundaries rule:
+	if the action requires a noun and the noun is a person who is not the actor:
+		if the actor is not the player:
+			say "[The noun] [might not like] that." (A);
+		stop the action.
+
+[The first basic personal boundaries rule does nothing when answering it that or telling it about or asking it for or asking it about or waking or smelling or listening to.]
+
+This is the second basic personal boundaries rule:
+	if the action requires a touchable second noun and the second noun is a person who is not the actor:
+		if the actor is not the player:
+			say "[The second noun] [might not like] that." (A);
+		stop the action. 
+
+[The second basic personal boundaries rule does nothing when giving it to.]
+
+This is the first basic propriety rule:
+	if the action requires a touchable noun and the first custodian is a person who is not the actor:
+		if the actor is not the player:
+			say "[The noun] [might not like] that." (A);
+		stop the action.
+
+This is the second basic propriety rule):
+	if the action requires a touchable second noun and the second custodian is a person who is not the actor:
+		if the actor is not the player:
+			say "[The second noun] [might not like] that." (A);
+		stop the action.

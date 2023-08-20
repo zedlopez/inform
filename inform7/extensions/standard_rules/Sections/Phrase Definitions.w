@@ -749,6 +749,7 @@ To decide which object is the common ancestor of (O - an object) with
 To decide which object is the not-counting-parts holder of (O - an object):
 	 (- CoreOfParentOfCoreOf({O}) -).
 
+[ holder of, exclusive of incorporation ]
 To decide what object is the wrapper of (O - an object): (- ParentOf({O}) -).
 
 To decide which object is the holder of the/-- foundation of  (O - object):

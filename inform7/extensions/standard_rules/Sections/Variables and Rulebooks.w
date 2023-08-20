@@ -894,17 +894,18 @@ instance, "check taking" is the specific check rulebook for the
 the names aren't so visible).
 
 =
+
 The basic accessibility rule is defined by Inter as "BASIC_ACCESSIBILITY_R" with
 	"You must name something more substantial." (A).
 The basic visibility rule is defined by Inter as "BASIC_VISIBILITY_R" with
 	"[It] [are] pitch dark, and [we] [can't see] a thing." (A).
-The carrying requirements rule is defined by Inter as "CARRYING_REQUIREMENTS_R".
 The requested actions require persuasion rule is defined by Inter as
 	"REQUESTED_ACTIONS_REQUIRE_R" with
 	 "[The noun] [have] better things to do." (A).
 The carry out requested actions rule is defined by Inter as
 	"CARRY_OUT_REQUESTED_ACTIONS_R" with
 	"[The noun] [are] unable to do that." (A).
+The carrying requirements rule is defined by Inter as "CARRYING_REQUIREMENTS_R".
 The descend to specific action-processing rule is defined by Inter as
 "DESCEND_TO_SPECIFIC_ACTION_R".
 
@@ -1008,6 +1009,29 @@ we expect most users to work with one of the two reaching rulebooks instead.
 
 =
 Section 5 - Accessibility
+
+This is the basic on-stage rule:
+	if the action requires a touchable noun and the noun is off-stage:
+		if the actor is the player:
+			say "[regarding the noun][Those] [aren't] available." (A);
+		stop the action;	
+	if the action requires a touchable second noun and the second noun is off-stage:
+		if the actor is the player:
+			say "[regarding the second noun][Those] [aren't] available." (B);
+		stop the action;	
+
+This is the basic tangibility rule:
+	if the action requires a touchable noun and the noun is not a thing:
+		if the actor is the player:
+			say "[We] must name something more substantial than [regarding the noun][those]." (A);
+		stop the action;	
+	if the action requires a touchable second noun and the second noun is not a thing:
+		if the actor is the player:
+			say "[We] must name something more substantial than [regarding the noun][those]." (B);
+		stop the action;	
+
+The basic tangibility rule is listed first in the accessibility rules. [2nd]
+The basic on-stage rule is listed first in the accessibility rules. [1st]
 
 The access through barriers rule is listed last in the accessibility rules.
 
