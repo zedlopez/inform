@@ -66,7 +66,7 @@ supplemented by details:
 Printing room description details of something (hidden in RULES command) (documented at act_details) is an activity.
 The printing room description details activity is accessible to Inter as "PRINTING_ROOM_DESC_DETAILS_ACT".
 
-For printing room description details of a container (called the box) when the box is falsely-unoccupied (this is the falsely-unoccupied container room description details rule):
+[For printing room description details of a container (called the box) when the box is falsely-unoccupied (this is the falsely-unoccupied container room description details rule):
   say text of list writer internal rule response (A); [ " (" ]
   if the box is lit and the location is unlit begin;
     if the box is closed, say text of list writer internal rule response (J); [ "closed, empty[if serial comma option is active],[end if] and providing light" ]
@@ -75,11 +75,10 @@ For printing room description details of a container (called the box) when the b
     if the box is closed, say text of list writer internal rule response (E); [ "closed" ]
     else say text of list writer internal rule response (F); [ "empty" ]
   end if;
-  say text of list writer internal rule response (B); [ ")" ]
+  say text of list writer internal rule response (B); [ ")" ] ]
 
 Printing inventory details of something (hidden in RULES command) (documented at act_idetails) is an activity.
 The printing inventory details activity is accessible to Inter as "PRINTING_INVENTORY_DETAILS_ACT".
-
 
 To say the deceitfully empty inventory details of (box - a container):
   let inventory text printed be false;
@@ -94,7 +93,7 @@ To say the deceitfully empty inventory details of (box - a container):
   if the box is openable begin;
     if inventory text printed is true begin;
       if the serial comma option is active, say ",";
-      say text of list writer internal rule response (C); [ "and" ]
+      say text of list writer internal rule response (Z); [ "and" ]
     end if;
     if the box is open begin;
       say text of list writer internal rule response (N); [ "open but empty" ]
@@ -105,7 +104,7 @@ To say the deceitfully empty inventory details of (box - a container):
     end if;
   else; [ it's not openable ]
     if the box is transparent begin;
-      if inventory text printed is true, say text of list writer internal rule response (C); [ "and" ]
+      if inventory text printed is true, say text of list writer internal rule response (Z); [ "and" ]
       say text of list writer internal rule response (F); [ "empty" ]
       now inventory text printed is true; [ not relevant unless code is added ]
     end if;
