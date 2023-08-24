@@ -930,13 +930,6 @@ the iterator used at the top level) and increasing the depth by 1.
 
 =
 
-!Constant LW_WORN_BIT = 1;
-!Constant LW_CLOSED_BIT = 2;
-!Constant LW_LOCKED_BIT = 4;
-!Constant LW_EMPTY_BIT = 8;
-!Constant LW_OPEN_BIT = 16;
-!Constant LW_LIT_BIT = 32;
-
 [ WriteAfterEntry o depth
     p recurse_flag parenth_flag eldest_child child_count print_count lw_lit lw_closed lw_empty lw_worn lw_open lw_locked terms last_comma and_goes;
 
@@ -945,89 +938,127 @@ the iterator used at the top level) and increasing the depth by 1.
     if (c_style & PARTINV_BIT) {
         BeginActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
         if (ForActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o) == false) {
+          terms = 0;
           if (o has light && location hasnt light) { lw_lit = 1; terms++; }
           if (o has container) {
+
             if (o has open || o has transparent) {
               if (~~ObviouslyOccupied(o))  { lw_empty = 1; terms++; }
             }
             if (o hasnt open) { lw_closed = 1; terms++; }
           }
+          and_goes = -1;
+          ! if there's more than one term, put an 'and' before term n
+          if (terms > 1) and_goes = terms - 1;
+          if (terms > 2) {
+            if (BasicInformKit`SERIAL_COMMA_CFGF) last_comma = terms;
+            else last_comma = terms - 1;
+          }
           if (terms) {
+            print_count = 0;
             LW_Response('A'); ! " ("
             if (lw_closed) {
               LW_Response('E', o); ! "closed"
-              if (terms > 2) print ', ';
-              else if (terms == 2) LW_Response('Z', o); ! "and"
+              print_count++;
+
             }
             if (lw_empty) {
+              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_goes) print " "; }
+              if (print_count == and_goes) LW_Response('Z', o);
               LW_Response('F', o); ! "empty"
-              if ((terms > 2) && (BasicInformKit`SERIAL_COMMA_CFGF)) print ",";
-              if (terms >= 2) LW_Response('Z', o); ! "and"
+              print_count++;
             }
-            if (lw_lit) LW_Response('D', o); ! "providing light";
+            if (lw_lit) {
+              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_goes) print " "; } 
+              if (print_count == and_goes) LW_Response('Z', o);
+              LW_Response('D', o); ! "providing light";
+            }
             LW_Response('B'); ! close bracket ")";
           }
         }
         EndActivity(PRINTING_ROOM_DESC_DETAILS_ACT, o);
     }   ! end of PARTINV_BIT processing
-
+! gets empty if (open & openable) || (!openable & transparent)
     if (c_style & FULLINV_BIT) {
         BeginActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
         if (ForActivity(PRINTING_INVENTORY_DETAILS_ACT, o) == false) {
+          terms = 0;
           ! setup
 	  if (o has light) { lw_lit = 1; terms++; }
           if (o has worn) { lw_worn = 1; terms++; }
           if (o has container) {
-            if (o has openable) {
-              if (o has open) { lw_open = 1; terms++; }
-              else { lw_closed = 1; terms++; }
-              if ((o has openable || o has transparent) && (~~ObviouslyOccupied(o))) { lw_empty = 1; terms++; }
-              if (o has locked) { lw_locked = 1; terms++; }
+            if (o has openable) { !print "openble";
+              if (o has open) { !print "/open";
+                lw_open = 1;
+                if (~~ObviouslyOccupied(o)) { !print "/looks empty";
+                lw_empty = 1; terms++; }
+              }
+              else {
+                lw_closed = 1;
+                if (o has locked) { lw_locked = 1; terms++; }
+              }
+              terms++; ! for one of 'open' or 'closed'
+            }  
+            else {
+!              print "not-openble";
+              if (((o has transparent)) && (~~ObviouslyOccupied(o))) {! print "/ trns,looks empty";
+              lw_empty = 1; terms++; }
             }
           }
+!          print "^";
           if (lw_open && lw_empty) terms--;
-          if (lw_closed && lw_locked) terms--;
+          !
           ! output
+          !
           if (terms) {
-            ! if there's more than one term, put an 'and' after term n - 1
+            print_count = 0;
+            and_goes = last_comma = -1;
+            ! if there's more than one term, put an 'and' before term n
             if (terms > 1) and_goes = terms - 1;
-             else and_goes = -1;
             if (terms > 2) {
-              if (BasicInformKit`SERIAL_COMMA_CFGF) last_comma = terms - 1;
-              else last_comma = terms - 2;
+              if (BasicInformKit`SERIAL_COMMA_CFGF) last_comma = terms;
+              else last_comma = terms - 1;
             }
-          !  print "terms: ", terms, " last_comma: ", last_comma, " and_goes: ", and_goes, "^";
             LW_Response('A'); ! " ("
             if (lw_lit) {
+              ! initial doesn't need and/comma check
               LW_Response('D', o); ! providing light
               print_count++;
             }
-            if (print_count && print_count < last_comma) print ', ';
-            if (print_count == and_goes) LW_Response('Z', o);
             if (lw_worn) {
+              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_goes) print " "; }
+              if (print_count == and_goes) LW_Response('Z', o);
               LW_Response('L', o); ! being worn
               print_count++;
             }
-            if (print_count && print_count < last_comma) print ', ';
-            if (print_count == and_goes) LW_Response('Z', o);
             if (lw_open) {
+              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_goes) print " "; }
+              if (print_count == and_goes) LW_Response('Z', o);
               if (lw_empty) LW_Response('N', o); ! open but empty
               else LW_Response('M', o); ! open
               print_count++;
             }
             else if (lw_empty) {
+              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_goes) print " "; }
+              if (print_count == and_goes) LW_Response('Z', o);
               LW_Response('F', o); ! empty
               print_count++;
             }
-            if (print_count && print_count < last_comma) print ', ';
-            if (print_count == and_goes) LW_Response('Z', o);
             if (lw_closed) {
-              if (lw_locked) LW_Response('Z', o); ! closed and locked
-              else LW_Response('E', o); ! closed
+              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_goes) print " "; }
+              if (print_count == and_goes) LW_Response('Z', o);
+              LW_Response('E', o); ! closed
               print_count++;
             }
+            if (lw_locked) {
+              if (print_count && print_count < last_comma)  { print ","; if (print_count < and_goes) print " "; }
+              if (print_count == and_goes) LW_Response('Z', o);
+              LW_Response('O', o); ! locked
+              ! print_count++; final doesn't need print_count increment
+
+            }
             LW_Response('B'); ! close bracket ")"
-          }
+            }
           }
           EndActivity(PRINTING_INVENTORY_DETAILS_ACT, o);
         }   ! end of FULLINV_BIT processing

@@ -1154,7 +1154,7 @@ The list writer internal rule is defined by Inter as
 	"being worn" (L),
 	"open" (M),
 	"open but empty" (N),
-	"closed" (O),
+	"locked" (O),
 	"closed and locked" (P),
 	"containing" (Q),
 	"on [if the noun is a person]whom[otherwise]which[end if] " (R),

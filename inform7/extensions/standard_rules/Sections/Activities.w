@@ -80,6 +80,7 @@ The printing room description details activity is accessible to Inter as "PRINTI
 Printing inventory details of something (hidden in RULES command) (documented at act_idetails) is an activity.
 The printing inventory details activity is accessible to Inter as "PRINTING_INVENTORY_DETAILS_ACT".
 
+[
 To say the deceitfully empty inventory details of (box - a container):
   let inventory text printed be false;
   if the box is lit begin;
@@ -117,6 +118,7 @@ For printing inventory details of a container (called the box) when the box is f
       say tag;
       say text of list writer internal rule response (B); [ ")" ]
     end if;
+]
 
 @ Names of things are often formed up into lists, in which they are sometimes
 grouped together:
