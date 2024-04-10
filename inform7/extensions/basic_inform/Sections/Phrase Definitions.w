@@ -122,56 +122,43 @@ To showme (val - value)
 @ Now some fun with number bases:
 
 =
-To say (N - a number) in hexadecimal
-	(documented at phs_inbase):
+To say (N - a number) in hexadecimal:
 	(- PrintInBase({N}, 16); -).
 
-To say (N - a number) in decimal
-	(documented at phs_inbase):
+To say (N - a number) in decimal:
 	(- PrintInBase({N}, 10); -).
 
-To say (N - a number) in octal
-	(documented at phs_inbase):
+To say (N - a number) in octal:
 	(- PrintInBase({N}, 8); -).
 
-To say (N - a number) in binary
-	(documented at phs_inbase):
+To say (N - a number) in binary:
 	(- PrintInBase({N}, 2); -).
 
-To say (N - a number) in base (B - a number)
-	(documented at phs_inbase):
+To say (N - a number) in base (B - a number):
 	(- PrintInBase({N}, {B}); -).
 
-To say (N - a number) in (M - a number) digit/digits
-	(documented at phs_indigits):
+To say (N - a number) in (M - a number) digit/digits:
 	(- PrintInBase({N}, 10, {M}); -).
 
-To say (N - a number) in (M - a number) hexadecimal digit/digits
-	(documented at phs_inbaseindigits):
+To say (N - a number) in (M - a number) hexadecimal digit/digits:
 	(- PrintInBase({N}, 16, {M}); -).
 
-To say (N - a number) in (M - a number) decimal digit/digits
-	(documented at phs_inbaseindigits):
+To say (N - a number) in (M - a number) decimal digit/digits:
 	(- PrintInBase({N}, 10, {M}); -).
 
-To say (N - a number) in (M - a number) octal digit/digits
-	(documented at phs_inbaseindigits):
+To say (N - a number) in (M - a number) octal digit/digits:
 	(- PrintInBase({N}, 8, {M}); -).
 
-To say (N - a number) in (M - a number) binary digit/digits
-	(documented at phs_inbaseindigits):
+To say (N - a number) in (M - a number) binary digit/digits:
 	(- PrintInBase({N}, 2, {M}); -).
 
-To say (N - a number) in (M - a number) base (B - a number) digit/digits
-	(documented at phs_inbaseindigits):
+To say (N - a number) in (M - a number) base (B - a number) digit/digits:
 	(- PrintInBase({N}, {B}, {M}); -).
 
-To say (N - a number) in unsigned decimal
-	(documented at phs_inunsigneddecimal):
+To say (N - a number) in unsigned decimal:
 	(- PrintInBase({N}, 10, 1); -).
 
-To say (N - a number) in (M - a number) unsigned decimal digit/digits
-	(documented at phs_inunsigneddecimaldigits):
+To say (N - a number) in (M - a number) unsigned decimal digit/digits:
 	(- PrintInBase({N}, 10, {M}); -).
 
 @ Objects are the most difficult things to say, because of the elaborate
@@ -680,7 +667,7 @@ To decide which real number is the floor of (R - a real number)
 	(documented at ph_floor)
 	(this is the floor function):
 	(- REAL_NUMBER_TY_Floor({R}) -).
-To decide which number is (R - a real number) to the nearest whole number
+To decide which number is (R - a real number) to the/-- nearest whole number
 	(documented at ph_nearestwholenumber)
 	(this is the int function):
 	(- REAL_NUMBER_TY_to_NUMBER_TY({R}) -).
@@ -1110,15 +1097,15 @@ See test case |BIP-TextReplacement|.
 =
 Section 2 - Matching and Replacing
 
-To decide if (T - text) exactly matches the text (find - text),
+To decide if (T - text) exactly matches the/-- text (find - text),
 	case insensitively
 	(documented at ph_exactlymatches):
 	(- TEXT_TY_Replace_RE(CHR_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options},1) -).
-To decide if (T - text) matches the text (find - text),
+To decide if (T - text) matches the/-- text (find - text),
 	case insensitively
 	(documented at ph_matches):
 	(- TEXT_TY_Replace_RE(CHR_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options}) -).
-To decide what number is number of times (T - text) matches the text
+To decide what number is number of times (T - text) matches the/-- text
 	(find - text), case insensitively
 	(documented at ph_nummatches):
 	(- TEXT_TY_Replace_RE(CHR_BLOB,{-by-reference:T},{-by-reference:find},1,{phrase options}) -).
@@ -1179,11 +1166,11 @@ See test case |BIP-RegExp|.
 =
 Section 3 - Regular Expressions
 
-To decide if (T - text) exactly matches the regular expression (find - text),
+To decide if (T - text) exactly matches the/-- regular expression (find - text),
 	case insensitively
 	(documented at ph_exactlymatchesre):
 	(- TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options},1) -).
-To decide if (T - text) matches the regular expression (find - text),
+To decide if (T - text) matches the/-- regular expression (find - text),
 	case insensitively
 	(documented at ph_matchesre):
 	(- TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},0,{phrase options}) -).
@@ -1202,7 +1189,7 @@ To decide what number is the last index of subexpression (n - a number)
 To decide what number is the length of subexpression (n - a number)
 	(documented at ph_relength):
 	(- (RE_Subexpressions-->{n}-->RE_DATA2 - RE_Subexpressions-->{n}-->RE_DATA1) -).
-To decide what number is number of times (T - text) matches the regular expression
+To decide what number is number of times (T - text) matches the/-- regular expression
 	(find - text),case insensitively
 	(documented at ph_nummatchesre):
 	(- TEXT_TY_Replace_RE(REGEXP_BLOB,{-by-reference:T},{-by-reference:find},1,{phrase options}) -).
@@ -1329,13 +1316,13 @@ To decide if there is no (TR - table-reference)
 To blank out (tr - table-reference)
 	(documented at ph_blankout):
 	(- {-by-reference-blank-out:tr}; -).
-To blank out the whole row
+To blank out the/-- whole row
 	(documented at ph_blankoutrow):
 	(- TableBlankOutRow({-my:ct_0}, {-my:ct_1}); -).
-To blank out the whole (TC - table column) in/from/of (T - table name)
+To blank out the/-- whole (TC - table column) in/from/of (T - table name)
 	(documented at ph_blankoutcol):
 	(- TableBlankOutColumn({T}, {TC}); -).
-To blank out the whole of (T - table name)
+To blank out the/-- whole of (T - table name)
 	(documented at ph_blankouttable):
 	(- TableBlankOutAll({T}); -).
 
@@ -1454,10 +1441,10 @@ To decide what number is the number of entries in/of/from (L - a list of values)
 To truncate (L - a list of values) to (N - a number) entries/entry
 	(documented at ph_truncate):
 	(- LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, -1, 1); -).
-To truncate (L - a list of values) to the first (N - a number) entries/entry
+To truncate (L - a list of values) to the/-- first (N - a number) entries/entry
 	(documented at ph_truncatefirst):
 	(- LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, -1, 1); -).
-To truncate (L - a list of values) to the last (N - a number) entries/entry
+To truncate (L - a list of values) to the/-- last (N - a number) entries/entry
 	(documented at ph_truncatelast):
 	(- LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, -1, -1); -).
 To extend (L - a list of values) to (N - a number) entries/entry
