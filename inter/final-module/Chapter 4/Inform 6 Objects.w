@@ -386,7 +386,7 @@ void I6TargetObjects::pseudo_object(code_generator *gtr, code_generation *gen, t
 	segmentation_pos saved;
 	I6TargetObjects::VM_object_header(gen, I"Object", obj_name, NULL, 0, FALSE, &saved);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE(" \"(%S object)\"\n    has concealed\n", obj_name);
+	WRITE(" \"(%S object)\"\n", obj_name);
 	I6TargetObjects::VM_object_footer(gen, saved);
 }
 

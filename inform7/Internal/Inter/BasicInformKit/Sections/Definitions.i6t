@@ -311,7 +311,6 @@ are not visible to I7 source text as storage.
 Attribute absent; ! Used to mark objects removed from play
 Attribute animate; ! I6-level marker for I7 kind "person"
 Attribute clothing; ! = I7 "wearable"
-Attribute concealed; ! = I7 "undescribed"
 Attribute container; ! I6-level marker for I7 kind "container"
 Attribute door; ! I6-level marker for I7 kind "door"
 Attribute edible; ! = I7 "edible" vs "inedible"

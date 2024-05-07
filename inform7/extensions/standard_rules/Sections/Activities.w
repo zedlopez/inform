@@ -236,6 +236,8 @@ Rule for deciding whether all includes things enclosed by the person reaching
 Rule for deciding whether all includes a person while an actor dropping or throwing
 	or inserting or putting (this is the exclude people from drop all rule):
 	it does not.
+Rule for deciding whether all includes the player when doing anything
+	(this is the leave yourself alone rule): it does not.
 
 @ The supplying activities are linguistically interesting, for reasons gone
 into in the paper "Interactive Fiction, Natural Language and Semantic
@@ -707,8 +709,13 @@ For printing a locale paragraph about a thing (called the item)
 	continue the activity.
 
 For printing a locale paragraph about a thing (called the item)
-	(this is the don't mention undescribed items in room descriptions rule):
-	if the item is undescribed:
+	(this is the don't mention the player in room descriptions rule):
+	if the item is the player, set the locale priority of the item to 0;
+	continue the activity.
+
+For printing a locale paragraph about a thing (called the item)
+	(this is the don't mention concealed items in room descriptions rule):
+	if the item is concealed:
 		set the locale priority of the item to 0;
 	continue the activity.
 
@@ -754,15 +761,14 @@ For printing a locale paragraph about a supporter (called the tabletop)
 	(this is the initial appearance on supporters rule):
 	repeat with item running through not handled things on the tabletop which
 		provide the property initial appearance:
-		if the item is not a person and the initial appearance of the item is not ""
-			and the item is not undescribed:
+		if the item is not a person and the initial appearance of the item is not "":
 			now the item is mentioned;
 			say initial appearance of the item;
 			say paragraph break;
 	continue the activity.
 
 Definition: a thing (called the item) is locale-supportable if the item is not
-scenery and the item is not mentioned and the item is not undescribed.
+scenery and the item is not mentioned.
 
 For printing a locale paragraph about a thing (called the platform)
 	(this is the describe what's on scenery supporters in room descriptions rule):
@@ -770,7 +776,7 @@ For printing a locale paragraph about a thing (called the platform)
     let print a paragraph be false;
     let item be the first thing held by the platform;
     while item is not nothing begin;
-      if the item is not scenery and the item is described and the platform does not conceal the item begin;
+      if the item is not scenery and the platform does not conceal the item begin;
         if the item is mentioned begin;
           now the item is not marked for listing;
         else;
@@ -793,7 +799,7 @@ For printing a locale paragraph about a thing (called the platform)
 
 For printing a locale paragraph about a thing (called the item)
 	(this is the describe what's on mentioned supporters in room descriptions rule):
-	if the item is mentioned and the item is not undescribed and the item is
+	if the item is mentioned and the item is
 		not scenery and the item does not enclose the player:
 		if a locale-supportable thing is on the item:
 			set pronouns from the item;

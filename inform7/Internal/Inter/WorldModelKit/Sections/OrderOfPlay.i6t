@@ -524,8 +524,8 @@ See the Standard Rules for comment on this.
 =
 [ NOTE_OBJECT_ACQUISITIONS_R obj;
     objectloop (obj in player) give obj moved;
-    objectloop (obj has concealed)
-    	if (IndirectlyContains(player, obj)) give obj ~concealed;
+    objectloop (obj has scenery)
+    	if (IndirectlyContains(player, obj)) give obj ~scenery;
 	if (RUCKSACK_CLASS) {
 		objectloop (obj in player)
 			if (obj ofclass RUCKSACK_CLASS)

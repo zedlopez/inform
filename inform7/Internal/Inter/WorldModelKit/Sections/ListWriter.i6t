@@ -343,9 +343,9 @@ account.
 
 =
 [ ConcealedFromLists obj c;
-	if ((obj has concealed) || (obj has scenery)) rtrue;
+	if ((obj has scenery) || (obj == player)) rtrue;
 	c = parent(obj);
-	if ((c) && (c ofclass K5_container or K6_supporter) && (TestConcealment(c, obj))) rtrue;
+	if ((c) && (c ofclass K5_container or K6_supporter or K1_room) && (TestConcealment(c, obj))) rtrue;
 	rfalse;
 ];
 
@@ -363,7 +363,7 @@ anyway.
   if (o has container && o hasnt open && o hasnt transparent) rfalse; ! opaque closed container's status can never be obvious
   x = child(o);
   while (x) {
-    if ((x hasnt concealed) && (~~TestConcealment(o, x))) rtrue;
+    if (~~TestConcealment(o, x)) rtrue;
     x = sibling(x);
   }
   rfalse;

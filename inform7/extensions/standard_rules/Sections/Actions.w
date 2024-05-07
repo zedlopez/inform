@@ -141,12 +141,6 @@ Check an actor taking (this is the can't take what's already taken rule):
 			say "[We] already [have] [regarding the noun][those]." (A);
 		stop the action.
 
-Check an actor taking (this is the can't take scenery rule):
-	if the noun is scenery:
-		if the actor is the player:
-			say "[regarding the noun][They're] hardly portable." (A);
-		stop the action.
-
 Check an actor taking (this is the can only take things rule):
 	if the noun is not a thing:
 		if the actor is the player:
@@ -156,7 +150,10 @@ Check an actor taking (this is the can only take things rule):
 Check an actor taking (this is the can't take what's fixed in place rule):
 	if the noun is fixed in place:
 		if the actor is the player:
-			say "[regarding the noun][They're] fixed in place." (A);
+			if the noun is scenery:
+				say "[regarding the noun][They're] hardly portable." (A);
+			otherwise:
+				say "[regarding the noun][They're] fixed in place." (B);
 		stop the action.
 
 Check an actor taking (this is the use player's holdall to avoid exceeding
@@ -618,8 +615,8 @@ Check an actor going (this is the can't travel in what's not a vehicle rule):
  			say "[We] [would have] to get out of [the nonvehicle] first." (B);
 	stop the action.
 
-Check an actor going (this is the can't go through undescribed doors rule):
-	if the door gone through is not nothing and the door gone through is undescribed:
+Check an actor going (this is the can't go through concealed doors rule):
+	if the door gone through is not nothing and the door gone through is concealed:
 		if the actor is the player:
 			say "[We] [can't go] that way." (A);
 		stop the action.
@@ -1185,7 +1182,7 @@ Carry out examining (this is the examine directions rule):
 Carry out examining (this is the examine containers rule):
 	if the noun is a container:
 		if the noun is closed and the noun is opaque, make no decision;
-		if something described which is not scenery is in the noun and something which
+		if something which is not scenery is in the noun and something which
 			is not the player is in the noun and the noun is not falsely-unoccupied:
 			say "In [the noun] " (A);
 			list the contents of the noun, as a sentence, tersely, not listing
@@ -1200,7 +1197,7 @@ Carry out examining (this is the examine containers rule):
 
 Carry out examining (this is the examine supporters rule):
 	if the noun is a supporter and the noun is not falsely-unoccupied:
-		if something described which is not scenery is on the noun and something which is
+		if something which is not scenery is on the noun and something which is
 			not the player is on the noun:
 			say "On [the noun] " (A);
 			list the contents of the noun, as a sentence, tersely, not listing
@@ -1300,7 +1297,7 @@ Check an actor searching (this is the can't search closed opaque containers rule
 
 =
 Report searching a container (this is the standard search containers rule):
-	if the noun contains a described thing which is not scenery:
+	if the noun contains a not scenery thing:
 		say "In [the noun] " (A);
 		list the contents of the noun, as a sentence, tersely, not listing
 			concealed items, prefacing with is/are;
@@ -1309,7 +1306,7 @@ Report searching a container (this is the standard search containers rule):
 		say "[The noun] [are] empty." (B).
 
 Report searching a supporter (this is the standard search supporters rule):
-	if the noun supports a described thing which is not scenery:
+	if the noun supports a not scenery thing:
 		say "On [the noun] " (A);
 		list the contents of the noun, as a sentence, tersely, not listing
 			concealed items, prefacing with is/are;

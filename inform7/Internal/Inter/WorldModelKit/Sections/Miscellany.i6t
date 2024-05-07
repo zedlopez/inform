@@ -221,7 +221,7 @@ and is used for no other purpose.) Because of the traditional structure
 of language definitions, this needs to come first.
 
 =
-Object Compass "compass" has concealed;
+Object Compass "compass";
 
 @h Score and Rankings Table.
 The following command tells Inform to compile constant definitions for |INITIAL_MAX_SCORE|

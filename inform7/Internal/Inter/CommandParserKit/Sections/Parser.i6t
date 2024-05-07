@@ -2330,7 +2330,6 @@ because we want to allow duplicates).
     ! Now look for a good choice, if there's more than one choice...
 
     number_of_classes = 0;
-
     if (number_matched == 1) {
     	i = match_list-->0;
 		if (indef_mode == 1 && indef_type & PLURAL_BIT ~= 0) {
@@ -2375,7 +2374,6 @@ because we want to allow duplicates).
         pattern-->pcount = i;
         return i;
     }
-
 	if (dont_ask) return match_list-->0;
 
     ! If we get here, there was no obvious choice of object to make.  If in
@@ -2714,7 +2712,7 @@ routines to clear up this mess, so we can't economise on working them out).
         if (context==HELD_TOKEN && parent(n)==actor)
         {   good_ones++; last=n; }
         if (context==MULTI_TOKEN && ultimate==ScopeCeiling(actor)
-            && n~=actor && n hasnt concealed && n hasnt scenery)
+            && n~=actor && n hasnt scenery)
         {   good_ones++; last=n; }
         if (context==MULTIHELD_TOKEN && parent(n)==actor)
         {   good_ones++; last=n; }
@@ -2789,7 +2787,7 @@ routines to clear up this mess, so we can't economise on working them out).
             flag = 0;
             BeginActivity(DECIDING_WHETHER_ALL_INC_ACT, j);
             if ((ForActivity(DECIDING_WHETHER_ALL_INC_ACT, j)) == 0) {
-                if (j hasnt concealed && j hasnt worn) flag = 1;
+                if (j hasnt worn) flag = 1;
                 if (context == MULTIHELD_TOKEN or MULTIEXCEPT_TOKEN && parent(j) ~= actor)
                     flag = 0;
 
@@ -3062,8 +3060,7 @@ Constant SCORE__DIVISOR = 20;
             match_list-->i = -1;
         }
         else {
-            its_score = 0;
-            if (obj hasnt concealed) its_score = SCORE__UNCONCEALED;
+	    its_score = SCORE__UNCONCEALED;
 
             if (its_owner == actor) its_score = its_score + a_s;
             else

@@ -328,7 +328,6 @@ only short-term information and is used as workspace by the I6 library and
 also by some of the I7 template routines.)
 
 =
-A thing can be undescribed or described. A thing is usually described.
 A thing can be marked for listing or unmarked for listing. A thing is usually
 unmarked for listing.
 A thing can be mentioned or unmentioned. A thing is usually unmentioned.
@@ -758,9 +757,7 @@ player is "your dreary self".") The Inform compiler automatically generates
 that property for the "yourself" object, so we need do nothing here.
 
 =
-The yourself is an undescribed person. The yourself is proper-named.
-
-The yourself is privately-named.
+The yourself is a privately-named proper-named person.
 Understand "your former self" or "my former self" or "former self" or
 	"former" as yourself when the player is not yourself.
 
@@ -999,7 +996,6 @@ meanings were basically similar.
 Section 16 - Inter identifier equivalents
 
 The wearable property is defined by Inter as "clothing".
-The undescribed property is defined by Inter as "concealed".
 The edible property is defined by Inter as "edible".
 The enterable property is defined by Inter as "enterable".
 The female property is defined by Inter as "female".

@@ -72,7 +72,7 @@ To PURLOIN is to acquire something without reference to any rules on accessibili
 [ XPurloinSub;
     if (XTestMove(noun, player)) return;
     move noun to player;
-    give noun moved; give noun ~concealed; give noun ~worn;
+    give noun moved; give noun ~worn;
     say__p = 1;
     "[Purloined.]";
 ];
@@ -315,7 +315,7 @@ current room, or a named item.
 ];
 
 [ AllowInShowme pr;
-	if (pr == workflag or concealed or mentioned) rfalse;
+	if (pr == workflag or mentioned) rfalse;
 	rtrue;
 ];
 

@@ -389,7 +389,7 @@ Note that an object is detached from its component parent, if it has one,
 when moved.
 
 =
-+replacing(from BasicInformKit) [ MoveObject F T opt going_mode was L;
++replacing(from BasicInformKit) [ MoveObject F T opt going_mode was L y;
 	if (F == nothing) return IssueRTP("NothingMoved",
 		"You can't move nothing.", WorldModelKitRTPs);
 	if (F ofclass K7_backdrop) {
@@ -424,6 +424,7 @@ when moved.
 		print "*** Tried to move ", (the) F, " to ", (the) T, ".^";
 		return;
 	}
+	if (T == player) give F ~scenery;
 	if (F has worn) {
 		give F ~worn;
 		if (F in T) return;
@@ -597,7 +598,6 @@ etc. -- in the source text.
 	if (obj.component_parent) return IssueMadePlayerPartOfSomething(obj);
 	if (obj == player) return;
 
-    give player ~concealed;
     if (player has remove_proper) give player ~proper;
     if (player == selfobj) {
     	player.saved_short_name = player.short_name;
@@ -608,7 +608,6 @@ etc. -- in the source text.
     	player.short_name = player.saved_short_name;
     }
     if (player hasnt proper) give player remove_proper; ! when changing out again
-    give player concealed;
     give player proper;
 
     location = LocationOf(player); real_location = location;
@@ -1010,7 +1009,8 @@ which cannot be asserted true or false.
 
 =
 [ TestConcealment A B;
-	if (A ofclass K2_thing && B ofclass K2_thing) {
+	if (B == player) rfalse;
+	if ((A ofclass K2_thing or K1_room) && B ofclass K2_thing) {
 		if (IndirectlyContains(A, B)) {
 			particular_possession = B;
 			if (CarryOutActivity(DECIDING_CONCEALED_POSSESS_ACT, A)) rtrue;
