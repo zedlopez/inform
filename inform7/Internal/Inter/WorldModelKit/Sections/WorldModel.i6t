@@ -597,7 +597,7 @@ etc. -- in the source text.
 	}
 	if (obj.component_parent) return IssueMadePlayerPartOfSomething(obj);
 	if (obj == player) return;
-
+    give player ~scenery;
     if (player has remove_proper) give player ~proper;
     if (player == selfobj) {
     	player.saved_short_name = player.short_name;
@@ -609,7 +609,7 @@ etc. -- in the source text.
     }
     if (player hasnt proper) give player remove_proper; ! when changing out again
     give player proper;
-
+    give player scenery;
     location = LocationOf(player); real_location = location;
     MoveFloatingObjects();
     SilentlyConsiderLight();

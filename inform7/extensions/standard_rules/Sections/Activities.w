@@ -708,10 +708,10 @@ For printing a locale paragraph about a thing (called the item)
 	if the item is scenery, set the locale priority of the item to 0;
 	continue the activity.
 
-For printing a locale paragraph about a thing (called the item)
+[For printing a locale paragraph about a thing (called the item)
 	(this is the don't mention the player in room descriptions rule):
 	if the item is the player, set the locale priority of the item to 0;
-	continue the activity.
+	continue the activity.]
 
 For printing a locale paragraph about a thing (called the item)
 	(this is the don't mention concealed items in room descriptions rule):

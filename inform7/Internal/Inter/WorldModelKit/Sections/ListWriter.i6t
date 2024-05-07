@@ -343,7 +343,7 @@ account.
 
 =
 [ ConcealedFromLists obj c;
-	if ((obj has scenery) || (obj == player)) rtrue;
+	if (obj has scenery) rtrue;
 	c = parent(obj);
 	if ((c) && (c ofclass K5_container or K6_supporter or K1_room) && (TestConcealment(c, obj))) rtrue;
 	rfalse;

@@ -2712,7 +2712,7 @@ routines to clear up this mess, so we can't economise on working them out).
         if (context==HELD_TOKEN && parent(n)==actor)
         {   good_ones++; last=n; }
         if (context==MULTI_TOKEN && ultimate==ScopeCeiling(actor)
-            && n~=actor && n hasnt scenery)
+            && n hasnt scenery)
         {   good_ones++; last=n; }
         if (context==MULTIHELD_TOKEN && parent(n)==actor)
         {   good_ones++; last=n; }

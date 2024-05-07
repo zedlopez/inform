@@ -757,7 +757,7 @@ player is "your dreary self".") The Inform compiler automatically generates
 that property for the "yourself" object, so we need do nothing here.
 
 =
-The yourself is a privately-named proper-named person.
+The yourself is a privately-named proper-named scenery person.
 Understand "your former self" or "my former self" or "former self" or
 	"former" as yourself when the player is not yourself.
 
