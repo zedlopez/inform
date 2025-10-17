@@ -186,8 +186,8 @@ Array LanguageArticles -->
  !   Contraction form 0:     Contraction form 1:
  !   Cdef   Def    Indef     Cdef   Def    Indef
 
-     "The " "the " "a "      "The " "the " "an "          ! Articles 0
-     "The " "the " "some "   "The " "the " "some ";       ! Articles 1
+     "The " "the " "a " "A "    "The " "the " "an " "An "       ! Articles 0
+     "The " "the " "some " "Some " "The " "the " "some " "Some ";    ! Articles 1
 
                    !             a           i
                    !             s     p     s     p
