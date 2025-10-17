@@ -184,16 +184,21 @@ Constant LanguageContractionForms = 2;     ! English has two:
 Array LanguageArticles -->
 
  !   Contraction form 0:     Contraction form 1:
- !   Cdef   Def    Indef     Cdef   Def    Indef
+ !   Cdef   Def    CIndef  Indef   Cdef   Def    CIndef  Indef
 
-     "The " "the " "a " "A "    "The " "the " "an " "An "       ! Articles 0
-     "The " "the " "some " "Some " "The " "the " "some " "Some ";    ! Articles 1
+     "The " "the " "A "    "a "    "The " "the " "An "   "an "       ! Articles 0
+     "The " "the " "Some " "some " "The " "the " "Some " "some ";    ! Articles 1
 
                    !             a           i
                    !             s     p     s     p
                    !             m f n m f n m f n m f n
 
 Array LanguageGNAsToArticles --> 0 0 0 1 1 1 0 0 0 1 1 1;
+
+Constant CDEFART_INDEX = 0;
+Constant DEFART_INDEX = 1;
+Constant CINDEFART_INDEX = 2;
+Constant INDEFART_INDEX = 3;
 
 @h Commands.
 |LanguageVerbLikesAdverb| is called by |PrintCommand| when printing an |UPTO_PE|
