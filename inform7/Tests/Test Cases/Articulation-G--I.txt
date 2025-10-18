@@ -1,0 +1,50 @@
+
+
+
+
+Articulation
+An Interactive Fiction by Zed Lopez
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Lab
+You can see a green traffic signal, an open book, an ostrich, a cat, some eggs, some magic beans, The Man with No Name, Les Misérables, and some water here.
+
+>Lab
+You can see an amber traffic signal, an open book, an ostrich, a cat, some eggs, some magic beans, The Man with No Name, Les Misérables, and some water here.
+
+>Lab
+You can see a red traffic signal, an open book, an ostrich, a cat, some eggs, some magic beans, The Man with No Name, Les Misérables, and some water here.
+
+>Lab
+You can see a green traffic signal, an open book, an ostrich, a cat, some eggs, some magic beans, The Man with No Name, Les Misérables, and some water here.
+
+>Lab
+You can see an amber traffic signal, an open book, an ostrich, a cat, some eggs, some magic beans, The Man with No Name, Les Misérables, and some water here.
+
+>Lab
+You can see a red traffic signal, an open book, an ostrich, a cat, some eggs, some magic beans, The Man with No Name, Les Misérables, and some water here.
+
+>In review:
+yourself: [ singular-named ; proper-named ; indefinite article: '']
+  You | You | You | yourself | yourself | yourself
+green traffic signal: [ singular-named ; improper-named ; indefinite article: '']
+  The amber traffic signal | A red traffic signal | A green traffic signal | the amber traffic signal | a red traffic signal | a green traffic signal
+open book: [ singular-named ; improper-named ; indefinite article: '']
+  The open book | An open book | An open book | the open book | an open book | an open book
+ostrich: [ singular-named ; improper-named ; indefinite article: '']
+  The ostrich | An ostrich | An ostrich | the ostrich | an ostrich | an ostrich
+cat: [ singular-named ; improper-named ; indefinite article: '']
+  The cat | A cat | A cat | the cat | a cat | a cat
+eggs: [ plural-named ; improper-named ; indefinite article: '']
+  The eggs | Some eggs | Some eggs | the eggs | some eggs | some eggs
+magic beans: [ plural-named ; improper-named ; indefinite article: '']
+  The magic beans | Some magic beans | Some magic beans | the magic beans | some magic beans | some magic beans
+The Man with No Name: [ singular-named ; proper-named ; indefinite article: '']
+  The Man with No Name | The Man with No Name | The Man with No Name | The Man with No Name | The Man with No Name | The Man with No Name
+Les Misérables: [ plural-named ; proper-named ; indefinite article: '']
+  Les Misérables | Les Misérables | Les Misérables | Les Misérables | Les Misérables | Les Misérables
+water: [ singular-named ; improper-named ; indefinite article: 'some']
+  The water | Some water | Some water | the water | some water | some water
+
+>
+<end of input>
