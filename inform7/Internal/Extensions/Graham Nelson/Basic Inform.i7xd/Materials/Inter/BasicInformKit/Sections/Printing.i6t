@@ -59,6 +59,7 @@ Array StorageForShortName --> SHORT_NAME_BUFFER_LEN;
     return;
 ];
 
+! No longer used within Printing.i6t
 [ Cap str nocaps;
     if (nocaps) print (string) str;
     else CPrintOrRun(str, 0);
@@ -151,8 +152,9 @@ Global short_name_case;
 [ PrefaceByArticle obj acode pluralise capitalise i artform findout artval length;
   if (obj provides articles) {
     artval = (obj.&articles)-->(acode + (short_name_case * LanguageCases));
-    if (capitalise) { print (Cap) artval, " "; }
-    else { print (string) artval, " "; }
+    if (capitalise) CPrintOrRun(artval);
+    else print (string) artval;
+    print " ";
     if (pluralise) return;
     print (PSN__) obj;
     return;
