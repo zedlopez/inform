@@ -14,13 +14,12 @@ by having to capitalise the first letter. We do this by writing to the
 buffer and then altering the first character.
 
 =
-Constant SHORT_NAME_BUFFER_LEN = 160;
-Constant ARTICLE_BUFFER_LEN = 15;
 
 #Iftrue CHARSIZE == 1;
-! Allow a generous overrun
-Array StorageForShortName buffer SHORT_NAME_BUFFER_LEN+90;
+Constant SHORT_NAME_BUFFER_LEN = 250;
+Array StorageForShortName buffer SHORT_NAME_BUFFER_LEN;
 #Ifnot;
+Constant SHORT_NAME_BUFFER_LEN = 1000;
 Array StorageForShortName --> SHORT_NAME_BUFFER_LEN;
 #Endif;
 
@@ -45,10 +44,9 @@ Array StorageForShortName --> SHORT_NAME_BUFFER_LEN;
              return RunTimeError(2, obj, prop);
         }
     }
-
     #Ifdef TARGET_ZCODE;
     StorageForShortName->WORDSIZE = VM_LowerToUpperCase(StorageForShortName->WORDSIZE);
-    for (i=WORDSIZE: i<length+WORDSIZE: i++) print (char) StorageForShortName->i;
+    VM_PrintBuffer(StorageForShortName, length);
     #Ifnot;
     if (length > SHORT_NAME_BUFFER_LEN) length = SHORT_NAME_BUFFER_LEN;
     if (length)
@@ -73,7 +71,7 @@ do it by carrying out an activity.
 
 =
 [ PSN__ o i;
-  if (~~o) { LIST_WRITER_INTERNAL_RM('Y'); rtrue; }
+  if (~~o) { LW_Response('Y'); rtrue; }
   switch (metaclass(o)) {
     Routine:  print "<routine ", o, ">"; rtrue;
     String:   print "<string ~", (string) o, "~>"; rtrue;
@@ -100,11 +98,9 @@ the following "for" rule.
 Global caps_mode = false;
 
 [ STANDARD_NAME_PRINTING_R obj;
+  if (~~parameter_value) { LW_Response('Y'); return; }
   obj = parameter_value;
-    if (obj == 0) {
-      LW_Response('Y'); return;
-    }
-    switch (metaclass(obj)) {
+  switch (metaclass(obj)) {
     Routine:  print "<routine ", obj, ">"; return;
     String:   print "<string ~", (string) obj, "~>"; return;
     nothing:  print "<illegal object number ", obj, ">"; return;
@@ -152,8 +148,7 @@ indefinite singular depends on the text of the object's name.
 =
 Global short_name_case;
 
-[ PrefaceByArticle obj acode pluralise capitalise i artform findout artval buflen cap;
-!  print "^PrefaceByArticle: acode ", acode, " ; pluralise ", pluralise, " ; capitalise ", capitalise, " ; indef_mode ", indef_mode, "^";
+[ PrefaceByArticle obj acode pluralise capitalise i artform findout artval length;
   if (obj provides articles) {
     artval = (obj.&articles)-->(acode + (short_name_case * LanguageCases));
     if (capitalise) { print (Cap) artval, " "; }
@@ -166,45 +161,37 @@ Global short_name_case;
   if (pluralise && (i < 3 || (i >= 6 && i < 9))) { i = i + 3; }
   i = LanguageGNAsToArticles-->i;
 
-  artform = LanguageArticles + 4 * WORDSIZE * LanguageContractionForms * (short_name_case + i * LanguageCases);
+  artform = LanguageArticles + ARTBLOCK_LEN * WORDSIZE * LanguageContractionForms * (short_name_case + i * LanguageCases);
 
   findout = ((LanguageContractionForms > 4 || LanguageContractionForms < 2) ||
-             (artform-->acode ~= artform-->(acode+4)) ||
-             ((LanguageContractionForms >= 3) && (artform-->(acode+4) ~= artform-->(acode+8))) ||
-             ((LanguageContractionForms == 4) && (artform-->(acode+8) ~= artform-->(acode+12))));
-
+             (artform-->acode ~= artform-->(acode+ARTBLOCK_LEN)) ||
+             ((LanguageContractionForms >= 3) && (artform-->(acode+ARTBLOCK_LEN) ~= artform-->(acode+(2*ARTBLOCK_LEN)))) ||
+             ((LanguageContractionForms == 4) && (artform-->(acode+(2*ARTBLOCK_LEN)) ~= artform-->(acode+(3*ARTBLOCK_LEN)))));
   if (findout) {
     #Ifdef TARGET_ZCODE;
-    StorageForShortName-->0 = SHORT_NAME_BUFFER_LEN;
-    @output_stream 3 StorageForShortName;
-    if (pluralise) { print (number) pluralise; }
-    else { print (PSN__) obj; }
-    @output_stream -3;
-    acode = acode + 4 * LanguageContraction(StorageForShortName + 2);
+    if (pluralise) { length = VM_PrintToBuffer(StorageForShortName, SHORT_NAME_BUFFER_LEN, LanguageNumber, pluralise); }
+    else { length = VM_PrintToBuffer(StorageForShortName, SHORT_NAME_BUFFER_LEN, PSN__, obj); }
+    acode = acode + ARTBLOCK_LEN * LanguageContraction(StorageForShortName + 2);
     #Ifnot; ! TARGET_GLULX
     if (pluralise) {
-      buflen = Glulx_PrintAnyToArrayUni(StorageForShortName, SHORT_NAME_BUFFER_LEN, EnglishNumber, pluralise); 
+      length = Glulx_PrintAnyToArrayUni(StorageForShortName, SHORT_NAME_BUFFER_LEN, LanguageNumber, pluralise); 
     }
     else {
-      buflen = Glulx_PrintAnyToArrayUni(StorageForShortName, SHORT_NAME_BUFFER_LEN, PSN__, obj);
+      length = Glulx_PrintAnyToArrayUni(StorageForShortName, SHORT_NAME_BUFFER_LEN, PSN__, obj);
     }
-    acode = acode + 4 * LanguageContraction(StorageForShortName);
+    if (length > SHORT_NAME_BUFFER_LEN) length = SHORT_NAME_BUFFER_LEN;
+    acode = acode + ARTBLOCK_LEN * LanguageContraction(StorageForShortName);
     #Endif; ! TARGET_GLULX
   }
 
   print (string) artform-->acode;
   if (pluralise) return;
-  if (findout) {
-    #Ifdef TARGET_ZCODE;
-    VM_PrintBuffer(StorageForShortName);
-    #Ifnot; ! TARGET_GLULX
-    glk_put_buffer_uni(StorageForShortName, buflen);
-    #Endif;
-  }
-  else {
-    print (PSN__) obj;
-  }
 
+  #ifdef TARGET_GLULX;
+  if (findout) glk_put_buffer_uni(StorageForShortName, length);
+  #ifnot; ! TARGET_ZCODE
+  print (PSN__) obj;
+  #endif;
 ];
 
 @h Object Names III.
@@ -212,7 +199,6 @@ The routines accessible from outside this segment.
 
 =
 [ IndefArt obj;
-!  print "IndefArt ";
   if (~~obj) { LW_Response('Y'); rtrue; }
   @push indef_mode;
   @push self;
@@ -232,7 +218,6 @@ The routines accessible from outside this segment.
 ];
 
 [ CIndefArt obj;
-!  print "^CIndefArt ";
   if (~~obj) { LW_Response('X'); rtrue; }
   @push indef_mode;
   @push self;
@@ -241,6 +226,7 @@ The routines accessible from outside this segment.
   if (obj has proper) {
     indef_mode = NULL;
     caps_mode = true;
+!    print "CIA->P";
     print (PSN__) obj;
     caps_mode = false;
   }
@@ -269,14 +255,14 @@ The routines accessible from outside this segment.
 [ CDefArt obj i s;
   @push indef_mode;
   @push self;
-  indef_mode = false;
+  indef_mode = NULL;
   self = obj;
   if ((obj ofclass Object) && (obj has proper || obj == player)) {
     caps_mode = true;
     print (PSN__) obj;
     caps_mode = false;
   }
-  else if ((~~obj ofclass Object) || obj has proper) { print (PSN__) obj; }
+  else if ((~~obj ofclass Object) || obj has proper) print (PSN__) obj;
   else { PrefaceByArticle(obj, CDEFART_INDEX, 0, 1); }
   @pull self;
   @pull indef_mode;
