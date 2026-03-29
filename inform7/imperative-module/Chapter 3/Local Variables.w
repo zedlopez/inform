@@ -485,6 +485,7 @@ int LocalVariables::permit_as_new_local(parse_node *found, int as_calling) {
 		(Specifications::is_description(found)) ||
 		(Rvalues::is_object(found)) ||
 		(Rvalues::to_instance(found)) ||
+		(Rvalues::is_CONSTANT_construction(found, CON_rulebook)) ||
 		(Rvalues::is_CONSTANT_construction(found, CON_table_column)) ||
 		(Rvalues::is_CONSTANT_construction(found, CON_property))) return TRUE;
 	if (as_calling)

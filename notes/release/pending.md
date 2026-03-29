@@ -50,6 +50,10 @@ has been renamed:
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2619](https://inform7.atlassian.net/browse/I7-2619)
+	"Upon `resume the story` in a Final Question rule, `when play ends` rules are followed again before resumption"
+- Fix for Jira bug [I7-2608](https://inform7.atlassian.net/browse/I7-2608)
+	"Equations `given by x =` in Basic Inform breaks the use of x as an identifier in other contexts"
 - Fix for Jira bug [I7-2551](https://inform7.atlassian.net/browse/I7-2551)
 	"The parser nothing error internal rule response (C) is badly worded"
 	([commit 9175435](https://github.com/ganelson/inform/commit/9175435a7a45acd1257812871bc1068818d65573))
