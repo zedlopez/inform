@@ -15,7 +15,7 @@ class simply called `rel`.
 annotation it uses. (It can't do this itself without knowing the type.) But
 we don't need to create the annotation or give it permissions.
 
-@<Predeclarations of node annotation functions@> +=
+@<Predeclarations of node annotation functions@> (tangled early) =
 DECLARE_ANNOTATION_FUNCTIONS(relationship, rel)
 
 @ =

@@ -22,6 +22,10 @@ COMPILE_WRITER(heading *, NameResolution::log_headings)
 COMPILE_WRITER(table *, Tables::log)
 COMPILE_WRITER(table_column *, Tables::Columns::log)
 
+@<Global assertions variable definitions@> (webwide and tangled early) =
+	/* these are scattered throughout the module */
+
+@ =
 void AssertionsModule::start(void) {
 	AdjectivalPredicates::start();
 	CreationPredicates::start();

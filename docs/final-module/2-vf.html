@@ -3,15 +3,16 @@
 	<head>
 		<title>Vanilla Functions</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
   var popup = document.getElementById(material_id);
@@ -19,12 +20,11 @@ function togglePopup(material_id) {
 }
 </script>
 
-<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -131,7 +131,7 @@ For example, for &quot;To award (N - number) points to (P - person)&quot;, the f
 writes <code>award_X_points_to_X</code>:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::syntax_synopsis</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::syntax_synopsis</span></span>:<br/>C Function Model - <a href="5-cfm.html#SP14_3">&#167;14.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::syntax_synopsis</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::syntax_synopsis</span></span>:<br/>C Function Model - <a href="5-cfm.html#SP15_3">&#167;15.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">phrase_syntax</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=3, </span><span class="identifier-syntax">bracketed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">md</span><span class="plain-syntax">); </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::get_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">md</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>

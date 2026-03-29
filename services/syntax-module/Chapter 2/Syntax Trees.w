@@ -172,7 +172,7 @@ During such traverses, `current_sentence` is always the subtree being looked
 at: it is always a child of the tree root, and is usually a `SENTENCE_NT`
 node, hence the name.
 
-@<Global variable definitions@> +=
+@<Global syntax variable definitions@> (tangled early) =
 parse_node *current_sentence = NULL;
 
 @h General traversals.

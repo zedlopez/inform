@@ -19,6 +19,10 @@ to the other three; it doesn't even have an activation function.
 compiler_feature *multimedia_feature, *figures_feature, *sounds_feature,
 	*files_feature, *internal_files_feature;
 
+@<Global multimedia variable definitions@> (webwide and tangled early) =
+	/* these are scattered throughout the module */
+
+@ =
 void MultimediaModule::start(void) {
 	multimedia_feature = Features::new(NULL, I"multimedia", NULL);
 	figures_feature = Features::new(&Figures::start, I"figures",

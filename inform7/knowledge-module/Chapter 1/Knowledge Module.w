@@ -18,6 +18,9 @@ COMPILE_WRITER(property *, Properties::log)
 COMPILE_WRITER(rulebook *, Rulebooks::log)
 COMPILE_WRITER(inference_family *, Inferences::log_family)
 
+@<Global knowledge variable definitions@> (webwide and tangled early) =
+	/* these are scattered throughout the module */
+
 @
 
 @e ACTIVITY_CREATIONS_DA

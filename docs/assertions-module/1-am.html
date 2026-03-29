@@ -3,20 +3,20 @@
 	<head>
 		<title>Assertions Module</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -77,13 +77,22 @@ which use this module:</p>
 <span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="identifier-syntax">heading</span><span class="plain-syntax"> *, </span><a href="4-nr.html#SP12" class="function-link"><span class="function-syntax">NameResolution::log_headings</span></a><span class="plain-syntax">)</span>
 <span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="type-syntax">table</span><span class="plain-syntax"> *, </span><a href="7-tbl.html#SP8" class="function-link"><span class="function-syntax">Tables::log</span></a><span class="plain-syntax">)</span>
 <span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="type-syntax">table_column</span><span class="plain-syntax"> *, </span><a href="7-tc.html#SP3" class="function-link"><span class="function-syntax">Tables::Columns::log</span></a><span class="plain-syntax">)</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Global assertions variable definitions</span><span class="named-paragraph-number">3</span></span> =</p>
 
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="comment-syntax">/* these are scattered throughout the module */</span>
+</pre>
+<ul class="endnotetexts"><li>This code is continued in <a href="6-rlb.html#SP20">6/rlb:&#167;20</a>, <a href="7-tbl.html#SP3">7/tbl:&#167;3</a>, <a href="8-tap.html#SP1">8/tap:&#167;1</a>, <a href="8-tcp.html#SP1">8/tcp:&#167;1</a>, <a href="8-qr.html#SP1">8/qr:&#167;1</a>, <a href="8-tur.html#SP1">8/tur:&#167;1</a> and <a href="8-er.html#SP1">8/er:&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b> </p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">AssertionsModule::start</span><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="8-tap.html#SP2" class="function-link"><span class="function-syntax">AdjectivalPredicates::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="8-tcp.html#SP2" class="function-link"><span class="function-syntax">CreationPredicates::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="8-qr.html#SP2" class="function-link"><span class="function-syntax">Calculus::QuasinumericRelations::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="8-tur.html#SP2" class="function-link"><span class="function-syntax">Relations::Universal::start</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="8-er.html#SP2" class="function-link"><span class="function-syntax">ExplicitRelations::start</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="8-er.html#SP3" class="function-link"><span class="function-syntax">ExplicitRelations::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="8-terr.html#SP1" class="function-link"><span class="function-syntax">EqualityDetails::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="8-kpr.html#SP1" class="function-link"><span class="function-syntax">KindPredicatesRevisited::start</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="5-idf.html#SP1" class="function-link"><span class="function-syntax">ImperativeDefinitionFamilies::create</span></a><span class="plain-syntax">();</span>

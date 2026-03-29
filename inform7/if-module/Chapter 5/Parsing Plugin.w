@@ -116,7 +116,7 @@ the Inter command parser at runtime, whose data is typeless.
 
 @
 
-@<Global variable definitions@> +=
+@<Global IF variable definitions@> +=
 nonlocal_variable *real_location_VAR = NULL;
 nonlocal_variable *actor_location_VAR = NULL;
 
@@ -219,7 +219,7 @@ where grammar has specified a need. (By default, this will not happen.)
 
 @e constant_command_grammar_ANNOT /* `command_grammar`: for constant values */
 
-@<Predeclarations of node annotation functions@> +=
+@<Predeclarations of IF node annotation functions@> +=
 DECLARE_ANNOTATION_FUNCTIONS(constant_command_grammar, command_grammar)
 
 @ =

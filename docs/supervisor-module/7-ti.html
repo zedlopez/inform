@@ -3,15 +3,16 @@
 	<head>
 		<title>The Installer</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
   var popup = document.getElementById(material_id);
@@ -19,12 +20,11 @@ function togglePopup(material_id) {
 }
 </script>
 
-<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -106,7 +106,7 @@ produces a second report.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExtensionInstaller::install</span><span class="plain-syntax">(</span><span class="type-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">confirmed</span><span class="plain-syntax">, </span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_tool</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">meth</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax"> = </span><a href="1-ic.html#SP21" class="function-link"><span class="function-syntax">Supervisor::project_set_at_command_line</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax"> = </span><a href="1-ic.html#SP22" class="function-link"><span class="function-syntax">Supervisor::project_set_at_command_line</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">project</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">Errors::fatal</span><span class="plain-syntax">(</span><span class="string-syntax">"-project not set at command line"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pname</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">pname</span><span class="plain-syntax">, </span><span class="string-syntax">"'%S'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">project</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">title</span><span class="plain-syntax">);</span>
@@ -561,7 +561,7 @@ produces a second report.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExtensionInstaller::uninstall</span><span class="plain-syntax">(</span><span class="type-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">confirmed</span><span class="plain-syntax">, </span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_tool</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">meth</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax"> = </span><a href="1-ic.html#SP21" class="function-link"><span class="function-syntax">Supervisor::project_set_at_command_line</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax"> = </span><a href="1-ic.html#SP22" class="function-link"><span class="function-syntax">Supervisor::project_set_at_command_line</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">project</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">Errors::fatal</span><span class="plain-syntax">(</span><span class="string-syntax">"-project not set at command line"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pname</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">pname</span><span class="plain-syntax">, </span><span class="string-syntax">"'%S'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">project</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">title</span><span class="plain-syntax">);</span>
@@ -920,7 +920,7 @@ produces a second report.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ExtensionInstaller::modernise</span><span class="plain-syntax">(</span><span class="type-syntax">inbuild_copy</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">confirmed</span><span class="plain-syntax">, </span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to_tool</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">meth</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax"> = </span><a href="1-ic.html#SP21" class="function-link"><span class="function-syntax">Supervisor::project_set_at_command_line</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="type-syntax">inform_project</span><span class="plain-syntax"> *</span><span class="identifier-syntax">project</span><span class="plain-syntax"> = </span><a href="1-ic.html#SP22" class="function-link"><span class="function-syntax">Supervisor::project_set_at_command_line</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">project</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">Errors::fatal</span><span class="plain-syntax">(</span><span class="string-syntax">"-project not set at command line"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pname</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">pname</span><span class="plain-syntax">, </span><span class="string-syntax">"'%S'"</span><span class="plain-syntax">, </span><span class="identifier-syntax">project</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_copy</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">edition</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">work</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">title</span><span class="plain-syntax">);</span>

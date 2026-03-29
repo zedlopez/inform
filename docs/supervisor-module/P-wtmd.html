@@ -3,20 +3,20 @@
 	<head>
 		<title>What This Module Does</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -91,27 +91,27 @@ saying &quot;now build this&quot;.</p>
 <li>
 <p><a href="index.html" class="internal">supervisor</a> has to be started and stopped at each end of the parent's
 run, by calling <a href="1-sm.html#SP2" class="internal">SupervisorModule::start</a> and <a href="1-sm.html#SP2" class="internal">SupervisorModule::end</a>.
-The former calls <a href="1-ic.html#SP5" class="internal">Supervisor::start</a> in turn, and that activates a number of
+The former calls <a href="1-ic.html#SP6" class="internal">Supervisor::start</a> in turn, and that activates a number of
 subsystems with further calls. But all modules do something like this.</p>
 </li>
 <li>
 <p>More unusually, when the parent is creating its command-line options, it
-should call <a href="1-ic.html#SP6" class="internal">Supervisor::declare_options</a> to add more. This allows all tools
+should call <a href="1-ic.html#SP7" class="internal">Supervisor::declare_options</a> to add more. This allows all tools
 containing the Supervisor to offer a unified set of command-line options to
 configure it.<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup> When the parent is given a switch that it doesn't recognise,
-it should call <a href="1-ic.html#SP9" class="internal">Supervisor::option</a>; and when it has fully processed the
-command line, it should call <a href="1-ic.html#SP10" class="internal">Supervisor::optioneering_complete</a>.</p>
+it should call <a href="1-ic.html#SP10" class="internal">Supervisor::option</a>; and when it has fully processed the
+command line, it should call <a href="1-ic.html#SP11" class="internal">Supervisor::optioneering_complete</a>.</p>
 </li>
 <li>
 <p>The parent can now, if it chooses, make calls into <a href="index.html" class="internal">supervisor</a> to set
-up additional dependencies. But eventually it will call <a href="1-ic.html#SP12" class="internal">Supervisor::go_operational</a>.
+up additional dependencies. But eventually it will call <a href="1-ic.html#SP13" class="internal">Supervisor::go_operational</a>.
 The Supervisor is now ready for use!</p>
 </li>
 </ul>
 <p>There is no single &quot;go&quot; button: instead, the Supervisor provides a suite
 of functions to call, each acting on a &quot;copy&quot; — an instance of some software
 at a given filing system location. When <a href="../inform7/index.html" class="internal">inform7</a> is the parent, it follows
-the call to <a href="1-ic.html#SP12" class="internal">Supervisor::go_operational</a> with a single call to <a href="2-cps.html#SP12" class="internal">Copies::build</a>
+the call to <a href="1-ic.html#SP13" class="internal">Supervisor::go_operational</a> with a single call to <a href="2-cps.html#SP12" class="internal">Copies::build</a>
 on the copy representing the current Inform 7 project. But when <a href="../inbuild/index.html" class="internal">inbuild</a>
 is the parent, a variety of other functions may be made.</p>
 <ul class="inwebfootnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
@@ -124,7 +124,7 @@ to see the effect.<a href="#fnref:1" title="return to text"> &#x21A9;</a></p>
 example, &quot;Inform 7 extension&quot; and &quot;website template&quot; are both genres. Each
 different genre is represented by an <a href="2-gnr.html#SP1" class="internal">inbuild_genre</a> object, whose method
 calls provide the behaviour distinctive to that genre. The currently seven
-genre objects are created during <a href="1-ic.html#SP5" class="internal">Supervisor::start</a>, which calls out to
+genre objects are created during <a href="1-ic.html#SP6" class="internal">Supervisor::start</a>, which calls out to
 <a href="4-em.html#SP2" class="internal">ExtensionManager::start</a>, <a href="4-km.html#SP1" class="internal">KitManager::start</a>, and so on: the seven
 sections of <a href="4-em.html" class="internal">Chapter 4: Genre Management</a> are exactly the method calls for the seven genre
 objects.</p>
@@ -165,7 +165,7 @@ typed:</p>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inform7</span><span class="ConsoleText-identifier-syntax"> -internal</span><span class="ConsoleText-plain-syntax"> inform7/Internal</span><span class="ConsoleText-identifier-syntax"> -external</span><span class="ConsoleText-plain-syntax"> ~/mystuff</span><span class="ConsoleText-identifier-syntax"> -project</span><span class="ConsoleText-plain-syntax"> Tadpoles.inform
 </span></pre>
 <p>then all three command-line switches here would actually be parsed by
-<a href="1-ic.html#SP9" class="internal">Supervisor::option</a>, rather than by anything in the <a href="../core-module/index.html" class="internal">core</a> module.
+<a href="1-ic.html#SP10" class="internal">Supervisor::option</a>, rather than by anything in the <a href="../core-module/index.html" class="internal">core</a> module.
 They would set the &quot;internal&quot; and &quot;external&quot; nest (see <a href="../inbuild/M-ui.html" class="internal">Manual (in inbuild)</a>),
 creating an <a href="2-nst.html#SP1" class="internal">inbuild_nest</a> object for each. The Inform 7 project for the
 run would also be set. This would become whose genre is <code>project_bundle_genre</code>.</p>
@@ -314,7 +314,7 @@ templates, there are no dependencies, so there's nothing to build. For kits,
 extensions and projects, the task is performed by <a href="5-ks.html#SP14" class="internal">Kits::construct_graph</a>,
 <a href="5-es.html#SP10" class="internal">Extensions::construct_graph</a> and <a href="5-ps2.html#SP34" class="internal">Projects::construct_graph</a>. Kits are
 graphed when the Supervisor &quot;goes operational&quot;, because
-<a href="1-ic.html#SP12" class="internal">Supervisor::go_operational</a> calls <a href="2-cps.html#SP8" class="internal">Copies::construct_graph</a> for
+<a href="1-ic.html#SP13" class="internal">Supervisor::go_operational</a> calls <a href="2-cps.html#SP8" class="internal">Copies::construct_graph</a> for
 every extant copy.</p>
 <p>But extensions and projects are graphed later on, and only on demand. This is
 because they have rich dependency graphs which can be determined only by
@@ -482,7 +482,7 @@ i.e., has edges out to.</p>
 <p>How does one &quot;build a vertex&quot;, though? The answer is that if a vertex has been
 given a <a href="3-bs.html#SP1" class="internal">build_script</a>, one follows this script. The script is only a list
 of <a href="3-bs2.html#SP3" class="internal">build_step</a> objects, and each step is an application of a <a href="3-bs2.html#SP1" class="internal">build_skill</a>.
-There are only a few skills known to the Supervisor, created by <a href="1-ic.html#SP5" class="internal">Supervisor::start</a>.
+There are only a few skills known to the Supervisor, created by <a href="1-ic.html#SP6" class="internal">Supervisor::start</a>.
 For example, assimilating a kit is a skill; but the need to apply this skill to
 a particular copy of <code>WorldModelKit</code> is a build step.</p>
 <p>Some build steps can be carried out in two different ways: externally, by

@@ -3,15 +3,16 @@
 	<head>
 		<title>IF Module</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
   var popup = document.getElementById(material_id);
@@ -19,12 +20,11 @@ function togglePopup(material_id) {
 }
 </script>
 
-<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -150,6 +150,8 @@ function togglePopup(material_id) {
 of the following features. They all belong to an &quot;if&quot; feature, but that does
 nothing except to be a parent to them; it has no activation function.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Global IF variable definitions</span><span class="named-paragraph-number">4</span></span> =</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">compiler_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">actions_feature</span><span class="plain-syntax">, *</span><span class="identifier-syntax">going_feature</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    *</span><span class="identifier-syntax">backdrops_feature</span><span class="plain-syntax">, *</span><span class="identifier-syntax">bibliographic_feature</span><span class="plain-syntax">, *</span><span class="identifier-syntax">chronology_feature</span><span class="plain-syntax">,</span>
@@ -158,6 +160,7 @@ nothing except to be a parent to them; it has no activation function.</p>
 <span class="plain-syntax">    *</span><span class="identifier-syntax">timed_rules_feature</span><span class="plain-syntax">, *</span><span class="identifier-syntax">times_feature</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">compiler_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">performance_styles_feature</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
+<ul class="endnotetexts"><li>This code is continued in <a href="2-bd.html#SP5">2/bd:&#167;5</a>, <a href="3-sm.html#SP3">3/sm:&#167;3</a>, <a href="3-sm.html#SP9">3/sm:&#167;9</a>, <a href="3-sm.html#SP12">3/sm:&#167;12</a>, <a href="3-enah.html#SP1">3/enah:&#167;1</a>, <a href="3-sr.html#SP1">3/sr:&#167;1</a>, <a href="3-si.html#SP1">3/si:&#167;1</a>, <a href="3-tp.html#SP2">3/tp:&#167;2</a>, <a href="3-tp.html#SP4_1">3/tp:&#167;4.1</a>, <a href="3-bck.html#SP3">3/bck:&#167;3</a>, <a href="3-bck.html#SP12">3/bck:&#167;12</a>, <a href="3-rgn.html#SP2">3/rgn:&#167;2</a>, <a href="3-rgn.html#SP16">3/rgn:&#167;16</a>, <a href="3-tm.html#SP4">3/tm:&#167;4</a>, <a href="3-tm.html#SP7">3/tm:&#167;7</a>, <a href="3-tm.html#SP16">3/tm:&#167;16</a>, <a href="3-tm.html#SP21">3/tm:&#167;21</a>, <a href="3-scn.html#SP4">3/scn:&#167;4</a>, <a href="3-scn.html#SP7">3/scn:&#167;7</a>, <a href="3-ts.html#SP2">3/ts:&#167;2</a>, <a href="4-ap.html#SP2">4/ap:&#167;2</a>, <a href="4-ak.html#SP1">4/ak:&#167;1</a>, <a href="4-av.html#SP3">4/av:&#167;3</a>, <a href="4-pap.html#SP1">4/pap:&#167;1</a>, <a href="5-pp.html#SP6">5/pp:&#167;6</a>, <a href="6-dlg.html#SP2">6/dlg:&#167;2</a>, <a href="6-dlg.html#SP4">6/dlg:&#167;4</a>, <a href="6-dr.html#SP1">6/dr:&#167;1</a> and <a href="6-ps.html#SP2">6/ps:&#167;2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">

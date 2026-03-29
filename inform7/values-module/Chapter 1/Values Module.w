@@ -25,6 +25,10 @@ COMPILE_WRITER(instance *, Instances::log)
 COMPILE_WRITER(equation *, Equations::log)
 COMPILE_WRITER(nonlocal_variable *, NonlocalVariables::log)
 
+@<Global values variable definitions@> (webwide and tangled early) =
+	/* these are scattered throughout the module */
+
+@ =
 void ValuesModule::start(void) {
 	Tables::Relations::start();
 	Writers::register_writer('I', &Instances::writer);

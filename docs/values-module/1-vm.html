@@ -3,20 +3,20 @@
 	<head>
 		<title>Values Module</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -83,7 +83,16 @@ which use this module:</p>
 <span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *, </span><span class="identifier-syntax">Instances::log</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="identifier-syntax">equation</span><span class="plain-syntax"> *, </span><span class="identifier-syntax">Equations::log</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="identifier-syntax">nonlocal_variable</span><span class="plain-syntax"> *, </span><span class="identifier-syntax">NonlocalVariables::log</span><span class="plain-syntax">)</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Global values variable definitions</span><span class="named-paragraph-number">3</span></span> =</p>
 
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="comment-syntax">/* these are scattered throughout the module */</span>
+</pre>
+<ul class="endnotetexts"><li>This code is continued in <a href="3-tod.html#SP2">3/tod:&#167;2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b> </p>
+
+<pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">ValuesModule::start</span><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Tables::Relations::start</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_writer</span><span class="plain-syntax">(</span><span class="character-syntax">'I'</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">Instances::writer</span><span class="plain-syntax">);</span>

@@ -3,20 +3,20 @@
 	<head>
 		<title>C Miniglk</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../intern.html">Inter Modules</a></li><li><a href="index.html">final</a></li><li><a href="index.html#5">Chapter 5: C</a></li><li><b>C Miniglk</b></li></ul></div>
 <p class="purpose">Just enough of the Glk input/output interface to allow simple console text in and out, and no more.</p>
 
-<ul class="toc"><li><a href="5-cmn.html#SP1">&#167;1. Glk - an apology</a></li><li><a href="5-cmn.html#SP2">&#167;2. The Glk handler</a></li><li><a href="5-cmn.html#SP3">&#167;3. Gestalt</a></li><li><a href="5-cmn.html#SP4">&#167;4. Characters</a></li><li><a href="5-cmn.html#SP5">&#167;5. Miniglk data</a></li><li><a href="5-cmn.html#SP7">&#167;7. File-handling</a></li><li><a href="5-cmn.html#SP9">&#167;9. Streams</a></li><li><a href="5-cmn.html#SP16">&#167;16. Windows</a></li><li><a href="5-cmn.html#SP17">&#167;17. Events</a></li><li><a href="5-cmn.html#SP20">&#167;20. Styling</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-cmn.html#SP1">&#167;1. Glk - an apology</a></li><li><a href="5-cmn.html#SP2">&#167;2. The Glk handler</a></li><li><a href="5-cmn.html#SP3">&#167;3. Gestalt</a></li><li><a href="5-cmn.html#SP5">&#167;5. Characters</a></li><li><a href="5-cmn.html#SP7">&#167;7. Miniglk data</a></li><li><a href="5-cmn.html#SP11">&#167;11. File-handling</a></li><li><a href="5-cmn.html#SP15">&#167;15. Streams</a></li><li><a href="5-cmn.html#SP29">&#167;29. Windows</a></li><li><a href="5-cmn.html#SP31">&#167;31. Events</a></li><li><a href="5-cmn.html#SP37">&#167;37. Styling</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Glk - an apology.</b>  The code below is in no way a proper implementation of the Glk input/output
@@ -82,6 +82,8 @@ no store to take place.</p>
 <p>The code below can only be understood with the Glk reference documentation to
 hand, and we won't try to duplicate that here.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_default_glk</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">selector</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">varargc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">z</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7_debug_stack</span><span class="plain-syntax">(</span><span class="string-syntax">"i7_opcode_glk"</span><span class="plain-syntax">);</span>
@@ -188,15 +190,19 @@ hand, and we won't try to duplicate that here.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">z</span><span class="plain-syntax">) *</span><span class="identifier-syntax">z</span><span class="plain-syntax"> = </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Gestalt.</b>  The following is overdone, really: the standard Inform kits ask only about
 <code>i7_gestalt_Unicode</code>, <code>i7_gestalt_Sound</code> and <code>i7_gestalt_Graphics</code>.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_gestalt</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">g</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_gestalt</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">g</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">g</span><span class="plain-syntax">) {</span>
@@ -231,15 +237,19 @@ hand, and we won't try to duplicate that here.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Characters.</b>  These need only be performed on the ISO Latin-1 range, so are easy.</p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Characters.</b>  These need only be performed on the ISO Latin-1 range, so are easy.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_char_to_lower</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_char_to_upper</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_char_to_lower</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0x41</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0x5A</span><span class="plain-syntax">)) ||</span>
@@ -255,11 +265,13 @@ hand, and we won't try to duplicate that here.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Miniglk data.</b>  Each process needs to keep track of its own files, streams, windows and events,
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Miniglk data.</b>  Each process needs to keep track of its own files, streams, windows and events,
 which are wrapped up in a <code>miniglk_data</code> structure as follows:</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">#</span><span class="identifier-syntax">define</span><span class="plain-syntax"> </span><span class="identifier-syntax">I7_MINIGLK_LEAFNAME_LENGTH</span><span class="plain-syntax"> </span><span class="constant-syntax">128</span>
 
@@ -328,7 +340,9 @@ which are wrapped up in a <code>miniglk_data</code> structure as follows:</p>
 
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_initialise_miniglk_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_initialise_miniglk_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">proc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">miniglk</span><span class="plain-syntax"> = </span><span class="identifier-syntax">malloc</span><span class="plain-syntax">(</span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="identifier-syntax">miniglk_data</span><span class="plain-syntax">));</span>
@@ -345,15 +359,19 @@ which are wrapped up in a <code>miniglk_data</code> structure as follows:</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">proc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">miniglk</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">no_line_events</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  Each process starts with two streams already open for text output: <code>stdout</code>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Each process starts with two streams already open for text output: <code>stdout</code>
 and <code>stderr</code>, and the former is selected as current.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_initialise_miniglk</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_initialise_miniglk</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">I7_MINIGLK_MAX_STREAMS</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
@@ -369,8 +387,8 @@ and <code>stderr</code>, and the former is selected as current.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7_miniglk_stream_set_current</span><span class="plain-syntax">(</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">proc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">miniglk</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">stdout_stream_id</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. File-handling.</b> </p>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. File-handling.</b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mg_new_file</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);</span>
@@ -381,7 +399,9 @@ and <code>stderr</code>, and the former is selected as current.</p>
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mg_fputc</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mg_fgetc</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mg_new_file</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">proc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">miniglk</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">no_files</span><span class="plain-syntax"> &gt;= </span><span class="identifier-syntax">I7_MINIGLK_MAX_FILES</span><span class="plain-syntax">) {</span>
@@ -471,16 +491,20 @@ and <code>stderr</code>, and the former is selected as current.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  This allows us to implement <code>glk_fileref_create_by_name</code> and <code>glk_fileref_does_file_exist</code>.</p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  This allows us to implement <code>glk_fileref_create_by_name</code> and <code>glk_fileref_does_file_exist</code>.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_fileref_create_by_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">usage</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">rock</span><span class="plain-syntax">);</span>
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_fileref_does_file_exist</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_fileref_create_by_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">usage</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">rock</span><span class="plain-syntax">) {</span>
@@ -509,15 +533,19 @@ and <code>stderr</code>, and the former is selected as current.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Streams.</b>  These are channels for input/output, carrying bytes (which are usually characters).</p>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Streams.</b>  These are channels for input/output, carrying bytes (which are usually characters).</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7_mg_stream_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mg_new_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="type-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">win_id</span><span class="plain-syntax">);</span>
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mg_open_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="type-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">win_id</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7_mg_stream_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mg_new_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="type-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">win_id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7_mg_stream_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
@@ -555,11 +583,13 @@ and <code>stderr</code>, and the former is selected as current.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  This allows us to implement <code>glk_stream_open_memory</code> and its Unicode-text
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  This allows us to implement <code>glk_stream_open_memory</code> and its Unicode-text
 analogue <code>glk_stream_open_memory_uni</code>, and <code>glk_stream_open_file</code>.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_stream_open_memory</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">len</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">fmode</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">rock</span><span class="plain-syntax">);</span>
@@ -568,7 +598,9 @@ analogue <code>glk_stream_open_memory_uni</code>, and <code>glk_stream_open_file
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_stream_open_file</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">fileref</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">usage</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">rock</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_stream_open_memory</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">len</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">fmode</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">rock</span><span class="plain-syntax">) {</span>
@@ -606,17 +638,21 @@ analogue <code>glk_stream_open_memory_uni</code>, and <code>glk_stream_open_file
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  <code>glk_stream_set_position</code> and <code>glk_stream_get_position</code> are essentially for
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  <code>glk_stream_set_position</code> and <code>glk_stream_get_position</code> are essentially for
 moving to the start or end of a file, at least for our purposes.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_stream_set_position</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">seekmode</span><span class="plain-syntax">);</span>
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_stream_get_position</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_stream_set_position</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">seekmode</span><span class="plain-syntax">) {</span>
@@ -650,16 +686,20 @@ moving to the start or end of a file, at least for our purposes.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax">) </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">memory_used</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  Each process has a current stream, and <code>glk_stream_get_current</code> and
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. </b>  Each process has a current stream, and <code>glk_stream_get_current</code> and
 <code>glk_stream_set_current</code> give access to this.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_stream_get_current</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);</span>
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_stream_set_current</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_stream_get_current</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">proc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">state</span><span class="plain-syntax">.</span><span class="identifier-syntax">current_output_stream_ID</span><span class="plain-syntax">;</span>
@@ -672,16 +712,20 @@ moving to the start or end of a file, at least for our purposes.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">proc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">state</span><span class="plain-syntax">.</span><span class="identifier-syntax">current_output_stream_ID</span><span class="plain-syntax"> = </span><span class="identifier-syntax">id</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  The thing which is &quot;current&quot; about the current stream is that this is where
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. </b>  The thing which is &quot;current&quot; about the current stream is that this is where
 characters are written to. The following implements <code>glk_put_char_stream</code>.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mg_put_to_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">rock</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_put_char_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">stream_id</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mg_put_to_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">rock</span><span class="plain-syntax">, </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7_mg_stream_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> =</span>
@@ -735,15 +779,19 @@ characters are written to. The following implements <code>glk_put_char_stream</c
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  Note that the current stream is irrelevant to reading characters, where we
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. </b>  Note that the current stream is irrelevant to reading characters, where we
 have to specify exactly which stream is intended. Here's <code>glk_get_char_stream</code>:</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_get_char_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">stream_id</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_get_char_stream</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">stream_id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7_mg_stream_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">proc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">miniglk</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">memory_streams</span><span class="plain-syntax">[</span><span class="identifier-syntax">stream_id</span><span class="plain-syntax">]);</span>
@@ -754,16 +802,20 @@ have to specify exactly which stream is intended. Here's <code>glk_get_char_stre
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  And finally <code>glk_stream_close</code>, which is far from being an empty courtesy:
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. </b>  And finally <code>glk_stream_close</code>, which is far from being an empty courtesy:
 we may have to close a file on disc, or we may have to copy a memory buffer into
 process memory.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_stream_close</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">result</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_stream_close</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">result</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">id</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">id</span><span class="plain-syntax"> &gt;= </span><span class="identifier-syntax">I7_MINIGLK_MAX_STREAMS</span><span class="plain-syntax">)) {</span>
@@ -804,9 +856,9 @@ process memory.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">memory_used</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Windows.</b>  Even a proper Glk implementation isn't presenting any kind of window manager in
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. Windows.</b>  Even a proper Glk implementation isn't presenting any kind of window manager in
 the style of Xerox or early Macs: these windows are (borderless, invisible)
 rectangles on a plain text grid.</p>
 <p>And in this miniglk, a window is really just a receptacle for a stream of text.
@@ -817,6 +869,8 @@ into some bigger GUI app which is going to handle everything visual in its own
 way anyway.</p>
 <p>Note that we shamelessly claim that all windows are 80 x 8 characters.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_window_open</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">split</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">method</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">size</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">wintype</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">rock</span><span class="plain-syntax">);</span>
@@ -825,7 +879,9 @@ way anyway.</p>
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_window_get_size</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">a1</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">a2</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_window_open</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">split</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">method</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">size</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">wintype</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">rock</span><span class="plain-syntax">) {</span>
@@ -861,18 +917,22 @@ way anyway.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Events.</b>  Pending events are stored in a ring buffer, where the valid pending events are
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31. Events.</b>  Pending events are stored in a ring buffer, where the valid pending events are
 those between the <code>rb_back</code> and <code>rb_front</code> markers, modulo <code>I7_MINIGLK_RING_BUFFER_SIZE</code>.
 (In practice, this is more than we need for the very simple use that the standard
 I7 kits make of events. Still, it does no harm.)</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mg_add_event_to_buffer</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_mg_event_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">e</span><span class="plain-syntax">);</span>
 <span class="identifier-syntax">i7_mg_event_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">i7_mg_get_event_from_buffer</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mg_add_event_to_buffer</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_mg_event_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">e</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">proc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">miniglk</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">events_ring_buffer</span><span class="plain-syntax">[</span><span class="identifier-syntax">proc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">miniglk</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">rb_front</span><span class="plain-syntax">] = </span><span class="identifier-syntax">e</span><span class="plain-syntax">;</span>
@@ -890,16 +950,20 @@ I7 kits make of events. Still, it does no harm.)</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">e</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b>  That enables <code>glk_select</code>, an operation by which the caller can choose to
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. </b>  That enables <code>glk_select</code>, an operation by which the caller can choose to
 pull an event from the buffer and (optionally) copy its data ihto process
 memory.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_select</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">structure</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_select</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">structure</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7_mg_event_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">e</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_mg_get_event_from_buffer</span><span class="plain-syntax">(</span><span class="identifier-syntax">proc</span><span class="plain-syntax">);</span>
@@ -922,20 +986,24 @@ memory.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  And also <code>glk_request_line_event</code>. This asks the process's sender function to
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. </b>  And also <code>glk_request_line_event</code>. This asks the process's sender function to
 compose a command (terminated by 0 or a newline), then makes that it into a
 line event and pushes it to the event buffer. The caller can then use <code>glk_select</code>
 to find out what the command was.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP8" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library header</span><span class="named-paragraph-number">8</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_request_line_event</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">window_id</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">max_len</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">init_len</span><span class="plain-syntax">);</span>
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_request_line_event_uni</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">window_id</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">max_len</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">init_len</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP8">5/fnc:&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b> <span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_miniglk_request_line_event</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">window_id</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">buffer</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">max_len</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">init_len</span><span class="plain-syntax">) {</span>
@@ -991,15 +1059,17 @@ to find out what the command was.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Styling.</b>  This happens outside of miniglk. Glk does have a concept of text styles, but one
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. Styling.</b>  This happens outside of miniglk. Glk does have a concept of text styles, but one
 which is difficult to marry to CSS-esque styles in the way we might want here.
 So we provide this additional styling functionality outside of the Glk specification.
 When <code>which</code> is 1, we're essentially emulating Inform 6's <code>font</code> statement; when
 it is 2, we're emulation <code>style</code>, though an enhanced version capable of more than
 the three built-in styles <code>bold</code>, <code>italic</code> and <code>reverse</code>.</p>
 </div>
+<p class="commentary"><span class="named-paragraph-container code-font"><a href="5-fnc.html#SP9" class="named-paragraph-link"><span class="named-paragraph-defn">→ C library code</span><span class="named-paragraph-number">9</span></a></span> +=</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_fn_TEXT_TY_CharacterLength</span><span class="plain-syntax">(</span><span class="identifier-syntax">i7process_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mgl_local_txt</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mgl_local_ch</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mgl_local_i</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7word_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">i7_mgl_local_dsize</span><span class="plain-syntax">,</span>
@@ -1038,7 +1108,7 @@ the three built-in styles <code>bold</code>, <code>italic</code> and <code>rever
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
+<ul class="endnotetexts"><li>This code is a continuation of <a href="5-fnc.html#SP9">5/fnc:&#167;9</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="5-cim.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresschapter"><a href="2-cg.html">2</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresscurrentchapter">5</li><li class="progresssection"><a href="5-fnc.html">fnc</a></li><li class="progresssection"><a href="5-cnm.html">cnm</a></li><li class="progresssection"><a href="5-crf.html">crf</a></li><li class="progresssection"><a href="5-cgv.html">cgv</a></li><li class="progresssection"><a href="5-cmm.html">cmm</a></li><li class="progresssection"><a href="5-cas.html">cas</a></li><li class="progresssection"><a href="5-car.html">car</a></li><li class="progresssection"><a href="5-cpc.html">cpc</a></li><li class="progresssection"><a href="5-ccn.html">ccn</a></li><li class="progresssection"><a href="5-clt.html">clt</a></li><li class="progresssection"><a href="5-com.html">com</a></li><li class="progresssection"><a href="5-cfm.html">cfm</a></li><li class="progresssection"><a href="5-cim.html">cim</a></li><li class="progresscurrent">cmn</li><li class="progresssection"><a href="5-cuf.html">cuf</a></li><li class="progressnext"><a href="5-cuf.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->

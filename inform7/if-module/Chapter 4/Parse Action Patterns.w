@@ -17,7 +17,7 @@ the code below sets the following global variable on each failure.
 @e WHENOKAY_PAPF
 @e IMMISCIBLE_PAPF
 
-@<Global variable definitions@> +=
+@<Global IF variable definitions@> +=
 int pap_failure_reason; /* one of the above */
 
 @h Global modes.

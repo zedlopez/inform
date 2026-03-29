@@ -107,6 +107,8 @@ has been renamed:
 - Fix for Jira bug [I7-2384](https://inform7.atlassian.net/browse/I7-2384)
 	"Some Standard Rule responses use 'here' instead of '[here]', producing 'here' in cases that should be 'there'"
 	([PR#116](https://github.com/ganelson/inform/pull/116))
+- Fix for Jira bug [I7-2382](https://inform7.atlassian.net/browse/I7-2382)
+	"creating a specific number of things causing P49: Memory allocation proved impossible on Z-machine"
 - Fix for Jira bug [I7-2376](https://inform7.atlassian.net/browse/I7-2376)
 	"Incorrect behavior for 'empty' adjective applied to 1-to-1 relations"
 	(see [commit 918f9c3](https://github.com/ganelson/inform/commit/918f9c37193ea4aa09a21e34c622233fe4cc69db))

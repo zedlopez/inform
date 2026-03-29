@@ -2,7 +2,7 @@
 
 To define the predicates connected to linguistic adjectives.
 
-@<Global variable definitions@> +=
+@<Global assertions variable definitions@> +=
 up_family *adjectival_up_family = NULL;
 
 @ =

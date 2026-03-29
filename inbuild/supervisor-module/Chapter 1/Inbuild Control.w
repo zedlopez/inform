@@ -7,10 +7,10 @@ It is both a strength and a source of anxiety that build managers work in
 an autonomous sort of way, doing "whatever is necessary". Some users want
 silence while this happens, and others expect detailed explanations.
 
-@<Global variable definitions@> +=
+@<Global supervisor variable definitions@> (tangled early) =
 int supervisor_verbosity = 0;
 
-@<Variadic macro definitions@> +=
+@<Variadic supervisor macro definitions@> (tangled early) =
 #define SVEXPLAIN(level, args...) { \
 	if (supervisor_verbosity >= level) Writers::printf(STDOUT, args); \
 }

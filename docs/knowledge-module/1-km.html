@@ -3,20 +3,20 @@
 	<head>
 		<title>Knowledge Module</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -69,7 +69,13 @@ which use this module:</p>
 <span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="identifier-syntax">rulebook</span><span class="plain-syntax"> *, </span><span class="identifier-syntax">Rulebooks::log</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">COMPILE_WRITER</span><span class="plain-syntax">(</span><span class="type-syntax">inference_family</span><span class="plain-syntax"> *, </span><a href="5-inf.html#SP9" class="function-link"><span class="function-syntax">Inferences::log_family</span></a><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b> </p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Global knowledge variable definitions</span><span class="named-paragraph-number">3</span></span> =</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="comment-syntax">/* these are scattered throughout the module */</span>
+</pre>
+<ul class="endnotetexts"><li>This code is continued in <a href="1-ap.html#SP1">1/ap:&#167;1</a>, <a href="1-ap.html#SP4">1/ap:&#167;4</a>, <a href="2-oi.html#SP1">2/oi:&#167;1</a>, <a href="2-nv.html#SP4_3">2/nv:&#167;4.3</a>, <a href="3-prp.html#SP3_5">3/prp:&#167;3.5</a>, <a href="3-tpr.html#SP1">3/tpr:&#167;1</a>, <a href="3-cr.html#SP1">3/cr:&#167;1</a>, <a href="4-is.html#SP4">4/is:&#167;4</a>, <a href="5-pi.html#SP1">5/pi:&#167;1</a> and <a href="5-ri.html#SP1">5/ri:&#167;1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b> </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">ACTIVITY_CREATIONS_DA</span> 
 </pre>
@@ -126,7 +132,7 @@ which use this module:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  This module works closely with <a href="../calculus-module/index.html" class="internal">calculus</a>, hanging the following functions
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  This module works closely with <a href="../calculus-module/index.html" class="internal">calculus</a>, hanging the following functions
 on its hooks:</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TERM_DOMAIN_CALCULUS_TYPE</span> <span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inference_subject</span>

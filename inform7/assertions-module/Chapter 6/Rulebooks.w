@@ -719,7 +719,7 @@ as used when they are created by the Standard Rules extension.
 	when scene begins |
 	when scene ends
 
-@<Global variable definitions@> +=
+@<Global assertions variable definitions@> +=
 rulebook *RB_action_processing = NULL;
 rulebook *RB_after = NULL;
 rulebook *RB_before = NULL;

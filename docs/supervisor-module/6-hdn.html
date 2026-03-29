@@ -3,15 +3,15 @@
 	<head>
 		<title>Headings</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 MathJax = {
     options: {
@@ -31,6 +31,7 @@ MathJax = {
 </script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
 
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
   var popup = document.getElementById(material_id);
@@ -38,12 +39,11 @@ function togglePopup(material_id) {
 }
 </script>
 
-<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -506,7 +506,7 @@ otherwise.</p>
 <span class="Preform-function-syntax">&lt;current-virtual-machine&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">internal</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">{</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">if</span><span class="Preform-plain-syntax"> (</span><span class="Preform-function-syntax">&lt;virtual-machine&gt;</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">W</span><span class="Preform-plain-syntax">)) {</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-identifier-syntax">compatibility_specification</span><span class="Preform-plain-syntax"> *</span><span class="Preform-identifier-syntax">vms</span><span class="Preform-plain-syntax"> = (</span><span class="Preform-identifier-syntax">compatibility_specification</span><span class="Preform-plain-syntax"> *) </span><span class="Preform-function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="Preform-plain-syntax">;</span>
-<span class="Preform-plain-syntax">        ==&gt; { </span><span class="Preform-identifier-syntax">Compatibility::test</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">vms</span><span class="Preform-plain-syntax">, </span><a href="1-ic.html#SP11" class="function-link"><span class="Preform-function-syntax">Supervisor::current_vm</span></a><span class="Preform-plain-syntax">()), </span><span class="Preform-constant-syntax">-</span><span class="Preform-plain-syntax"> };</span>
+<span class="Preform-plain-syntax">        ==&gt; { </span><span class="Preform-identifier-syntax">Compatibility::test</span><span class="Preform-plain-syntax">(</span><span class="Preform-identifier-syntax">vms</span><span class="Preform-plain-syntax">, </span><a href="1-ic.html#SP12" class="function-link"><span class="Preform-function-syntax">Supervisor::current_vm</span></a><span class="Preform-plain-syntax">()), </span><span class="Preform-constant-syntax">-</span><span class="Preform-plain-syntax"> };</span>
 <span class="Preform-plain-syntax">        </span><span class="Preform-reserved-syntax">return</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">TRUE</span><span class="Preform-plain-syntax">;</span>
 <span class="Preform-plain-syntax">    } </span><span class="Preform-reserved-syntax">else</span><span class="Preform-plain-syntax"> {</span>
 <span class="Preform-plain-syntax">        ==&gt; { </span><span class="Preform-identifier-syntax">fail</span><span class="Preform-plain-syntax"> </span><span class="Preform-identifier-syntax">nonterminal</span><span class="Preform-plain-syntax"> };</span>
