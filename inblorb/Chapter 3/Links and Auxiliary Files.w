@@ -138,8 +138,13 @@ will not work.
 void Links::expand_COVER_variable(OUTPUT_STREAM) {
 	if (cover_exists) {
 		char *format = "png"; if (cover_is_in_JPEG_format) format = "jpg";
-		WRITE("<a href=\"Cover.%s\"><img src=\"Small Cover.%s\" border=\"1\" width=\"120px\"></a>",
-			format, format);
+		TEMPORARY_TEXT(alt_text)
+		char *alt = Writer::alt_text_for(1);
+		if (alt) WRITE_TO(alt_text, "%s", alt);
+		if (Str::len(alt_text) == 0) WRITE_TO(alt_text, "Cover art");
+		WRITE("<a href=\"Cover.%s\"><img src=\"Small Cover.%s\" alt=\"%S\" border=\"1\" width=\"120px\"></a>",
+			format, format, alt_text);
+		DISCARD_TEXT(alt_text)
 	}
 }
 

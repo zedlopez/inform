@@ -253,29 +253,29 @@ Total memory consumption was 168128K = 164 MB
      ----  module_request                           8 objects, 320 bytes
      ----  inter_pipeline                           1 object, 312 bytes
      ----  up_family                                9 objects, 288 bytes
-     ----  explicit_bp_data                         5 objects, 280 bytes
-     ----  contents_entry                           7 objects, 280 bytes
      ----  door_to_notice                           5 objects, 280 bytes
      ----  compilation_unit                         5 objects, 280 bytes
-     ----  kit_dependency                           5 objects, 240 bytes
+     ----  explicit_bp_data                         5 objects, 280 bytes
+     ----  contents_entry                           7 objects, 280 bytes
      ----  verb_usage_tier                          5 objects, 240 bytes
+     ----  kit_dependency                           5 objects, 240 bytes
      ----  inbuild_nest                             6 objects, 240 bytes
      ----  inform_project                           1 object, 232 bytes
-     ----  local_block_value                        4 objects, 224 bytes
      ----  adjective_meaning_family                 7 objects, 224 bytes
+     ----  local_block_value                        4 objects, 224 bytes
      ----  test_scenario                            1 object, 216 bytes
-     ----  release_instructions                     1 object, 208 bytes
      ----  code_generator                           5 objects, 200 bytes
      ----  build_skill                              5 objects, 200 bytes
+     ----  release_instructions                     1 object, 200 bytes
      ----  attachment_instruction                   5 objects, 200 bytes
-     ----  index_reference                          4 objects, 192 bytes
      ----  plural_dictionary_entry                  4 objects, 192 bytes
      ----  element_activation                       6 objects, 192 bytes
      ----  additional_property                      4 objects, 192 bytes
-     ----  imperative_defn_family                   4 objects, 160 bytes
+     ----  index_reference                          4 objects, 192 bytes
      ----  inference_subject_family                 5 objects, 160 bytes
      ----  indexing_category                        2 objects, 160 bytes
      ----  inter_architecture                       4 objects, 160 bytes
+     ----  imperative_defn_family                   4 objects, 160 bytes
      ----  inform_language                          1 object, 104 bytes
      ----  compile_task_data                        1 object, 80 bytes
      ----  group_together_function                  2 objects, 80 bytes
@@ -318,5 +318,5 @@ Total memory consumption was 168128K = 164 MB
      ----  code generation workspace for objects    3616 bytes in 19 claims
      0.1%  emitter array storage                    295200 bytes in 2112 claims
 
--133.0% was overhead - -229008104 bytes = -223640K = -218 MB
+-133.0% was overhead - -229008096 bytes = -223640K = -218 MB
 

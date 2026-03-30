@@ -261,17 +261,20 @@ void Figures::write_blurb_commands(OUTPUT_STREAM) {
 	if (FEATURE_INACTIVE(figures)) return;
 	figures_data *figd;
 	LOOP_OVER(figd, figures_data)
-		if (figd->figure_number > 1) {
-			inchar32_t *desc = U"";
-			if (figd->alt_description >= 0)
-				desc = Lexer::word_text(figd->alt_description);
-			if (Wide::len(desc) > 0)
-				WRITE("picture %d \"%f\" \"%N\"\n", figd->figure_number,
-					figd->filename_of_image_file, figd->alt_description);
-			else
-				WRITE("picture %d \"%f\"\n",
-					figd->figure_number, figd->filename_of_image_file);
-		}
+		if (figd->figure_number > 1)
+			Figures::write_blurb_command_for(OUT,
+				figd->figure_number, figd->alt_description, figd->filename_of_image_file);
+}
+
+void Figures::write_cover_blurb_command(OUTPUT_STREAM, filename *F, int alt_wn) {
+	Figures::write_blurb_command_for(OUT, 1, alt_wn, F);
+}
+
+void Figures::write_blurb_command_for(OUTPUT_STREAM, int n, int alt_wn, filename *F) {
+	if ((alt_wn >= 0) && (Wide::len(Lexer::word_text(alt_wn)) > 0))
+		WRITE("picture %d \"%f\" \"%N\"\n", n, F, alt_wn);
+	else
+		WRITE("picture %d \"%f\"\n", n, F);
 }
 
 @ The following is used only with the "separate figures" release option.

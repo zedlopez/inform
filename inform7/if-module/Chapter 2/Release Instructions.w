@@ -31,7 +31,6 @@ classdef release_instructions {
 	int source_public; /* If released, will this be linked on a website? */
 	int card_public; /* If released, will this be linked on a website? */
 	struct linked_list *aux_files; /* of `auxiliary_file` */
-	int cover_picture_number; /* ID for the cover art (usually 1) */
 	char *cover_art_format; /* such as "jpg" */
 	unsigned int width; /* in pixels */
 	unsigned int height; /* in pixels */
@@ -57,7 +56,6 @@ release_instructions *ReleaseInstructions::new_set(void) {
 	set->source_public = TRUE;
 	set->card_public = FALSE;
 	set->aux_files = NEW_LINKED_LIST(auxiliary_file);
-	set->cover_picture_number = 0;
 	set->cover_art_format = NULL;
 	set->width = 0; set->height = 0;
 	for (int i=0; i<LENGTH_OF_STORY_FILE_HEADER; i++) set->existing_story_header[i] = 0;
@@ -401,7 +399,6 @@ to Treaty of Babel requirements.
 
 =
 int ReleaseInstructions::check_cover_art(release_instructions *rel) {
-	rel->cover_picture_number = (rel->release_cover)?1:0;
 	if (rel->release_cover) {
 		current_sentence = rel->cover_filename_sentence;
 		rel->cover_art_format = "";

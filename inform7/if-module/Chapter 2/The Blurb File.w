@@ -103,12 +103,12 @@ released along with the work.
 		else
 			large = Task::large_cover_art_file(FALSE);
 		WRITE("cover \"%f\"\n", large);
-		WRITE("picture %d \"%f\"\n", rel->cover_picture_number, large);
+		Figures::write_cover_blurb_command(OUT, large, rel->cover_alt_text);
 	} else {
 		WRITE("cover \"%f\"\n",
 			InstalledFiles::filename(LARGE_DEFAULT_COVER_ART_IRES));
-		WRITE("picture %d \"%f\"\n", 1,
-			InstalledFiles::filename(LARGE_DEFAULT_COVER_ART_IRES));
+		Figures::write_cover_blurb_command(OUT,
+			InstalledFiles::filename(LARGE_DEFAULT_COVER_ART_IRES), -1);
 		if (rel->release_website) {
 			WRITE("release file \"%f\"\n",
 				InstalledFiles::filename(LARGE_DEFAULT_COVER_ART_IRES));

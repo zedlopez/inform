@@ -208,7 +208,7 @@ LISP.
 		WRITE("<compiler>Inform %B (build %B)</compiler>\n", FALSE, TRUE);
 	}
 	if (rel->release_cover)
-		WRITE("<coverpicture>%d</coverpicture>\n", rel->cover_picture_number);
+		WRITE("<coverpicture>1</coverpicture>\n");
 
 @ =
 int iFiction::write_var_to_XML(OUTPUT_STREAM, nonlocal_variable *nlv) {

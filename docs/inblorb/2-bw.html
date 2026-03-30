@@ -3,15 +3,15 @@
 	<head>
 		<title>Blorb Writer</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 MathJax = {
     options: {
@@ -31,6 +31,7 @@ MathJax = {
 </script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
 
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
   var popup = document.getElementById(material_id);
@@ -38,12 +39,11 @@ function togglePopup(material_id) {
 }
 </script>
 
-<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -548,6 +548,14 @@ images or sounds.</p>
 <span class="plain-syntax">        </span><a href="2-bw.html#SP8" class="function-link"><span class="function-syntax">Writer::add_chunk_to_blorb</span></a><span class="plain-syntax">(</span><span class="string-syntax">"RDes"</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">rdes_data</span><span class="plain-syntax">, (</span><span class="type-syntax">int</span><span class="plain-syntax">) </span><span class="identifier-syntax">pos</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
+
+<span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="function-syntax">Writer::alt_text_for</span><button class="popup" onclick="togglePopup('usagePopup22')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup22">Usage of <span class="code-font"><span class="function-syntax">Writer::alt_text_for</span></span>:<br/>Links and Auxiliary Files - <a href="3-laaf.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="type-syntax">rdes_record</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rr</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">rr</span><span class="plain-syntax">, </span><span class="type-syntax">rdes_record</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">resource_id</span><span class="plain-syntax"> == </span><span class="identifier-syntax">n</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rr</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">description</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. </b>  <code>&quot;Exec&quot;</code>: the executable program, which will normally be a Z-machine or
@@ -555,7 +563,7 @@ Glulx story file. It's legal to make a blorb with no story file in, but
 Inform 7 never does this.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writer::executable_chunk</span><button class="popup" onclick="togglePopup('usagePopup22')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup22">Usage of <span class="code-font"><span class="function-syntax">Writer::executable_chunk</span></span>:<br/>Blurb Parser - <a href="1-bp.html#SP7_2">&#167;7.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writer::executable_chunk</span><button class="popup" onclick="togglePopup('usagePopup23')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup23">Usage of <span class="code-font"><span class="function-syntax">Writer::executable_chunk</span></span>:<br/>Blurb Parser - <a href="1-bp.html#SP7_2">&#167;7.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">type</span><span class="plain-syntax"> = </span><span class="string-syntax">"ZCOD"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">form</span><span class="plain-syntax"> = </span><a href="../foundation/3-fln.html#SP10" class="function-link"><span class="function-syntax">Filenames::guess_format</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">fn</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">form</span><span class="plain-syntax"> == </span><span class="constant-syntax">FORMAT_PERHAPS_GLULX</span><span class="plain-syntax">) </span><span class="identifier-syntax">type</span><span class="plain-syntax"> = </span><span class="string-syntax">"GLUL"</span><span class="plain-syntax">;</span>
@@ -572,14 +580,14 @@ being blorbed up, in the form of an iFiction record. (The format of which
 is set out in the &quot;Treaty of Babel&quot; agreement.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writer::metadata_chunk</span><button class="popup" onclick="togglePopup('usagePopup23')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup23">Usage of <span class="code-font"><span class="function-syntax">Writer::metadata_chunk</span></span>:<br/>Blurb Parser - <a href="1-bp.html#SP7_2">&#167;7.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writer::metadata_chunk</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">Writer::metadata_chunk</span></span>:<br/>Blurb Parser - <a href="1-bp.html#SP7_2">&#167;7.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-bw.html#SP8" class="function-link"><span class="function-syntax">Writer::add_chunk_to_blorb</span></a><span class="plain-syntax">(</span><span class="string-syntax">"IFmd"</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">fn</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Main construction.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writer::write_blorb_file</span><button class="popup" onclick="togglePopup('usagePopup24')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup24">Usage of <span class="code-font"><span class="function-syntax">Writer::write_blorb_file</span></span>:<br/>Main - <a href="1-mn.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">out</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Writer::write_blorb_file</span><button class="popup" onclick="togglePopup('usagePopup25')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup25">Usage of <span class="code-font"><span class="function-syntax">Writer::write_blorb_file</span></span>:<br/>Main - <a href="1-mn.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">out</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="2-bw.html#SP23" class="function-link"><span class="function-syntax">Writer::rdes_chunk</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">NUMBER_CREATED</span><span class="plain-syntax">(</span><span class="type-syntax">chunk_metadata</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 

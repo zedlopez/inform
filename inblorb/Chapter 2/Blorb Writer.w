@@ -442,6 +442,14 @@ void Writer::rdes_chunk(void) {
 	}
 }
 
+char *Writer::alt_text_for(int n) {
+	rdes_record *rr;
+	LOOP_OVER(rr, rdes_record)
+		if (rr->resource_id == n)
+			return rr->description;
+	return NULL;
+}
+
 @ `"Exec"`: the executable program, which will normally be a Z-machine or
 Glulx story file. It's legal to make a blorb with no story file in, but
 Inform 7 never does this.
