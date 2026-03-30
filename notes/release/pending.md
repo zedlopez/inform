@@ -259,6 +259,8 @@ has been renamed:
 - Fix for Jira bug [I7-2234](https://inform7.atlassian.net/browse/I7-2234)
 	"Non-heading @ sections not supported in template files"
 	(Inweb: [commit f2aaa32](https://github.com/ganelson/inweb/commit/f2aaa32479e14187679828e3e5696f5951b43b38))
+- Fix for Jira bug [I7-2230](https://inform7.atlassian.net/browse/I7-2230)
+	"When specifying an irregular verb, present participle is based on the verb identifier, not contents of irregular spec"
 - Fix for Jira bug [I7-2227](https://inform7.atlassian.net/browse/I7-2227)
 	"Backdrop placement assertions being ignored"
 	(Inweb: [commit 4943a61](https://github.com/ganelson/inweb/commit/4943a6157c18810b2de949c0bd0d79c81d136fe3))
