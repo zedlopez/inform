@@ -1,0 +1,12 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 32 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10687 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35520 words long.
+Problem__ PM_NamedTimedEvent
+  >--> You wrote 'At the time when the egg-timer clucks (this is the cluckage
+    rule)' (source text, line 6): but this rule tries to have two names at
+    once, since it has an event-like name at the front and then also a '(this
+    is...)' name at the back. That's not allowed: `(this is ...)` cannot be
+    used with timed rules.
+Inform 7 has finished.

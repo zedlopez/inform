@@ -72,6 +72,14 @@ int TimedRules::new_rule_defn_notify(imperative_defn *id, rule_family_data *rfd)
 			RFD_FEATURE_DATA(timed_rules, rfd)->event_name = EW;
 			rfd->constant_name = EW;
 		}
+		if (Wordings::nonempty(rfd->constant_name)) {
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamedTimedEvent),
+				"this rule tries to have two names at once",
+				"since it has an event-like name at the front and then also a "
+				"'(this is...)' name at the back. That's not allowed: `(this is ...)` "
+				"cannot be used with timed rules.");
+			rfd->constant_name = EMPTY_WORDING;
+		}
 	}
 	return FALSE;
 }

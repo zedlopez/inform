@@ -133,7 +133,7 @@
 %Index.Elements.A2.Carried = carried
 
 %Index.Elements.Bh.Title = Behaviour
-%Index.Elements.Bh.Heading = Kinds of action, grouped under common names|About kinds of action<KACTIONS>
+%Index.Elements.Bh.Heading = Named action patterns, grouped under common names|About named action patterns<NAPS>
 
 %Index.Elements.Bh.None = No names for kinds of action have yet been defined.
 %Index.Elements.Bh.Defined = defined as any of the following acts:

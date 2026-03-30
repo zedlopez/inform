@@ -17,6 +17,7 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	late scene changing stage
 	default action success rule
 	```
+
 - Errors occurring in I6-syntax code, either in `(- ... -)` inclusions into I7
 	source text or in kit source code, are now reported more fully, with source
 	references and links provided. (A feature request for this was filed as
@@ -54,6 +55,8 @@ has been renamed:
 	"Upon `resume the story` in a Final Question rule, `when play ends` rules are followed again before resumption"
 - Fix for Jira bug [I7-2608](https://inform7.atlassian.net/browse/I7-2608)
 	"Equations `given by x =` in Basic Inform breaks the use of x as an identifier in other contexts"
+- Fix for Jira bug [I7-2589](https://inform7.atlassian.net/browse/I7-2589)
+	"Abject failure when giving another name to an `at the time when` rule"
 - Fix for Jira bug [I7-2551](https://inform7.atlassian.net/browse/I7-2551)
 	"The parser nothing error internal rule response (C) is badly worded"
 	([commit 9175435](https://github.com/ganelson/inform/commit/9175435a7a45acd1257812871bc1068818d65573))
@@ -287,7 +290,36 @@ has been renamed:
 	"When defining a kind-of-object via table, properties are misplaced"
 	([commit 70fa464](https://github.com/ganelson/inweb/commit/70fa464c677791501bd83efda9bf63802a77e558))
 
-- Cosmetic fixes not worth linking to (I7-2570, I7-2529, I7-2502, I7-2481, I7-2480, I7-2478, I7-2473, I7-2350, I7-2348, I7-2319, I7-2316, I7-2315, I7-2311, I7-2299, I7-2293, I7-2270, I7-2268, I7-2221, I7-2214, I7-2210, I7-2120)
+## Cosmetic fixes
+
+These affect documentation, or the wording of problem messages or the Index, but
+do not really change the compiler or other tools in any way which changes how
+source text is read.
+
+> [I7-2598](https://inform7.atlassian.net/browse/I7-2598),
+> [I7-2594](https://inform7.atlassian.net/browse/I7-2594),
+> [I7-2592](https://inform7.atlassian.net/browse/I7-2592),
+> [I7-2570](https://inform7.atlassian.net/browse/I7-2570),
+> [I7-2529](https://inform7.atlassian.net/browse/I7-2529),
+> [I7-2502](https://inform7.atlassian.net/browse/I7-2502),
+> [I7-2481](https://inform7.atlassian.net/browse/I7-2481),
+> [I7-2480](https://inform7.atlassian.net/browse/I7-2480),
+> [I7-2478](https://inform7.atlassian.net/browse/I7-2478),
+> [I7-2473](https://inform7.atlassian.net/browse/I7-2473),
+> [I7-2350](https://inform7.atlassian.net/browse/I7-2350),
+> [I7-2348](https://inform7.atlassian.net/browse/I7-2348),
+> [I7-2319](https://inform7.atlassian.net/browse/I7-2319),
+> [I7-2316](https://inform7.atlassian.net/browse/I7-2316),
+> [I7-2315](https://inform7.atlassian.net/browse/I7-2315),
+> [I7-2311](https://inform7.atlassian.net/browse/I7-2311),
+> [I7-2299](https://inform7.atlassian.net/browse/I7-2299),
+> [I7-2293](https://inform7.atlassian.net/browse/I7-2293),
+> [I7-2270](https://inform7.atlassian.net/browse/I7-2270),
+> [I7-2268](https://inform7.atlassian.net/browse/I7-2268),
+> [I7-2221](https://inform7.atlassian.net/browse/I7-2221),
+> [I7-2214](https://inform7.atlassian.net/browse/I7-2214),
+> [I7-2210](https://inform7.atlassian.net/browse/I7-2210),
+> [I7-2120](https://inform7.atlassian.net/browse/I7-2120)
 
 ## Bugs fixed but not from tracked reports
 
