@@ -296,6 +296,7 @@ These affect documentation, or the wording of problem messages or the Index, but
 do not really change the compiler or other tools in any way which changes how
 source text is read.
 
+> [I7-2640](https://inform7.atlassian.net/browse/I7-2640),
 > [I7-2598](https://inform7.atlassian.net/browse/I7-2598),
 > [I7-2594](https://inform7.atlassian.net/browse/I7-2594),
 > [I7-2592](https://inform7.atlassian.net/browse/I7-2592),

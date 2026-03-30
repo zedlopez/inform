@@ -11509,9 +11509,12 @@ In other words, that cumbersome escaping needed to be done only when specifying 
 
 Similarly:
 
-	A monetary value is a kind of value. $<dollars><"."><cents> specifies a monetary value with parts dollars and cents (optional, preamble optional).
+	A monetary value is a kind of value. $<dollars>< "." ><cents> specifies a monetary value with parts dollars and cents (2 digits, optional, preamble optional).
 
-Putting the full stop in quotation marks here prevents Inform from thinking that one sentence has ended and another one has begun.
+Putting the full stop in quotation marks here prevents Inform from thinking that one sentence has ended and another one has begun; note the little spacing around this to ensure that Inform doesn't misread this. `showme $2.14` and `showme $31` then reply:
+
+	monetary value: $2.14
+	monetary value: $31
 
 We can also use the angle-bracket syntax to have two parts of a specification jammed directly next to each other, with nothing in between:
 
