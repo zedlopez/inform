@@ -327,12 +327,8 @@ the initial text "applying to one thing" would be valid as it stands.
 @<Issue PM_ActionMisapplied problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(),
 		_p_(PM_ActionMisapplied),
-		"an action cannot apply to specific kinds of object such as 'room' or 'vehicle'",
-		"and if it is going to apply to objects at all then it should talk about them "
-		"as 'things'. For example, 'Driving is an action applying to one touchable thing' "
-		"might be the way to set up an action for driving, even if it makes sense only "
-		"for a 'vehicle'. A rule like 'Check driving: if the noun is not a vehicle, ...' "
-		"would then be a good idea.");
+		"an action cannot apply to that",
+		"and should apply instead to a kind such as 'thing' or 'number'.");
 	==> { REQUIRES_ACCESS, K_thing };
 
 @<Check action kind@> =
@@ -342,12 +338,32 @@ the initial text "applying to one thing" would be valid as it stands.
 		==> { A, K_object };
 	} else if ((Kinds::Behaviour::is_subkind_of_object(K)) &&
 		 (Latticework::super(K) != K_object)) {
-		@<Issue PM_ActionMisapplied problem@>;
+		@<Issue PM_ActionAppliedToSubkind problem@>;
 	} else if (A != UNRESTRICTED_ACCESS) {
-		@<Issue PM_ActionMisapplied problem@>;
+		@<Issue PM_ActionAppliedAccessToNonThing problem@>;
 	} else {
 		==> { A, K };
 	}
+
+@<Issue PM_ActionAppliedToSubkind problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(),
+		_p_(PM_ActionAppliedToSubkind),
+		"an action cannot apply to specific kinds of 'thing' such as 'person' or 'vehicle'",
+		"and if it is going to apply to objects at all then it should talk about them "
+		"as 'things'. For example, 'Driving is an action applying to one touchable thing' "
+		"might be the way to set up an action for driving, even if it makes sense only "
+		"for a 'vehicle'. A rule like 'Check driving: if the noun is not a vehicle, ...' "
+		"would then be a good idea.");
+	==> { REQUIRES_ACCESS, K_thing };
+
+@<Issue PM_ActionAppliedAccessToNonThing problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(),
+		_p_(PM_ActionAppliedAccessToNonThing),
+		"an action cannot apply to objects which are 'visible', 'touchable' or 'carried' "
+		"unless they are 'things'",
+		"so for example, 'Exploring is an action applying to one touchable room' "
+		"is not allowed because rooms are not things.");
+	==> { REQUIRES_ACCESS, K_thing };
 
 @ For years this was not erroneous, but you now can't write, say, "X is an
 action applying to nothing, applying to nothing, requiring light and applying

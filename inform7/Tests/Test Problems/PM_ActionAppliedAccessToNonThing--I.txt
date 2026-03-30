@@ -1,0 +1,12 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 13 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10687 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35520 words long.
+Problem__ PM_ActionAppliedAccessToNonThing
+  >--> You wrote 'Decreeing is an action applying to one touchable room' (source
+    text, line 3): but an action cannot apply to objects which are 'visible',
+    'touchable' or 'carried' unless they are 'things', so for example,
+    'Exploring is an action applying to one touchable room' is not allowed
+    because rooms are not things.
+Inform 7 has finished.

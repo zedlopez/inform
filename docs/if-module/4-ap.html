@@ -448,15 +448,11 @@ inconveniently contain the word &quot;and&quot;; not only that, but note that in
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ActionMisapplied</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"an action cannot apply to specific kinds of object such as 'room' or 'vehicle'"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"and if it is going to apply to objects at all then it should talk about them "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"as 'things'. For example, 'Driving is an action applying to one touchable thing' "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"might be the way to set up an action for driving, even if it makes sense only "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"for a 'vehicle'. A rule like 'Check driving: if the noun is not a vehicle, ...' "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"would then be a good idea."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"an action cannot apply to that"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"and should apply instead to a kind such as 'thing' or 'number'."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">REQUIRES_ACCESS</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax"> };</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP10">&#167;10</a> and <a href="4-ap.html#SP10_11">&#167;10.11</a> (twice).</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP10">&#167;10</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP10_11" class="paragraph-anchor"></a><b>&#167;10.11. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check action kind</span><span class="named-paragraph-number">10.11</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -466,14 +462,40 @@ inconveniently contain the word &quot;and&quot;; not only that, but note that in
 <span class="plain-syntax">        ==&gt; { </span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_object</span><span class="plain-syntax"> };</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Kinds::Behaviour::is_subkind_of_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">         (</span><span class="identifier-syntax">Latticework::super</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) != </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-ap.html#SP10_10" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue PM_ActionMisapplied problem</span></span><span class="named-paragraph-number">10.10</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-ap.html#SP10_11_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue PM_ActionAppliedToSubkind problem</span></span><span class="named-paragraph-number">10.11.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax"> != </span><span class="identifier-syntax">UNRESTRICTED_ACCESS</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-ap.html#SP10_10" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue PM_ActionMisapplied problem</span></span><span class="named-paragraph-number">10.10</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-ap.html#SP10_11_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue PM_ActionAppliedAccessToNonThing problem</span></span><span class="named-paragraph-number">10.11.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        ==&gt; { </span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax"> };</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP10">&#167;10</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP10_11_1" class="paragraph-anchor"></a><b>&#167;10.11.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ActionAppliedToSubkind problem</span><span class="named-paragraph-number">10.11.1</span></span> =</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ActionAppliedToSubkind</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"an action cannot apply to specific kinds of 'thing' such as 'person' or 'vehicle'"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"and if it is going to apply to objects at all then it should talk about them "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"as 'things'. For example, 'Driving is an action applying to one touchable thing' "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"might be the way to set up an action for driving, even if it makes sense only "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"for a 'vehicle'. A rule like 'Check driving: if the noun is not a vehicle, ...' "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"would then be a good idea."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">REQUIRES_ACCESS</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax"> };</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP10_11">&#167;10.11</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP10_11_2" class="paragraph-anchor"></a><b>&#167;10.11.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ActionAppliedAccessToNonThing problem</span><span class="named-paragraph-number">10.11.2</span></span> =</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_ActionAppliedAccessToNonThing</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"an action cannot apply to objects which are 'visible', 'touchable' or 'carried' "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"unless they are 'things'"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"so for example, 'Exploring is an action applying to one touchable room' "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"is not allowed because rooms are not things."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">REQUIRES_ACCESS</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_thing</span><span class="plain-syntax"> };</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="4-ap.html#SP10_11">&#167;10.11</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  For years this was not erroneous, but you now can't write, say, &quot;X is an
 action applying to nothing, applying to nothing, requiring light and applying
