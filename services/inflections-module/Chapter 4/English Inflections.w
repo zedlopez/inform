@@ -565,6 +565,10 @@ each language. English needs two: the present (5) and past (6) forms.
 @d PRESENT_PARTICIPLE_FORM_TYPE 2
 @d PAST_PARTICIPLE_FORM_TYPE 3
 @d ADJOINT_INFINITIVE_FORM_TYPE 4
+
+@d ENGLISH_PRESENT_SINGULAR_FORM_TYPE 5
+@d ENGLISH_PAST_FORM_TYPE 6
+
 @d MAX_FORM_TYPES 123
 
 @ We're now ready to write the `<verb-conjugation-instructions>`. This is

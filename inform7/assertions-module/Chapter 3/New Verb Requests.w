@@ -336,8 +336,8 @@ they could never be parsed successfully.
 	overrides[PAST_PARTICIPLE_FORM_TYPE] = past_participle;
 	overrides[PRESENT_PARTICIPLE_FORM_TYPE] = participle;
 	overrides[ADJOINT_INFINITIVE_FORM_TYPE] = WordAssemblages::lit_0();
-	overrides[5] = present_singular;
-	overrides[6] = past;
+	overrides[ENGLISH_PRESENT_SINGULAR_FORM_TYPE] = present_singular;
+	overrides[ENGLISH_PAST_FORM_TYPE] = past;
 
 	verb_conjugation *nvc = Conjugation::conjugate_with_overrides(infinitive,
 		overrides, no_overrides, nl);
@@ -382,8 +382,7 @@ infinitive for that — the two are the same in most regular English verbs
 		}
 		@<Parse the part of speech in this clause@>;
 	}
-	if (WordAssemblages::nonempty(present_plural) == FALSE)
-		present_plural = infinitive;
+	if (WordAssemblages::empty(present_plural)) present_plural = infinitive;
 
 @ These two nonterminals are needed:
 
@@ -501,6 +500,7 @@ in the case of ambiguity, with lower numbers preferred. See //linguistics//.
 	if (bp == a_has_b_predicate) p = 1;
 	if (bp == R_equality) p = 2;
 	if ((nl) && (nl != DefaultLanguage::get(NULL))) p = 5;
+	vc->infinitive = infinitive;
 	vi = Verbs::new_verb(vc, FALSE);
 	vc->vc_conjugates = vi;
 	if (priority >= 1) p = priority;
