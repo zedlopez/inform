@@ -137,11 +137,11 @@ void Figures::register_figure(wording W, wording FN) {
 
 @h One significant kind.
 
-= (early code)
+@<Global multimedia variable definitions@> +=
 kind *K_figure_name = NULL;
 
 @ This is created by an Inter kit early in Inform's run; the function below
-detects that this has happened, and sets |K_figure_name| to point to it.
+detects that this has happened, and sets `K_figure_name` to point to it.
 
 =
 int Figures::figures_new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
@@ -155,14 +155,13 @@ int Figures::figures_new_base_kind_notify(kind *new_base, text_stream *name, wor
 This structure of additional data is attached to each figure instance:
 
 =
-typedef struct figures_data {
+classdef figures_data {
 	struct wording name; /* text of name */
 	struct filename *filename_of_image_file;
 	int figure_number; /* resource number of this picture inside Blorb */
 	int alt_description; /* word number of double-quoted description */
 	struct instance *as_instance;
-	CLASS_DEFINITION
-} figures_data;
+}
 
 figures_data *F_cover_art = NULL;
 
@@ -262,17 +261,20 @@ void Figures::write_blurb_commands(OUTPUT_STREAM) {
 	if (FEATURE_INACTIVE(figures)) return;
 	figures_data *figd;
 	LOOP_OVER(figd, figures_data)
-		if (figd->figure_number > 1) {
-			inchar32_t *desc = U"";
-			if (figd->alt_description >= 0)
-				desc = Lexer::word_text(figd->alt_description);
-			if (Wide::len(desc) > 0)
-				WRITE("picture %d \"%f\" \"%N\"\n", figd->figure_number,
-					figd->filename_of_image_file, figd->alt_description);
-			else
-				WRITE("picture %d \"%f\"\n",
-					figd->figure_number, figd->filename_of_image_file);
-		}
+		if (figd->figure_number > 1)
+			Figures::write_blurb_command_for(OUT,
+				figd->figure_number, figd->alt_description, figd->filename_of_image_file);
+}
+
+void Figures::write_cover_blurb_command(OUTPUT_STREAM, filename *F, int alt_wn) {
+	Figures::write_blurb_command_for(OUT, 1, alt_wn, F);
+}
+
+void Figures::write_blurb_command_for(OUTPUT_STREAM, int n, int alt_wn, filename *F) {
+	if ((alt_wn >= 0) && (Wide::len(Lexer::word_text(alt_wn)) > 0))
+		WRITE("picture %d \"%f\" \"%N\"\n", n, F, alt_wn);
+	else
+		WRITE("picture %d \"%f\"\n", n, F);
 }
 
 @ The following is used only with the "separate figures" release option.

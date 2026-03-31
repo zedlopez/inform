@@ -5,7 +5,7 @@ Translating kinds to and from textual descriptions.
 @h The K-grammar.
 This is a Preform grammar for textual descriptions of kinds. In effect it's
 a mini-language of its own, with a specification closer to traditional
-computer-science norms than Inform's free-wheeling approach -- this is not
+computer-science norms than Inform's free-wheeling approach — this is not
 an accident. It allows for awkward functional-programming needs in a way
 which vaguer natural language syntax would not.
 
@@ -15,14 +15,14 @@ are to //kind//| structures.
 @ For speed, we parse some kind names as single words, and others as common
 nouns, which is slower:
 
-@d KIND_SLOW_MC   0x00000008 /* e.g., |weight| */
+@d KIND_SLOW_MC   0x00000008 /* e.g., `weight` */
 @d KIND_FAST_MC   0x01000000 /* number, text, relation, rule, ... */
 
 @ The K-grammar actually has two modes: normal, and phrase-token-mode. Normal
 mode is aptly named: it's almost always the one we're using. Phrase token
 mode is used only when parsing definitions of phrases, like so:
 
->> To repeat with (LV - nonexisting K variable) running from (V1 - arithmetic value of kind K) to (V2 - K)
+> To repeat with (LV - nonexisting K variable) running from (V1 - arithmetic value of kind K) to (V2 - K)
 
 Here the tokens "nonexisting K variable" and so on are parsed as
 specifications, but in such a way that any kinds mentioned are parsed in
@@ -102,7 +102,7 @@ the kinds which are their current values:
 
 @ Some base kinds with one-word names have that word flagged with a direct
 pointer to the kind, for speed of parsing. Names of base kinds, such as
-|number| or |vehicle|, can be registered in two different ways (according
+`number` or `vehicle`, can be registered in two different ways (according
 to whether they come from the source text or from template files), so we then
 make two further checks:
 
@@ -319,9 +319,9 @@ be more varied.
 	
 @ The following looks at a word range and tries to find text making a kind
 construction: if it does, it adjusts the word ranges to the kind(s) being
-constructed on, and returns |TRUE|; if it fails, it returns |FALSE|. For
+constructed on, and returns `TRUE`; if it fails, it returns `FALSE`. For
 instance, given "list of marbles", it adjusts the word range to "marbles"
-and returns |TRUE|.
+and returns `TRUE`.
 
 =
 int Kinds::Textual::parse_constructor_name(kind_constructor *con, wording *KW, wording *LW) {
@@ -340,9 +340,11 @@ int Kinds::Textual::parse_constructor_name(kind_constructor *con, wording *KW, w
 }
 
 @ Note that the name text for a constructor is likely to have a form like so:
-= (text)
+
+``` None
 	relation STROKE relation of k to l STROKE relation of k
-=
+```
+
 with multiple possibilities divided by strokes; each possibility must be
 checked for.
 
@@ -504,9 +506,9 @@ nonterminal, but it's needed all the same because of Preform's optimisations.
 
 @h Textual descriptions.
 The following pretty-printer is inverse to the code which parses text and
-turns it into a |kind| structure, or very nearly so. We use common
+turns it into a `kind` structure, or very nearly so. We use common
 code to handle all of the reasons why we might want to spell out a kind
-in words -- the log, the index, problem messages, comments in code, and
+in words — the log, the index, problem messages, comments in code, and
 so on. For example:
 
 =
@@ -560,7 +562,7 @@ void Kinds::Textual::write_inner(OUTPUT_STREAM, kind *K, int plural_form, int su
 }
 
 @ Note that we do cheat in one case, in our resolve to have only a single
-written form for kinds in all contexts -- we give a low-level description of
+written form for kinds in all contexts — we give a low-level description of
 an intermediate value in the debugging log. But such a thing can't be exposed
 higher up in Inform, so it's no loss to the index, problem messages, etc.,
 to miss out on this detail.

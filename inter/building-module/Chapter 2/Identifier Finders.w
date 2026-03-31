@@ -4,7 +4,7 @@ Suppose we have an identifier name which we think refers to some symbol in an
 Inter tree. Where do we look for it?
 
 @ The answer must depend on context, so the question really has to be "with
-the conventions given by this |identifier_finder|, what |inter_symbol|
+the conventions given by this `identifier_finder`, what `inter_symbol`
 does this name correspond to?".
 
 @d MAX_IDENTIFIER_PRIORITIES 3
@@ -64,7 +64,7 @@ inter_symbol *IdentifierFinders::find(inter_tree *I, text_stream *name,
 }
 
 @ If the name begins with this magic character, we interpret it as an absolute
-URL within the tree -- the conventions are then unimportant: either the symbol
+URL within the tree — the conventions are then unimportant: either the symbol
 exists where we said it is, or nothing is found. And in that case we will
 halt with an internal error: so this must be done speculatively.
 

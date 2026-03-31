@@ -2,10 +2,10 @@
 
 A nascent system for managing conversation.
 
-@ This feature, |dialogue|, is technically not part of |if|, but it clearly
+@ This feature, `dialogue`, is technically not part of `if`, but it clearly
 belongs in this module.
 
-Note that a child feature called |performance styles| -- see //Performance Styles// --
+Note that a child feature called `performance styles` — see //Performance Styles// —
 handles that kind, so it won't be dealt with in the code for this feature.
 
 =
@@ -23,7 +23,7 @@ void Dialogue::start(void) {
 @ These two kinds are both created by a Neptune file belonging to //DialogueKit//,
 and are recognised by their Inter identifiers:
 
-= (early code)
+@<Global IF variable definitions@> +=
 kind *K_dialogue_beat = NULL;
 kind *K_dialogue_line = NULL;
 kind *K_dialogue_choice = NULL;
@@ -44,7 +44,7 @@ int Dialogue::new_base_kind_notify(kind *new_base, text_stream *name, wording W)
 
 @ The following need some compiler support:
 
-= (early code)
+@<Global IF variable definitions@> +=
 property *P_elaborated = NULL;
 property *P_performed = NULL;
 
@@ -133,11 +133,11 @@ int Dialogue::compare_CONSTANT(parse_node *spec1, parse_node *spec2, int *rv) {
 
 @ The following syntax tree annotations are used for the constant rvalues:
 
-@e constant_dialogue_beat_ANNOT /* |dialogue_beat|: for constant values */
-@e constant_dialogue_line_ANNOT /* |dialogue_line|: for constant values */
-@e constant_dialogue_choice_ANNOT /* |dialogue_choice|: for constant values */
+@e constant_dialogue_beat_ANNOT /* `dialogue_beat`: for constant values */
+@e constant_dialogue_line_ANNOT /* `dialogue_line`: for constant values */
+@e constant_dialogue_choice_ANNOT /* `dialogue_choice`: for constant values */
 
-= (early code)
+@<Predeclarations of IF node annotation functions@> +=
 DECLARE_ANNOTATION_FUNCTIONS(constant_dialogue_beat, dialogue_beat)
 DECLARE_ANNOTATION_FUNCTIONS(constant_dialogue_line, dialogue_line)
 DECLARE_ANNOTATION_FUNCTIONS(constant_dialogue_choice, dialogue_choice)

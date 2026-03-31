@@ -7,7 +7,7 @@ _equation packages.
 Sometimes a kind has to be stored as an I6 integer value at run-time. I6 is
 typeless, so some of the routines and data structures in the I6 template need
 these integer values to tell them what they are looking at. For instance, the
-|ActionData| table records the kinds of the noun and second noun to which an
+`ActionData` table records the kinds of the noun and second noun to which an
 action applies.
 
 We have two forms of description: strong and weak. Strong IDs really do
@@ -16,12 +16,13 @@ uniquely identify kinds, and thus distinguish "list of lists of texts" from
 
 Dogma. If a value $v$ has kind $K$, and we want to use it as a value
 of kind $W$, then
-(a) if $K$ and $W$ have different weak IDs then this is impossible;
-(b) if they have equal weak IDs then run-time code can tell from $v$ alone
+
+- if $K$ and $W$ have different weak IDs then this is impossible;
+- if they have equal weak IDs then run-time code can tell from $v$ alone
 whether this is possible.
 
 For instance, all objects have the same weak ID, but we can distinguish kinds
-like "vehicle" by a test like |(v ofclass K27_vehicle)|; all lists have the
+like "vehicle" by a test like `(v ofclass K27_vehicle)`; all lists have the
 same weak ID, but the block of data for a list on the heap contains the strong
 ID for the kind of list entries, so we can always find out dynamically what
 sort of list it is.
@@ -70,7 +71,7 @@ void RTKindIDs::emit_weak_ID_as_val(kind *K) {
 	EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K));
 }
 
-@ The strong ID is a faithful representation of the |kind| structure,
+@ The strong ID is a faithful representation of the `kind` structure,
 so we don't need access to its value for comparison purposes; we just need
 to be able to compile it.
 
@@ -81,28 +82,30 @@ Ritchie and Johnson in chapter 6.3 of the Dragon book (Aho, Sethi and Ullman,
 underlying data and upper bits record constructors applied to this.
 
 But instead we exploit the fact that integers and addresses are interchangeable
-in I6. If a strong ID value |t| is in the range $1\leq t<H$, where $H$ is the
-constant |BASE_KIND_HWM|, then it's an ID number in its own right. If not, it's
-a pointer to a small array in memory: |t-->0| is the weak ID; |t-->1| is the
+in I6. If a strong ID value `t` is in the range $1\leq t<H$, where $H$ is the
+constant `BASE_KIND_HWM`, then it's an ID number in its own right. If not, it's
+a pointer to a small array in memory: `t-->0` is the weak ID; `t-->1` is the
 arity of the construction, which must be greater than 0 since otherwise we
-wouldn't need the pointer; and |t-->2| and subsequent represent strong IDs
+wouldn't need the pointer; and `t-->2` and subsequent represent strong IDs
 for the kinds constructed on. A simplification is that tuples are converted
 out of their binary-tree structure into a flat list, which means that the
 arity can be arbitrarily large and is not always 1 or 2.
 
 For example, for a base kind like "number", the strong ID is the same as
-the weak ID; both in this case will be equal to the compiled I6 constant |NUMBER_TY|.
+the weak ID; both in this case will be equal to the compiled I6 constant `NUMBER_TY`.
 But for a construction like "list of texts", the strong ID is a pointer to
-the array |LIST_OF_TY 1 TEXT_TY|.
+the array `LIST_OF_TY 1 TEXT_TY`.
 
 @ Strong IDs are a superset of weak IDs for base kinds like "number", but not
 for constructions like "list of numbers", where the strong and weak IDs are
 different values at run-time. The following general code is sufficient to turn a
 strong ID into a weak one:
-= (text as Inform 6)
+
+``` Inform6
 	if ((strong >= 0) && (strong < BASE_KIND_HWM)) weak = strong;
 	else weak = strong-->0;
-=
+```
+
 We must be careful with comparisons because a strong ID may be numerically
 negative if it's a pointer into the upper half of virtual machine memory.
 
@@ -111,7 +114,7 @@ value at run-time, we need to store small data structures describing them,
 and the following keeps track of which ones we need to make:
 
 =
-typedef struct runtime_kind_structure {
+classdef runtime_kind_structure {
 	struct kind *kind_described;
 	struct parse_node *default_requested_here;
 	int make_default;
@@ -119,8 +122,7 @@ typedef struct runtime_kind_structure {
 	struct inter_name *rks_iname;
 	int default_created;
 	struct inter_name *rks_dv_iname;
-	CLASS_DEFINITION
-} runtime_kind_structure;
+}
 
 @ In order to make sure each distinct kind has a unique strong ID, we must
 ensure that we always point to the same array every time the same construction
@@ -154,14 +156,14 @@ void RTKindIDs::define_constant_as_strong_id(inter_name *iname, kind *K) {
 	Emit::iname_constant(iname, K_value, RTKindIDs::weak_iname(K));
 }
 
-@ Thus the following routine must return |NULL| if $K$ is a kind whose weak
-ID is the same as its strong ID -- if it's a base kind, in other words --
-and otherwise return a pointer to a unique |runtime_kind_structure| for $K$.
+@ Thus the following routine must return `NULL` if $K$ is a kind whose weak
+ID is the same as its strong ID — if it's a base kind, in other words —
+and otherwise return a pointer to a unique `runtime_kind_structure` for $K$.
 
-Note that a |CON_TUPLE_ENTRY| node is recursed downwards through, to ensure
-that its leaves are passed through |RTKindIDs::get_rks|, but no RKS structure is made
-for it -- this is because none is needed, since we're going to roll up
-tuple subtrees into flat arrays. Recall that |CON_TUPLE_ENTRY| nodes are
+Note that a `CON_TUPLE_ENTRY` node is recursed downwards through, to ensure
+that its leaves are passed through `RTKindIDs::get_rks`, but no RKS structure is made
+for it — this is because none is needed, since we're going to roll up
+tuple subtrees into flat arrays. Recall that `CON_TUPLE_ENTRY` nodes are
 "punctuation", not base kinds in their own right. We can never see them
 here except as a result of recursion.
 
@@ -195,7 +197,7 @@ runtime_kind_structure *RTKindIDs::get_rks(kind *K) {
 @ The following implies a quadratic running time in the number of distinct
 constructed kinds of value seen across the source text, which may become a
 performance problem later on. But at present this number is surprisingly
-small -- often less than 10. On the principle that premature optimisation
+small — often less than 10. On the principle that premature optimisation
 is the root of all evil, I'm leaving it quadratic.
 
 @<Find or make a runtime kind structure for the kind@> =
@@ -204,7 +206,7 @@ is the root of all evil, I'm leaving it quadratic.
 			break;
 	if (rks == NULL) @<Create a new runtime kind ID structure@>;
 
-@ The following aims to provide helpful identifiers such as |KD7_list_of_texts|.
+@ The following aims to provide helpful identifiers such as `KD7_list_of_texts`.
 Sometime it succeeds. At all events it must provide unique ones which will
 compile under Inform 6.
 
@@ -243,10 +245,10 @@ inter_name *RTKindIDs::default_value_from_rks(runtime_kind_structure *rks) {
 of value and compiled pointers to arrays representing them. But we haven't
 compiled the arrays themselves; so we do that now.
 
-Because these are recursive structures -- the array for a strong ID often
-contains references to other strong ID arrays -- it may look as if there's
+Because these are recursive structures — the array for a strong ID often
+contains references to other strong ID arrays — it may look as if there's
 a risk of further RKS structures being generated, which might make the loop
-behave oddly. But this doesn't happen because |RTKindIDs::get_rks| has already
+behave oddly. But this doesn't happen because `RTKindIDs::get_rks` has already
 recursively scanned through for us, so that if we have seen a construction
 $K$, we have also seen its bases.
 
@@ -330,21 +332,21 @@ void RTKindIDs::compile_structures(void) {
 @h Introspection.
 Our runtime code is only capable of very limited introspection: given a
 value known to be some kind of object, it can test what kind that is. This
-is done with Inter's |OFCLASS_BIP| primitive, and note that this refers to
-the kind the way that Inter does -- i.e., by means of the symbol used as
+is done with Inter's `OFCLASS_BIP` primitive, and note that this refers to
+the kind the way that Inter does — i.e., by means of the symbol used as
 an identifier in the declaration of that kind.
 
-Testing |X ofclass ID|, where |ID| is either the strong or the weak ID, does
+Testing `X ofclass ID`, where `ID` is either the strong or the weak ID, does
 not work, and in fact there is in general no way to take a value at runtime
 and produce its strong or weak ID. In other words, this works only for
 objects. But it is also only needed for objects.
 
-This function, then, would have |subj| equal to the subject for the kind
+This function, then, would have `subj` equal to the subject for the kind
 "container" in order to test the condition ${\it container}(x)$. It returns
-|TRUE| if code was required to perform that test, |FALSE| if the test was
-already true and required no code. That will in fact happen if |subj| is
+`TRUE` if code was required to perform that test, `FALSE` if the test was
+already true and required no code. That will in fact happen if `subj` is
 not a kind of object, because then the typechecker will have proved already
-that the value $x$ has this kind -- in other words, the checking will have
+that the value $x$ has this kind — in other words, the checking will have
 been done at compile time.
 
 =

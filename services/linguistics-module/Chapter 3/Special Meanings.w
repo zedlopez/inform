@@ -3,8 +3,8 @@
 To abstract non-standard, perhaps non-SVO, meanings of a verb.
 
 @h Special meaning functions.
-Regular meanings of verbs are represented by |VERB_MEANING_LINGUISTICS_TYPE|
-pointers -- see //Verb Meanings//. In Inform, those are binary predicates.
+Regular meanings of verbs are represented by `VERB_MEANING_LINGUISTICS_TYPE`
+pointers — see //Verb Meanings//. In Inform, those are binary predicates.
 They always take two terms.
 
 However, Inform sometimes wants sentences which are written in non-standard
@@ -12,7 +12,7 @@ ways, with anything from one to three terms, and which don't correspond to
 any of the relations. (For example, "Include Locksmith by Emily Short".)
 
 These are represented by functions to perform the necessary business; the
-type |special_meaning_fn| gives the type of such a function.
+type `special_meaning_fn` gives the type of such a function.
 
 =
 typedef int (*special_meaning_fn)(int, parse_node *, wording *);
@@ -21,10 +21,10 @@ typedef int (*special_meaning_fn)(int, parse_node *, wording *);
 non-empty SPs and OPs as unparsed noun phrases and accepts them.
 
 The first parameter is the task to be performed on the verb node pointed
-to by the second. The task number must belong to the |*_SMFT| enumeration,
-and the only task used by the Linguistics module is |ACCEPT_SMFT|. This should
+to by the second. The task number must belong to the `*_SMFT` enumeration,
+and the only task used by the Linguistics module is `ACCEPT_SMFT`. This should
 look at the array of wordings and either accept this as a valid usage, build
-a subtree from the verb node, and return |TRUE|, or else return |FALSE| to
+a subtree from the verb node, and return `TRUE`, or else return `FALSE` to
 say that the usage is invalid: see Verb Phrases for more.
 
 The user is then free to define further SMF tasks, and Inform does so.
@@ -55,12 +55,11 @@ Although a SM is basically encapsulated by a function, it's convenient to
 have some metadata with it too:
 
 @ =
-typedef struct special_meaning_holder {
+classdef special_meaning_holder {
 	int (*sm_func)(int, parse_node *, wording *); /* (compiler doesn't like typedef here) */
 	struct text_stream *sm_name;
 	int metadata_N;
-	CLASS_DEFINITION
-} special_meaning_holder;
+}
 
 @ =
 special_meaning_holder *SpecialMeanings::declare(special_meaning_fn func,

@@ -4,22 +4,23 @@ Cinders are constants in deferred propositions referring to values in the
 original stack frame.
 
 @ The issues giving rise to cinders are explained in //Deciding to Defer//.
-When a proposition contains a constant -- in the predicate calculus sense;
-it may well be a variable or even a function call in Inform -- and this
+When a proposition contains a constant — in the predicate calculus sense;
+it may well be a variable or even a function call in Inform — and this
 cannot be accessed from the stack frame of the proposition's deferral
 function, the constant is a "cinder".[1]
 
-Clearly genuine constants -- literal numbers, names of rules, and so on -- and
+Clearly genuine constants — literal numbers, names of rules, and so on — and
 global variables need not be cindered: those are the same in any stack frame
 and can be evaluated without side-effects. We cinder everything else, which
 seems only prudent. For example:
-(a) phrases to decide values, cindered because they might be slow or have
+
+- phrases to decide values, cindered because they might be slow or have
 side-effects to evaluate;
-(b) shared non-local variables, such as variables attached to actions or
+- shared non-local variables, such as variables attached to actions or
 activities, cindered because they are only allowed in certain routines, and
 the eventual deferred proposition routine might not qualify;
-(c) local variables, cindered since they won't exist in the deferred routine;
-(d) list and table entries, cindered since they are relatively slow to look up.
+- local variables, cindered since they won't exist in the deferred routine;
+- list and table entries, cindered since they are relatively slow to look up.
 
 [1] Originally a contraction of "constant in deferred routine".
 
@@ -32,14 +33,14 @@ int Cinders::needs_to_be_cindered(parse_node *spec) {
 
 @ At any given moment, we can only be working on the compilation of a single
 deferred proposition function, so we store its identity in the following
-rather than waste space giving each |pcalc_term| a pointer to it:
+rather than waste space giving each `pcalc_term` a pointer to it:
 
 =
 pcalc_prop_deferral *current_pdef = NULL; /* used only in this section */
 
 @ Within any given proposition, the cinders are numbered 0, 1, 2, ...; these
-numbers are recorded in the |cinder| field of the relevant |pcalc_term| structure.
-A term with |cinder| set to $-1$ is not a cinder.
+numbers are recorded in the `cinder` field of the relevant `pcalc_term` structure.
+A term with `cinder` set to -1 is not a cinder.
 
 Here we count the cinders in a proposition, but compile nothing and change nothing:
 
@@ -61,7 +62,7 @@ int Cinders::count_in_term(pcalc_term *pt, int N) {
 	return N;
 }
 
-@ This more ambitious function sets the |cinder| field for each term, and also
+@ This more ambitious function sets the `cinder` field for each term, and also
 sets the kinds of the cinder values in the deferred function.
 
 =
@@ -130,7 +131,7 @@ int Cinders::cind_declare_in_term(int N, pcalc_term *pt) {
 	return N;
 }
 
-@ Given, say, |v == 2|, we return the local variable |const_2| holding cindered
+@ Given, say, `v == 2`, we return the local variable `const_2` holding cindered
 value 2. Speed is not critical here.
 
 =

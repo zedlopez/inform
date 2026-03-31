@@ -22,8 +22,8 @@ of the action being tested. The individual conditions in this tuple are called
 the "clauses" of the AP, for want of a better word, and are the topic of the
 section //Action Pattern Clauses//.
 
-Complicating this relatively simple picture, the choice of action -- in this
-example, "putting it into" -- is not represented by a clause but by a special
+Complicating this relatively simple picture, the choice of action — in this
+example, "putting it into" — is not represented by a clause but by a special
 structure called an //action_name_list//. There are implementation reasons
 for this, but basically it is because the list tends to be a disjunction, i.e.,
 a choice of alternative actions, whereas the clauses tend to be conjunctions
@@ -38,20 +38,20 @@ parameter- rather than action-based rulebook.
 
 For example, the "reaching inside" rulebook in the Standard Rules applies to a
 single parameter object. When the author writes "Rule for reaching inside an
-open container", say, the applicability of this rule is an AP with |action_list|
-set to |NULL| but with |parameter_kind| set to |K_object|, and the tuple of
+open container", say, the applicability of this rule is an AP with `action_list`
+set to `NULL` but with `parameter_kind` set to `K_object`, and the tuple of
 clauses has just a single term: $({\it open}(c_p) \land{\it container}(c_p))$,
 where $c_p$ is the parameter variable.
 
 Such APs are called "parametric", and are actually the easiest to deal with
-by far. They have no |action_list|, no |duration|, and the tuple of clauses
+by far. They have no `action_list`, no `duration`, and the tuple of clauses
 is always just a single term. Non-parametric APs are said to be "action-based".
 
 @ All APs arise from parsing natural language text, and retain a memory
 of the text they came from; for which, see //Parse Action Patterns//.
 
 =
-typedef struct action_pattern {
+classdef action_pattern in 1000s {
 	struct wording text_of_pattern; /* text giving rise to this AP */
 
 	struct action_name_list *action_list; /* if this is action-based */
@@ -60,7 +60,7 @@ typedef struct action_pattern {
 	struct ap_clause *ap_clauses;
 
 	struct time_period *duration; /* to refer to repetitions in the past */
-} action_pattern;
+}
 
 @ =
 action_pattern *ActionPatterns::new(wording W) {
@@ -178,7 +178,7 @@ more specific than which others. For example, "taking the red fish" is more
 specific than "taking an animal" which is more specific than "taking or dropping
 a thing".
 
-This is a |strcmp|-like function for use in sorting algorithms.
+This is a `strcmp`-like function for use in sorting algorithms.
 
 =
 int ActionPatterns::compare_specificity(action_pattern *ap1, action_pattern *ap2) {

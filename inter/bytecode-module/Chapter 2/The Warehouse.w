@@ -10,14 +10,14 @@ to be (which is more than you can say for Metallica).
 Each inter tree needs to store data outside of its own //inter_tree_node// structures,
 data which falls into two categories:
 
-(*) Bytecode for instructions, each having a unique address.
-(*) Resources such as texts and symbols tables, each having a unique ID number.
+- Bytecode for instructions, each having a unique address.
+- Resources such as texts and symbols tables, each having a unique ID number.
 
 This data is held in the //inter_warehouse// connected to the tree. Each //inter_tree//
 contains a pointer to its warehouse.
 
 =
-typedef struct inter_warehouse {
+classdef inter_warehouse {
 	/* bytecode storage */
 	struct inter_warehouse_room *first_room;
 	struct inter_warehouse_room *last_room;
@@ -26,16 +26,14 @@ typedef struct inter_warehouse {
 	inter_ti next_free_resource_ID;
 	struct inter_warehouse_resource *stored_resources;
 	inter_ti resources_capacity;
-
-	CLASS_DEFINITION
-} inter_warehouse;
+}
 
 @ An implementation secret, though, is that (in the present implementation, anyway)
 there is only one warehouse. If there are multiple trees, they all share the use
 of a single warehouse, though they don't know it. This would cause thread-safety
 issues if Inter had any aspiration to be threaded, but it does not have. And this
-single-warehouse design makes it much faster to carry out "transmigration" -- the
-movement of branches of Inter from one tree to another -- since the associated
+single-warehouse design makes it much faster to carry out "transmigration" — the
+movement of branches of Inter from one tree to another — since the associated
 bytecode and resources do not need to be copied from one warehouse to another.
 
 In this description we continue to talk about "a" warehouse, regardless of the
@@ -104,7 +102,7 @@ inter_ti InterWarehouse::create_resource(inter_warehouse *warehouse) {
 	warehouse->resources_capacity = new_size;
 
 @ Every resource is tied to a package which owns it. This is only in fact used to
-determine the tree which owns it -- but we store the package, not the tree, because
+determine the tree which owns it — but we store the package, not the tree, because
 when material transmigrates from one tree to another, the owning package can then
 stay the same: it is just that //InterPackage::tree// will return a different
 tree after the movement has taken place.
@@ -117,7 +115,7 @@ The following conveniently loops through all valid resource IDs for a given tree
 			(InterPackage::tree(I->housed->stored_resources[n].resource_owner) == I))
 
 @ So what can a resource be? The following types are supported, and can be
-deduced by looking at what class is stored in the general pointer |res|; this
+deduced by looking at what class is stored in the general pointer `res`; this
 saves redundantly storing a type field in //inter_warehouse_resource//.
 
 @e TEXT_IRSRC from 1
@@ -197,7 +195,7 @@ inter_symbols_table *InterWarehouse::get_symbols_table(inter_warehouse *warehous
 	return RETRIEVE_POINTER_inter_symbols_table(gp);
 }
 
-@ Third, a resource can be a package -- or, really, a pointer to a package, a
+@ Third, a resource can be a package — or, really, a pointer to a package, a
 form of resource which allows bytecode to contain cross-references to packages.
 
 This may as well be its own owner, since it can be valid only if the package
@@ -257,33 +255,34 @@ Conceptually, a warehouse stores bytecode at (word) addresses which begin from 0
 Each instruction occupies a contiguous run of addresses. That all sounds like
 a typical machine-code arrangement, but:
 
-(a) the instructions themselves contain neither absolute addresses nor address
-offsets -- they are oblivious to where they are stored, and refer to code
+- the instructions themselves contain neither absolute addresses nor address
+offsets — they are oblivious to where they are stored, and refer to code
 positions using labels instead;
 
-(b) some storage may remain unused, and the addresses of instructions do not
+- some storage may remain unused, and the addresses of instructions do not
 correspond to their order in the code.
 
 =
-typedef struct inter_warehouse_room {
+classdef inter_warehouse_room {
 	struct inter_warehouse *owning_warehouse;
 	int room_usage;
 	int room_capacity;
 	inter_ti *bytecode;
 	struct inter_warehouse_room *next_room;
-	CLASS_DEFINITION
-} inter_warehouse_room;
+}
 
 @ The warehouse is divided into a series of rooms of steadily telescoping sizes.
 Unless an improbably large demand is made for a very long single instruction,
 they will typically look like:
-= (text)
+
+``` None
 	room 0      addresses 0x000000 to 0x000fff (4K words)
 	room 1      addresses 0x001000 to 0x002fff (8K words)
 	room 2		addresses 0x003000 to 0x006fff (16K words)
 	room 3      addresses 0x007000 to 0x00efff (32K words)
 	...
-=
+```
+
 though probably not with boundaries as neat as that, since there will be a
 few words of unused space at the end of each room.
 
@@ -291,24 +290,24 @@ In a typical //inform7// run, we reach about the 9th room, so that the address
 space amounts to around 2 million words.
 
 @ A single instruction will occupy a contiguous run of addresses, and will
-consist of a preframe (always |PREFRAME_SIZE| words) and then a frame (of
+consist of a preframe (always `PREFRAME_SIZE` words) and then a frame (of
 a variable size, though always at least 2 words). This will always lie
 inside a single room: this is why, if we ask for an instruction with a
 50000-word frame, we would force larger rooms to be created.
 
 The following represents where an instruction is stored. The address of the
-preframe will be |index| plus the sum of |room_usage| for previous rooms; the address
-of the frame will be |PREFRAME_SIZE| more than that, since the frame always
-immediately follows the preframe. |instruction| points to the first word of
-the frame, and the |extent| is the size of the frame, so the size of the whole
-instruction is |extent + PREFRAME_SIZE|.
+preframe will be `index` plus the sum of `room_usage` for previous rooms; the address
+of the frame will be `PREFRAME_SIZE` more than that, since the frame always
+immediately follows the preframe. `instruction` points to the first word of
+the frame, and the `extent` is the size of the frame, so the size of the whole
+instruction is `extent + PREFRAME_SIZE`.
 
-Note that |instruction| and |extent| are both in principle redundant in this
-structure. If you know |in_room| and |index| you know everything, because:
-= (text as InC)
+Note that `instruction` and `extent` are both in principle redundant in this
+structure. If you know `in_room` and `index` you know everything, because:
+
 	W.instruction == W.in_room->bytecode + W.index + PREFRAME_SIZE
 	W.extent == W.in_room->bytecode[W.index + PREFRAME_SKIP_AMOUNT] - PREFRAME_SIZE
-=
+
 But speed of access is so important that we store these two fields redundantly
 in order to cache the results of those two calculations.
 
@@ -321,8 +320,8 @@ typedef struct warehouse_floor_space {
 } warehouse_floor_space;
 
 @ We provide an API of just two functions to handle all this. Firstly,
-//InterWarehouse::make_floor_space// makes room for an instruction of |n| words.
-(This is the frame extent, and does not include the |PREFRAME_SIZE|.)
+//InterWarehouse::make_floor_space// makes room for an instruction of `n` words.
+(This is the frame extent, and does not include the `PREFRAME_SIZE`.)
 
 Note that this function always succeeds, because an internal error is thrown
 if the system is out of memory.
@@ -372,13 +371,13 @@ warehouse_floor_space InterWarehouse::make_floor_space(inter_warehouse *warehous
 	}
 
 @ Secondly, //InterWarehouse::enlarge_floor_space// adds extra length to an
-existing instruction -- which may involve moving its bytecode to a bigger room,
+existing instruction — which may involve moving its bytecode to a bigger room,
 in the worst case, but is more typically very fast. Note that this function
 may only be called on the floor space for the most-recently creates instruction,
 so the floor space is guaranteed to be at the end of the space used in the
 current room.
 
-|by| cannot be negative (it is unsigned). The instruction therefore always
+`by` cannot be negative (it is unsigned). The instruction therefore always
 extends, not contracts. The values of the new words added are undefined:
 they will very likely be 0 but do not rely upon this.
 

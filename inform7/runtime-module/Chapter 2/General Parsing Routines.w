@@ -5,13 +5,13 @@ used to match noun phrases in the command parser.
 
 @h Introduction.
 At runtime, the command parser handles noun phrases in two ways. Simple
-nouns for an object are handled by giving it a |name| property listing
-some dictionary words which could refer to it -- see //Name Properties//.
+nouns for an object are handled by giving it a `name` property listing
+some dictionary words which could refer to it — see //Name Properties//.
 
 More complex nouns are handled with Inter functions called "general parsing
 routines", or GPRs: the term is traditional and goes back to Inform 1 to 6.
 GPRs are used for parsing values of kinds other than objects, too; in
-particular, each notation for a literal value needs its own GPR -- see
+particular, each notation for a literal value needs its own GPR — see
 //Literal Patterns//.
 
 The GPRs compiled automatically by today's Inform follow the same conventions
@@ -21,20 +21,21 @@ because in Inform 7 all of the many GPRs in a typical story file are compiled
 automatically, so that the story's author is not really aware of them at all.
 
 To compile a GPR, Inform has to:
-(*) work out where to put it, i.e., choose an |inter_name|;
-(*) open a function body there;
-(*) use a //gpr_kit// to give it local variables as needed;
-(*) compile a "GPR head";
-(*) compile code which actually looks at the stream of command words;
-(*) compile a "GPR tail";
-(*) and close the function body.
+
+- work out where to put it, i.e., choose an `inter_name`;
+- open a function body there;
+- use a //gpr_kit// to give it local variables as needed;
+- compile a "GPR head";
+- compile code which actually looks at the stream of command words;
+- compile a "GPR tail";
+- and close the function body.
 
 The "head" and "tail" parts of a GPR come in several sorts, compiled by functions
 below, and they need to match each other.
 
 @h GPR kits.
 Since GPRs are needed for several different purposes, we provide a general
-API for compiling them, based around the idea of a "GPR kit" -- slogan, it's
+API for compiling them, based around the idea of a "GPR kit" — slogan, it's
 everything you need to compile your own GPR.
 
 This is not an elegant structure. It mainly keeps track of the many local

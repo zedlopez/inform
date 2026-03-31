@@ -32,12 +32,11 @@ void DocumentationRenderer::close_subpage(void) {
 @
 
 =
-typedef struct cd_manifest_item {
+classdef cd_manifest_item {
 	struct filename *source;
 	struct text_stream *label;
 	struct text_stream *title;
-	CLASS_DEFINITION
-} cd_manifest_item;
+}
 
 @ Our tree is turned into a tiny website, with a single index page for everything
 except the examples, and then up to 26 pages holding the content of examples A to Z.
@@ -711,7 +710,7 @@ void DocumentationRenderer::render_example(OUTPUT_STREAM, compiled_documentation
 	}
 }
 
-@ In the days of |indoc|, comments like these were used to show where inlined
+@ In the days of `indoc`, comments like these were used to show where inlined
 examples (i.e., examples rendered inside the body of sections of documentation
 rather than in their own individual HTML files) began. They're no longer
 needed because examples are no longer inlined.

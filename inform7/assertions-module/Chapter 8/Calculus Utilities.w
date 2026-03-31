@@ -119,7 +119,7 @@ pcalc_prop *Propositions::Abstract::to_put_here(void) {
 
 @h Property setting.
 Sometimes the A-parser wants to assert that a given property has the value
-whose text can be found in a node |py|...
+whose text can be found in a node `py`...
 
 =
 pcalc_prop *Propositions::Abstract::from_property_subtree(property *prn, parse_node *py) {
@@ -159,7 +159,7 @@ pcalc_prop *Propositions::Abstract::from_property_list(parse_node *p, kind *K) {
 	return prop;
 }
 
-@ Recall that a |PROPERTY_LIST_NT| node is unannotated, as yet, and we have to
+@ Recall that a `PROPERTY_LIST_NT` node is unannotated, as yet, and we have to
 parse the text to find what which property is referred to.
 
 @<Conjoin atoms to assert from a property list@> =
@@ -213,12 +213,13 @@ parse the text to find what which property is referred to.
 obvious division of punctuation between the two. What makes matters worse
 is that we do not yet know all the property names, nor do we have the
 ability to discern values. So we seek the division by
-(i) trying to find the longest known property name at the start of the
+
+- trying to find the longest known property name at the start of the
 text; if there is no known name,
-(ii) we see if the final word of the text is a literal, such as a number or
+- we see if the final word of the text is a literal, such as a number or
 a quoted text, and if so we assume this is the entire property value and
 that the rest is property name; and otherwise
-(iii) we assume the property name is one word only.
+- we assume the property name is one word only.
 
 @<Divide the property list entry into property name and value text@> =
 	wording W = Articles::remove_the(Node::get_text(p));
@@ -253,9 +254,9 @@ that the rest is property name; and otherwise
 		"right to say 'The Louis Quinze chair is an antique with age 241.'");
 	return NULL;
 
-@ An |ADJECTIVE_NT| node, on the other hand, is annotated with a valid
-property name |property| already, and may also have a value ready to put
-into that property, stored in |evaluation|. Nodes like this have been
+@ An `ADJECTIVE_NT` node, on the other hand, is annotated with a valid
+property name `property` already, and may also have a value ready to put
+into that property, stored in `evaluation`. Nodes like this have been
 created from descriptions like "open openable door in the kitchen", and
 it's important not to lose the location information ("in the kitchen"),
 which is by now inside the "creation proposition".

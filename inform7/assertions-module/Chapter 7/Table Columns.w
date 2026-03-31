@@ -8,7 +8,7 @@ them is arranged in columns, each of which is headed by a name.
 
 Data in a given column must have a definite kind, such as "number". Where
 this is unspecified in any explicit way, it is inferred by performing a
-join on the kinds of the values quoted in the column -- that is, the result
+join on the kinds of the values quoted in the column — that is, the result
 is the narrowest kind capable of holding all of the observed values.
 
 Inform has a limited ability to link tables together, as in a relational
@@ -17,19 +17,18 @@ two different tables has the same name, then it must have the same kind
 in both tables.
 
 =
-typedef struct table_column {
+classdef table_column {
 	struct noun *name; /* name of column (without "entry" suffix) */
 	struct kind *kind_stored_in_column; /* what kind of value is stored in this column */
 	struct table *table_from_which_kind_inferred; /* usually the earliest use */
 	struct binary_predicate *listed_in_predicate; /* see below */
 	struct table_column_compilation_data compilation_data;
-	CLASS_DEFINITION
-} table_column;
+}
 
 @ The predicate calculus engine often finds conditions equivalent to "if A
-is a C listed in T", and we implement this as a binary predicate -- see
+is a C listed in T", and we implement this as a binary predicate — see
 //Listed-In Relations//. There is one such relation for each column, and
-a pointer is stored in |listed_in_predicate|.
+a pointer is stored in `listed_in_predicate`.
 
 =
 binary_predicate *Tables::Columns::get_listed_in_predicate(table_column *tc) {
@@ -92,7 +91,7 @@ void Tables::Columns::translates(wording W, parse_node *p2) {
 @h Kind.
 Keeping track of the kind of the entries in a column is a little tricky.
 Columns are created early in Inform's run, before the full hierarchy of kinds
-is in place; so TC structures tend to record a |NULL| kind for a while, and
+is in place; so TC structures tend to record a `NULL` kind for a while, and
 are then corrected later. Moreover, they're sometimes revised in the light
 of evidence, if the kind has to be inferred from the table's initial entries.
 So we can't just set the kind once at creation time.
@@ -192,9 +191,9 @@ table_column_usage Tables::Columns::add_to_table(wording W, table *t) {
 
 @ The heading of a table column is the text in its entry in the first
 (titling-only) row of the table. Usually that consists only of the column's
-name, but optionally the kind can also be supplied in brackets -- Inform
+name, but optionally the kind can also be supplied in brackets — Inform
 otherwise infers the kind from the contents below. The kind will subsequently
-be parsed using |<k-kind-articled>|, but for timing reasons that happens later,
+be parsed using `<k-kind-articled>`, but for timing reasons that happens later,
 so the grammar below allows any text in the brackets. A "topic" column
 needs special handling since it also overrides kind inference, making
 what looks like text into grammar for parsing.
@@ -246,8 +245,8 @@ what looks like text into grammar for parsing.
 		"entries, but forgot to put a name before the opening bracket.)");
 	==> { NEW_TC_PROBLEM, - };
 
-@ When a column is found with a name not seen before -- say, "merit points"
--- the following grammar is used to construct a proper noun to refer to this
+@ When a column is found with a name not seen before — say, "merit points"
+— the following grammar is used to construct a proper noun to refer to this
 column; thus, "merit points column".
 
 =
@@ -345,8 +344,8 @@ void Tables::Columns::check_explicit_headings(table *t, int i, table_column_usag
 
 @ Secondly, the actual entries are checked in turn, and their kinds passed
 to the following routine. Again, "topic" columns are a complication, since
-their kind is ostensibly |K_understanding| but the actual entries must be
-|K_text|.
+their kind is ostensibly `K_understanding` but the actual entries must be
+`K_text`.
 
 =
 void Tables::Columns::note_kind(table *t, int i, table_column_usage *tcu,

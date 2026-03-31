@@ -2,10 +2,10 @@
 
 To define the predicates for membership of a kind.
 
-@ For every kind |K|, the //calculus// module provides a unary predicate |kind=K|,
+@ For every kind `K`, the //calculus// module provides a unary predicate `kind=K`,
 and these all belong to the family:
 
-= (early code)
+@<Global calculus variable definitions@> (webwide and tangled early) =
 up_family *kind_up_family = NULL;
 
 @ At startup, the //calculus// module calls:
@@ -43,7 +43,7 @@ kind *KindPredicates::get_kind(pcalc_prop *prop) {
 }
 
 @ Composited kind predicates are special in that they represent composites
-of quantifiers with common nouns -- for example, "everyone" is a composite
+of quantifiers with common nouns — for example, "everyone" is a composite
 meaning "every person".
 
 =
@@ -100,7 +100,7 @@ void KindPredicates::infer_kind(up_family *self, unary_predicate *up, kind **K) 
 	*K = up->assert_kind;
 }
 
-@ The following functions express that (i) |kind=K| predicates can always be
+@ The following functions express that (i) `kind=K` predicates can always be
 determined at compile-time, and that (ii) they are always true. This is because
 the test is performed only after a proposition has been type-checked: and if
 it passed type-checking, then the kinds must all be okay.

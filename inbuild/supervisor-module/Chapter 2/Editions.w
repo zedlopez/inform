@@ -12,12 +12,11 @@ target virtual machines, because we can imagine that, for example, version 7
 might work with all VMs, while version 8 required a 32-bit architecture.
 
 =
-typedef struct inbuild_edition {
+classdef inbuild_edition {
 	struct inbuild_work *work;
 	struct semantic_version_number version;
 	struct compatibility_specification *compatibility;
-	CLASS_DEFINITION
-} inbuild_edition;
+}
 
 inbuild_edition *Editions::new(inbuild_work *work, semantic_version_number version) {
 	inbuild_edition *edition = CREATE(inbuild_edition);
@@ -35,10 +34,10 @@ void Editions::write(OUTPUT_STREAM, inbuild_edition *E) {
 	}
 }
 
-@ When a copy is to be duplicated into a nest |N|, we need to work out where
+@ When a copy is to be duplicated into a nest `N`, we need to work out where
 to put it. For example, version 2.1 of the extension Marbles by Steve Hogarth
-would go into |N/Extensions/Steve Hogarth/Marbles-v2_1.i7x|. The following
-contributes only the un-filename-extended leafname |Marbles-v2_1|.
+would go into `N/Extensions/Steve Hogarth/Marbles-v2_1.i7x`. The following
+contributes only the un-filename-extended leafname `Marbles-v2_1`.
 
 =
 int canonical_leaves_have_versions = TRUE;
@@ -62,7 +61,7 @@ void Editions::write_canonical_leaf(OUTPUT_STREAM, inbuild_edition *E) {
 	}
 }
 
-@ The |-inspect| command of Inbuild uses the following.
+@ The `-inspect` command of Inbuild uses the following.
 
 =
 void Editions::inspect(OUTPUT_STREAM, inbuild_edition *E) {

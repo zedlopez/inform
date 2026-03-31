@@ -7,8 +7,9 @@ The following is called only on excerpts from the source where it is a
 fairly safe bet that a Unicode character is referred to. For example, when
 the player types either of these:
 
->> "[unicode 321]odz Churchyard"
->> "[unicode Latin capital letter L with stroke]odz Churchyard"
+> "[unicode 321]odz Churchyard"
+
+> "[unicode Latin capital letter L with stroke]odz Churchyard"
 
 ...then the text after the word "unicode" is parsed by <s-unicode-character>.
 
@@ -35,7 +36,7 @@ the player types either of these:
 	==> { fail nonterminal };
 }
 
-@ And here is the range check. Values above |MAX_UNICODE_CODE_POINT| are
+@ And here is the range check. Values above `MAX_UNICODE_CODE_POINT` are
 permitted, but need to be specified numerically.
 
 =
@@ -95,7 +96,7 @@ of these:
 typedef struct unicode_point {
 	int code_point; /* in the range 0 to MAX_UNICODE_CODE_POINT - 1 */
 	struct text_stream *name; /* e.g. "RIGHT-FACING ARMENIAN ETERNITY SIGN" */
-	int category; /* one of the |*_UNICODE_CAT| values above */
+	int category; /* one of the `*_UNICODE_CAT` values above */
 	int tolower; /* -1 if no mapping to lower case is available, or a code point */
 	int toupper; /* -1 if no mapping to upper case is available, or a code point */
 	int totitle; /* -1 if no mapping to title case is available, or a code point */
@@ -146,25 +147,26 @@ unicode_point *UnicodeLiterals::code_point(int U) {
 main data file. Although parsing that file is relatively fast, we do it only
 on demand, because it's not small (about 2 MB of text) and is often not needed.
 
-The |UnicodeData_lookup| dictionary really associates texts (names of characters)
-with non-negative integers (their code points), but our |dictionary| type only
-allows texts-to-pointers, so we wrap these integers up into |unicode_lookup_value|
+The `UnicodeData_lookup` dictionary really associates texts (names of characters)
+with non-negative integers (their code points), but our `dictionary` type only
+allows texts-to-pointers, so we wrap these integers up into `unicode_lookup_value`
 to which we can then have pointers.
 
 (As noted by David Kinder in May 2023, it's unsafe to use this dictionary to
-associate texts with |unicode_point *| values, because the flexible-sized array
+associate texts with `unicode_point *` values, because the flexible-sized array
 holding those means that they will move around in memory. If we are lucky, the
 memory freed when the old version of the array is surpassed will be left intact
 and then the dictionary pointers to it will all work fine: if we are not lucky,
-for example if the memory environment is stressed because |intest| is running
+for example if the memory environment is stressed because `intest` is running
 many simultaneous copies of Inform, then that space will be reused and the
 dictionary pointers will be invalid.)
 
 =
 dictionary *UnicodeData_lookup = NULL;
-typedef struct unicode_lookup_value {
+
+classdef unicode_lookup_value in 1000s {
 	int code_point;
-} unicode_lookup_value;
+}
 
 void UnicodeLiterals::ensure_data(void) {
 	if (UnicodeData_lookup == NULL) {
@@ -177,11 +179,13 @@ void UnicodeLiterals::ensure_data(void) {
 }
 
 @ The format of this file is admirably stable. Lines look like so:
-= (text)
+
+``` None
 	0067;LATIN SMALL LETTER G;Ll;0;L;;;;;N;;;0047;;0047
 	1C85;CYRILLIC SMALL LETTER THREE-LEGGED TE;Ll;0;L;;;;;N;;;0422;;0422
 	1FAA1;SEWING NEEDLE;So;0;ON;;;;;N;;;;;
-=
+```
+
 Each line corresponds to a code point. They're presented in the file in ascending
 order of these values, but we make no use of that fact. Each line contains fields
 divided by semicolons, and semicolon characters are illegal in any field.
@@ -288,10 +292,12 @@ void UnicodeLiterals::read_line(text_stream *text, text_file_position *tfp, void
 
 @ Control codes in Unicode, a residue of ASCII, are given no names by the
 standard. For example:
-= (text)
+
+``` None
 	0004;<control>;Cc;0;BN;;;;;N;END OF TRANSMISSION;;;;
-=
-Indeed, at present every code with category |Cc| has the pseudo-name |<control>|.
+```
+
+Indeed, at present every code with category `Cc` has the pseudo-name `<control>`.
 So we will mostly not allow these to be referred to by name in Inform. (In theory we
 could read the ISO-10646 comment as if it were a name: here, that would be
 "END OF TRANSMISSION", which isn't too bad. But "FORM FEED (FF)" and

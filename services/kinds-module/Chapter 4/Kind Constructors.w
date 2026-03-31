@@ -6,8 +6,8 @@ kinds.
 @ Constructors are divided into four groups:
 
 @d PUNCTUATION_GRP 1 /* used in the construction of other kinds only */
-@d PROTOCOL_GRP 2 /* such as |arithmetic value| */
-@d BASE_CONSTRUCTOR_GRP 3 /* such as |number| */
+@d PROTOCOL_GRP 2 /* such as `arithmetic value` */
+@d BASE_CONSTRUCTOR_GRP 3 /* such as `number` */
 @d PROPER_CONSTRUCTOR_GRP 4 /* with positive arity, such as "list of ..." */
 
 @ Besides all the properties of kinds used in this module, Inform also needs
@@ -21,7 +21,7 @@ So, deep breath:
 @d MAX_KIND_CONSTRUCTION_ARITY 2
 
 =
-typedef struct kind_constructor {
+classdef kind_constructor {
 	struct noun *dt_tag; /* text of name */
 	int group; /* one of the four values above */
 
@@ -31,9 +31,9 @@ typedef struct kind_constructor {
 
 	/* B: constructing kinds */
 	int constructor_arity; /* 0 for base, 1 for unary, 2 for binary */
-	int variance[MAX_KIND_CONSTRUCTION_ARITY]; /* must be |COVARIANT| or |CONTRAVARIANT| */
+	int variance[MAX_KIND_CONSTRUCTION_ARITY]; /* must be `COVARIANT` or `CONTRAVARIANT` */
 	int tupling[MAX_KIND_CONSTRUCTION_ARITY]; /* extent to which tupling is permitted */
-	struct kind *cached_kind; /* cached result of |Kinds::base_construction| */
+	struct kind *cached_kind; /* cached result of `Kinds::base_construction` */
 
 	/* C: compatibility with other kinds */
 	struct parse_node *superkind_set_at; /* where it says, e.g., "A rabbit is a kind of animal" */
@@ -44,7 +44,7 @@ typedef struct kind_constructor {
 	struct literal_pattern *ways_to_write_literals; /* list of ways to write this */
 	struct table *named_values_created_with_table; /* alternatively... */
 	int next_free_value; /* to make distinguishable instances of this kind */
-	int constant_compilation_method; /* one of the |*_CCM| values */
+	int constant_compilation_method; /* one of the `*_CCM` values */
 	int forbid_assertion_creation; /* an enumeration which cannot be explicitly created? */
 
 	/* E: knowledge about values of this kind */
@@ -99,7 +99,7 @@ typedef struct kind_constructor {
 	struct text_stream *long_block_size_function;
 	struct text_stream *serialise_function;
 	struct text_stream *unserialise_function;
-	struct linked_list *arithmetic_schemas[NO_DEFINED_OPERATION_VALUES]; /* of |arithmetic_schema| */
+	struct linked_list *arithmetic_schemas[NO_DEFINED_OPERATION_VALUES]; /* of `arithmetic_schema` */
 	int arithmetic_modulus;
 
 	/* L: indexing and documentation */
@@ -107,53 +107,51 @@ typedef struct kind_constructor {
 	struct text_stream *index_default_value; /* and its description in the Kinds index */
 	struct text_stream *index_maximum_value; /* ditto */
 	struct text_stream *index_minimum_value; /* ditto */
-	int index_priority; /* from 1 (highest) to |LOWEST_INDEX_PRIORITY| (lowest) */
+	int index_priority; /* from 1 (highest) to `LOWEST_INDEX_PRIORITY` (lowest) */
 	int linguistic; /* divide off as having linguistics content */
 	int indexed_grey_if_empty; /* shaded grey in the Kinds index */
 	struct text_stream *documentation_reference; /* documentation symbol, if any */
-
-	CLASS_DEFINITION
-} kind_constructor;
+}
 
 @ A few of the settings connect pairs of kinds together, so structures like
 the following are also needed.
 
 =
-typedef struct kind_constructor_casting_rule {
+classdef kind_constructor_casting_rule in 100s {
 	struct text_stream *cast_from_kind_unparsed; /* to the one which has the rule */
 	struct kind_constructor *cast_from_kind; /* to the one which has the rule */
 	struct kind_constructor_casting_rule *next_casting_rule;
-} kind_constructor_casting_rule;
+}
 
 @ And this is the analogous structure for recording conformance:
 
 =
-typedef struct kind_constructor_instance_rule {
+classdef kind_constructor_instance_rule in 100s {
 	struct text_stream *instance_of_this_unparsed;
 	struct kind_constructor *instance_of_this;
 	struct kind_constructor_instance_rule *next_instance_rule;
-} kind_constructor_instance_rule;
+}
 
 @ And this is the analogous structure for giving Inter schemas to compare
 data of two different kinds:
 
 =
-typedef struct kind_constructor_comparison_schema {
+classdef kind_constructor_comparison_schema in 100s {
 	struct text_stream *comparator_unparsed;
 	struct kind_constructor *comparator;
 	struct text_stream *comparison_schema;
 	struct kind_constructor_comparison_schema *next_comparison_schema;
-} kind_constructor_comparison_schema;
+}
 
 @ And this is where explicit instances are recorded:
 
 =
-typedef struct kind_constructor_instance {
+classdef kind_constructor_instance in 100s {
 	struct text_stream *natural_language_name;
 	struct text_stream *identifier;
 	int value;
 	int value_specified;
-} kind_constructor_instance;
+}
 
 @ The "tupling" of an argument is the extent to which an argument can be
 allowed to hold a variable-length list of kinds, rather than a single one.
@@ -167,41 +165,40 @@ There aren't actually many possibilities.
 
 @d NONE_CCM 1 /* constant values of this kind cannot exist */
 @d LITERAL_CCM 2 /* a numerical annotation decides the value */
-@d NAMED_CONSTANT_CCM 3 /* an |instance| annotation decides the value */
+@d NAMED_CONSTANT_CCM 3 /* an `instance` annotation decides the value */
 @d SPECIAL_CCM 4 /* special code specific to the kind of value is needed */
 
 @ We keep track of the newest-created base kind of value (which isn't a kind
 of object) here:
 
-= (early code)
+@<Global kind variables@> +=
 kind *latest_base_kind_of_value = NULL;
 
 @ Arithmetic schemas record:
 
 =
-typedef struct arithmetic_schema {
+classdef arithmetic_schema in 50s {
 	struct text_stream *operands_unparsed[2];
 	struct kind_constructor *operands[2];
 	struct text_stream *schema;
-	CLASS_DEFINITION
-} arithmetic_schema;
+}
 
 @h Creation.
-Constructors come from two sources. Built-in ones like |number| or
-|list of K| come from commands in //Neptune Files//, while source-created
+Constructors come from two sources. Built-in ones like `number` or
+`list of K` come from commands in //Neptune Files//, while source-created
 ones ("Air pressure is a kind of value") result in calls here from
-//Kinds::new_base// -- which, as the name suggests, can only make
+//Kinds::new_base// — which, as the name suggests, can only make
 base kinds, not proper constructors.
 
-Here |super| will be the super-constructor, the one which this will construct
-subkinds of. In practice this will be |NULL| when |CON_VALUE| is created, and
-then |CON_VALUE| for kinds like "number" or this one:
+Here `super` will be the super-constructor, the one which this will construct
+subkinds of. In practice this will be `NULL` when `CON_VALUE` is created, and
+then `CON_VALUE` for kinds like "number" or this one:
 
->> Weight is a kind of value.
+> Weight is a kind of value.
 
 but will be the constructor for "door" for kinds like this one:
 
->> Portal is a kind of door.
+> Portal is a kind of door.
 
 =
 kind_constructor *KindConstructors::new(kind_constructor *super,
@@ -349,7 +346,7 @@ we apply any defaults set in Neptune files.
 
 @ However, if we create our constructor as a subkind, like so:
 
->> A turtle is a kind of animal.
+> A turtle is a kind of animal.
 
 then we copy the entire "animal" constructor to initialise the "turtle" one.
 
@@ -365,7 +362,7 @@ It means that all kinds of object share the same weak ID as "object".
 	con->next_structure = N;
 	con->prev_structure = P;
 	con->cached_kind = NULL; /* otherwise the superkind's cache is used by mistake */
-	con->explicit_identifier = Str::new(); /* otherwise this will be called |OBJECT_TY| by mistake */
+	con->explicit_identifier = Str::new(); /* otherwise this will be called `OBJECT_TY` by mistake */
 
 @h The noun.
 It's a requirement that the following be called soon after the creation
@@ -537,7 +534,7 @@ int KindConstructors::is_an_enumeration(kind_constructor *con) {
 }
 
 @ All floating-point kinds use a common comparison function: the one for
-|K_real_number|.
+`K_real_number`.
 
 =
 int KindConstructors::uses_signed_comparisons(kind_constructor *kc) {
@@ -555,7 +552,7 @@ text_stream *KindConstructors::get_comparison_fn_identifier(kind_constructor *kc
 }
 
 @h Cast and instance lists.
-Each constructor has a list of other constructors (all of the |PROTOCOL_GRP|
+Each constructor has a list of other constructors (all of the `PROTOCOL_GRP`
 group) which it's an instance of: value, word value, arithmetic value, and so on.
 
 =
@@ -575,8 +572,8 @@ int KindConstructors::find_cast(kind_constructor *from, kind_constructor *to) {
 	return FALSE;
 }
 
-@ Each constructor has a list of other constructors (all of the |BASE_CONSTRUCTOR_GRP|
-group or |PROPER_CONSTRUCTOR_GRP|) which it can cast to.
+@ Each constructor has a list of other constructors (all of the `BASE_CONSTRUCTOR_GRP`
+group or `PROPER_CONSTRUCTOR_GRP`) which it can cast to.
 
 =
 int KindConstructors::find_instance(kind_constructor *from, kind_constructor *to) {
@@ -700,7 +697,7 @@ int KindConstructors::is_dimensionless(kind_constructor *kc) {
 }
 
 @h Compatibility.
-The following tests if |from| is compatible with |to|.
+The following tests if `from` is compatible with `to`.
 
 =
 int KindConstructors::compatible(kind_constructor *from, kind_constructor *to,

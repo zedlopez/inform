@@ -19,8 +19,8 @@ void CodeInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |code| instruction is laid out with just the two
-compulsory words -- see //Inter Nodes//.
+In bytecode, the frame of a `code` instruction is laid out with just the two
+compulsory words — see //Inter Nodes//.
 
 =
 inter_error_message *CodeInstruction::new(inter_bookmark *IBM, int level,

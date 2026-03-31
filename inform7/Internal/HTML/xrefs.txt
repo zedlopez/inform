@@ -58,7 +58,7 @@ PM_APWithImmiscible PM_APWithDisjunction _ WI_7_9 "7.9" "7.9. Rules applying to 
 var_noun _ WI_7_11 "7.11" "7.11. The noun and the second noun"
 PM_APWithBadWhen PM_NonActionInPresenceOf _ WI_7_13 "7.13" "7.13. In the presence of, and when"
 PM_GoingWithoutObject PM_GoingWrongKind _ WI_7_15 "7.15" "7.15. Going by, going through, going with"
-KACTIONS PM_NamedAPWithActor _ WI_7_16 "7.16" "7.16. Kinds of action"
+NAPS PM_NamedAPWithActor _ WI_7_16 "7.16" "7.16. Named action patterns"
 var_prompt _ WI_8_2 "8.2" "8.2. Changing the command prompt"
 var_sl phs_surroundings _ WI_8_3 "8.3" "8.3. Changing the status line"
 ph_changeexit ph_changenoexit _ WI_8_5 "8.5" "8.5. Change of properties with values"

@@ -188,8 +188,8 @@ parsing an adjective list and transforms the result to make it a description
 of thing, mostly because of deficiencies in English to do with words like
 "scenery" and "clothing" which can't be used as count nouns even though,
 logically, they should be. Inform implements them adjectivally, but this means
-that "scenery" -- an adjective list with one entry -- is sometimes a
-description on a par with "door" -- a common noun. In effect, "scenery"
+that "scenery" — an adjective list with one entry — is sometimes a
+description on a par with "door" — a common noun. In effect, "scenery"
 is read as if it were "scenery thing".
 
 =
@@ -199,7 +199,7 @@ is read as if it were "scenery thing".
 @ So now we test whether an excerpt is a list of adjectives; for example,
 this matches
 
->> exciting transparent green fixed in place
+> exciting transparent green fixed in place
 
 as a list of four adjectives.
 
@@ -209,8 +209,9 @@ surely doesn't belong to the grammar of nouns and their adjectives. But there
 are several problems with that analysis. Firstly, English does strange things
 with the placing of "not":
 
->> The blue door is open and not transparent.
->> A door is usually not open.
+> The blue door is open and not transparent.
+
+> A door is usually not open.
 
 Note that neither of these sentences places "not" adjacent to the verb, so
 if we're going to say it's part of the verb phrase then this has to be a
@@ -218,7 +219,7 @@ non-contiguous sequence of words able to grab material from possibly distant
 NPs. This isn't easy to go along with. Secondly, we also want to provide a
 way to write the negation of an adjective. For instance,
 
->> exciting not transparent fixed in place
+> exciting not transparent fixed in place
 
 is valid. Though in this case it would be equivalent to write "opaque" in
 place of "not transparent", some adjectives do not have named negations.
@@ -228,25 +229,25 @@ article, less controversially, but that then leads to an interesting and
 very arcane de Morgan-law-like point, affecting only a tiny number of
 assertion sentences. If we write:
 
->> a not great green dragon
+> a not great green dragon
 
 Inform considers that "not" applies only to "great"; the dragon is still
 to be green. But if we write
 
->> not a great green dragon
+> not a great green dragon
 
 then Inform requires it to be neither great nor green. It's terrible style
 to write this sort of thing as a description outside of a condition like
 the following:
 
->> if Smaug is not a great green dragon, ...
+> if Smaug is not a great green dragon, ...
 
 and conditions like this are parsed with "is not" as the verb and "great
 green dragon" as the description, with the adjective list being just "great
 green". So this awkward point about "not a..." only comes in when writing
 assertion sentences like:
 
->> A hairless chimp is not a hairy animal.
+> A hairless chimp is not a hairy animal.
 
 (This was submitted as a bug report.) In assertions, Inform has to know for
 definite what the truth is, so it can't afford to read this as saying that
@@ -368,10 +369,10 @@ Not every value known to Inform can be qualified as a noun: in fact, very few
 can be. This prevents us from writing "even 3", that is, the number 3 as
 a noun qualified by the adjective "even"; doctrinally, Inform takes the
 line that adjectives applied to values like 3 will never vary in their
-applicability -- 3 is always odd -- so that it makes no sense to test for
+applicability — 3 is always odd — so that it makes no sense to test for
 them with conditions like
 
->> if N is an even 3, ...
+> if N is an even 3, ...
 
 =
 <s-qualifiable-noun> ::=
@@ -404,24 +405,24 @@ whereas "empty rulebook" will work.
 Grammatically, a description is a sequence of the following five elements, some
 of which are optional:
 
-(a) specifier, which will be a determiner and/or an article (optional);
+- specifier, which will be a determiner and/or an article (optional);
 
-(b) qualifier, which for Inform means adjectives of the various kinds
+- qualifier, which for Inform means adjectives of the various kinds
 described above (optional);
 
-(c) qualifiable noun (sometimes optional, sometimes compulsory); and
+- qualifiable noun (sometimes optional, sometimes compulsory); and
 
-(d) subordinate clause, such as "in ..." or "which are on ..."
+- subordinate clause, such as "in ..." or "which are on ..."
 (optional).
 
 For the most part the sequence must be (a), (b), (c), (d), as in:
 
->> six of the / open / containers / in the Attic
+> six of the / open / containers / in the Attic
 
-but the composite words made up from quantifiers and kinds -- something,
-anywhere, everybody, and such -- force us to make an exception to this:
+but the composite words made up from quantifiers and kinds — something,
+anywhere, everybody, and such — force us to make an exception to this:
 
->> something / open / in the Attic
+> something / open / in the Attic
 
 which takes the sequence (a) and (c), (b), (d). We will call words like
 "something" and "everywhere" specifying nouns, since they are both

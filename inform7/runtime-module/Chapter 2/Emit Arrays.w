@@ -6,17 +6,17 @@ Here is how bytecode to create ready-initialised arrays of Inter data is emitted
 This section provides an API for the rest of the //runtime// and //imperative//
 modules to use when creating arrays of data in Inter memory. It's easy to use:
 
-(*) Call //EmitArrays::begin_word// or one of its variants.
-(*) Fill the array with its initial values.
-(*) Call //EmitArrays::end//.
+- Call //EmitArrays::begin_word// or one of its variants.
+- Fill the array with its initial values.
+- Call //EmitArrays::end//.
 
 Unlike the API for emitting functions, this one is re-enterable: that is, a
 second array can independently be started while the first is still going on,
 provided that the second is completed before the first is resumes.
 
 @h Begin.
-Call exactly one of these functions. In each case the kind |K| is only weakly
-enforced; it's fine to store arbitrary data with |K| being |NULL|.
+Call exactly one of these functions. In each case the kind `K` is only weakly
+enforced; it's fine to store arbitrary data with `K` being `NULL`.
 
 =
 packaging_state EmitArrays::begin_word(inter_name *name, kind *K) {
@@ -69,8 +69,8 @@ packaging_state EmitArrays::begin_inline(inter_name *name, kind *K) {
 
 @ Sum constants are not really arrays at all, but for difficult reasons to
 do with linking we store them as such for now. The idea is that we want a
-constant like |CONST1 + CONST2 + CONST3|, in circumstances where we don't
-know those values right now -- they may be defined in external kits of Inter
+constant like `CONST1 + CONST2 + CONST3`, in circumstances where we don't
+know those values right now — they may be defined in external kits of Inter
 code. We therefore cannot fold those into a constant value yet.
 
 Instead we store this as if it were an array of three entries, with references
@@ -140,17 +140,16 @@ means we have to store an arbitrary number of half-finished arrays in memory.
 We do this with a stack of these objects, one for each such array:
 
 =
-typedef struct nascent_array {
+classdef nascent_array {
 	struct inter_symbol *array_name_symbol;
 	struct kind *entry_kind;
 	inter_ti array_form;
 	int space_used;
 	int capacity;
 	inter_pair *entry_storage;
-	CLASS_DEFINITION
-} nascent_array;
+}
 
-lifo_stack *emission_array_stack = NULL; /* of |nascent_array| */
+lifo_stack *emission_array_stack = NULL; /* of `nascent_array` */
 
 nascent_array *EmitArrays::current(void) {
 	if (emission_array_stack)

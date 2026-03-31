@@ -17,8 +17,8 @@ void PackageTypeInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |packagetype| instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+In bytecode, the frame of a `packagetype` instruction is laid out with the
+compulsory words — see //Inter Nodes// — followed by:
 
 @d DEFN_PTYPE_IFLD (DATA_IFLD + 0)
 

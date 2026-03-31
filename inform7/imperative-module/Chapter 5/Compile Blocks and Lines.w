@@ -7,10 +7,11 @@ As this section of code opens, we are looking at the parse tree for the body
 of a rule or phrase definition. A request has been made to compile (a version of)
 this into an Inter function; the stack frame for that has been sorted out, and
 the function begun. Now we must compile the actual code to go into the function;
-the test group |:invocations| exercises all of this.
+the test group `:invocations` exercises all of this.
 
 Here is a typical example rule, taken from the Standard Rules:
-= (text as Inform 7)
+
+``` Inform7
 Report an actor waiting (this is the standard report waiting rule):
 	if the actor is the player:
 		if the action is not silent:
@@ -18,9 +19,11 @@ Report an actor waiting (this is the standard report waiting rule):
 			say "Time [pass]." (A);
 	otherwise:
 		say "[The actor] [wait]." (B).
-=
+```
+
 In the parse tree, this now looks like so:
-= (text)
+
+``` None
 IMPERATIVE_NT'report an actor waiting ( this is the standard report waiting'
 	CODE_BLOCK_NT
 		CODE_BLOCK_NT
@@ -35,13 +38,14 @@ IMPERATIVE_NT'report an actor waiting ( this is the standard report waiting'
 			CODE_BLOCK_NT'otherwise'
 				CODE_BLOCK_NT'say "[The actor] [wait]." ( b )'
 					INVOCATION_LIST_SAY_NT'"[The actor] [wait]." ( b )'
-=
-This diagram has been simplified to remove the child nodes of the |INVOCATION_LIST_NT|
-and |INVOCATION_LIST_SAY_NT| nodes; the point is to show the structure of the code
+```
+
+This diagram has been simplified to remove the child nodes of the `INVOCATION_LIST_NT`
+and `INVOCATION_LIST_SAY_NT` nodes; the point is to show the structure of the code
 blocks here.
 
 We work recursively down through these blocks. Note that the entire definition
-always hangs from a single top-level |CODE_BLOCK_NT|.
+always hangs from a single top-level `CODE_BLOCK_NT`.
 
 =
 void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node *body,
@@ -57,7 +61,7 @@ void CompileBlocksAndLines::full_definition_body(int statement_count, parse_node
 @ See //words: Nonterminals// for an explanation of what it means for a nonterminal
 such as <s-value-uncached> to be "multiplicitous": briefly, though, it causes
 <s-value-uncached> to return all possible interpretations of the text as a list
-of nodes joined by |->next_alternative|, rather than returning just the single
+of nodes joined by `->next_alternative`, rather than returning just the single
 most "likely" interpretation.
 
 =
@@ -81,12 +85,14 @@ int CompileBlocksAndLines::code_block(int statement_count, parse_node *block, in
 
 @ There's nothing special about singleton blocks except that we want to issue
 problem messages for something like this:
-= (text as Inform 7)
+
+``` Inform7
 	if the player is in the Hall of Mirrors:
 		let the court favourite be Moliere;
 	if Louis is happy:
 		...
-=
+```
+
 ...where the "let" phrase can have no meaningful effect, since "court favourite"
 is destroyed immediately after its creation. So in order to check for that, we
 keep the following state variable:
@@ -98,7 +104,7 @@ int CompileBlocksAndLines::compiling_single_line_block(void) {
 }
 
 @h Individual lines of code.
-So, then, this is called on each child node of a |CODE_BLOCK_NT| in turn:
+So, then, this is called on each child node of a `CODE_BLOCK_NT` in turn:
 
 =
 int CompileBlocksAndLines::code_line(int statement_count, parse_node *p, int as_singleton,
@@ -244,22 +250,25 @@ need bespoke handling:
 
 @ When an "if" node has two children, they are the condition to test and then
 the code block of what to execute if the condition is true:
-= (text)
+
+``` None
 		CODE_BLOCK_NT {control structure: IF}
 			INVOCATION_LIST_NT'if ...' {colon_block_command} {indent: 1}
 			CODE_BLOCK_NT
 				...
-=
+```
+
 When it has three children, the extra block is what to execute if the condition
 is false:
-= (text)
+
+``` None
 		CODE_BLOCK_NT {control structure: IF}
 			INVOCATION_LIST_NT'if ...' {colon_block_command} {indent: 1}
 			CODE_BLOCK_NT
 				...
 			CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
 				...
-=
+```
 
 @<Compile an if midriff@> =
 	if (p->down->next->next) EmitCode::inv(IFELSE_BIP);
@@ -286,16 +295,16 @@ is false:
 		EmitCode::up();
 	EmitCode::up();
 
-@ Switches, like |switch| in C, offer code to execute in different cases
+@ Switches, like `switch` in C, offer code to execute in different cases
 depending on the "switch value". How efficiently this can be done depends
 on the kind of that value.
 
 The Inter VM offers an efficient way to provide switches for single-word
-values, using |SWITCH_BIP|. But that only works if equality between two
-values |V1| and |V2| can be tested by |V1 == V2|. For word-valued kinds
-like |K_number|, that's fine, but not for kinds whose values are stored
-in allocated blocks of memory, like |K_text|: |V1| and |V2| may be
-pointers to different blocks of data, so that |V1 != V2|, even though
+values, using `SWITCH_BIP`. But that only works if equality between two
+values `V1` and `V2` can be tested by `V1 == V2`. For word-valued kinds
+like `K_number`, that's fine, but not for kinds whose values are stored
+in allocated blocks of memory, like `K_text`: `V1` and `V2` may be
+pointers to different blocks of data, so that `V1 != V2`, even though
 both blocks might hold the word "doubloon" so that the values are in fact
 equal.
 
@@ -382,7 +391,8 @@ one is the "non-pointery" case.
 	}
 
 @ Okay, so here's the code for a pointery switch. We generate something like this:
-= (text)
+
+``` None
 	sw_v = ... switch value ...
 	if (Equals(sw_v, v1)) {
 		... case for v1 ...
@@ -393,11 +403,12 @@ one is the "non-pointery" case.
 			... default case ...
 		}
 	}
-=	
-We begin by ensuring that the function has a scratch local variable called |sw_v|,
-and store the switch value in it. We need not use |CopyPV| to make an
-independent copy, since |sw_v| will be read-only: we can just copy the address of
-the data into |sw_v| with a single |STORE_BIP| instruction, which is much faster.
+```
+
+We begin by ensuring that the function has a scratch local variable called `sw_v`,
+and store the switch value in it. We need not use `CopyPV` to make an
+independent copy, since `sw_v` will be read-only: we can just copy the address of
+the data into `sw_v` with a single `STORE_BIP` instruction, which is much faster.
 
 @<Begin a pointery switch@> =
 	sw_lv = LocalVariables::add_switch_value(K_value);
@@ -408,8 +419,8 @@ the data into |sw_v| with a single |STORE_BIP| instruction, which is much faster
 		CompileValues::to_code_val_of_kind(switch_val, switch_kind);
 	EmitCode::up();
 
-@ Now we handle the switch case for what to do when |sw_v| is |case_spec|. The count
-of |downs| is how many times we have called |Produce::down|.
+@ Now we handle the switch case for what to do when `sw_v` is `case_spec`. The count
+of `downs` is how many times we have called `Produce::down`.
 
 @<Handle a pointery case@> =
 	int final_flag = FALSE;
@@ -446,8 +457,8 @@ of |downs| is how many times we have called |Produce::down|.
 	while (downs-- > 0) EmitCode::up();
 	CodeBlocks::close_code_block();
 
-@ And now the more efficient case, using Inter's |SWITCH_BIP|, |CASE_BIP| and
-|DEFAULT_BIP| instructions.
+@ And now the more efficient case, using Inter's `SWITCH_BIP`, `CASE_BIP` and
+`DEFAULT_BIP` instructions.
 
 @<Begin a non-pointery switch@> =
 	EmitCode::inv(SWITCH_BIP);
@@ -662,12 +673,14 @@ void CompileBlocksAndLines::evaluate_invocation(parse_node *p, int already_parse
 
 @h Validating sequences of say invocations.
 Test substitutions result in "say" invocations with multiple things to do:
-here are examples, increasing in difficulty --
-= (text as Inform 7)
+here are examples, increasing in difficulty —
+
+``` Inform7
 "Estates are worth at least [N]."
 "Platinum is shinier than [if a Colony is in the Supply Pile]gold[otherwise]silver."
 "The best defence is [one of]Lighthouse[or]Moat[or]having no money[at random]."
-=
+```
+
 These imply 3, 5 and 9 individual invocations, respectively. The second and
 third examples involve "say control structures", which means that those
 invocations have to connect properly with each other: thus "[if...]" can be

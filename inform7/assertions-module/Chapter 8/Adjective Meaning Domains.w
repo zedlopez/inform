@@ -8,12 +8,12 @@ an adjective meaning is the set of values to which it can validly apply. For
 example, the meaning of "odd" for numbers has the set of all numbers as its
 domain, whereas the sense here:
 
->> Mrs Elspeth Spong can be odd, eccentric or mildly dotty.
+> Mrs Elspeth Spong can be odd, eccentric or mildly dotty.
 
-has only a single instance as domain -- Mrs Spong herself.
+has only a single instance as domain — Mrs Spong herself.
 
 We represent this as an inference subject, since that can represent either an
-instance or a base kind; but note also the |domain_kind| field. At first sight
+instance or a base kind; but note also the `domain_kind` field. At first sight
 this is redundant, but in fact it isn't, since it enables us to define
 adjectives on non-base kinds such as "lists of scenes".
 
@@ -60,7 +60,7 @@ Determination on these domains then does nothing, because they are already
 pre-determined.
 
 Note that we round up the kind to "object" if it's more specialised than that
--- say, if it's "door" -- because run-time rather than compile-time disambiguation
+— say, if it's "door" — because run-time rather than compile-time disambiguation
 is used when applying adjectives to objects.
 
 =
@@ -231,8 +231,9 @@ can't be avoided.
 
 @ Finally, then, we can read what we currently believe the kind of the domain
 is with the following. Note that:
-(*) if the domain is undetermined, we return |NULL|;
-(*) if the domain is a single instance, we return the kind of that instance.
+
+- if the domain is undetermined, we return `NULL`;
+- if the domain is a single instance, we return the kind of that instance.
 
 =
 kind *AdjectiveMeaningDomains::get_kind(adjective_meaning *am) {
@@ -253,12 +254,12 @@ inference_subject *AdjectiveMeaningDomains::get_subject(adjective_meaning *am) {
 "Matching" is used to tell when a meaning can be applied to a term of a
 given kind, or inference subject. It comes in two flavours: weak and strong.
 
-(*) Weak checking only says that the kind is close enough for run-time
+- Weak checking only says that the kind is close enough for run-time
 checking to be able to do the rest. Any two base kinds are different even in
-weak checking -- "scene" and "number", for instance. On the other hand,
+weak checking — "scene" and "number", for instance. On the other hand,
 "list of scenes" weakly matches "list of numbers", and because domain kinds
 inside "object" are treated as just "object", "container" weakly matches "animal".
-(*) Strong checking imposes the further requirement that if the term is a
+- Strong checking imposes the further requirement that if the term is a
 specific instance, then it must definitely lie within the domain.
 
 =
@@ -282,11 +283,12 @@ int AdjectiveMeaningDomains::strong_match(kind *K1, inference_subject *infs,
 }
 
 @ The following sorting function is used in the process of sorting the meanings
-of an adjective into precedence order -- see //AdjectiveAmbiguity::sort//.
+of an adjective into precedence order — see //AdjectiveAmbiguity::sort//.
 It takes two domains $D_1$ and $D_2$, and returns
-(*) 1 if $D_1$ is inside $D_2$,
-(*) -1 if $D_2$ is inside $D_1$,
-(*) 0 otherwise, i.e., if they are the same or have no overlap.[1]
+
+- 1 if $D_1$ is inside $D_2$,
+- -1 if $D_2$ is inside $D_1$,
+- 0 otherwise, i.e., if they are the same or have no overlap.[1]
 
 [1] More interesting Venn diagrams are not possible because of the way
 domains are set up.

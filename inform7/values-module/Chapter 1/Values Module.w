@@ -8,7 +8,7 @@ which use this module:
 
 @d VALUES_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e LITERAL_NOTATIONS_DA
 @e OBJECT_CREATIONS_DA
@@ -25,6 +25,10 @@ COMPILE_WRITER(instance *, Instances::log)
 COMPILE_WRITER(equation *, Equations::log)
 COMPILE_WRITER(nonlocal_variable *, NonlocalVariables::log)
 
+@<Global values variable definitions@> (webwide and tangled early) =
+	/* these are scattered throughout the module */
+
+@ =
 void ValuesModule::start(void) {
 	Tables::Relations::start();
 	Writers::register_writer('I', &Instances::writer);

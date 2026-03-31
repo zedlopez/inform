@@ -20,8 +20,8 @@ void InstanceInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |instance| instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+In bytecode, the frame of an `instance` instruction is laid out with the
+compulsory words — see //Inter Nodes// — followed by:
 
 @d DEFN_INST_IFLD      (DATA_IFLD + 0)
 @d TYPE_INST_IFLD      (DATA_IFLD + 1)

@@ -6,8 +6,8 @@ comparisons.
 @ The inequality relations $<$, $>$, $\leq$, and $\geq$, which can be
 applied not only to numbers but also to units (height, length and so on).
 
-It might seem redundant to define both |R_numerically_greater_than| (which makes the
-numerical test $a>b$) and also |R_numerically_less_than| (which tests $a<b$). Why
+It might seem redundant to define both `R_numerically_greater_than` (which makes the
+numerical test $a>b$) and also `R_numerically_less_than` (which tests $a<b$). Why
 not define only one, and get the other meaning free as its reversal? The
 answer is that is more convenient not to, because it allows us to give both
 of them names.
@@ -15,7 +15,7 @@ of them names.
 There is no numerical equality relation $=$ as such: numbers use the same
 equality BP as everything else.
 
-= (early code)
+@<Global assertions variable definitions@> +=
 binary_predicate *R_numerically_greater_than = NULL;
 binary_predicate *R_numerically_less_than = NULL;
 binary_predicate *R_numerically_greater_than_or_equal_to = NULL;

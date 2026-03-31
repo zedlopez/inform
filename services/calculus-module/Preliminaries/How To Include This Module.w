@@ -13,13 +13,12 @@ other modules except for //foundation// and other "services" modules.
 We'll use the term "parent" to mean the tool which is importing //calculus//,
 that is, which will include its code and be able to use it. As with any
 imported module,
-(*) The contents page of the parent's web must identify and locate the
-module:
-= (text as Inweb)
-Import: somepath/calculus
-=
-(*) The parent must call |CalculusModule::start()| just after it starts up, and
-|CalculusModule::end()| just before it shuts down. (But just after, and just
+
+- The contents page of the parent's web must identify and locate the
+module: `Import: somepath/calculus`
+
+- The parent must call `CalculusModule::start()` just after it starts up, and
+`CalculusModule::end()` just before it shuts down. (But just after, and just
 before, the corresponding calls to //foundation//.)
 
 @h Using callbacks.
@@ -33,36 +32,38 @@ ask for data or action.
 The parent must indicate which function to use by defining a constant with
 a specific name as being equal to that function's name. A fictional example
 would be
-= (text as Inweb)
+
+``` None
 	@d EXPRESS_SURPRISE_CALCULUS_CALLBACK Emotions::zowie
 	
 	=
 	void Emotions::zowie(text_stream *OUT) {
 	    WRITE("Zowie!\n");
 	}
-=
+```
+
 The calculus module has only a few callbacks and all are optional. The
 following alphabetical list has references to fuller explanations:
 
-(*) |BINARY_PREDICATE_CREATED_CALCULUS_CALLBACK|, if provided, is called whenever
+- `BINARY_PREDICATE_CREATED_CALCULUS_CALLBACK`, if provided, is called whenever
 a binary predicate is created. (The Inform compiler uses this opportunity to
 register its textual name, if it has one.) See //BinaryPredicates::make_pair//.
 
-(*) |DETECT_NOTHING_CALCULUS_CALLBACK|. The Inform run-time has a constant called
-|nothing| which acts as a default value for objects, indicating an absence of
+- `DETECT_NOTHING_CALCULUS_CALLBACK`. The Inform run-time has a constant called
+`nothing` which acts as a default value for objects, indicating an absence of
 any object. The existence of this enables some propositions to be simplified.
-If provided, the function should test whether the supplied constant is |nothing|.
+If provided, the function should test whether the supplied constant is `nothing`.
 See //Simplifications::nothing_constant// and //Binding::substitute_nothing_in_term//.
 
-(*) |PROBLEM_CALCULUS_CALLBACK| is called when a proposition is mis-constructed,
+- `PROBLEM_CALCULUS_CALLBACK` is called when a proposition is mis-constructed,
 and can prevent the resulting warning from being issued to the terminal as an
 error message: see //TypecheckPropositions::problem//.
 
-(*) |PRODUCE_NOTHING_VALUE_CALCULUS_CALLBACK| can provide the |nothing| constant;
+- `PRODUCE_NOTHING_VALUE_CALCULUS_CALLBACK` can provide the `nothing` constant;
 see above, and see //Simplifications::not_related_to_something//.
 
 @ In addition, the following value can optionally be defined:
 
-(*) |VERB_MEANING_UNIVERSAL_CALCULUS_RELATION| should be the universal relation,
+- `VERB_MEANING_UNIVERSAL_CALCULUS_RELATION` should be the universal relation,
 that is, the binary predicate which defines "relates". This requires specialist
 type-checking: see //TypecheckPropositions::type_check_binary_predicate//.

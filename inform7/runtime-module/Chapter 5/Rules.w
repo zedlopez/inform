@@ -4,17 +4,17 @@ To compile the rules submodule for a compilation unit, which contains
 _rule packages.
 
 @h Compilation data.
-Each |rule| object contains this data.
+Each `rule` object contains this data.
 
 Everything here would be straightforward if all rules were declared with
-imperative code, as of course most of them are. In that case, |local_iname|
+imperative code, as of course most of them are. In that case, `local_iname`
 is the function to apply the rule, and the other inames here are all null.
 
 The difficulty arises when a rule is defined by an Inter function in some
 kit. That function wasn't compiled by us, and we need to mock something up
 to make it behave just as a regular rule would: in particular it needs to
 be able to print response texts, and to have applicability constraints.
-In these cases, |foreign_iname| is set and |local_iname| is null.
+In these cases, `foreign_iname` is set and `local_iname` is null.
 
 =
 typedef struct rule_compilation_data {
@@ -99,18 +99,20 @@ inter_name *RTRules::foreign_iname(rule *R) {
 @ If the author wants to place applicability constraints on a rule defined in
 a kit, like so:
 
->> The carrying requirements rule does nothing when eating the lollipop.
+> The carrying requirements rule does nothing when eating the lollipop.
 
 then how do we accommodate that? We cannot change the foreign function, so
 instead we route execution through a "shell function" to test those
 constraints. In pseudocode:
-= (text)
+
+``` None
 SHELL() {
 	if (not (eating the lollipop)) {
 		RULE();
 	}
 }
-=
+```
+
 The following provides an iname for that shell, constructed only if needed.
 
 =
@@ -125,7 +127,8 @@ inter_name *RTRules::shell_iname(rule *R) {
 @ Note that the response handler function must be made available to the linker,
 because the idea is that the kit function will use it. For example, the code
 in the kit might read like so:
-= (text as Inform 6)
+
+``` Inform6
 [ MY_FOREIGN_R;
 	...
 	MY_FOREIGN_RM('A');
@@ -133,8 +136,9 @@ in the kit might read like so:
 	MY_FOREIGN_RM('B');
 	...
 ];
-=
-This code is making calls to a function |MY_FOREIGN_RM| which does not exist
+```
+
+This code is making calls to a function `MY_FOREIGN_RM` which does not exist
 in the kit; it's the handler function, which we will define here. But in order
 for the references in the kit to match up correctly, we must therefore make
 the handler available.
@@ -195,7 +199,7 @@ rule *RTRules::rule_currently_being_compiled(void) {
 }
 
 @ This compiles (almost) everything needed for a single rule: the exception being
-response handlers for foreign rules -- see //Responses::via_Inter_compilation_agent//.
+response handlers for foreign rules — see //Responses::via_Inter_compilation_agent//.
 
 =
 void RTRules::compilation_agent(compilation_subtask *t) {
@@ -319,7 +323,7 @@ rules, but also as part of the "firing test" of rules defined by imperative
 code: see below.
 
 It is possible for a constraint to be, basically, "never fire this rule". If
-so, the function here returns |TRUE|. In that eventuality, the function call
+so, the function here returns `TRUE`. In that eventuality, the function call
 to the rule need never be compiled.
 
 =
@@ -393,7 +397,8 @@ Each rule compiles to a function, and that function is called whenever the
 opportunity might exist for the rule to fire: but it still sometimes won't
 fire, because the conditions might not be met. In pseudocode, the function
 looks like this:
-= (text)
+
+``` None
 	if (firing-condition-1) {
 		if (firing-condition-2) {
 			...
@@ -404,10 +409,11 @@ looks like this:
 	} else {
 		fail 1
 	}
-=
-Everything before the |...| is "head", and everything after is the "tail".
+```
+
+Everything before the `...` is "head", and everything after is the "tail".
 The return statement isn't necessarily reached, because even if the firing
-condition holds, the |...| code may decide to return in some other way.
+condition holds, the `...` code may decide to return in some other way.
 It provides only a default to cover rules which don't specify an outcome.
 
 =

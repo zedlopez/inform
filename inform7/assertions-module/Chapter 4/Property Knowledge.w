@@ -16,12 +16,12 @@ void Assertions::PropertyKnowledge::initialise_global_variable(nonlocal_variable
 }
 
 @h Asserting properties, three different ways.
-In these three alternative functions, we can assert that a given owner -- specified
-either as an object, a value or a subtree -- should have
+In these three alternative functions, we can assert that a given owner — specified
+either as an object, a value or a subtree — should have
 
-(a) a given single property equal to a value given as a subtree,
-(b) a given single property equal to an explicit value, or
-(c) a whole list of properties and their values.
+- a given single property equal to a value given as a subtree,
+- a given single property equal to an explicit value, or
+- a whole list of properties and their values.
 
 =
 void Assertions::PropertyKnowledge::assert_property_value_from_property_subtree_infs(property *prn,
@@ -57,7 +57,7 @@ void Assertions::PropertyKnowledge::assert_property_list(parse_node *owner_subtr
 }
 
 @ We pass the "clue kind" to obtain a proposition which includes an atom
-setting the kind of the free variable -- not because we need to assert this,
+setting the kind of the free variable — not because we need to assert this,
 although it does no harm to, but because this enables the proposition
 asserter to know the kind of the free variable, which in turn affects the
 interpretation placed on adjectives which have different meanings in different
@@ -113,9 +113,9 @@ are typechecked at run-time rather than compile-time in that domain.)
 	Problems::issue_problem_end();
 	return;
 
-@ The following assumes that the subtree |py| describes a value which the
-|prn| property of something will have; it issues problem messages if this
-would be impossible, returning |NULL|, or else silently returns the value.
+@ The following assumes that the subtree `py` describes a value which the
+`prn` property of something will have; it issues problem messages if this
+would be impossible, returning `NULL`, or else silently returns the value.
 It's used both above and by the tree-conversion code in the predicate
 calculus engine.
 
@@ -193,7 +193,7 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 				Problems::issue_problem_end();
 				return NULL;
 			}
-			break; /* (this is fine -- there's a well-expressed value) */
+			break; /* (this is fine: there's a well-expressed value) */
 		case COMMON_NOUN_NT:
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_PropertyInstance),
 				"this property value makes no sense to me",

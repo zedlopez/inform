@@ -32,7 +32,7 @@ void Understand::visit(parse_node *p) {
 }
 
 @ Understand sentences are always accepted: that is, any sentence at all in
-the "Understand... as..." shape will pass the |ACCEPT_SMFT| traverse. But
+the "Understand... as..." shape will pass the `ACCEPT_SMFT` traverse. But
 such a sentence is then not acted upon in the regular assertion traverses,
 as noted above, and instead we wait until //Understand::visit// causes
 the following to be called.
@@ -63,17 +63,19 @@ int Understand::understand_as_SMF(int task, parse_node *V, wording *NPs) {
 }
 
 @h The subject phrase.
-Understand sentences take several different forms -- so different, in fact,
+Understand sentences take several different forms — so different, in fact,
 that we will parse the subject phrase to see which form we have, and only then
 parse the object phrase (using a different grammar for each of the forms).
 As examples:
-= (text as Inform 7)
+
+``` Inform7
 Understand nothing as the pot.
 Understand the unbroken property as describing the pot.
 Understand the command "access" as "open".
 Understand "earthenware" as the pot. Understand "photograph [something]" as photographing.
-=
-<understand-sentence-sp> has, as its integer result, one of these:
+```
+
+`<understand-sentence-sp>` has, as its integer result, one of these:
 
 @e COMMAND_UNDERSTAND_FORM from 1
 @e PROPERTY_UNDERSTAND_FORM
@@ -85,11 +87,11 @@ Understand "earthenware" as the pot. Understand "photograph [something]" as phot
 objects, which are really just unions of being a text in quotes or a property name:
 
 =
-typedef struct understanding_item {
+classdef understanding_item in 100s {
 	struct wording quoted_text;
 	struct property *quoted_property;
 	struct understanding_item *next;
-} understanding_item;
+}
 
 understanding_item *Understand::text_item(wording W) {
 	if (preform_lookahead_mode) return NULL;
@@ -171,21 +173,21 @@ understanding_item *Understand::list_ui(understanding_item *ui1, understanding_i
 @h Object phrases I: Understand explicit grammar.
 We use three different Preform grammars to parse the object phrase depending on
 the form of the sentence, and this is the commonest, shared by the
-|GRAMMAR_UNDERSTAND_FORM| and |NOTHING_UNDERSTAND_FORM|. It handles sentences like:
+`GRAMMAR_UNDERSTAND_FORM` and `NOTHING_UNDERSTAND_FORM`. It handles sentences like:
 
->> Understand "take [something]" as taking.
+> Understand "take [something]" as taking.
 
 It's not widely known, but the object phrase here can be a list:
 
->> Understand "broken" as the pot, the shovel or the contract.
+> Understand "broken" as the pot, the shovel or the contract.
 
-The nonterminal <understand-sentence-op> returns |TRUE| or |FALSE| in its
+The nonterminal <understand-sentence-op> returns `TRUE` or `FALSE` in its
 integer return value according to whether a when condition is supplied, or not.
 Its pointer return value is once again a linked list of objects, but this time
 they are //understanding_reference// objects:
 
 =
-typedef struct understanding_reference {
+classdef understanding_reference in 100s {
 	struct wording reference_text;
 	int cg_result;
 	int mistaken;
@@ -198,7 +200,7 @@ typedef struct understanding_reference {
 	struct wording token_text;
 	struct wording when_text;
 	struct understanding_reference *next;
-} understanding_reference;
+}
 
 understanding_reference *Understand::list_ur(understanding_reference *ur1,
 	understanding_reference *ur2) {
@@ -254,7 +256,7 @@ understanding_reference *Understand::preserve_ur(void) {
 
 @ The following grammar is applied to each item in the list in turn, and
 looks odd but is actually quite simple: if it matches against one of the
-possible notations, the temporary |ur_being_parsed| object is annotated;
+possible notations, the temporary `ur_being_parsed` object is annotated;
 if this succeeds without problem messages, that temporary object is
 converted into a permanent //understanding_reference//.
 
@@ -370,7 +372,7 @@ void Understand::issue_PM_UnderstandVague(void) {
 @h Object phrases II: Understand the command.
 The second form of the sentence has an object phrase like so:
 
->> Understand the command "snatch" as "take".
+> Understand the command "snatch" as "take".
 
 Here the grammar is very simple, and the object can't be a list.
 
@@ -406,7 +408,7 @@ Here the grammar is very simple, and the object can't be a list.
 @h Object phrases III: Understand the property.
 The third and final form of the sentence has an object phrase like so:
 
->> Understand the unbroken property as describing the pot.
+> Understand the unbroken property as describing the pot.
 
 Once again, the object can't be a list.
 
@@ -540,7 +542,7 @@ void Understand::command_block(wording W, wording ASW) {
 @ After some debate, we decided that it ought to be legal to declare "Understand the
 command "wibble" as something new" even in cases where no "wibble" command existed
 already: extensions might want this to assure that they have exclusive use of a
-command, for instance. So the following does nothing if |cg| comes back |NULL|, but
+command, for instance. So the following does nothing if `cg` comes back `NULL`, but
 does not issue a problem message in that case either.
 
 @<Revoke the command@> =
@@ -548,7 +550,7 @@ does not issue a problem message in that case either.
 	if (cg) CommandGrammars::remove_command(cg, W);
 
 @ But you can only define a command which does exist already if that command has
-no meanings at present -- as can happen if it has had every meaning stripped from
+no meanings at present — as can happen if it has had every meaning stripped from
 it, one at a time, by previous Understand sentences.
 
 @<Throw a problem if the command to be defined already means something@> =
@@ -656,15 +658,15 @@ This section is primarily about Understand sentences, but Inform also receives
 grammar in some other contexts, such as in a table where one column contains
 conversation topics to be matched, or in the condition:
 
->> if the player's command matches "room [number]", ...
+> if the player's command matches "room [number]", ...
 
-The quoted text here becomes a constant of the kind |K_understanding|, and
+The quoted text here becomes a constant of the kind `K_understanding`, and
 when it needs to be compiled, the following function is called. As can be
 seen, it funnels directly into //Understand::text_block//.
 
 When table cells contain these topics, they are sometimes in the form of a
 list: say, "rockets" or "spaceships". We do not police the connectives here,
-we simply make any double-quoted text in |W| generate grammar.
+we simply make any double-quoted text in `W` generate grammar.
 
 =
 command_grammar *Understand::consultation(wording W) {

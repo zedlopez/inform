@@ -6,33 +6,34 @@ Storage locations into which rvalues can be put at run-time.
 "Lvalues" can occur on the left of an assignment sign: they are values
 which can be written to.
 
-|LOCAL_VARIABLE_NT| refers to a specific local variable, so it has meaning
-only within the routine currently being compiled. A |local_variable| pointer
+`LOCAL_VARIABLE_NT` refers to a specific local variable, so it has meaning
+only within the routine currently being compiled. A `local_variable` pointer
 is attached. There are no references or arguments.
 
-|NONLOCAL_VARIABLE_NT| refers to a variable of any other scope: that is, a
+`NONLOCAL_VARIABLE_NT` refers to a variable of any other scope: that is, a
 global variable, or perhaps a rulebook, action or activity variable. The
 important distinction between these other scopes and local scope is
 essentially that local variables live on the I6 call-stack and have only a
 local namespace, whereas others correspond to array entries or global I6
 variables and share a global namespace. (It is basically a matter of
 implementation convenience which makes us divide the stock of variables
-into two different species this way.) A |instance *| pointer is attached,
+into two different species this way.) A `instance *` pointer is attached,
 identifying the name of the variable in question. There are no
 arguments.
 
-|PROPERTY_VALUE_NT| represents a given (value-)property of a given object,
+`PROPERTY_VALUE_NT` represents a given (value-)property of a given object,
 not the name of a property in abstract. Thus "description of the Police
 Commissioner" qualifies, but "description" does not. There are two arguments:
 the property and the object which possesses it, respectively.
 
-|TABLE_ENTRY_NT| represents a given entry to a table, which can be referred
+`TABLE_ENTRY_NT` represents a given entry to a table, which can be referred
 to in several different ways. There are four different kinds of table reference,
 distinguished by the number of arguments found:
 
-(1) 1 argument. By column name only, the table and row to be understood from
+- 1 argument. By column name only, the table and row to be understood from
 context because we have selected a row in the surrounding source text.
-(2) 2 arguments. Used as a condition to see if a value is listed in a
+
+- 2 arguments. Used as a condition to see if a value is listed in a
 given column of a given table. Argument 0 must be a constant of kind
 "table column", argument 1 any value of kind "table". (Argument 0
 has to be a constant because it is not type-safe to allow looping through
@@ -42,17 +43,19 @@ same doesn't apply to argument 1, perhaps oddly, because Inform requires
 that every column name have the same kind in every table using it. So
 the choice of table does not have to be a constant, and this allows
 for some interesting data structures to be built.)
-(3) 3 arguments. An explicitly specified entry. The arguments are the
+
+- 3 arguments. An explicitly specified entry. The arguments are the
 table column, row number, and table respectively.
-(4) 4 arguments. A reference to the X corresponding to a Y value of Z in table T.
+
+- 4 arguments. A reference to the X corresponding to a Y value of Z in table T.
 The arguments are X, Y, Z, T respectively.
 
-|LIST_ENTRY_NT| represents a given entry in a list, which is much simpler:
+`LIST_ENTRY_NT` represents a given entry in a list, which is much simpler:
 there are two arguments, the list and the numerical index, which counts from 1.
 
 Note that property names, table names, and lists themselves are not storage
-items as such -- they are places where storage items are found. They are
-all in the |VALUE| family.
+items as such — they are places where storage items are found. They are
+all in the `VALUE` family.
 
 @ And here are some convenient creators. Variables:
 
@@ -102,7 +105,7 @@ parse_node *Lvalues::new_LIST_ENTRY(parse_node *owner, parse_node *index) {
 
 @ Property values are constructed out of what's often only implied text:
 for instance, "description" sometimes means "the description [of the
-|self| object]". We give them a word range which is minimal such that it
+`self` object]". We give them a word range which is minimal such that it
 must contain word ranges of both property and owner, if given. Thus
 "carrying capacity of the trunk" will result from "carrying capacity"
 and "trunk". This is not very scientific, perhaps, but it's done only to
@@ -164,7 +167,7 @@ int Lvalues::is_constant_NONLOCAL_VARIABLE(parse_node *spec) {
 	return FALSE;
 }
 
-@ Not all non-local variables are global -- some have scope local to rulebooks,
+@ Not all non-local variables are global — some have scope local to rulebooks,
 actions and the like:
 
 =

@@ -60,7 +60,7 @@ void VerifyTree::verify_integrity_r(parse_node *p,
 The parse tree is a complicated structure, arbitrarily wide and deep, and
 containing many different node types, each subject to its own rules of usage.
 In this second check, we ensure that nodes have acceptable parentage and
-annotations -- that is, parentage and annotations which fall within the
+annotations — that is, parentage and annotations which fall within the
 permissions set up when their node types were created.
 
 If any test fails, Inform will stop with an internal error. (If there are
@@ -90,9 +90,9 @@ void VerifyTree::verify_structure_from(parse_node *p) {
 	}
 }
 
-@ Note that on every call to the following routine, (i) |p| is a valid
-parse node and (ii) either |p| is the tree root, in which case |parent| is
-|NULL|, or |parent| is the unique node having |p| (or an alternative to |p|)
+@ Note that on every call to the following routine, (i) `p` is a valid
+parse node and (ii) either `p` is the tree root, in which case `parent` is
+`NULL`, or `parent` is the unique node having `p` (or an alternative to `p`)
 among its children.
 
 =

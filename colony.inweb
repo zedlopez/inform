@@ -57,7 +57,7 @@ Colony {
 	member: "basic_inform" at "inform7/Internal/Extensions/Graham Nelson/Basic Inform.i7xd/Source" to "basic_inform"
 	member: "standard_rules" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Source" to "standard_rules"
 
-	default: breadcrumbs "Home: //overview// > Kits: //extensions//"
+	default: breadcrumbs "Home: //overview// > Kits: //kits//"
 	member: "WorldModelKit" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/WorldModelKit" to "WorldModelKit"
 	member: "EnglishLanguageKit" at "inform7/Internal/Extensions/Graham Nelson/English Language.i7xd/Materials/Inter/EnglishLanguageKit" to "EnglishLanguageKit"
 	member: "CommandParserKit" at "inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7xd/Materials/Inter/CommandParserKit" to "CommandParserKit"
@@ -84,13 +84,12 @@ Colony {
 	external: "foundation"      at "../inweb/foundation-module"
 	external: "foundation-test" at "../inweb/foundation-test"
 	external: "literate"        at "../inweb/literate-module"
-	external: "literate-test"   at "../inweb/literate-test"
 	external: "inweb"           at "../inweb"
 	external: "goldbach"        at "../inweb/Examples/goldbach"
 	external: "intest"          at "../intest"
 
 	Navigation {
-		[[Home "<Inform.png@72>" -> overview]]
+		[[Home "<Inform.png@72>" -> //overview//]]
 		[[Item "home" -> //overview//]]
 		[[Menu "Compiler"]]
 		[[Item "structure" -> //structure//]]

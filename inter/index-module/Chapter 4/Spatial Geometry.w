@@ -20,7 +20,7 @@ vector Geometry::zero(void) {
 }
 
 @ Now for vectors pointing in each direction. Note that not all of these are of
-unit length -- rather, they are the ideal grid offsets on the map we will
+unit length — rather, they are the ideal grid offsets on the map we will
 eventually draw.
 
 =
@@ -37,7 +37,7 @@ vector D_vector = {0, 0, -1};
 
 @ A cuboid is a volume of space with opposing corners at integer grid
 positions which form a tightest-possible bounding box around a finite
-number of points (of size |population|); when this is 0, of course, the
+number of points (of size `population`); when this is 0, of course, the
 corners are meaningless and are by convention at the origin.
 
 =

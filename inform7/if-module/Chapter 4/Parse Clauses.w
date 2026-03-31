@@ -38,7 +38,8 @@ action_pattern *ParseClauses::ap_seven(wording W) {
 "looking or taking inventory in the presence of Hans in the Laboratory". There
 are six different options at word position 2 (i.e., the "taking" part) but only
 one at position 0 ("looking").
-= (text)
+
+``` None
 (1). +2 taking inventory [in: the laboratory] [in-presence: hans]
 (2). +2 taking inventory [in-presence: hans in the laboratory]
 (3). +2 taking [noun: inventory] [in: the laboratory] [in-presence: hans]
@@ -46,7 +47,8 @@ one at position 0 ("looking").
 (5). +2 taking [noun: inventory in the presence of hans] [in: the laboratory]
 (6). +2 taking [noun: inventory in the presence of hans in the laboratory]
 (7). +0 looking
-=
+```
+
 Note that it is ordered in such a way that actions with more fixed wording
 occur before actions with fewer (at the same word position); and also that
 the number of words inside the clauses increases as we go through possibilities
@@ -54,13 +56,15 @@ for each action. For (3) to (7), the "taking" options, the clause wording
 runs to successively 4, 5, 8 and 9 words.
 
 We now need to reduce this to a list of just two entries:
-= (text)
+
+``` None
 (1). +2 taking inventory [in: the laboratory] [in-presence: hans]
 (2). +0 looking
-=
+```
+
 An entry is "viable" if we can make sense of the text in all of its clauses.
 As soon as we find a viable entry at a given word position, we ignore all
-subsequent possibilities at that position -- so the ordering of the ANL is
+subsequent possibilities at that position — so the ordering of the ANL is
 crucial: options near the top of the list are preferred to those lower down.
 
 @<Reduce the list to the first viable entry at each word position@> =
@@ -90,9 +94,9 @@ crucial: options near the top of the list are preferred to those lower down.
 	ActionNameLists::remove_entries_marked_for_deletion(list);
 
 @ Now each clause's text must be evaluated: for example, on the clause
-|[in-presence: hans]| we will have to evaluate "Hans".
+`[in-presence: hans]` we will have to evaluate "Hans".
 
-Note the special case for actions whose second noun has the kind |K_understanding|,
+Note the special case for actions whose second noun has the kind `K_understanding`,
 meaning that they hold topics of conversation ("ask Hans about cosmic rays").
 There is ordinarily no way in Inform to write a literal of this kind, but here
 we are allowed to write a text literal instead, and it is automatically converted.

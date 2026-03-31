@@ -8,12 +8,11 @@ on the action applying to "a closed door". This is stored in the following
 actions-feature corner of the //assertions: Runtime Context Data// for the rule.
 
 =
-typedef struct actions_rcd_data {
+classdef actions_rcd_data {
 	int always_test_actor; /* ...even if no AP was given, test that actor is player? */
 	int never_test_actor; /* ...for instance, for a parametrised rather than action rulebook */
 	int marked_for_anyone; /* any actor is allowed to perform this action */
-	CLASS_DEFINITION
-} actions_rcd_data;
+}
 
 actions_rcd_data *ActionRules::new_rcd_data(id_runtime_context_data *idrcd) {
 	actions_rcd_data *ard = CREATE(actions_rcd_data);
@@ -31,7 +30,7 @@ int ActionRules::new_rcd(id_runtime_context_data *idrcd) {
 	return FALSE;
 }
 
-@ ...with the result that |arcd| is always null in the function below.
+@ ...with the result that `arcd` is always null in the function below.
 
 =
 void ActionRules::set_always_test_actor(id_runtime_context_data *idrcd) {
@@ -72,7 +71,7 @@ int ActionRules::get_marked_for_anyone(id_runtime_context_data *idrcd) {
 	return FALSE;
 }
 
-@ The following all make use the action pattern |idrcd->ap| in the RCD. This
+@ The following all make use the action pattern `idrcd->ap` in the RCD. This
 seems a little odd: why isn't it in the //actions_rcd_data//? The answer is
 that it needs to exist even when the actions feature is inactive, because it's
 still used for parsing predicates for non-action-based rulebooks.

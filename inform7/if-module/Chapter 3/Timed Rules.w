@@ -2,7 +2,7 @@
 
 A feature to support rules like "At 12:03AM: ...".
 
-@ This feature makes a special set of rules for timed events; the |:timedrules|
+@ This feature makes a special set of rules for timed events; the `:timedrules`
 test group may be useful in testing it.
 
 Each such rule has a time at which it should spontaneously happen. This is
@@ -67,6 +67,14 @@ int TimedRules::new_rule_defn_notify(imperative_defn *id, rule_family_data *rfd)
 		rfd->not_in_rulebook = TRUE;
 		RFD_FEATURE_DATA(timed_rules, rfd)->event_time = t;
 		if (t == NO_FIXED_TIME) {
+			if (Wordings::nonempty(rfd->constant_name)) {
+				StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NamedTimedEvent),
+					"this rule tries to have two names at once",
+					"since it has an event-like name at the front and then also a "
+					"'(this is...)' name at the back. That's not allowed: `(this is ...)` "
+					"cannot be used with timed rules.");
+				rfd->constant_name = EMPTY_WORDING;
+			}
 			wording EW = GET_RW(<event-rule-preamble>, 1);
 			EW = Articles::remove_the(EW);
 			RFD_FEATURE_DATA(timed_rules, rfd)->event_name = EW;
@@ -79,12 +87,11 @@ int TimedRules::new_rule_defn_notify(imperative_defn *id, rule_family_data *rfd)
 @ The above therefore attaches one of these to each set of rule data:
 
 =
-typedef struct timed_rules_rfd_data {
+classdef timed_rules_rfd_data {
 	int event_time; /* 0 to 1339, or one of the special values above */
 	struct wording event_name; /* if one is given */
-	struct linked_list *uses_as_event; /* of |parse_node| */
-	CLASS_DEFINITION
-} timed_rules_rfd_data;
+	struct linked_list *uses_as_event; /* of `parse_node` */
+}
 
 timed_rules_rfd_data *TimedRules::new_rfd_data(rule_family_data *rfd) {
 	timed_rules_rfd_data *trfd = CREATE(timed_rules_rfd_data);
@@ -123,7 +130,7 @@ the Dash typechecker is not able to make sure "spawn fresh zombies" is indeed
 timed, and not some other rule.
 
 We fix this by defining the trigger phrase to use the inline annotation
-|{-mark-event-used:R}| on the rule |R|. That in turn results in the following
+`{-mark-event-used:R}` on the rule `R`. That in turn results in the following
 being called:
 
 =

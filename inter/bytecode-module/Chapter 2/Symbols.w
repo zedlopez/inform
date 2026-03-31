@@ -7,33 +7,33 @@ Each symbol belongs to exactly one symbols table, and thus to exactly one
 package; its ID is unique within that table, and therefore package.
 
 Given that design, it might seem a cleaner solution simply to make the
-|symbol_array| of a symbols table be an array of |inter_symbol| structures,
-rather than (as it actually is) an array of |inter_symbol *| pointers which
-point to |inter_symbol| structures stored elsewhere. However:
+`symbol_array` of a symbols table be an array of `inter_symbol` structures,
+rather than (as it actually is) an array of `inter_symbol *` pointers which
+point to `inter_symbol` structures stored elsewhere. However:
 
-(a) It makes binary loading easier to use this indirection, and
-(b) It means that pointers to symbols remain valid when symbols tables expand
-and then have to dynamically resize their |symbol_array| arrays, which may
+- It makes binary loading easier to use this indirection, and
+- It means that pointers to symbols remain valid when symbols tables expand
+and then have to dynamically resize their `symbol_array` arrays, which may
 in some cases move them in memory.
 
 This all means we have to be careful. The following statements are true:
 
-(1) Symbols are created only by symbols tables, and only as a response to
+- Symbols are created only by symbols tables, and only as a response to
 the "creating" version of name lookups.
-(2) No symbol is ever moved from one table to another.
-(3) No symbol ever occurs more than once in any table.
-(4) No symbol ever occurs in more than one table.
+- No symbol is ever moved from one table to another.
+- No symbol ever occurs more than once in any table.
+- No symbol ever occurs in more than one table.
 
 But this is false:
 
-(5) Every symbol belongs to a table.
+- Every symbol belongs to a table.
 
 Although it is true that every symbol is created in a table, it might later
 be struck out with the //InterSymbolsTable::remove_symbol// function. If so,
 it cannot be reinserted into that or any other table: it is gone forever.
 
 =
-typedef struct inter_symbol {
+classdef inter_symbol in 1024s {
 	struct inter_symbols_table *owning_table;
 	inter_ti symbol_ID;
 	int symbol_status;
@@ -44,7 +44,7 @@ typedef struct inter_symbol {
 	struct wiring_data wiring;
 	struct transmigration_data transmigration;
 	struct general_pointer translation_data;
-} inter_symbol;
+}
 
 @ For the reasons given above, this function must only be called from
 //InterSymbolsTable::search_inner//. If what you want is just to create a
@@ -52,7 +52,7 @@ symbol with a particular name, call //InterSymbolsTable::symbol_from_name_creati
 not this.
 
 Note that any symbol whose name matches //Metadata::valid_key// is made a
-metadata symbol: in practice that means if its name begins with |^|.
+metadata symbol: in practice that means if its name begins with `^`.
 
 =
 inter_symbol *InterSymbol::new_for_symbols_table(text_stream *name, inter_symbols_table *T,
@@ -108,7 +108,7 @@ int InterSymbol::sort_number(const inter_symbol *S) {
 
 @h Status.
 The //inter_symbol// structure could not really be called concise, but we
-do make some effort, by packing various flags into a single |symbol_status| field.
+do make some effort, by packing various flags into a single `symbol_status` field.
 
 First, the "type" of a symbol is enumerated in these 3 bits:
 
@@ -202,7 +202,7 @@ int InterSymbol::misc_but_undefined(inter_symbol *S) {
 	return FALSE;
 }
 
-@ Symbols whose names begin |^| are metadata keys. Those should always be defined
+@ Symbols whose names begin `^` are metadata keys. Those should always be defined
 as constants, cannot be wired, and are never compiled. See //Metadata// for more.
 
 =
@@ -216,7 +216,7 @@ void InterSymbol::make_metadata_key(inter_symbol *S) {
 }
 
 @ Labels are special symbols used to mark positions in function bodies to which
-execution of code can jump. Their names must begin with a |.|.
+execution of code can jump. Their names must begin with a `.`.
 
 =
 int InterSymbol::is_label(inter_symbol *S) {
@@ -296,11 +296,12 @@ package to which it belongs. The alternative is to wire it, which says that the
 meaning is far away, in another package: see //The Wiring//.
 
 A definition in this sense is a pointer to an //inter_tree_node// holding an
-instruction which creates the symbol. For example, the definition of |magic_number|
+instruction which creates the symbol. For example, the definition of `magic_number`
 might be the node holding the instruction:
-= (text as Inter)
+
+``` Inter
 	constant magic_number K_int32 = 27
-=
+```
 
 =
 void InterSymbol::define(inter_symbol *S, inter_tree_node *P) {
@@ -323,8 +324,8 @@ int InterSymbol::is_defined(inter_symbol *S) {
 	return FALSE;
 }
 
-@ This is rather more violent than simply undefining |S|. It does do that,
-but also deletes the instruction which had defined |S| from the tree entirely.
+@ This is rather more violent than simply undefining `S`. It does do that,
+but also deletes the instruction which had defined `S` from the tree entirely.
 
 Note that it does not go to the even more extreme lengths of removing the
 symbol from the symbols table. For that, see //InterSymbolsTable::remove_symbol//,
@@ -358,8 +359,8 @@ void InterSymbol::set_int(inter_symbol *S, int N) {
 	internal_error("unable to set symbol");
 }
 
-@ A symbol wired to something in another package, or a plug -- which is not
-yet wired, but will be later on, when linking takes place -- has no definition
+@ A symbol wired to something in another package, or a plug — which is not
+yet wired, but will be later on, when linking takes place — has no definition
 in the current package. So:
 
 =
@@ -382,20 +383,25 @@ text_stream *InterSymbol::identifier(inter_symbol *S) {
 Any symbol can be marked with a "translation", which is the textual identifier
 to use when compiling final code which refers to it. For example, if our
 example constant is defined by:
-= (text as Inter)
+
+``` Inter
 	constant magic_number K_int32 = 27
-=
-then its translated form would normally just be |"magic_number"| -- the same
+```
+
+then its translated form would normally just be `"magic_number"` — the same
 as its identifier name in Inter. Any Inform 6 code generated to refer to this
 might then read:
-= (text as Inform 6)
+
+``` Inform6
 	print "The magic number is ", magic_number, ".";
-=
-But if the |magic_number| had been given the translation text |"SHAZAM"|, that
+```
+
+But if the `magic_number` had been given the translation text `"SHAZAM"`, that
 same Inter would compile instead to:
-= (text as Inform 6)
+
+``` Inform6
 	print "The magic number is ", SHAZAM, ".";
-=
+```
 
 There is something a little disorienting about storing this data as part of
 an //inter_symbol//. One might reasonably say: It's no business of the Inter
@@ -407,15 +413,17 @@ something equally annoying.
 However, we have to store translations within the Inter tree because the
 Inform 7 language includes low-level features which cannot be expressed any
 other way:
-= (text as Inform 7)
+
+``` Inform7
 The tally is a number that varies.
 The tally translates into Inter as "SHAZAM".
-=
+```
+
 In order for this instruction to reach the //final// code generators, this
 data clearly has to be expressed in the Inter tree. Well, this is where.
 
 With that apologia out of the way, the translation text is held in the
-annotation |_translation|:
+annotation `_translation`:
 
 =
 void InterSymbol::set_translate(inter_symbol *S, text_stream *identifier) {

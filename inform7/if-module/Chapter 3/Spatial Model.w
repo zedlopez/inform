@@ -47,9 +47,7 @@ Rules. (So there is no need to translate this to other languages.)
 	person |
 	player's holdall
 
-@ 
-
-= (early code)
+@<Global IF variable definitions@> +=
 kind *K_room = NULL;
 kind *K_thing = NULL;
 kind *K_container = NULL;
@@ -74,7 +72,7 @@ int Spatial::new_base_kind_notify(kind *new_base, text_stream *name, wording W) 
 
 @ When the rest of Inform makes something a room, for instance in response to
 an explicit sentence like "The Hall of Mirrors is a room.", we take notice;
-if it turns out to be news, we infer |is_room_inf| with certainty.
+if it turns out to be news, we infer `is_room_inf` with certainty.
 
 =
 int Spatial::set_kind_notify(instance *I, kind *k) {
@@ -146,7 +144,7 @@ timing issue with that: the kinds will not exist until Inform's run is fairly
 advanced, since they are created by source text. We need the subjects earlier
 than that, and so we have to have placeholders until the real thing is ready:
 
-= (early code)
+@<Global IF variable definitions@> +=
 inference_subject *infs_room = NULL;
 inference_subject *infs_thing = NULL;
 inference_subject *infs_supporter = NULL;
@@ -164,7 +162,7 @@ int Spatial::create_inference_subjects(void) {
 @ And this is where those placeholders give up their places for the real kind
 subjects. What happens is that, ordinarily, the machinery creating objects
 (and kinds) will allocate a new inference structure for each object, but it
-first invites plugins to choose an existing one instead. (The |inference_subject|
+first invites plugins to choose an existing one instead. (The `inference_subject`
 structure is rewritten, but pointers to it remain consistent and valid.)
 
 =
@@ -183,7 +181,7 @@ int Spatial::name_to_early_infs(wording W, inference_subject **infs) {
 
 @h Properties of interest.
 
-= (early code)
+@<Global IF variable definitions@> +=
 property *P_initial_appearance = NULL;
 property *P_wearable = NULL;
 property *P_fixed_in_place = NULL;
@@ -204,7 +202,7 @@ the Standard Rules. (So there is no need to translate this to other languages.)
 
 "Matching key" has to appear in here because it both has a traditional I6
 name and is used as relation storage. If we didn't care about it being
-called |with_key| in the I6 source code, we wouldn't need to do anything
+called `with_key` in the I6 source code, we wouldn't need to do anything
 special with it at all.
 
 =
@@ -235,13 +233,13 @@ following structure, though we really only use it for instance subjects,
 which correspond to the objects in the world model.
 
 An important concept here is the "progenitor" of something in the model,
-which may be |NULL|: the "progenitor" is the object which immediately contains,
+which may be `NULL`: the "progenitor" is the object which immediately contains,
 carries, wears, supports or incorporates it.
 
 @d SPATIAL_DATA(I) FEATURE_DATA_ON_INSTANCE(spatial, I)
 
 =
-typedef struct spatial_data {
+classdef spatial_data {
 	/* fundamental spatial information about an object's location */
 	struct instance *progenitor;
 	struct parse_node *progenitor_set_at;
@@ -256,9 +254,7 @@ typedef struct spatial_data {
 	struct instance *incorp_tree_child;
 	struct instance *incorp_tree_sibling;
 	int definition_depth;
-
-	CLASS_DEFINITION
-} spatial_data;
+}
 
 @ The attachment of this data is done here:
 
@@ -305,7 +301,7 @@ int Spatial::default_appearance(inference_subject *infs, parse_node *txt) {
 
 @ A lone string as a sentence is a description for a room, but an initial
 description for an object. Only now can we know which, since we have only
-just decided whether |I| is a room or not. We therefore draw the necessary
+just decided whether `I` is a room or not. We therefore draw the necessary
 inference.
 
 @<Produce a problem for doubly described scenery@> =
@@ -319,8 +315,8 @@ inference.
 		"which means we have a subtle little contradiction here.");
 
 @h Composite noun-quantifiers.
-Words like "something" or "everywhere" combine a common noun -- thing,
-and implicitly room -- with a determiner -- one thing, all rooms. 
+Words like "something" or "everywhere" combine a common noun — thing,
+and implicitly room — with a determiner — one thing, all rooms. 
 
 "Nothing" is conspicuously absent from the possibilities below. It gets
 special treatment elsewhere since it can also double as a value (the "not
@@ -338,16 +334,16 @@ an object" pseudo-value).
 	_nobody/no-one *** |                    ==> { -, K_person, <<quantifier:q>> = not_exists_quantifier }
 	_no _one ***                            ==> { -, K_person, <<quantifier:q>> = not_exists_quantifier }
 
-@ When we detect them, we set both |quantifier_used| and |some_kind|
+@ When we detect them, we set both `quantifier_used` and `some_kind`
 appropriately. None can be recognised if the basic kinds are not created yet,
-which we check for by inspecting |K_thing|. (Note that the S-parser may indeed
+which we check for by inspecting `K_thing`. (Note that the S-parser may indeed
 be asked to parse "something" before this point, as when it scans the domains
 of adjective definitions, but that it's okay that it produces a null result.)
 
 With the "some-" words, no quantifier is set because the meaning here is the
-|exists_quantifier|. Since this is the default behaviour for unquantified
-descriptions anyway -- "a door is in the Great Hall" means that such a door
-exists -- we needn't set the variable.
+`exists_quantifier`. Since this is the default behaviour for unquantified
+descriptions anyway — "a door is in the Great Hall" means that such a door
+exists — we needn't set the variable.
 
 =
 int Spatial::parse_composite_NQs(wording *W, wording *DW,
@@ -408,7 +404,7 @@ int Spatial::intervene_in_assertion(parse_node *px, parse_node *py) {
 
 @h Here.
 A sentence like "The sonic screwdriver is here." is not copular, but instead
-expresses a relationship -- "here" is not a value but a relation to an
+expresses a relationship — "here" is not a value but a relation to an
 unstated object. That object is the room we're currently talking about, which
 sounds easy to work out, but isn't: we don't yet know which of the objects
 being talked about will eventually turn out to be rooms. As a result, "here"
@@ -417,7 +413,7 @@ needs delicate handling, and its own inference type.
 The fact that rooms cannot be "here" is useful, because it means Inform can
 with certainty read
 
->> The washing machine is here. The shirt is in the machine.
+> The washing machine is here. The shirt is in the machine.
 
 as creating a container called "washing machine", not a room.
 
@@ -468,8 +464,8 @@ course, created, and they have kinds associated with them if the source
 text has said explicitly what kind they have: but that is not good enough.
 It often happens that the source implicitly specifies a kind, and we need
 to take note. If X is in Y, then Y might be a room, or a region, or a
-container, and we might need to look at other sentences -- say, establishing
-that Y is the destination of a map connection -- to see which.
+container, and we might need to look at other sentences — say, establishing
+that Y is the destination of a map connection — to see which.
 
 =
 instance *implied_Stage_room = NULL;
@@ -526,19 +522,19 @@ int Spatial::spatial_stage_I(void) {
 
 @ Our main problem in what follows is caused by "in" being so ambiguous,
 or perhaps it might be said that the real problem is that we choose to
-distinguish between rooms and containers on a world-modelling level -- when it
+distinguish between rooms and containers on a world-modelling level — when it
 could well be argued that they are linguistically the same thing.
 
 It means that Inform is often reading code such as:
 
->> The croquet ball is in the Boxed Set.
+> The croquet ball is in the Boxed Set.
 
 and not being sure whether "Boxed Set" is a container or a room.
 
 In the following determination, we use two sources of information. One is explicit
-data given by the source text or unambiguously implied in it, like so --
+data given by the source text or unambiguously implied in it, like so —
 
->> The Boxed Set is a container. The spoon is on the low table.
+> The Boxed Set is a container. The spoon is on the low table.
 
 which tell us the Boxed Set is certainly a container and the table certainly
 a supporter. This information about an object is the "designer choice" about
@@ -577,7 +573,7 @@ is the "geography choice" for its kind.
 
 @ By this point, any explicit information is reflected in the hierarchy of
 kinds. We look out for four specialised kinds of thing, but failing that,
-we simply take its broadest kind -- usually "thing", "room", "direction"
+we simply take its broadest kind — usually "thing", "room", "direction"
 or "region".
 
 @<Determine the designer choice@> =
@@ -691,11 +687,11 @@ Inform spatial model:
 
 @ Stage II at last. Now the kinds are all known, and it's time to work out
 the spatial arrangements. Inform's spatial model assigns every instance object
-a unique "progenitor", which may be |NULL|, representing the object which
+a unique "progenitor", which may be `NULL`, representing the object which
 immediately contains, carries, wears, supports or incorporates it.
 
 Clearly if we know every object's progenitor, then we know the whole spatial
-layout -- it's all just elaboration from there. (See Stage III below.) But
+layout — it's all just elaboration from there. (See Stage III below.) But
 since other features can decide on this, not just Spatial, we had better
 provide access routines to read and write:
 
@@ -838,7 +834,7 @@ object under investigation.
 	}
 
 @ This runs through the source text from the beginning up to the "here"
-sentence, setting |whereabouts| to any rooms it finds along the way, so that
+sentence, setting `whereabouts` to any rooms it finds along the way, so that
 when it finishes this will be set to the most recently mentioned.
 
 @<Set the whereabouts to the last discussed room prior to this inference being drawn@> =
@@ -1054,8 +1050,8 @@ storing all of those progenitors and then converting them into the trees.
 We don't do that because (for reasons to do with "here" and with how work
 is shared among the features) the progenitors are determined in an undefined
 order; if we made the object tree as we went along, the spatial model would
-be perfectly correct, but siblings -- say, the three things on the grass in
-the Croquet Lawn -- would be compiled in the Inter code in some undefined
+be perfectly correct, but siblings — say, the three things on the grass in
+the Croquet Lawn — would be compiled in the Inter code in some undefined
 order. This order matters because it affects the text produced by typical
 room descriptions: "You can also see a box, a ball and a peg here." might
 become "You can also see a ball, a box and a peg here."
@@ -1105,11 +1101,11 @@ the absence of other information.)
 	@<Assert container and supporter indicator properties@>;
 	@<Assert incorporation tree properties@>;
 
-@ We need to make sure that every room does have an Inter |description| value
+@ We need to make sure that every room does have an Inter `description` value
 which can be written to (i.e., we need to avoid accidental use of the Z-machine's
 readable-only default properties feature); hence the following, which ensures
-that any room with no explicit description will inherit |EMPTY_TEXT_VALUE|
-as a value for |description| from the room class.
+that any room with no explicit description will inherit `EMPTY_TEXT_VALUE`
+as a value for `description` from the room class.
 
 @<Assert an explicit default description value for the room kind@> =
 	if (K_room) {
@@ -1228,7 +1224,7 @@ int Spatial::get_definition_depth(instance *I) {
 
 @ By Stage IV we're nearly all done, except for a little checking of the
 degenerate case where Inform is just binding up an existing story file, so
-that there's really no spatial model at all -- the world is, or should be,
+that there's really no spatial model at all — the world is, or should be,
 empty.
 
 =

@@ -5,14 +5,16 @@ to invoke a phrase.
 
 @h Introduction.
 Here is a "To..." phrase definition, and then a rule making two invocations of it:
-= (text as Inform 7)
+
+``` Inform7
 To advance (the piece - a chess piece) by (N - a number):
 	...
 
 Every turn:
 	advance the pawn by 2;
 	advance false by 10:21 PM.
-=
+```
+
 An invocation is a usage of a phrase in a particular case, so here the every
 turn rule is making two invocations. Even control structures in Inform are
 phrases, so in fact every line of an imperative definition is exactly one
@@ -25,50 +27,60 @@ to problem messages being issued, but it is an invocation just the same.
 
 Invocations are stored in the parse tree. The above "every turn" rule comes
 out thus:
-= (text)
+
+``` None
 	IMPERATIVE_NT "every turn"
 	    CODE_BLOCK_NT
 	        INVOCATION_LIST_NT "advance the pawn by 2"
 	            INVOCATION_NT "advance the pawn by 2"
 	        INVOCATION_LIST_NT "advance the pawn by 2"
 	            INVOCATION_NT "advance false by 10:21 PM"
-=
-Each line of the original definition corresponds to an |INVOCATION_LIST_NT|
+```
+
+Each line of the original definition corresponds to an `INVOCATION_LIST_NT`
 node: the possible readings of the text as an invocation are then listed as its
-children, which are all |INVOCATION_NT| nodes. In this example the text was
+children, which are all `INVOCATION_NT` nodes. In this example the text was
 unambiguous, but for a definition like this:
-= (text as Inform 7)
+
+``` Inform7
 Every turn:
 	let the good old stand by be a random bishop;
 	advance the good old stand by by 1;
-=
+```
+
 ...the second line can now be read in two different ways:
-= (text as Inform 7)
+
+``` Inform7
 	advance the good old stand by by 1
 	        ~~~~~~~~~~~~~~~~~~    ~~~~
 	advance the good old stand by by 1
 	        ~~~~~~~~~~~~~~~~~~~~~    ~
-=
-These possibilities each become |INVOCATION_NT| nodes, and therefore the invocation
-list for the line has two entries. Those two nodes are joined with |next_alternative|
-links, not |next| links, since they are alternative readings of the same text: they
+```
+
+These possibilities each become `INVOCATION_NT` nodes, and therefore the invocation
+list for the line has two entries. Those two nodes are joined with `next_alternative`
+links, not `next` links, since they are alternative readings of the same text: they
 cannot both be right.
 
 Finally, it is worth noting three complications:
-(a) Invocation lists arise from expressions as well as from entire code lines,
-much as functions in C can be used in expressions, |int x = f(2);| as well
-as in void context, |printf("I do have a return value, you know! Nobody cares.")|.
-(-1) See //assertions: Imperative Subtrees// for how invocation lists for the body
-of imperative definitions are put together.
-(-2) See //Conditions and Phrases// for how invocation lists from expressions
-are put together.
-(b) "Say" phrases are a special case, in that they can perform more than one
-invocation. |say "Very cold for [time of day], I think?"| performs three
-invocations -- one of |say (T - text)|, one of |say (T - time)|, and then
-another of |say (T - text)|. These three invocations are joined by |->next|
-not |->next_alternative| links because all three must be performed.
-(c) A small number of invocations for adaptive text do not invoke phrases,
-but instead print an inflected form of a verb, adjective or similar.
+
+-	Invocation lists arise from expressions as well as from entire code lines,
+	much as functions in C can be used in expressions, `int x = f(2);` as well
+	as in void context, `printf("I do have a return value, you know! Nobody cares.")`.
+
+	- See //assertions: Imperative Subtrees// for how invocation lists for the body
+	of imperative definitions are put together.
+	- See //Conditions and Phrases// for how invocation lists from expressions
+	are put together.
+
+-	"Say" phrases are a special case, in that they can perform more than one
+	invocation. `say "Very cold for [time of day], I think?"` performs three
+	invocations — one of `say (T - text)`, one of `say (T - time)`, and then
+	another of `say (T - text)`. These three invocations are joined by `->next`
+	not `->next_alternative` links because all three must be performed.
+
+-	A small number of invocations for adaptive text do not invoke phrases,
+	but instead print an inflected form of a verb, adjective or similar.
 
 In this section, we provide basic functions for dealing with invocation lists;
 similarly, //Invocations// provides tools for dealing with individual invocations;
@@ -100,10 +112,10 @@ parse_node *InvocationLists::make_into_list_node(parse_node *p) {
 
 @h Operations on lists.
 Once lists are created, we tend to represent them not by a pointer to the
-|INVOCATION_LIST_NT| node but with a pointer to |first_inv|, the first of the
+`INVOCATION_LIST_NT` node but with a pointer to `first_inv`, the first of the
 invocations in the list, i.e., the child of the list node.
 
-Using that convention, where |NULL| represents the empty list, this extends
+Using that convention, where `NULL` represents the empty list, this extends
 the list by one:
 
 =
@@ -169,7 +181,7 @@ void InvocationLists::log_in_detail(parse_node *first_inv) {
 This is crucial to the correct running of the compiler, since invocations
 earlier in the list are more likely to be accepted than later. The list is
 never very long, so performance is not an issue here, but it's a nuisance to
-sort a linked list: we must stash it into an array called |pigeon_holes|,
+sort a linked list: we must stash it into an array called `pigeon_holes`,
 sort that, and then convert it back into a linked list again.
 
 =
@@ -225,14 +237,14 @@ want to avoid all possible arbitrary limits.)
 	}
 
 @ So much for the mechanism. The sorting order ranks invocations first (a) by
-logical priority of phrases -- see //assertions: To Phrase Family//; then,
+logical priority of phrases — see //assertions: To Phrase Family//; then,
 in cases of a tie, (b) by the order in which the excerpt parser found the
 possible reading.
 
 Note that sequence counts for phrases, and unsorted positions in the list,
 are both unique. This is important since it means //InvocationLists::sort_cmp//
-never produces a tie (i.e. returns 0) unless |i1 == i2|; so the fact that |qsort|
-applies an unstable sorting algorithm does not affect the result -- we are
+never produces a tie (i.e. returns 0) unless `i1 == i2`; so the fact that `qsort`
+applies an unstable sorting algorithm does not affect the result — we are
 exactly defining the order of the list.
 
 =

@@ -6,9 +6,9 @@ the locale description mechanism.
 @ These must not be created until the basic rulebooks are in place, because
 creating any activity automatically creates three rulebooks as well.
 
-The |srules| template expects the following activities to be created and in
-this order. (That is, the order here must exactly match that of the |*_ACT|
-constant definitions made in |Definitions.i6t|.) The activities are fairly
+The `srules` template expects the following activities to be created and in
+this order. (That is, the order here must exactly match that of the `*_ACT`
+constant definitions made in `Definitions.i6t`.) The activities are fairly
 completely described in the Inform documentation, so the only notes here
 concern implementation.
 
@@ -19,7 +19,7 @@ Part Four - Activities
 Responses are textual replies made by rules, and while one could imagine
 uses for them outside of an IF-like dialogue, they belong better in the
 Standard Rules (i.e., as an aspect of IF) than in the general-purpose
-language. So |STANDARD_RESPONSE_ISSUING_R| is in |srules|, not |basicinform|,
+language. So `STANDARD_RESPONSE_ISSUING_R` is in `srules`, not `basicinform`,
 and we define:
 
 =
@@ -185,7 +185,7 @@ into an action.
 
 The unusual notation "(future action)" here allows Inform to parse rule
 preambles for these activities in a way which would refer to the action which
-might, at some point in the future, be generated -- during parsing we don't of
+might, at some point in the future, be generated — during parsing we don't of
 course yet know what that action is, but there is always a current guess at
 what it might be.
 
@@ -350,7 +350,7 @@ able to vary the set of choices available.
 We do this by reading the options from the Table of Final Question Options.
 (See below for its default contents.) Each row is an option, whose wording
 must be placed in the topic column. The final question wording entry can
-either be text describing the option -- e.g., "perform a RESTART" -- or
+either be text describing the option — e.g., "perform a RESTART" — or
 can be left blank, making the option a secret one, omitted from the question
 but still recognised as an answer. The only if victorious entry can be set
 to make the option available only after a victorious ending, not after a loss;
@@ -425,25 +425,28 @@ A "locale description" is a segment of the text produced by LOOK: the
 "locale" is a clutch of objects at a given level in the object tree. Most
 room descriptions consist of a top line, a description of the place, and
 then a single (though often, as here, multi-paragraph) locale:
-= (text)
+
+``` None
 	Sentier Le Corbusier
 	A coastal walk along the rocky shore between Nice and Menton.
 	    ...now the locale for the room Sentier Le Corbusier:
 	A translucent jellyfish has been washed up by the waves.
 	    
 	You can also see a bucket and a spade here.
-=
+```
+
 A locale typically contains a run of paragraphs specific to interesting
 items, especially those not yet picked up, followed by a paragraph which
-lists the "nondescript" items -- those not given paragraphs of their own,
-such as the bucket and spade. (Some items, though -- typically scenery,
-but also for instance the player -- are not even nondescript and do not
+lists the "nondescript" items — those not given paragraphs of their own,
+such as the bucket and spade. (Some items, though — typically scenery,
+but also for instance the player — are not even nondescript and do not
 appear at all.) A locale can contain no interesting paragraphs, or no list
 of nondescript items, or can even contain neither: that is, it can be
 entirely empty.
 
 When the player is in or on top of something, multiple locales are described:
-= (text)
+
+``` None
 	Sentier Le Corbusier (in the golf cart)
 	A coastal walk along the rocky shore between Nice and Menton.
 	    ...now the locale for the room Sentier Le Corbusier:
@@ -452,14 +455,15 @@ When the player is in or on top of something, multiple locales are described:
 	You can also see a bucket and a spade here.
 	    ...now the locale for the golf cart:
 	In the golf cart you can see a map of Villefranche-sur-Mer.
-=
+```
+
 To sum up, the text produced by LOOK consists of a header (produced by
 the carry out looking rules) followed by one or more locale descriptions
 (produced by the activity below).
 
 @h Locale Implementation.
 When describing a locale, we keep a Table of interesting objects, each
-associated with a priority -- a number indicating how important, and
+associated with a priority — a number indicating how important, and
 therefore how near to the top of the description, the object is. A special
 syntax allows us to create the Table with exactly the same number of rows
 as there are things in the model world: thus, in the worst case where
@@ -507,19 +511,19 @@ since it needs to be consulted in sub-activities whose rules are outside what
 would be its scope; that doesn't matter, though, since locale descriptions
 are not nested. (If they were, the above table would fail in any case.)
 
-(1) Disaster would ensue if the user tampered with the "initialise locale
+- Disaster would ensue if the user tampered with the "initialise locale
 description rule", but nobody is likely to do this other than intentionally.
-(2) The "find notable locale objects rule" in fact only runs a further
+- The "find notable locale objects rule" in fact only runs a further
 activity, the "choosing notable locale objects" activity. The task here
 is to identify the objects which might by virtue of their location appear
 in the locale, and to assign each of them a priority number.
-(3) The "interesting locale paragraphs rule" goes through all of the
+- The "interesting locale paragraphs rule" goes through all of the
 notable objects chosen at stage (2), in order of priority, and offers each
 to yet another activity: the "printing a locale paragraph about" activity.
 This can either print a paragraph related to the item in question, or
 demote it as being not even nondescript (by changing its priority to 0).
 The default is to do nothing, in which case the item becomes nondescript.
-(4) The "you-can-also-see rule" prints what is, ordinarily, the final
+- The "you-can-also-see rule" prints what is, ordinarily, the final
 paragraph of the locale description, listing the nondescript items. It
 goes to some trouble to find out whether these all have a common object tree
 parent, listing them with "list contents of" if they do: this is so that
@@ -529,7 +533,7 @@ contents" activity will be going on. Provided that the notable objects
 chosen in (2) are all children of the locale domain, this will always
 happen. If the user should add rules to make quite different objects also
 notable, then the "you-can-also-see rule" has to resort to listing in
-a way which doesn't use the "listing contents" activity -- since the
+a way which doesn't use the "listing contents" activity — since the
 list is not in fact a list of the contents of anything.
 
 =
@@ -638,46 +642,47 @@ only if it is not "mentioned" already. This will happen if it has been
 named by a previous paragraph, but also if it has been explicitly marked
 as such to get rid of it. In considering an item, we have three basic
 options:
-(a) Print a paragraph about the item and mark it as mentioned -- this
+
+- Print a paragraph about the item and mark it as mentioned — this
 is good for interesting items deserving a paragraph of their own.
-(b) Print a paragraph, but do not mark it as mentioned -- this is only
+- Print a paragraph, but do not mark it as mentioned — this is only
 likely to be useful if we want to print information related to the
 item without mentioning the thing itself. (For instance, if the presence
 of a mysterious parcel resulted in a ticking noise, we could print a
 paragraph about the ticking noise without mentioning the parcel, which
 would then appear later.)
-(c) Mark the item as mentioned but print nothing -- this gets rid of the
+- Mark the item as mentioned but print nothing — this gets rid of the
 item, ensuring that it will not appear in the final "you can also see"
 sentence, and will not be considered by subsequent rules.
-(d) Do nothing at all -- the item then becomes "nondescript" and appears
+- Do nothing at all — the item then becomes "nondescript" and appears
 in the final "you can also see" sentence, unless somebody else mentions
 it in the mean time.
 
 Briefly, then, the following is the standard method:
 
-(1) The "don't mention player's supporter in room descriptions rule"
+- The "don't mention player's supporter in room descriptions rule"
 excludes anything the player is directly or indirectly standing on or,
 less frequently, in. The header of the room description has probably
 already said something like "Boudoir (on the four-poster bed)", so
 the player can't be unaware of this item.
-(2) The "don't mention scenery in room descriptions rule" excludes
+- The "don't mention scenery in room descriptions rule" excludes
 scenery.
-(3) The "don't mention undescribed items in room descriptions rule"
+- The "don't mention undescribed items in room descriptions rule"
 excludes the player object. (It's redundant to say "You can also see
 yourself here.") At present nothing else in I7 is "undescribed"
 in this sense.
-(4) The "set pronouns from items in room descriptions rule" adjusts
+- The "set pronouns from items in room descriptions rule" adjusts
 the meaning of pronouns like IT and HER to pick up items mentioned.
 Thus if a room description ends "Mme Tourmalet glares at you.", then
 HER would be adjusted to mean Mme Tourmalet.
-(5) The "offer items to writing a paragraph about rule" gives the
+- The "offer items to writing a paragraph about rule" gives the
 "printing a paragraph about" activity a chance to intervene. We detect
 whether it does intervene or not by looking to see if it has printed
 any text.
-(6) The "use initial appearance in room descriptions rule" uses the
+- The "use initial appearance in room descriptions rule" uses the
 initial appearance property of an object which has never been handled
 as a paragraph.
-(7) The "describe what's on scenery supporters in room descriptions rule"
+- The "describe what's on scenery supporters in room descriptions rule"
 is a somewhat controversial feature: whereas the rest of Inform's room
 description conventions are generally consensus, this one is much
 disliked by some users for its occasional inappropriateness. It prints

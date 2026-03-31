@@ -3,7 +3,7 @@
 To register the names associated with external files, and build
 the small I6 arrays associated with each.
 
-@ The test group |:files| exercises the features in this feature.
+@ The test group `:files` exercises the features in this feature.
 
 The following is called to activate the feature:
 
@@ -29,7 +29,7 @@ int ExternalFiles::production_line(int stage, int debugging,
 @h One special meaning.
 We add one special meaning for assertions, to catch sentences with the shape:
 
->> The File of Wisdom (owned by another project) is called "wisdom".
+> The File of Wisdom (owned by another project) is called "wisdom".
 
 =
 int ExternalFiles::make_special_meanings(void) {
@@ -226,7 +226,7 @@ by an unspecified other project, or by a project identified by its IFID.
 
 @h One significant kind.
 
-= (early code)
+@<Global multimedia variable definitions@> +=
 kind *K_external_file = NULL;
 
 @ =
@@ -241,17 +241,16 @@ int ExternalFiles::files_new_base_kind_notify(kind *new_base, text_stream *name,
 This structure of additional data is attached to each figure instance.
 
 =
-typedef struct files_data {
+classdef files_data {
 	struct wording name; /* text of name */
-	int unextended_filename; /* word number of text like |"bones"| */
+	int unextended_filename; /* word number of text like `"bones"` */
 	struct text_stream *exf_identifier; /* an Inter identifier */
 	int file_is_binary; /* true or false */
-	int file_ownership; /* one of the |OWNED_BY_*| values above */
+	int file_ownership; /* one of the `OWNED_BY_*` values above */
 	struct text_stream *IFID_of_owner; /* if we know that */
 	struct instance *as_instance;
 	struct parse_node *where_created;
-	CLASS_DEFINITION
-} files_data;
+}
 
 @ We allow instances of "external file" to be created only through the above
 code calling //Figures::figures_create//. If any other proposition somehow

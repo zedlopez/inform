@@ -88,7 +88,7 @@ While we could probably represent map knowledge using relation inferences
 in connection with the "mapped D of" relations, it's altogether easier and
 makes for more legible code if we use a special inference family of our own:
 
-= (early code)
+@<Global IF variable definitions@> +=
 inference_family *direction_inf = NULL; /* where do map connections from O lead? */
 
 @ =
@@ -98,11 +98,10 @@ void Map::create_inference(void) {
 	METHOD_ADD(direction_inf, COMPARE_INF_MTID, Map::cmp_direction_inf);
 }
 
-typedef struct direction_inference_data {
+classdef direction_inference_data {
 	struct inference_subject *to;
 	struct inference_subject *dir;
-	CLASS_DEFINITION
-} direction_inference_data;
+}
 
 inference *Map::new_direction_inference(inference_subject *infs_from,
 	inference_subject *infs_to, instance *o_dir) {
@@ -154,7 +153,7 @@ void Map::get_map_references(inference *i,
 @h Special kinds.
 It's obvious why the kinds direction and door are special.
 
-= (early code)
+@<Global IF variable definitions@> +=
 kind *K_direction = NULL;
 kind *K_door = NULL;
 
@@ -267,7 +266,7 @@ realised this:
 @d MAX_WORDS_IN_DIRECTION (MAX_WORDS_IN_ASSEMBLAGE - 4)
 
 @ When a new direction comes into existence (i.e., not when the underlying
-instance |I| is created, but when its kind is realised to be "direction"),
+instance `I` is created, but when its kind is realised to be "direction"),
 we will assign it a number:
 
 =
@@ -282,7 +281,7 @@ they have linguistic features not shared by lateral directions. "Above the
 garden is the treehouse", for instance, does not directly refer to either
 direction, but implies both.
 
-= (early code)
+@<Global IF variable definitions@> +=
 instance *I_up = NULL;
 instance *I_down = NULL;
 
@@ -340,7 +339,7 @@ profiling suggests that it really isn't.
 @d MAP_EXIT(X, Y) MAP_DATA(X)->exits[Y]
 
 =
-typedef struct map_data {
+classdef map_data {
 	/* these are meaningful for doors only */
 	struct instance *map_connection_a;
 	struct instance *map_connection_b;
@@ -355,9 +354,7 @@ typedef struct map_data {
 	/* these are meaningful for rooms only */
 	struct instance *exits[MAX_DIRECTIONS];
 	struct parse_node *exits_set_at[MAX_DIRECTIONS];
-
-	CLASS_DEFINITION
-} map_data;
+}
 
 @ =
 int Map::new_subject_notify(inference_subject *subj) {
@@ -383,7 +380,7 @@ These are property names to do with mapping which Inform provides special
 support for. Two are visible to I7 authors, and the others are low-level
 properties needed for the run-time implementation.
 
-= (early code)
+@<Global IF variable definitions@> +=
 property *P_other_side = NULL; /* a value property for the other side of a door */
 property *P_opposite = NULL; /* a value property for the reverse of a direction */
 
@@ -439,7 +436,7 @@ instance *Map::get_value_of_opposite_property(instance *I) {
 }
 
 @h The exits array.
-The bulk of the map is stored in the arrays called |exits|, which hold the
+The bulk of the map is stored in the arrays called `exits`, which hold the
 map connections fanning out from each room. The direction numbers carefully
 noted above are keys into these arrays.
 
@@ -477,15 +474,15 @@ void Map::build_exits_array(void) {
 }
 
 @h Door connectivity.
-We've seen how most of the map is represented, in the |exits| arrays. The
+We've seen how most of the map is represented, in the `exits` arrays. The
 missing information has to do with doors. If east of the Carousel Room is
-the oak door, then |Map_Storage| reveals only that fact, and not what's on
+the oak door, then `Map_Storage` reveals only that fact, and not what's on
 the other side of the door. This will eventually be compiled into the
-|door_to| property for the oak door object.
+`door_to` property for the oak door object.
 
 We would like to deduce from a sentence like
 
->> The other side of the iron door is the Black Holding Area.
+> The other side of the iron door is the Black Holding Area.
 
 that the "Black Holding Area" is a room; otherwise, if it has no map
 connections, Inform may well think it's just a thing. This is where that
@@ -533,7 +530,7 @@ int Map::act_on_special_NPs(parse_node *p) {
 
 @ Consider the sentences:
 
->> A dead end is a kind of room. The Pitch is a room. East is a dead end.
+> A dead end is a kind of room. The Pitch is a room. East is a dead end.
 
 Inform would ordinarily read the third sentence as saying that the "east"
 object (a direction) has kind "dead end", and would throw a problem message.
@@ -541,7 +538,7 @@ object (a direction) has kind "dead end", and would throw a problem message.
 What was actually meant, of course, is that a new instance of "dead end"
 exists to the east of the Pitch; in effect, we read it as:
 
->> Z is a dead end. East is Z.
+> Z is a dead end. East is Z.
 
 where Z is a newly created and nameless object.
 
@@ -574,7 +571,7 @@ int Map::intervene_in_assertion(parse_node *px, parse_node *py) {
 Now we come to the code which creates map connections. This needs special
 treatment only so that asserting $M(X, Y)$ also asserts $M'(Y, X)$, where
 $M'$ is the predicate for the opposite direction to $M$; but since this
-is only a guess, it drops from |CERTAIN_CE| to merely |LIKELY_CE|.
+is only a guess, it drops from `CERTAIN_CE` to merely `LIKELY_CE`.
 
 However, the map-connector can also run in one-way mode, where it doesn't
 make this guess; so we begin with switching in and out.
@@ -673,7 +670,7 @@ int Map::complete_model(int stage) {
 	return FALSE;
 }
 
-@ Every room has a |room_index| property. It has no meaningful contents at
+@ Every room has a `room_index` property. It has no meaningful contents at
 the start of play, and we initialise to $-1$ since this marks the route-finding
 cache as being broken. (Route-finding is one of the few really time-critical
 tasks at run-time, which is why we keep complicating the I7 code to
@@ -726,7 +723,7 @@ checks that various mapping impossibilities do not occur.
 			int connections_in = 0;
 			inference *inf;
 			parse_node *where[3];
-			where[0] = NULL; where[1] = NULL; where[2] = NULL; /* to placate |gcc| */
+			where[0] = NULL; where[1] = NULL; where[2] = NULL; /* to placate `gcc` */
 			inference *front_side_inf = NULL, *back_side_inf = NULL;
 			POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), direction_inf) {
 				inference_subject *infs1, *infs2;
@@ -873,7 +870,7 @@ model at run-time.) This is where we apply the kill-joy rule in question:
 				"between, but not in a third place altogether.");
 
 @ We don't need to do the following for two-sided doors since they will bypass
-the object tree and use I6's |found_in| to be present in both rooms connecting
+the object tree and use I6's `found_in` to be present in both rooms connecting
 to them.
 
 @<Place any one-sided door inside the room which connects to it@> =
@@ -912,21 +909,21 @@ trust that there is nothing surprising here.
 			}
 		}
 
-@ Here |found_in| is a two-entry list.
+@ Here `found_in` is a two-entry list.
 
 @<Assert found-in for a two-sided door@> =
 	parse_node *val = RTDoors::found_in_for_2_sided(I, R1, R2);
 	Map::set_found_in(I, val);
 
-@ Here |door_dir| is a routine looking at the current location and returning
-always the way to the other room -- the one we are not in.
+@ Here `door_dir` is a routine looking at the current location and returning
+always the way to the other room — the one we are not in.
 
 @<Assert door-dir for a two-sided door@> =
 	parse_node *val = RTDoors::door_dir_for_2_sided(I, R1, D1, D2);
 	ValueProperties::assert(P_door_dir, Instances::as_subject(I), val, CERTAIN_CE);
 
-@ Here |door_to| is a routine looking at the current location and returning
-always the other room -- the one we are not in.
+@ Here `door_to` is a routine looking at the current location and returning
+always the other room — the one we are not in.
 
 @<Assert door-to for a two-sided door@> =
 	parse_node *val = RTDoors::door_to_for_2_sided(I, R1, R2);
@@ -937,11 +934,11 @@ the Drainage Room contains a one-sided door called the iron grating, and
 the iron grating is east of the Drainage Room. To get through, the player
 will type EAST. But that means the iron grating has one exit, west to the
 Drainage Room; so Inform looks at this exit, reverses west to east, and
-compiles east into the |door_dir| property.
+compiles east into the `door_dir` property.
 
 As for what lies beyond the iron grating, that's stored in the "other side"
-property for the door; "other side" is an alias for |door_to|, which is
-why we don't need to compile |door_to| here.
+property for the door; "other side" is an alias for `door_to`, which is
+why we don't need to compile `door_to` here.
 
 @<Assert door-dir for a one-sided door@> =
 	instance *backwards = Map::get_value_of_opposite_property(D1);

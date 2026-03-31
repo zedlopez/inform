@@ -6,9 +6,9 @@ together with its major building blocks: modules and their submodules.
 @h Structure data.
 See //What This Module Does// for a description of the conventions set
 by the functions below. Our task in this section is basically to make
-|/main|, |/main/connectors| and |/main/architecture|, together with
-modules such as |/main/BasicInformKit|, and their submodules, such as
-|/main/BasicInformKit/activities|.
+`/main`, `/main/connectors` and `/main/architecture`, together with
+modules such as `/main/BasicInformKit`, and their submodules, such as
+`/main/BasicInformKit/activities`.
 
 =
 typedef struct site_structure_data {
@@ -26,7 +26,7 @@ typedef struct site_structure_data {
 	struct inter_bookmark package_types_bookmark;
 	struct inter_bookmark origins_bookmark;
 
-	struct dictionary *modules_indexed_by_name; /* of |module_request| */
+	struct dictionary *modules_indexed_by_name; /* of `module_request` */
 	
 	struct inter_symbol *text_literal_s;
 } site_structure_data;
@@ -54,14 +54,14 @@ void LargeScale::clear_site_data(inter_tree *I) {
 	B->strdata.text_literal_s = NULL;
 }
 
-@ The three special packages |main|, |connectors| and |architectural| will be
-created as needed. But we do not set the |main_package|, |connectors_package|
-or |architecture_package| fields when they are created: instead we set these
+@ The three special packages `main`, `connectors` and `architectural` will be
+created as needed. But we do not set the `main_package`, `connectors_package`
+or `architecture_package` fields when they are created: instead we set these
 fields whenever we detect that a package now exists with the relevant names.
 This is so that the fields are correctly set even when an Inter tree is being
 redd in from an external file, rather than only when created anew in memory.
 
-It follows that |main|, |connectors| and |architectural| are reserved package
+It follows that `main`, `connectors` and `architectural` are reserved package
 names, which cannot be used anywhere else in the tree.
 
 =
@@ -72,7 +72,7 @@ void LargeScale::note_package_name(inter_tree *I, inter_package *pack, text_stre
 }
 
 @h main.
-Here are functions to read |main|, possibly creating if necessary:
+Here are functions to read `main`, possibly creating if necessary:
 
 =
 inter_package *LargeScale::main_package_if_it_exists(inter_tree *I) {
@@ -175,12 +175,12 @@ package_request *LargeScale::architecture_request(inter_tree *I) {
 	return I->site.strdata.architecture_request;
 }
 
-@ There are two sorts of constant in |architectural|. One set is created only
-on demand: if you look for |#grammar_table| you will find it, but if you never
+@ There are two sorts of constant in `architectural`. One set is created only
+on demand: if you look for `#grammar_table` you will find it, but if you never
 look then it will never exist. These are used only for a handful of values
 which are redefined by the //final// code-generator anyway: here we define
-them as 0 -- meaninglessly, but they have to be set to something. They are
-not, in fact, all constants -- |self| is a variable at runtime -- but again,
+them as 0 — meaninglessly, but they have to be set to something. They are
+not, in fact, all constants — `self` is a variable at runtime — but again,
 it's for the code-generator to define them as it would like, on a platform
 by platform basis.
 
@@ -234,24 +234,24 @@ being compiled to. These always exist, and their values are known at compile tim
 
 They mostly have obvious meanings, but a few notes:
 
-(1) |WORDSIZE| is the number of bytes in a word.
+- `WORDSIZE` is the number of bytes in a word.
 
-(2) |NULL|, in our runtime, is -1, and not 0 as it would be in C.
+- `NULL`, in our runtime, is -1, and not 0 as it would be in C.
 
-(3) |IMPROBABLE_VALUE| is one which is unlikely even if possible to be a
+- `IMPROBABLE_VALUE` is one which is unlikely even if possible to be a
 genuine I7 value. The efficiency of runtime code handling tables depends on
 how well chosen this is: it would ran badly if we chose 1, for instance.
 
-(4) Exactly one of the symbols |TARGET_ZCODE| or |TARGET_GLULX| is defined,
+- Exactly one of the symbols `TARGET_ZCODE` or `TARGET_GLULX` is defined,
 and given the notional value 1, though its only purpose is to enable conditional
 compilation to work (see //pipeline: Resolve Conditional Compilation Stage//);
 so its importance is whether or not it is defined, not what value it has. Note
 that these names are now a little anachronistic, and they should perhaps be
-renamed |TARGET_16BIT| and |TARGET_32BIT| respectively. For example, C code
-can happily be generated from an Inter tree containing |TARGET_GLULX|, even
+renamed `TARGET_16BIT` and `TARGET_32BIT` respectively. For example, C code
+can happily be generated from an Inter tree containing `TARGET_GLULX`, even
 though that code will never produce a program running on the Glulx VM.
 
-(5) And similarly for |DEBUG|, which again exists to enable conditional
+- And similarly for `DEBUG`, which again exists to enable conditional
 compilation when building kits.
 
 =
@@ -321,7 +321,7 @@ inter_symbol *LargeScale::arch_constant_signed(inter_tree *I, text_stream *N,
 }
 
 @ This falls back on the main package, but really, should be used only for
-things which ought to be in |architectural|:
+things which ought to be in `architectural`:
 
 =
 inter_symbol *LargeScale::architectural_symbol(inter_tree *I, text_stream *name) {
@@ -339,14 +339,13 @@ Modules are identified by name, and each one produces an instance of the
 following.
 
 =
-typedef struct module_request {
+classdef module_request {
 	struct package_request *where_found;
-	struct linked_list *submodules; /* of |submodule_request| */
-	CLASS_DEFINITION
-} module_request;
+	struct linked_list *submodules; /* of `submodule_request` */
+}
 
 @ The tree's module dictionary is used to ensure that repeated calls with the
-same module name return the same |module_request|.
+same module name return the same `module_request`.
 
 =
 module_request *LargeScale::module_request(inter_tree *I, text_stream *name) {
@@ -367,18 +366,17 @@ module_request *LargeScale::module_request(inter_tree *I, text_stream *name) {
 @h Submodules.
 The idea here is that each module could define, say, some variables, placing
 them in a submodule for that purpose. As a result, there will be a "variables only"
-submodule found in several modules. Such flavours of submodule are preset --
+submodule found in several modules. Such flavours of submodule are preset —
 we allow only a few of these: see //runtime: Hierarchy// for the set used by
-//inform7// -- and they must be specified in advance of use, with the following.
+//inform7// — and they must be specified in advance of use, with the following.
 
-For the moment, at least, |submodule_identity| is really just a textual name
-like |variables| but in a fancy wrapper.
+For the moment, at least, `submodule_identity` is really just a textual name
+like `variables` but in a fancy wrapper.
 
 =
-typedef struct submodule_identity {
+classdef submodule_identity {
 	struct text_stream *submodule_name;
-	CLASS_DEFINITION
-} submodule_identity;
+}
 
 submodule_identity *LargeScale::register_submodule_identity(text_stream *name) {
 	submodule_identity *sid;
@@ -409,11 +407,10 @@ package_request *LargeScale::completion_submodule(inter_tree *I, submodule_ident
 @ Those in turn all make use of this back-end function:
 
 =
-typedef struct submodule_request {
+classdef submodule_request {
 	struct package_request *where_found;
 	struct submodule_identity *which_submodule;
-	CLASS_DEFINITION
-} submodule_request;
+}
 
 package_request *LargeScale::request_submodule_of(inter_tree *I, module_request *M,
 	submodule_identity *sid) {
@@ -448,7 +445,7 @@ void LargeScale::emit_origin(inter_tree *I, inter_symbol *origin, text_stream *f
 }
 
 @h Package types.
-Or indeed here. Package types are created on request; looking for |_octopus|
+Or indeed here. Package types are created on request; looking for `_octopus`
 would create it if it didn't already exist. So although the Inform tools do
 use a conventional set of package types, they are not itemised here.
 
@@ -459,9 +456,9 @@ package refers to a literal piece of text, then the necessary Inter array
 holding that text must also be somewhere in the package.
 
 It seems tidy to make all packages enclosing, and in fact (after much
-experiment) Inform nearly does that. But |_code| packages have to be an
+experiment) Inform nearly does that. But `_code` packages have to be an
 exception, because the Inter specification doesn't allow constants (and
-therefore arrays) to be defined inside |_code| packages. This is where that
+therefore arrays) to be defined inside `_code` packages. This is where that
 exception is made.
 
 =
@@ -484,8 +481,8 @@ int LargeScale::package_type_enclosing(inter_symbol *ptype) {
 
 @h Outside the packages.
 The Inter specification calls for just a handful of resources to be placed
-at the top level, outside even the |main| package. Using bubbles, we leave
-room to insert those resources, then incarnate |main| and enter it.
+at the top level, outside even the `main` package. Using bubbles, we leave
+room to insert those resources, then incarnate `main` and enter it.
 
 =
 void LargeScale::begin_new_tree(inter_tree *I) {
@@ -513,7 +510,7 @@ void LargeScale::begin_new_tree(inter_tree *I) {
 @h Convenient types.
 This structure is used for text literals, which are two-word data structures.
 The necessary typename is created on demand: this amounts to writing
-|typename text_literal struct int32 unchecked|.
+`typename text_literal struct int32 unchecked`.
 
 =
 inter_type LargeScale::text_literal_type(inter_tree *I) {

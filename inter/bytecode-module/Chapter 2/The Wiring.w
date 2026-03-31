@@ -8,10 +8,11 @@ even to packages in trees not yet loaded in.
 in another. Since meanings are defined by symbols, this is done by allowing a
 symbol in one package to connect to a symbol in the other.
 
-For example, suppose the variable |draconia| is defined in package |Y|, but
-needs to be referred to in |X|. Then |X| will also contain a symbol |draconia|,
-but rather than being defined there, it is wired to the one in |Y|:
-= (text)
+For example, suppose the variable `draconia` is defined in package `Y`, but
+needs to be referred to in `X`. Then `X` will also contain a symbol `draconia`,
+but rather than being defined there, it is wired to the one in `Y`:
+
+``` BoxArt
     +-----------------+        +-------------------------------+
     | Package X       |        | Package Y                     |
     |                 |        |                               |
@@ -24,8 +25,9 @@ but rather than being defined there, it is wired to the one in |Y|:
 	|                 |   |
     | draconia ~~~~~~~~~~~/
     +-----------------+
-=
-We write |A ~~> B| as a picturesque notation; the wiring is supposed to look
+```
+
+We write `A ~~> B` as a picturesque notation; the wiring is supposed to look
 coiled, or something like that. As this diagram shows, it can happen that more
 than one symbol is wired to the same destination; but each individual symbol
 can wire to at most one other.
@@ -45,7 +47,7 @@ wiring_data Wiring::new_wiring_data(inter_symbol *S) {
 	return wd;
 }
 
-@ If |A ~~> B| then |A| is said to be "wired", and |B| is what it is wired to.
+@ If `A ~~> B` then `A` is said to be "wired", and `B` is what it is wired to.
 
 =
 int Wiring::is_wired(inter_symbol *S) {
@@ -58,12 +60,12 @@ inter_symbol *Wiring::wired_to(inter_symbol *S) {
 	return NULL;
 }
 
-@ This metaphor only goes so far: wiring is directional -- if A is wired to B then
+@ This metaphor only goes so far: wiring is directional — if A is wired to B then
 B is not by virtue of that wired to A; and indeed, circuits are forbidden.
 
 Nevertheless it does happen that we have a sequence of symbols each wired to
-the next: |A ~~> B ~~> C ~~> ... ~~> X|. Following such cables, we must always
-reach an end. On all these symbols, //Wiring::cable_end// returns |X|.
+the next: `A ~~> B ~~> C ~~> ... ~~> X`. Following such cables, we must always
+reach an end. On all these symbols, //Wiring::cable_end// returns `X`.
 
 =
 inter_symbol *Wiring::cable_end(inter_symbol *S) {
@@ -72,9 +74,9 @@ inter_symbol *Wiring::cable_end(inter_symbol *S) {
 }
 
 @ In general, we have no means of following wiring backwards: that is, given
-|B|, we cannot easily find all the |A| such that |A ~~> B|. What we can do is
-to say how many such |A| exist, and it's useful to know when this count is 0,
-because then we may be able safely to delete |B| as no longer needed.
+`B`, we cannot easily find all the `A` such that `A ~~> B`. What we can do is
+to say how many such `A` exist, and it's useful to know when this count is 0,
+because then we may be able safely to delete `B` as no longer needed.
 
 =
 int Wiring::has_no_incoming_connections(inter_symbol *S) {
@@ -89,7 +91,7 @@ Metadata constants cannot be wired (or wired to), because they by definition
 describe content in the current package. They are self-contained, and the meaning
 of the program must not be changed by their removal.
 
-Note that |S| may be unwired by calling |Wiring::wire_to(S, NULL)|.
+Note that `S` may be unwired by calling `Wiring::wire_to(S, NULL)`.
 
 =
 void Wiring::wire_to(inter_symbol *S, inter_symbol *T) {
@@ -136,10 +138,10 @@ plenty here.
 			internal_error("made a circuit in wiring");
 		}
 
-@ If we do have a cable |A ~~> B ~~> ... ~~> X|, we can "shorten" this from |A|
-by making |A ~~> X| directly. It will still be the case that |B ~~> ... ~~> X|,
-of course. Assuming |B| is not |X|, the incoming count for |B| will decrement
-and that for |X| increment.
+@ If we do have a cable `A ~~> B ~~> ... ~~> X`, we can "shorten" this from `A`
+by making `A ~~> X` directly. It will still be the case that `B ~~> ... ~~> X`,
+of course. Assuming `B` is not `X`, the incoming count for `B` will decrement
+and that for `X` increment.
 
 =
 void Wiring::shorten_wiring(inter_symbol *S) {
@@ -149,10 +151,10 @@ void Wiring::shorten_wiring(inter_symbol *S) {
 
 @h Wiring to names.
 It is also possible to say that a symbol has a meaning whose location is not
-yet known -- we can't have |A ~~> B| because we don't know where |B| is, and
+yet known — we can't have `A ~~> B` because we don't know where `B` is, and
 maybe it does not even exist yet. All we know is that it will have a given
-name, |T|. In this case, we write |A ~~> "ogron"| to say that |A| should one
-day be wired to a |B| called |"ogron"|.
+name, `T`. In this case, we write `A ~~> "ogron"` to say that `A` should one
+day be wired to a `B` called `"ogron"`.
 
 This is used mainly for plugs (see below), but also as a convenience when
 reading Inter files in text format, since it enables forward references to be
@@ -178,28 +180,30 @@ text_stream *Wiring::wired_to_name(inter_symbol *S) {
 }
 
 @h Plugs and sockets.
-Now suppose a symbol in package |X| wants to refer to a meaning which
+Now suppose a symbol in package `X` wants to refer to a meaning which
 does not yet exist, and will in fact never exist in the current tree. (It will
 be linked in from another tree later on.) For example, perhaps Inform 7 is
-compiling a function body which needs to refer to |CreatePV|, a function
+compiling a function body which needs to refer to `CreatePV`, a function
 in BasicInformKit.
 
-This is done by having |CreatePV| in |X| wire to a special symbol called
-a "plug" in a special package of the tree at |/main/connectors|.
+This is done by having `CreatePV` in `X` wire to a special symbol called
+a "plug" in a special package of the tree at `/main/connectors`.
 (See //building: Large-Scale Structure// for more on this package.) That plug
-is left dangling, in the sense that it is wired to the name |"CreatePV"|,
+is left dangling, in the sense that it is wired to the name `"CreatePV"`,
 but that this name is unresolved.
-= (text)
+
+``` BoxArt
 	MAIN TREE
     +-----------------+      +--------------------------+
     | Package X       |      | Package /main/connectors |
     |                 |      |                          |
     | CreatePV ~~~~~~~~~~~~~~~> _plug_BlkValueCreate ~~~~~~~> "CreatePV"
     +-----------------+      +--------------------------+
-=
+```
 
 Meanwhile, suppose a second tree holds //BasicInformKit//. This looks like so:
-= (text)
+
+``` BoxArt
 	BASICINFORMKIT TREE
     +-------------------+      +--------------------------+
     | Package Y         |      | Package /main/connectors |
@@ -211,23 +215,25 @@ Meanwhile, suppose a second tree holds //BasicInformKit//. This looks like so:
     | function defn     |
     | of SecretFunction |
     +-------------------+
-=
-Package |Y| in this tree holds two function definitions, let's say: |CreatePV|
-and |SecretFunction|. The latter is private to BasicInformKit, in that the linking
+```
+
+Package `Y` in this tree holds two function definitions, let's say: `CreatePV`
+and `SecretFunction`. The latter is private to BasicInformKit, in that the linking
 process in //pipeline// does not allow symbols in other trees to be wired to it.
-But |CreatePV| is available. That is because the BasicInformKit provides
+But `CreatePV` is available. That is because the BasicInformKit provides
 a "socket" to it.
 
-Sockets, like plugs, live only in the |/main/connectors| package of a tree.
+Sockets, like plugs, live only in the `/main/connectors` package of a tree.
 A typical tree will have both plugs and sockets; note that no plug will ever
-have the same symbol name as any socket, because all plug names begin |_plug_...|
+have the same symbol name as any socket, because all plug names begin `_plug_...`
 and no socket names do.
 
 @ The point of this is that after //Transmigration// there will be a single
 tree like so, which has merged the connectors from the two original trees,
-and which now contains both |X| and |Y|. We can npw connect the plug
-|_plug_BlkValueCreate| with the socket |CreatePV|:
-= (text)
+and which now contains both `X` and `Y`. We can npw connect the plug
+`_plug_BlkValueCreate` with the socket `CreatePV`:
+
+``` BoxArt
 .. MERGED TREE ................................................
 .  +-----------------+      +--------------------------+      .
 .  | Package X       |      | Package /main/connectors |      .
@@ -243,33 +249,34 @@ and which now contains both |X| and |Y|. We can npw connect the plug
 .  | function defn   |                                        .
 .  +-----------------+                                        .
 ...............................................................                                                         
-=
-The cable end from |CreatePV| in |X| is indeed the definition in |Y|,
+```
+
+The cable end from `CreatePV` in `X` is indeed the definition in `Y`,
 and all is well.
 
-Some sockets may never be used -- that would be a situation where one tree
+Some sockets may never be used — that would be a situation where one tree
 offers a meaning as being available to other trees, but where nobody takes
 up the offer. The only essential thing is that all plugs must find a socket.
 
 @ Note the following consequences of this design:
 
-(*) Every socket is always wired.
-(*) Every plug is either wired to a socket, or to a name, in the hope that
+- Every socket is always wired.
+- Every plug is either wired to a socket, or to a name, in the hope that
 it will one day be wired to a socket of that name.
-(*) All uses of, say, |CreatePV| in the main tree are wired to a single
-plug in its |/main/connectors| package.
-(*) By looking at the incoming count of a plug or socket, we can see if it is
-still needed -- if the count falls to 0, it is not.
-(*) Connecting plugs to sockets is relatively fast, because only one package's
-symbols table needs to be searched -- |/main/connectors|.
-(*) Each tree can offer any number of meanings to other trees, but they are
+- All uses of, say, `CreatePV` in the main tree are wired to a single
+plug in its `/main/connectors` package.
+- By looking at the incoming count of a plug or socket, we can see if it is
+still needed — if the count falls to 0, it is not.
+- Connecting plugs to sockets is relatively fast, because only one package's
+symbols table needs to be searched — `/main/connectors`.
+- Each tree can offer any number of meanings to other trees, but they are
 identified by name only. If two packages in a tree both define functions called
-|hulke|, then they cannot both be "exported" in this way, because the connectors
-package can only contain one socket with the name |hulke|.
-(*) But the flip side of that is that a tree wanting a meaning in some other
+`hulke`, then they cannot both be "exported" in this way, because the connectors
+package can only contain one socket with the name `hulke`.
+- But the flip side of that is that a tree wanting a meaning in some other
 tree does not need to know the Inter hierarchy structure of that other tree,
 or even its identity. This is a little like linking functions in C: a file
-of object code can refer to |mystery_distant_function()| without any idea of
+of object code can refer to `mystery_distant_function()` without any idea of
 where that will come from.
 
 @ To start with something simple: finding if a tree has a socket with a given
@@ -286,13 +293,13 @@ inter_symbol *Wiring::find_socket(inter_tree *I, text_stream *name) {
 	return NULL;
 }
 
-@ Now suppose our tree defines a meaning with a symbol |defn|, and we want to
+@ Now suppose our tree defines a meaning with a symbol `defn`, and we want to
 offer that for the potential use of other trees. We call this function to create
-a socket for it: the return value is a socket |S| for which |S ~~> defn|.
+a socket for it: the return value is a socket `S` for which `S ~~> defn`.
 
-It is legal to call this more than once on the same |defn| and the same |name|,
+It is legal to call this more than once on the same `defn` and the same `name`,
 in which case the second time does nothing, but it is an error to inconsistently
-claim that |name| means two different symbols.
+claim that `name` means two different symbols.
 
 Note that during //Transmigration// there is a brief period when a socket in
 one tree is wired to a socket in another; this is the only time a socket can
@@ -385,7 +392,7 @@ void Wiring::make_plug_wanting_identifier(inter_symbol *S, text_stream *wanted) 
 	InterSymbol::make_plug(S);
 }
 
-@ An unwired plug -- i.e., wired to a name but not to an actual symbol -- is
+@ An unwired plug — i.e., wired to a name but not to an actual symbol — is
 said to be "loose".
 
 =

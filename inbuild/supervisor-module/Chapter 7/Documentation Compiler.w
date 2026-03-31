@@ -3,7 +3,7 @@
 To compile documentation from the textual syntax in an extension into a tree.
 
 @ A single set of documentation, such as might be associated with a project,
-a tool or an extension or kit, is represented by a |compiled_documentation|
+a tool or an extension or kit, is represented by a `compiled_documentation`
 object. This section provides just three public functions, for the three
 ways to make one of these.
 
@@ -58,20 +58,20 @@ compiled_documentation *DocumentationCompiler::compile_from_path(pathname *P,
 @d GENERAL_INDEX 3
 
 =
-typedef struct compiled_documentation {
+classdef compiled_documentation {
 	struct text_stream *title;
 
 	struct inform_extension *associated_extension; /* if an extension */
 	struct inform_extension *within_extension; /* if a kit inside an extension */
 
 	struct pathname *domain; /* where the documentation source is */
-	struct linked_list *source_files; /* of |cd_source_file| */
-	struct linked_list *layout_errors; /* of |cd_layout_error| */
-	struct linked_list *images; /* of |cd_image| */
+	struct linked_list *source_files; /* of `cd_source_file` */
+	struct linked_list *layout_errors; /* of `cd_layout_error` */
+	struct linked_list *images; /* of `cd_image` */
 	struct text_stream *images_URL;
 	int compiled_from_extension_scrap;
 
-	struct linked_list *volumes; /* of |cd_volume| */
+	struct linked_list *volumes; /* of `cd_volume` */
 	struct text_stream *contents_URL_pattern;
 	int duplex_contents_page;
 	struct text_stream *xrefs_file_pattern;
@@ -81,30 +81,27 @@ typedef struct compiled_documentation {
 	struct md_links_dictionary *link_references;
 	int empty;
 
-	struct linked_list *examples; /* of |IFM_example| */
+	struct linked_list *examples; /* of `IFM_example` */
 	struct text_stream *example_URL_pattern;
 	int examples_lettered; /* the alternative being, numbered */
-	struct linked_list *cases; /* of |satellite_test_case| */
+	struct linked_list *cases; /* of `satellite_test_case` */
 
 	int include_index[NO_CD_INDEXES];
 	struct text_stream *index_title[NO_CD_INDEXES];
 	struct text_stream *index_URL_pattern[NO_CD_INDEXES];
 
 	struct cd_indexing_data id; /* for indexing the volumes in this cd */
-
-	CLASS_DEFINITION
-} compiled_documentation;
+}
 
 @ "Source files" are individual files of Markdown content which are collectively
 read to compile the volumes of documentation.
 
 =
-typedef struct cd_source_file {
+classdef cd_source_file {
 	struct text_stream *leafname;
 	struct filename *as_filename;
 	int used; /* did the layout file for this cd account for this file? */
-	CLASS_DEFINITION
-} cd_source_file;
+}
 
 @ A cd contains one or more "volumes". For something simple like an extension,
 there will usually just be one volume, with the same title as the whole cd.
@@ -112,15 +109,14 @@ For the Inform manual built in to the apps, there will be two volumes,
 "Writing with Inform" and "The Recipe Book".
 
 =
-typedef struct cd_volume {
+classdef cd_volume {
 	struct text_stream *title;
 	struct text_stream *label;
 	struct text_stream *home_URL;
 	struct linked_list *source_files; /* Markdown source leafnames */
-	struct linked_list *pagesets; /* of |cd_pageset| */
+	struct linked_list *pagesets; /* of `cd_pageset` */
 	struct markdown_item *volume_item;
-	CLASS_DEFINITION
-} cd_volume;
+}
 
 cd_volume *DocumentationCompiler::add_volume(compiled_documentation *cd, text_stream *title,
 	text_stream *label, text_stream *home_URL) {
@@ -172,13 +168,12 @@ chapter or section structure:
 @e CHAPTER_PAGESETBREAKING
 
 =
-typedef struct cd_pageset {
+classdef cd_pageset {
 	struct text_stream *source_specification;
 	struct text_stream *page_specification;
 	struct text_stream *nonfile_content;
 	int breaking;
-	CLASS_DEFINITION
-} cd_pageset;
+}
 
 cd_pageset *DocumentationCompiler::add_page(cd_volume *vol, text_stream *src, text_stream *dest,
 	int breaking) {
@@ -195,12 +190,11 @@ cd_pageset *DocumentationCompiler::add_page(cd_volume *vol, text_stream *src, te
 syntax errors or asks for something ambiguous or impossible:
 
 =
-typedef struct cd_layout_error {
+classdef cd_layout_error {
 	struct text_stream *message;
 	struct text_stream *line;
 	int line_number;
-	CLASS_DEFINITION
-} cd_layout_error;
+}
 
 void DocumentationCompiler::layout_error(compiled_documentation *cd,
 	text_stream *msg, text_stream *line, text_file_position *tfp) {
@@ -261,14 +255,13 @@ int DocumentationCompiler::scold(OUTPUT_STREAM, compiled_documentation *cd) {
 @ "Images" are image files, that is, pictures.
 
 =
-typedef struct cd_image {
+classdef cd_image {
 	struct filename *source;
 	struct text_stream *final_leafname;
 	struct text_stream *prefix;
 	struct text_stream *correct_URL;
 	int used;
-	CLASS_DEFINITION
-} cd_image;
+}
 
 void DocumentationCompiler::add_images(compiled_documentation *cd, pathname *figures,
 	text_stream *prefix) {
@@ -646,9 +639,9 @@ void DocumentationCompiler::read_sitemap_helper(text_stream *cl, text_file_posit
 cases, all of which are tested when an extension (say) is tested.
 
 =
-typedef struct satellite_test_case {
+classdef satellite_test_case {
 	int is_example;
-	struct IFM_example *as_example; /* or |NULL| for a test case which is not an example */
+	struct IFM_example *as_example; /* or `NULL` for a test case which is not an example */
 	struct text_stream *owning_heading;
 	struct tree_node *owning_node;
 	struct compiled_documentation *owner;
@@ -656,11 +649,10 @@ typedef struct satellite_test_case {
 	struct filename *test_file;
 	struct filename *ideal_transcript;
 	struct text_stream *visible_documentation;
-	struct linked_list *example_errors; /* of |markdown_item| */
+	struct linked_list *example_errors; /* of `markdown_item` */
 	struct markdown_item *primary_placement;
 	struct markdown_item *secondary_placement;
-	CLASS_DEFINITION
-} satellite_test_case;
+}
 
 satellite_test_case *DocumentationCompiler::new_satellite(compiled_documentation *cd,
 	int is_eg, text_stream *short_name, filename *F) {
@@ -686,8 +678,8 @@ satellite_test_case *DocumentationCompiler::new_satellite(compiled_documentation
 	return stc;
 }
 
-@ Satellites for a cd consist of examples in the |Examples| subdirectory and
-tests in the |Tests| one.
+@ Satellites for a cd consist of examples in the `Examples` subdirectory and
+tests in the `Tests` one.
 
 =
 int DocumentationCompiler::detect_satellites(compiled_documentation *cd) {
@@ -742,7 +734,7 @@ typedef struct example_scanning_state {
 	struct text_stream *subtitle;
 	struct text_stream *index;
 	struct text_stream *desc;
-	struct linked_list *errors; /* of |markdown_item| */
+	struct linked_list *errors; /* of `markdown_item` */
 	struct text_stream *scanning;
 	int past_header;
 } example_scanning_state;
@@ -975,7 +967,7 @@ void DocumentationCompiler::recursively_renumber_examples_r(markdown_item *md,
 		DocumentationCompiler::recursively_renumber_examples_r(ch, example_number, lettered);
 }
 
-@ We are finally in a position to write |DocumentationCompiler::compile_inner|,
+@ We are finally in a position to write `DocumentationCompiler::compile_inner`,
 the function which all cd compilations funnel through.
 
 What makes this such a complicated dance is that we need to perform Phase I
@@ -1017,7 +1009,7 @@ void DocumentationCompiler::compile_inner(compiled_documentation *cd) {
 }
 
 @ In addition to regular Phase I parsing of the content in the volumes, we
-want to insert |VOLUME_MIT| and |FILE_MIT| items into the tree to mark where
+want to insert `VOLUME_MIT` and `FILE_MIT` items into the tree to mark where
 new files and volumes begin.
 
 =

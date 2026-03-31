@@ -18,7 +18,7 @@ GIF for bitmap graphics, and so on.
 @ Main variables:
 
 =
-int total_size_of_Blorb_chunks = 0; /* ditto, but not counting the |FORM| header or the |RIdx| chunk */
+int total_size_of_Blorb_chunks = 0; /* ditto, but not counting the `FORM` header or the `RIdx` chunk */
 int no_indexed_chunks = 0;
 
 @ As we shall see, chunks can be used for everything from a few words of
@@ -26,15 +26,15 @@ copyright text to 100MB of uncompressed choral music.
 
 Our IFF file will consist of a front part and then the chunks, one after
 another, in order of their creation. Every chunk has a type, a 4-character ID
-like |"AUTH"| or |"JPEG"|, specifying what kind of data it holds; some
+like `"AUTH"` or `"JPEG"`, specifying what kind of data it holds; some
 chunks are also given resource numbers which allow the story file to refer
-to them as it runs -- the pictures, sound effects and the story file itself
+to them as it runs — the pictures, sound effects and the story file itself
 all have unique resource numbers. (These are called "indexed", because
-references to them appear in a special |RIdx| record in the front part
-of the file -- the "resource index".)
+references to them appear in a special `RIdx` record in the front part
+of the file — the "resource index".)
 
 =
-typedef struct chunk_metadata {
+classdef chunk_metadata {
 	struct filename *chunk_file; /* if the content is stored on disc */
 	unsigned char *data_in_memory; /* if the content is stored in memory */
 	int length_of_data_in_memory; /* in bytes; or $-1$ if the content is stored on disc */
@@ -43,33 +43,30 @@ typedef struct chunk_metadata {
 	int resource_id; /* meaningful only if this is a chunk which is indexed */
 	int byte_offset; /* from the start of the chunks, which is not quite the start of the IFF file */
 	int size; /* in bytes */
-	CLASS_DEFINITION
-} chunk_metadata;
+}
 
 @ It is not legal to have two or more Snd resources with the same number.  The
 same goes for Pict resources.  These two linked lists are used to store all the
 resource numbers encountered.
 
 =
-typedef struct resource_number {
+classdef resource_number {
 	int num;
-	CLASS_DEFINITION
-} resource_number;
+}
 
-linked_list *sound_resource = NULL; /* of |resource_number| */
-linked_list *pict_resource = NULL; /* of |resource_number| */
-linked_list *data_resource = NULL; /* of |resource_number| */
+linked_list *sound_resource = NULL; /* of `resource_number` */
+linked_list *pict_resource = NULL; /* of `resource_number` */
+linked_list *data_resource = NULL; /* of `resource_number` */
 
 @ And this is used to record alt-descriptions of resources, for the benefit
 of partially sighted or deaf users:
 
 =
-typedef struct rdes_record {
+classdef rdes_record {
 	int usage;
 	int resource_id;
 	char *description;
-	CLASS_DEFINITION
-} rdes_record;
+}
 
 @h Big-endian integers.
 IFF files use big-endian integers, whereas Inblorb might or might not
@@ -110,9 +107,9 @@ void Writer::s_one_byte(unsigned char *F, int n) {
 }
 
 @h Chunks.
-Although chunks can be written in a nested way -- that's the whole point
-of IFF, in fact -- we will always be writing a very flat structure, in
-which a single enclosing chunk (|FORM|) contains a sequence of chunks
+Although chunks can be written in a nested way — that's the whole point
+of IFF, in fact — we will always be writing a very flat structure, in
+which a single enclosing chunk (`FORM`) contains a sequence of chunks
 with no further chunks inside.
 
 =
@@ -120,7 +117,7 @@ chunk_metadata *current_chunk = NULL;
 
 @ Each chunk is "added" in one of two ways. Either we supply a filename
 for an existing binary file on disc which will hold the data we want to
-write, or we supply a |NULL| filename and a |data| pointer to |length|
+write, or we supply a `NULL` filename and a `data` pointer to `length`
 bytes in memory.
 
 =
@@ -172,8 +169,8 @@ void Writer::add_chunk_to_blorb(char *id, int resource_num, filename *supplied_f
 		size += 8; /* allow 8 further bytes for the chunk header to be added later */
     current_chunk->size = size;
 
-@ Note the adjustment of |total_size_of_Blorb_chunks| so as to align the next
-chunk's position at a two-byte boundary -- this betrays IFF's origin in the
+@ Note the adjustment of `total_size_of_Blorb_chunks` so as to align the next
+chunk's position at a two-byte boundary — this betrays IFF's origin in the
 16-bit world of the mid-1980s. Today's formats would likely align at four, eight
 or even sixteen-byte boundaries.
 
@@ -186,8 +183,8 @@ We will generate only the following chunks with the above apparatus. The full
 Blorb specification does include others, but Inform doesn't need them.
 
 The weasel words "with the above..." are because we will also generate two
-chunks separately: the compulsory |"FORM"| chunk enclosing the entire Blorb, and
-an indexing chunk, |"RIdx"|. Within this index, some chunks appear, but not
+chunks separately: the compulsory `"FORM"` chunk enclosing the entire Blorb, and
+an indexing chunk, `"RIdx"`. Within this index, some chunks appear, but not
 others, and they are labelled with the "index entry" text.
 
 =
@@ -251,7 +248,7 @@ int Writer::chunk_type_is_already_an_IFF(char *type) {
 	return FALSE;
 }
 
-@ |"AUTH"|: author's name, as a null-terminated string.
+@ `"AUTH"`: author's name, as a null-terminated string.
 
 =
 void Writer::author_chunk(text_stream *t) {
@@ -259,7 +256,7 @@ void Writer::author_chunk(text_stream *t) {
     Writer::add_chunk_to_blorb("AUTH", 0, NULL, NULL, (unsigned char *) t, Str::len(t));
 }
 
-@ |"(c) "|: copyright declaration.
+@ `"(c) "`: copyright declaration.
 
 =
 void Writer::copyright_chunk(text_stream *t) {
@@ -267,7 +264,7 @@ void Writer::copyright_chunk(text_stream *t) {
     Writer::add_chunk_to_blorb("(c) ", 0, NULL, NULL, (unsigned char *) t, Str::len(t));
 }
 
-@ |"Fspc"|: frontispiece image ID number -- which picture resource provides
+@ `"Fspc"`: frontispiece image ID number — which picture resource provides
 cover art, in other words.
 
 =
@@ -278,7 +275,7 @@ void Writer::frontispiece_chunk(int pn) {
     Writer::add_chunk_to_blorb("Fspc", 0, NULL, NULL, data, 4);
 }
 
-@ |"RelN"|: release number.
+@ `"RelN"`: release number.
 
 =
 void Writer::release_chunk(int rn) {
@@ -288,7 +285,7 @@ void Writer::release_chunk(int rn) {
     Writer::add_chunk_to_blorb("RelN", 0, NULL, NULL, data, 2);
 }
 
-@ |"Pict"|: a picture, or image. This must be available as a binary file on
+@ `"Pict"`: a picture, or image. This must be available as a binary file on
 disc, and in a format which Blorb allows: for Inform 7 use, this will always
 be PNG or JPEG. There can be any number of these chunks.
 
@@ -316,10 +313,10 @@ void Writer::picture_chunk(int n, filename *fn, text_stream *alt) {
 	no_pictures_included++;
 }
 
-@ For images identified by name. The older Blorb creation program, |perlBlorb|,
+@ For images identified by name. The older Blorb creation program, `perlBlorb`,
 would emit helpful I6 constant declarations, allowing the programmer to
-include these an I6 source file and then write, say, |PlaySound(SOUND_Boom)|
-rather than |PlaySound(5)|. (Whenever the Blurb file is changed, the constants
+include these an I6 source file and then write, say, `PlaySound(SOUND_Boom)`
+rather than `PlaySound(5)`. (Whenever the Blurb file is changed, the constants
 must be included again.)
 
 =
@@ -333,7 +330,7 @@ void Writer::picture_chunk_text(text_stream *name, filename *F) {
 	Writer::picture_chunk(picture_resource_num, F, I"");
 }
 
-@ |"Snd "|: a sound effect. This must be available as a binary file on
+@ `"Snd "`: a sound effect. This must be available as a binary file on
 disc, and in a format which Blorb allows: for Inform 7 use, this is officially
 Ogg Vorbis or AIFF at present, but there has been repeated discussion about
 adding MOD ("SoundTracker") or MIDI files, so both are supported here.
@@ -409,7 +406,7 @@ void Writer::data_chunk_text(text_stream *name, filename *F, text_stream *format
 	Writer::data_chunk(data_file_resource_num, F, format);
 }
 
-@ |"RDes"|: the resource description, a repository for alt-texts describing
+@ `"RDes"`: the resource description, a repository for alt-texts describing
 images or sounds.
 
 =
@@ -445,7 +442,15 @@ void Writer::rdes_chunk(void) {
 	}
 }
 
-@ |"Exec"|: the executable program, which will normally be a Z-machine or
+char *Writer::alt_text_for(int n) {
+	rdes_record *rr;
+	LOOP_OVER(rr, rdes_record)
+		if (rr->resource_id == n)
+			return rr->description;
+	return NULL;
+}
+
+@ `"Exec"`: the executable program, which will normally be a Z-machine or
 Glulx story file. It's legal to make a blorb with no story file in, but
 Inform 7 never does this.
 
@@ -461,7 +466,7 @@ void Writer::executable_chunk(filename *fn) {
 	Writer::add_chunk_to_blorb(type, 0, fn, "Exec", NULL, 0);
 }
 
-@ |"IFmd"|: the bibliographic data (or "metadata") about the work of IF
+@ `"IFmd"`: the bibliographic data (or "metadata") about the work of IF
 being blorbed up, in the form of an iFiction record. (The format of which
 is set out in the "Treaty of Babel" agreement.)
 
@@ -497,9 +502,9 @@ markers, we always have to know the length of a chunk before we start
 writing it.
 
 That even extends to the file itself, which is a single IFF chunk of type
-|"FORM"|. So we need to think carefully. We will need the |FORM| header,
-then the header for the |RIdx| indexing chunk, then the body of that indexing
-chunk -- with one record for each indexed chunk; and then room for all of
+`"FORM"`. So we need to think carefully. We will need the `FORM` header,
+then the header for the `RIdx` indexing chunk, then the body of that indexing
+chunk — with one record for each indexed chunk; and then room for all of
 the chunks we'll copy in, whether they are indexed or not.
 
 @<Calculate the sizes of the whole file and the index chunk@> =
@@ -519,11 +524,11 @@ short for "IF Resource".
 
 @<Write the initial FORM chunk of the IFF file, and then the index@> =
 	fprintf(IFF, "FORM");
-	Writer::four_word(IFF, blorb_file_size - 8); /* offset to end of |FORM| after the 8 bytes so far */
+	Writer::four_word(IFF, blorb_file_size - 8); /* offset to end of `FORM` after the 8 bytes so far */
 	fprintf(IFF, "IFRS"); /* magic text identifying the IFF as a Blorb */
 
 	fprintf(IFF, "RIdx");
-	Writer::four_word(IFF, RIdx_size - 8); /* offset to end of |RIdx| after the 8 bytes so far */
+	Writer::four_word(IFF, RIdx_size - 8); /* offset to end of `RIdx` after the 8 bytes so far */
 	Writer::four_word(IFF, no_indexed_chunks); /* i.e., number of entries in the index */
 
 	chunk_metadata *chunk;

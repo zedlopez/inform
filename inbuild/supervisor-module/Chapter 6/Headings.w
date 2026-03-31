@@ -4,10 +4,10 @@ To keep track of the hierarchy of headings and subheadings found
 in the source text.
 
 @h The hierarchy.
-Headings in the source text correspond to |HEADING_NT| nodes in syntax
+Headings in the source text correspond to `HEADING_NT` nodes in syntax
 trees, and mostly occur when the user has explicitly typed a heading such as:
 
->> Part VII - The Ghost of the Aragon
+> Part VII - The Ghost of the Aragon
 
 Source text can make whatever headings it likes: no sequence is illegal. It
 is not for Inform to decide on behalf of the author that it is eccentric to
@@ -18,19 +18,23 @@ than assist.
 
 Nevertheless the sequence and relative hierarchy of headings is important.
 Compare these two sequences:
-= (text)
+
+``` None
 	Part A               Chapter A
 	Chapter B            Chapter B
-=
+```
+
 In the first case, B is subordinate to A; in the second it is not, and this
 affects the meaning of the program.
 
 @ Headings therefore have a numbered "level" of importance, with lower numbers
 more important than higher. The hierarchy runs:
-= (text)
+
+``` None
 	Root = -1 > Implied = 0 > Volume = 1 > Book = 2 > Part = 3 > Chapter = 4 > Section = 5
-=
-"Root" headings can be ignored -- there's one at the root of the heading tree,
+```
+
+"Root" headings can be ignored — there's one at the root of the heading tree,
 but it's only a hook to hang things from. "Implied" headings are inserted
 to mark source file boundaries and the like, and aren't written by the author.
 The importance of implied headings is that they ensure that every sentence
@@ -44,7 +48,8 @@ are currently unused.
 @ As an example, a sequence in the primary source text of (Chapter I, Book
 Two, Section 5, Chapter I, Section 1, Chapter III) would be formed up into
 the heading tree:
-= (text)
+
+``` None
 	(the pseudo-heading)                level -1, indentation -1
 	    (Implied: inclusions)           level 0, indentation 0
 	    (Implied: Basic Inform)         level 0, indentation 0
@@ -57,7 +62,8 @@ the heading tree:
 	                Section 1           level 5, indentation 3
 	            Chapter III             level 4, indentation 2
 	    (Implied: inventions)           level 0, indentation 0
-=
+```
+
 Note that the level of a heading is not the same thing as its depth in this
 tree, which we call the "indentation", and there is no simple relationship
 between the two numbers: see below for how it is calculated.
@@ -71,15 +77,14 @@ instances of:
 @d HEADING_TREE_SYNTAX_TYPE struct heading_tree
 
 =
-typedef struct heading_tree {
+classdef heading_tree {
 	struct parse_node_tree *owning_syntax_tree;
 	struct heading heading_root;
 	int assembled_at_least_once;
 	int last_indentation_above_level[NO_HEADING_LEVELS];
-	struct linked_list *subordinates; /* of |heading| */
+	struct linked_list *subordinates; /* of `heading` */
 	int damaged; /* i.e., failed verification */
-	CLASS_DEFINITION
-} heading_tree;
+}
 
 heading *Headings::root_of_tree(heading_tree *HT) {
 	return &(HT->heading_root);
@@ -107,10 +112,11 @@ sequence of all levels so far:
 $$ i_n = i_m + 1 \qquad {\rm where}\qquad m = {\rm max} \lbrace j \mid 0\leq j < n, \ell_j < \ell_n \rbrace $$
 where $\ell_0 = i_0 = -1$, so that this set always contains 0 and is
 therefore not empty. We deduce that
-(a) $i_1 = 0$ and thereafter $i_n \geq 0$, since $\ell_n$ is never negative again,
-(b) if $\ell_k = \ell_{k+1}$ then $i_k = i_{k+1}$, since the set over which
+
+- $i_1 = 0$ and thereafter $i_n \geq 0$, since $\ell_n$ is never negative again,
+- if $\ell_k = \ell_{k+1}$ then $i_k = i_{k+1}$, since the set over which
 the maximum is taken is the same,
-(c) if $\ell_{k+1} > \ell_k$, a subheading of its predecessor, then
+- if $\ell_{k+1} > \ell_k$, a subheading of its predecessor, then
 $i_{k+1} = i_k + 1$, a single tab step outward.
 
 That establishes the other properties we wanted, and shows that $i_n$ is
@@ -136,7 +142,7 @@ int Headings::indent_from(heading_tree *HT, int level) {
 Each heading gets the following metadata:
 
 =
-typedef struct heading {
+classdef heading {
 	struct heading_tree *owning_tree;
 	struct parse_node *sentence_declaring; /* if any: file starts are undeclared */
 	struct source_location start_location; /* first word under this heading is here */
@@ -162,8 +168,7 @@ typedef struct heading {
 	#ifdef CORE_MODULE
 	struct heading_compilation_data compilation_data;
 	#endif
-	CLASS_DEFINITION
-} heading;
+}
 
 @ It is guaranteed that this will be called once for each heading (except the
 pseudo-heading, which doesn't count) in sequence order:
@@ -198,8 +203,8 @@ heading *Headings::new(parse_node_tree *T, parse_node *pn, int level, source_loc
 
 @h Declarations.
 The following callback function is called by //syntax// each time a new
-|HEADING_NT| node is created in the syntax tree for a project. It has to
-return |TRUE| or |FALSE| to say whether sentences falling under the current
+`HEADING_NT` node is created in the syntax tree for a project. It has to
+return `TRUE` or `FALSE` to say whether sentences falling under the current
 heading should be included in the project's source text. (For instance,
 sentences under a heading with the disclaimer "(for Glulx only)" will not be
 included if the target virtual machine on this run of Inform is the Z-machine.)
@@ -234,7 +239,7 @@ heading *Headings::from_node(parse_node *pn) {
 	return Node::get_embodying_heading(pn);
 }
 
-@ So, then, each |HEADING_NT| node in the parse tree produces a call to this
+@ So, then, each `HEADING_NT` node in the parse tree produces a call to this
 function, which attaches a new //heading// object to it, and populates that
 with the result of parsing any caveats in its wording.
 
@@ -320,7 +325,7 @@ heading *Headings::attach(parse_node_tree *T, parse_node *pn, inbuild_copy *for_
 <heading-qualifier> to see if it ends with text telling us what to do with
 the source text it governs. For example,
 
->> Section 21 - Frogs (unindexed) (not for Glulx)
+> Section 21 - Frogs (unindexed) (not for Glulx)
 
 would match twice, first registering the VM requirement, then the unindexedness.
 
@@ -396,7 +401,7 @@ is determined.
 	==> { R[0] + 4, - };
 
 @ This nonterminal matches any description of a virtual machine, and produces
-the result |TRUE| if the VM we are building for fits that description, |FALSE|
+the result `TRUE` if the VM we are building for fits that description, `FALSE`
 otherwise.
 
 =
@@ -465,11 +470,13 @@ at the top of the tree.
 @ A complication is that the source text is read out of conceptual sequence
 when headings referring to external files are run into. Because of that, if
 we have a heading:
-= (text as Inform 7)
+
+``` Inform7
 	Chapter 7 - Into the Woods (see "woods.i7")
-=
-and if we then have further headings inside the file |woods.i7|, those
-further headings |h2| won't be adjacent to the original heading |h| in
+```
+
+and if we then have further headings inside the file `woods.i7`, those
+further headings `h2` won't be adjacent to the original heading `h` in
 the list. So we fix this up here.
 
 There is a nameless level zero heading marking the change of source file:
@@ -501,17 +508,19 @@ heading inside a file which is supposed to contain a Chapter.
 deep in the tree as we can see they need to be from h's perspective alone".
 This isn't always the final position. For instance, given the sequence
 Volume 1, Chapter I, Section A, Chapter II, the tree is adjusted twice:
-= (text)
+
+``` None
 	when h = Volume 1:        then when h = Chapter I:
 	Volume 1                  Volume 1
 	    Chapter I                 Chapter I
 	    Section A                     Section A
 	    Chapter II                Chapter II
-=
+```
+
 since Section A is demoted twice, once by Volume 1, then by Chapter I.
 (This algorithm would in principle be quadratic in the number of headings if
-the possible depth of the tree were unbounded -- every heading might have to
-demote every one of its successors -- but since the depth is at most 9, it
+the possible depth of the tree were unbounded — every heading might have to
+demote every one of its successors — but since the depth is at most 9, it
 runs in linear time.)
 
 @<Run through subsequent equal or subordinate headings to move them downward@> =
@@ -525,7 +534,7 @@ runs in linear time.)
 		Headings::move_below(subseq, h); /* all lesser headings in the run become h's children */
 	}
 
-@ The above function, then, calls |Headings::move_below| to attach a heading
+@ The above function, then, calls `Headings::move_below` to attach a heading
 to the tree as a child of a given parent:
 
 =
@@ -855,7 +864,7 @@ void Headings::write_as_XML(parse_node_tree *T, filename *F) {
 		"<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" "
 		"\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n");
 
-@ Note that a level of 0, and a title of |--|, signifies a File (0) level
+@ Note that a level of 0, and a title of `--`, signifies a File (0) level
 heading: external tools can probably ignore such records. Similarly, it is
 unlikely that they will ever see a record without a "Filename" key, but they
 are optional all the same.

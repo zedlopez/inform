@@ -42,7 +42,7 @@ int Player::production_line(int stage, int debugging,
 identity in order to find out if the author is setting an initial time of day.
 "Player", though, behaves quite unusually: see above.
 
-= (early code)
+@<Global IF variable definitions@> +=
 nonlocal_variable *player_VAR = NULL;
 nonlocal_variable *time_of_day_VAR = NULL;
 
@@ -75,12 +75,12 @@ int Player::new_variable_notify(nonlocal_variable *nlv) {
 Altogether we keep track of four instances, though the first pair often coincide,
 and so do the second pair.
 
-= (early code)
+@<Global IF variable definitions@> +=
 instance *start_room = NULL; /* room in which play begins: e.g., Barber's Shop */
 instance *start_object = NULL; /* object in which play begins: e.g., a barber's chair */
 
 instance *player_character_object = NULL; /* the player character object used in this run */
-instance *I_yourself = NULL; /* the default player character object, |selfobj| in I6 */
+instance *I_yourself = NULL; /* the default player character object, `selfobj` in I6 */
 
 @ The "yourself" instance is special in being tied, or "aliased", to the
 "player" variable, so Inform needs to recognise it. (No need to translate; it
@@ -110,22 +110,22 @@ dereferencing, though authors probably don't think of it that way. A normal
 object variable is like a pointer to an object, rather than an object itself,
 and so the following doesn't make sense:
 
->> The top prize is an object that varies. The top prize is in the desk drawer.
+> The top prize is an object that varies. The top prize is in the desk drawer.
 
 Clearly something goes in the desk drawer, but it's quite ambiguous what: the
 problem is that "top prize" describes some object, but it's not clear which.
 (Inform generally disallows this even if the source text explicitly gives a
 value for top prize.) But "player" is unusual because Inform authors are
 encouraged always to describe the player object that way, and often don't
-realise that it's a variable at all -- and most of the time it never changes
+realise that it's a variable at all — and most of the time it never changes
 its value, of course, but simply remains equal to "yourself" throughout play.
 So we want to allow this sort of thing:
 
->> The player is in the Cage.
+> The player is in the Cage.
 
 even though it has exactly the same problem as the top prize. We get around
 this by treating "player", in assertions, as if it were its own initial
-value ("yourself") -- in effect, we silently dereference it. This is
+value ("yourself") — in effect, we silently dereference it. This is
 aliasing.
 
 @<Alias the player variable to the yourself object@> =
@@ -135,10 +135,10 @@ aliasing.
 
 @ We also, though, want to look out for this sort of thing:
 
->> The player is Lord Collingwood.
+> The player is Lord Collingwood.
 
-because an assertion like this causes |player_character_object| to diverge from
-|I_yourself|; here of course it becomes the Lord Collingwood object.
+because an assertion like this causes `player_character_object` to diverge from
+`I_yourself`; here of course it becomes the Lord Collingwood object.
 
 =
 int Player::variable_set_warning(nonlocal_variable *nlv, parse_node *val) {
@@ -162,7 +162,7 @@ Bodysnatching allows one object (the "snatcher") to take over the life of
 another (the "victim"), so that inferences made about the victim are diverted
 to the snatcher. Thus if the source text reads:
 
->> The player is Lord Collingwood. The player carries a spyglass.
+> The player is Lord Collingwood. The player carries a spyglass.
 
 the second sentence goes through two transformations: first, because of
 aliasing, Inform decides to draw an inference about "yourself", rather
@@ -171,7 +171,7 @@ bodysnatching, the Collingwood object (snatcher) takes over the inference
 from the yourself object (victim). So Collingwood gets the spyglass, as
 the source text clearly intended.
 
-Bodysnatching is used only when |player_character_object| differs from |I_yourself|,
+Bodysnatching is used only when `player_character_object` differs from `I_yourself`,
 that is, when the source text explicitly sets a value for "player".
 
 =
@@ -232,8 +232,8 @@ int Player::irregular_genitive(inference_subject *owner, text_stream *genitive,
 	return FALSE;
 }
 
-@ The adjectives "worn" and "carried" -- as in, "The nautical chart is
-carried." -- implicitly refer to the player as the unstated term in the
+@ The adjectives "worn" and "carried" — as in, "The nautical chart is
+carried." — implicitly refer to the player as the unstated term in the
 relationship; that makes them our business here. "Initially carried" is
 now deprecated, but is provided as synonymous with "carried" because it
 was once an either/or property in the clumsier early stages of Inform 7,

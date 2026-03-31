@@ -254,16 +254,20 @@ dictionary of the symbol names being declared to keep track.
 
 @ The old-school way for use options to take effect is by causing a constant to
 be defined using inclusion notation. That is, they are defined using Inform 6
-notation inside |(-| and |-)| markers: for example,
-= (text as Inform 7)
+notation inside `(-` and `-)` markers: for example,
+
+``` Inform7
 Use feverish dreams translates as (- Constant FEVERISH_DREAMS; -).
 Use hallucination time of at least 1024 translates as
 	(- Constant DREAMY_TIME = {N}+3; -).
-=
-The |{N}| marker, if present, is converted to the value, producing, say:
-= (text as Inform 6)
+```
+
+The `{N}` marker, if present, is converted to the value, producing, say:
+
+``` Inform6
 	Constant DREAMY_TIME = 4096+3;
-=
+```
+
 All this form of notation is deprecated now, but in the mean time we can still
 read almost all such definitions, because almost all users write them in a simple
 enough way that we can tell what they want and achieve it by better means.
@@ -403,8 +407,8 @@ void RTUseOptions::uo_identifier(OUTPUT_STREAM,
 	}
 }
 
-@ Kit configuration constants are created in the |configuration| submodule
-of the |completion| module in the Inter tree:
+@ Kit configuration constants are created in the `configuration` submodule
+of the `completion` module in the Inter tree:
 
 =
 void RTUseOptions::define_config_constant(text_stream *UO, inter_ti val) {
@@ -439,16 +443,20 @@ void RTUseOptions::log_puos(parsed_use_option_setting *puos) {
 @h Deprecated inclusion notation.
 The old-school way for use options to take effect is by causing a constant to
 be defined using inclusion notation. That is, they are defined using Inform 6
-notation inside |(-| and |-)| markers: for example,
-= (text as Inform 7)
+notation inside `(-` and `-)` markers: for example,
+
+``` Inform7
 Use feverish dreams translates as (- Constant FEVERISH_DREAMS; -).
 Use hallucination time of at least 1024 translates as
 	(- Constant DREAMY_TIME = {N}+3; -).
-=
-The |{N}| marker, if present, is converted to the value, producing, say:
-= (text as Inform 6)
+```
+
+The `{N}` marker, if present, is converted to the value, producing, say:
+
+``` Inform6
 	Constant DREAMY_TIME = 4096+3;
-=
+```
+
 All this form of notation is deprecated now, but in the mean time we can still
 read almost all such definitions, because almost all users write them in a simple
 enough way that we can tell what they want and achieve it by better means.

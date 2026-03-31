@@ -14,7 +14,7 @@ typedef struct action_naming_data {
 	int abbreviable; /* preposition optional after the first noun, if there's no second? */
 } action_naming_data;
 
-@ Here, the default settings are made from |W|. The past tense form is made
+@ Here, the default settings are made from `W`. The past tense form is made
 automatically from the present. The noun form is made using the following
 construction; thus, the run-time value corresponding to "taking" is "the taking
 action".
@@ -81,7 +81,7 @@ void ActionNameNames::log(action_name *an) {
 	else LOG("%W", ActionNameNames::tensed(an, IS_TENSE));
 }
 
-@ Object pronouns -- let's just say, the word "it" for brevity -- in an action
+@ Object pronouns — let's just say, the word "it" for brevity — in an action
 name are significant: they are placeholders for where the first of two nouns
 is supposed to go. Thus, in the action name "unlocking it with", the word "it"
 shows where to put the name of what is being unlocked.
@@ -204,8 +204,8 @@ then that's what "listening" will match.)
 <action-optional-trailing-prepositions> ::=
 	... to
 
-@ The following returns the longest-named action beginning with the wording |W|
-and which cannot take nouns; and the word number |posn| is moved past this
+@ The following returns the longest-named action beginning with the wording `W`
+and which cannot take nouns; and the word number `posn` is moved past this
 number of words.
 
 =

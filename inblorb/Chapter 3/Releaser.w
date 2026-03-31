@@ -21,20 +21,19 @@ and then sees that they are carried out. The requests divide as follows:
 @e ALTERNATIVE_REQ /* an unused release instruction copied to inblorb for reporting only */
 
 =
-int website_requested = FALSE; /* has a |WEBSITE_REQ| been made? */
+int website_requested = FALSE; /* has a `WEBSITE_REQ` been made? */
 
 @ Each request produces an instance of:
 
 =
-typedef struct request {
-	int what_is_requested; /* one of the |*_REQ| values above */
+classdef request {
+	int what_is_requested; /* one of the `*_REQ` values above */
 	struct text_stream *details1;
 	struct text_stream *details2;
 	struct text_stream *details3;
 	int private; /* is this request private, i.e., not to contribute to a website? */
 	int outcome_data; /* e.g. number of bytes copied */
-	CLASS_DEFINITION
-} request;
+}
 
 @h Receiving requests.
 These can have from 0 to 3 textual details attached:
@@ -182,7 +181,7 @@ void Requests::create_requested_material(void) {
 
 @ Interpreters are copied, not made. They're really just like website
 templates, except that they have a manifest file instead of an extras file,
-and that they're copied into an |interpreter| subfolder of the release folder,
+and that they're copied into an `interpreter` subfolder of the release folder,
 which is assumed already to exist. (It isn't copied because folder creation
 is tiresome to do in a cross-platform way, since Windows doesn't follow POSIX.
 The necessary code exists in Inform already, so we'll do it there.)
@@ -238,7 +237,7 @@ including a manifest called "(extras).txt":
 	}
 
 @h The Extras file for a website template.
-When parsing "(extras).txt", |Requests::read_requested_file| is called for each line.
+When parsing "(extras).txt", `Requests::read_requested_file` is called for each line.
 We trim white space and expect the result to be a filename of something
 within the template.
 
@@ -262,21 +261,23 @@ because it allows each interpreter to provide some metadata about its own
 identity and exactly how it wants to be interfaced with the website which
 Inblorb will generate. This isn't the place to document what those metadata
 placeholders are and what they mean, since (except for a consistency check
-below) Inblorb doesn't know anything about them -- it's the Standard
+below) Inblorb doesn't know anything about them — it's the Standard
 website template which they need to match up to. Anyway, the best way
 to get an idea of this is to read the manifest file for the default,
 Parchment, interpreter.
 
 Placeholders are set thus:
-= (text)
+
+``` None
 	[INTERPRETERVERSION]
 	Parchment for Inform 7
 	[]
-=
+```
+
 where the opening line names the placeholder, then one or more lines give
 the contents, and the box line ends the definition.
 
-We're in the mode if |current_placeholder| is a non-empty text, and
+We're in the mode if `current_placeholder` is a non-empty text, and
 if so, then it's the name of the one being set. Thus the code to handle
 the opening and closing lines can be identical.
 
@@ -297,7 +298,7 @@ void Requests::read_requested_ifile(text_stream *manifestline, text_file_positio
 }
 
 @ Outside of placeholders, blank lines and lines introduced by the comment
-character |!| are skipped.
+character `!` are skipped.
 
 @<We're outside placeholder mode, so it's a comment or a manifested filename@> =
 	if ((Str::len(manifestline) == 0) || (Str::get_first_char(manifestline) == '!')) return;
@@ -320,10 +321,10 @@ each line.
 make sure we aren't trying to release a Z-machine game along with a
 Glulx interpreter, or vice versa. The manifest file for the interpreter
 is required to declare which virtual machines it implements, by giving a
-value of the placeholder |INTERPRETERVM|. This declares whether the interpreter
-can handle blorbed Z-machine files (|z|), blorbed Glulx files (|g|) or both
-(|zg| or |gz|). No other values are legal; note lower case. Inblorb then
-checks this against its own placeholder |INTERPRETERVMIS|, which stores
+value of the placeholder `INTERPRETERVM`. This declares whether the interpreter
+can handle blorbed Z-machine files (`z`), blorbed Glulx files (`g`) or both
+(`zg` or `gz`). No other values are legal; note lower case. Inblorb then
+checks this against its own placeholder `INTERPRETERVMIS`, which stores
 what the actual format of the blorb being released is.
 
 @<Check the value being given against the actual VM we're blorbing up@> =
@@ -432,7 +433,7 @@ Inform normally asks Inblorb to generate an HTML page reporting what it has
 done, and if things have gone well then this typically contains a list of
 what has been released. (That's easy for us to produce, since we just have to
 look through the requests.) Rather than attempt to write to the file here,
-we copy the necessary HTML into the placeholder |ph|.
+we copy the necessary HTML into the placeholder `ph`.
 
 =
 void Requests::report_requested_material(text_stream *ph) {
@@ -539,7 +540,7 @@ void Requests::report_requested_material(text_stream *ph) {
 open the relevant pages not in the Inform application but using an external
 web browser (e.g., Safari on most Mac OS X installations). We can only
 achieve this effect using a Javascript function provided by the Inform
-application, called |openUrl|.
+application, called `openUrl`.
 
 @<Give a centred line of links to the main web pages produced@> =
 	Placeholders::append_to(ph, I"<p><center>");
@@ -559,10 +560,10 @@ application, called |openUrl|.
 	Placeholders::append_to(ph, I"</center></p>");
 
 @ Since Inblorb has no knowledge of what the Inform source text producing
-this blorb was, it can't finish the status report from its own knowledge --
+this blorb was, it can't finish the status report from its own knowledge —
 it must rely on details supplied to it by Inform via blurb commands. First,
 Inform gives it source-text links for any "Release along with..." sentences,
-which have by now become |INSTRUCTION_REQ| requests:
+which have by now become `INSTRUCTION_REQ` requests:
 
 @<Add in links to release instructions from Inform source text@> =
 	request *req;
@@ -583,7 +584,7 @@ which have by now become |INSTRUCTION_REQ| requests:
 
 @ And secondly, Inform gives it adverts for other fancy services on offer,
 complete with links to the Inform documentation (which, again, Inblorb
-doesn't itself know about); and these have by now become |ALTERNATIVE_REQ|
+doesn't itself know about); and these have by now become `ALTERNATIVE_REQ`
 requests.
 
 @<Add in advertisements for features Inform would like to offer@> =

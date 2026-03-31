@@ -9,15 +9,14 @@ visible to the player's avatar in the world model. Usually, but not always,
 and noun filter tokens can monkey with this.
 
 =
-typedef struct noun_filter_token {
+classdef noun_filter_token {
 	struct parse_node *the_filter;
 	struct parse_node *nft_created_at;
 	int change_scope;
 	int change_scope_to_any_things;
 	struct package_request *nft_package;
 	struct inter_name *nft_iname;
-	CLASS_DEFINITION
-} noun_filter_token;
+}
 
 @ There are only three things we can do with these: create them, compile
 their names (used as I6 tokens), and compile their routines.
@@ -265,7 +264,7 @@ void NounFilterTokens::compilation_agent(compilation_subtask *t) {
 
 @ Similarly, for more on noun filters, see the DM4; but as will be evident, this
 really only wraps a simple condition. We convert this to a proposition with one
-free variable, $x$, and then substitute |noun| for this value.
+free variable, $x$, and then substitute `noun` for this value.
 
 @<Implement as a noun filter@> =
 	inter_symbol *x_s =
@@ -289,8 +288,8 @@ free variable, $x$, and then substitute |noun| for this value.
 	EmitCode::up();
 
 @ NFTs are sometimes used in code mode, in which case they appear as function
-calls in the form |ParseTokenStopped(f, T)|, where |T| is the token itself and
-|f| is some appropriate function in the command parser.
+calls in the form `ParseTokenStopped(f, T)`, where `T` is the token itself and
+`f` is some appropriate function in the command parser.
 
 =
 void NounFilterTokens::function_and_filter(noun_filter_token *nft) {

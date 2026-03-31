@@ -1,0 +1,9 @@
+Problem: PM_NamedTimedEvent
+
+Lab is a room.
+
+When play begins:
+	the egg-timer clucks at 11:35 AM;
+
+At the time when the egg-timer clucks (this is the cluckage rule):
+	say "Cluck! Cluck! Cluck! says the egg-timer."

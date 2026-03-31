@@ -19,8 +19,8 @@ void ReferenceInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |reference| instruction is laid out with just the two
-compulsory words -- see //Inter Nodes//.
+In bytecode, the frame of a `reference` instruction is laid out with just the two
+compulsory words — see //Inter Nodes//.
 
 =
 inter_error_message *ReferenceInstruction::new(inter_bookmark *IBM, int level,
@@ -66,14 +66,16 @@ void ReferenceInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_
 }
 
 @h Detection.
-This tests whether a node |P| represents a reference to a primitive of a given
+This tests whether a node `P` represents a reference to a primitive of a given
 BIP. So, for example, it can look for the configuration
-= (text as Inter)
+
+``` Inter
 	reference
 		inv !propertyvalue
 			...
-=	
-by being called with |seek_bip| equal to |PROPERTYVALUE_BIP|.	
+```
+
+by being called with `seek_bip` equal to `PROPERTYVALUE_BIP`.	
 
 =
 int ReferenceInstruction::node_is_ref_to(inter_tree *I, inter_tree_node *P,

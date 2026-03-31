@@ -199,12 +199,12 @@ names. The curiosity here is that it's legal to store the nameless negation
 of an either/or property in a "property" constant. This was purely so that
 the following ungainly syntax works:
 
->> change X to not P;
+> change X to not P;
 
 Which is now gone anyway, in favour of "now", where all this is handled
 better. The feature, if we can call it that, probably derives from the fact
-that Inform 6 allows an attribute |attr| can be negated in sense in several
-contexts by using a tilde: |~attr|.
+that Inform 6 allows an attribute `attr` can be negated in sense in several
+contexts by using a tilde: `~attr`.
 
 @<Compile property constants@> =
 	property *prn = Rvalues::to_property(value);
@@ -281,9 +281,11 @@ int CompileRvalues::action_kinds(value_holster *VH, kind *K, parse_node *value) 
 
 @ Texts can be compiled in four different ways, so the following splits into
 four cases. Note that responses take the form
-= (text)
+
+``` None
 	"blah blah blah" ( letter )
-=
+```
+
 so the penultimate word, if it's there, is the letter.
 
 =
@@ -359,11 +361,10 @@ occur in the source text because they can compile to a fairly large slice of
 code, and we don't want to repeat that:
 
 =
-typedef struct cached_understanding {
+classdef cached_understanding {
 	struct wording understanding_text; /* word range of the understanding text */
 	struct inter_name *cu_iname; /* function to test this */
-	CLASS_DEFINITION
-} cached_understanding;
+}
 
 inter_pair CompileRvalues::compile_understanding(wording W) {
 	if (<subject-pronoun>(W)) {
@@ -385,7 +386,7 @@ inter_pair CompileRvalues::compile_understanding(wording W) {
 
 @ Explicit actions can be compiled either as a "try" invocation or as the
 constant value of a stored action. Either way it calls the runtime function
-|TryAction|, for which see //WorldModelKit//; this function takes five
+`TryAction`, for which see //WorldModelKit//; this function takes five
 arguments, plus an optional sixth for where to store rather than process the
 action.
 
@@ -431,8 +432,8 @@ void CompileRvalues::compile_explicit_action(explicit_action *ea, int as_value) 
 }
 
 @ Which requires the following. Note that if the action expects to see a
-|K_understanding|, then we typecheck in a way which will not cause an unwanted
-silent cast to |K_text|; but type-safety is not violated.
+`K_understanding`, then we typecheck in a way which will not cause an unwanted
+silent cast to `K_text`; but type-safety is not violated.
 
 =
 void CompileRvalues::compile_ea_parameter(parse_node *term, kind *required_kind) {

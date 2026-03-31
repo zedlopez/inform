@@ -9,20 +9,19 @@ needs to know about these only when releasing a website; they are also recorded
 in an iFiction record, but Inblorb doesn't create that, Inform 7 does.
 
 =
-typedef struct auxiliary_file {
+classdef auxiliary_file {
 	struct filename *full_filename;
 	struct text_stream *aux_leafname;
 	struct text_stream *aux_subfolder;
 	struct text_stream *description;
 	struct text_stream *format; /* e.g., "jpg", "pdf" */
-	CLASS_DEFINITION
-} auxiliary_file;
+}
 
 @h Registration.
 The format text is set to a lower-case version of the filename extension,
 and the URL to the filename itself; except when there is no extension, so
 that the auxiliary resource is a mini-website in a subfolder of the release
-website. In that case the format is |link| and the URL is to the index file
+website. In that case the format is `link` and the URL is to the index file
 in the subfolder.
 
 =
@@ -67,7 +66,7 @@ void Links::get_leafname_from_textual_filename(OUTPUT_STREAM, text_stream *filen
 }
 
 @h Linking.
-The list of links to auxiliary resources is written using |<li>...</li>|
+The list of links to auxiliary resources is written using `<li>...</li>`
 list entry tags, for convenience of CSS styling.
 
 =
@@ -132,15 +131,20 @@ remote.
 
 @h Cover image.
 Note that if the large cover image is a PNG, so is the small (thumbnail)
-version, and vice versa -- supplying "Cover.jpg" and "Small Cover.png"
+version, and vice versa — supplying "Cover.jpg" and "Small Cover.png"
 will not work.
 
 =
 void Links::expand_COVER_variable(OUTPUT_STREAM) {
 	if (cover_exists) {
 		char *format = "png"; if (cover_is_in_JPEG_format) format = "jpg";
-		WRITE("<a href=\"Cover.%s\"><img src=\"Small Cover.%s\" border=\"1\" width=\"120px\"></a>",
-			format, format);
+		TEMPORARY_TEXT(alt_text)
+		char *alt = Writer::alt_text_for(1);
+		if (alt) WRITE_TO(alt_text, "%s", alt);
+		if (Str::len(alt_text) == 0) WRITE_TO(alt_text, "Cover art");
+		WRITE("<a href=\"Cover.%s\"><img src=\"Small Cover.%s\" alt=\"%S\" border=\"1\" width=\"120px\"></a>",
+			format, format, alt_text);
+		DISCARD_TEXT(alt_text)
 	}
 }
 

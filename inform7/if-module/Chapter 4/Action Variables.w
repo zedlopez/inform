@@ -2,7 +2,7 @@
 
 Variables shared by the rules of the rulebooks processing an action.
 
-@ Action names, that is, instances of |K_action_name|, do not have properties.
+@ Action names, that is, instances of `K_action_name`, do not have properties.
 Instead, sentences which look as if they will assign properties are turned
 into creations of action variables:
 
@@ -162,9 +162,9 @@ but action variables cannot.
 	}
 
 @ An owner list is maintained for all sets of actions which actually have
-variables (hence "nonempty") -- many will not, in practice:
+variables (hence "nonempty") — many will not, in practice:
 
-= (early code)
+@<Global IF variable definitions@> +=
 shared_variable_access_list *all_nonempty_stacked_action_vars = NULL;
 
 
@@ -188,7 +188,7 @@ void ActionVariables::new(action_name *an, kind *K, wording NW, wording MW) {
 @ Action variables can optionally be marked as able to extend the grammar of
 action patterns. For example, the Standard Rules define:
 
->> The exiting action has an object called the container exited from (matched as "from").
+> The exiting action has an object called the container exited from (matched as "from").
 
 and this allows "exiting from the cage", say, as an action pattern.
 

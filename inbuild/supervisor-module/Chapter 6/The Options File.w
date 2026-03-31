@@ -4,20 +4,20 @@ The optional file of Options applied to all of the user's projects.
 
 @ An Inform user with unyielding views on punctuation may want to have:
 
->> Use the serial comma.
+> Use the serial comma.
 
 applied to every project she works on. For such needs, it's possible to
-create an |Options.txt| file of sentence which are present, by implication,
+create an `Options.txt` file of sentence which are present, by implication,
 in every project.
 
 When Inform reads this file, very early in its run, it tries to obey any use
-options in the file right away -- earlier even than <structural-sentence>. It
+options in the file right away — earlier even than <structural-sentence>. It
 spots these, very crudely, as sentences which match the following (that is,
-which start with "use"). Note the final full stop -- this is all occurring
+which start with "use"). Note the final full stop — this is all occurring
 before sentence-breaking has even taken place. Fortunately, no matter how
 unyielding the user's views, it's not allowed to write:
 
->> Use the serial comma!
+> Use the serial comma!
 
 so the sentence-terminator will certainly be a full stop.
 

@@ -8,10 +8,10 @@ will be many different sorts of impulse which a person may have: "going"
 
 Each of these different sorts of action is represented by an instance of
 //action_name//, and each in turn corresponds to an instance of the enumerated
-kind |K_action_name| at run-time. 
+kind `K_action_name` at run-time. 
 
 =
-typedef struct action_name {
+classdef action_name {
 	struct action_naming_data naming_data;
 
 	struct action_semantics semantics; /* see //Action Semantics// */
@@ -24,10 +24,9 @@ typedef struct action_name {
 	struct cg_line *command_parser_grammar_producing_this; /* if any */
 
 	struct action_compilation_data compilation_data;
-	CLASS_DEFINITION
-} action_name;
+}
 
-@ Note that we notify the |K_action_name| kind that a new enumerated value
+@ Note that we notify the `K_action_name` kind that a new enumerated value
 for it exists; we don't need to record the reply (i.e. the number used as
 this value at run-time) because it will be the same as the allocation ID
 for the //action_name// structure in all cases.
@@ -41,7 +40,7 @@ action_name *Actions::act_new(wording W) {
 	action_name *an = CREATE(action_name);
 	Kinds::Behaviour::new_enumerated_value(K_action_name);
 
-	ActionNameNames::baptise(an, W); /* which sets its |naming_data| */
+	ActionNameNames::baptise(an, W); /* which sets its `naming_data` */
 
 	an->semantics = ActionSemantics::default();
 

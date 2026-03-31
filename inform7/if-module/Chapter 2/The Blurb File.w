@@ -13,7 +13,7 @@ telling Inblorb exactly what to do. The format for this is an extension of
 the "blurb" format documented in the "Inform Designer's Manual",
 fourth edition (the "DM4"); see the published source code for Inblorb.
 
-Note that the code below does not generate an |author| blurb instruction,
+Note that the code below does not generate an `author` blurb instruction,
 which would lead to an AUTH chunk in the final blorb. This is partly
 because the AUTH chunk is now obsolete in the wake of the Treaty of
 Babel, but also because it avoids problems with Unicode: an AUTH can
@@ -103,12 +103,12 @@ released along with the work.
 		else
 			large = Task::large_cover_art_file(FALSE);
 		WRITE("cover \"%f\"\n", large);
-		WRITE("picture %d \"%f\"\n", rel->cover_picture_number, large);
+		Figures::write_cover_blurb_command(OUT, large, rel->cover_alt_text);
 	} else {
 		WRITE("cover \"%f\"\n",
 			InstalledFiles::filename(LARGE_DEFAULT_COVER_ART_IRES));
-		WRITE("picture %d \"%f\"\n", 1,
-			InstalledFiles::filename(LARGE_DEFAULT_COVER_ART_IRES));
+		Figures::write_cover_blurb_command(OUT,
+			InstalledFiles::filename(LARGE_DEFAULT_COVER_ART_IRES), -1);
 		if (rel->release_website) {
 			WRITE("release file \"%f\"\n",
 				InstalledFiles::filename(LARGE_DEFAULT_COVER_ART_IRES));
@@ -252,7 +252,7 @@ file online.
 
 @ The order here is significant, since Inblorb searches the folders in order,
 with the earliest quoted searched first. We want first the materials folder for
-a project, then the |Templates| directory in the materials for extensions
+a project, then the `Templates` directory in the materials for extensions
 included by the project, and then the external area, and finally the internal.
 
 @<Tell Inblorb where to find the website templates@> =

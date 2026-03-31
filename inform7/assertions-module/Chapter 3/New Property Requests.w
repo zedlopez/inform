@@ -50,13 +50,13 @@ int NewPropertyRequests::optional_either_SMF(int task, parse_node *V, wording *N
 	return FALSE;
 }
 
-@ From a syntax point of view, such sentences come in two forms -- those which
+@ From a syntax point of view, such sentences come in two forms — those which
 give a range of possible named alternative states, and those which create
 named value properties. We'll take the first of those first.
 
 We are concerned here with the syntax of sentences like
 
->> A container can be stout, standard or fragile (this is its strength property).
+> A container can be stout, standard or fragile (this is its strength property).
 
 The subject (in this example, "a container") is required not to match:
 
@@ -88,7 +88,7 @@ in the speedy/sluggish example that's just what it does, but if there are
 three or more alternatives then it has to do something trickier: create a
 value property, and a new kind of value of which these alternatives form
 the legal range. Such a property is customarily called a "condition" (in
-the sense of a state of something, not a test -- as in "this antique is in
+the sense of a state of something, not a test — as in "this antique is in
 good condition", not "you can come in on one condition").
 
 =
@@ -145,10 +145,13 @@ int NewPropertyRequests::list_length(parse_node *P) {
 @ And the following parses the object noun phrase of a "can be" sentence,
 which might take forms such as:
 
->> either speedy or sluggish
->> fast or slow
->> allegro, presto, or adagio (the speed property)
->> allegro, presto, or adagio (this is its speed property)
+> either speedy or sluggish
+
+> fast or slow
+
+> allegro, presto, or adagio (the speed property)
+
+> allegro, presto, or adagio (this is its speed property)
 
 =
 <can-be-sentence-object> ::=
@@ -196,10 +199,10 @@ which might take forms such as:
 
 @ This allows for natural sentences such as:
 
->> An animal can be either alive or dead.
+> An animal can be either alive or dead.
 
 Here "either" has a slight sense of emphasis, implying the exclusivity of the
-two choices -- the lack of a middle way. That's not useful information for us,
+two choices — the lack of a middle way. That's not useful information for us,
 because to Inform all either/or properties have that Aristotelian nature. But
 we found in testing that users wrote the word "either" now and then,
 regardless of what the documentation said. So we'll allow it but do nothing
@@ -382,20 +385,20 @@ differently as a result.
 @ An interesting anomaly in the language here is that when an either/or
 pair is created, like so:
 
->> A vehicle can be speedy or sluggish.
+> A vehicle can be speedy or sluggish.
 
 the convention is that the first-named term is the more surprising one,
 so that the default is the second. That seems natural, because if there's
 just one named alternative, like this:
 
->> A vehicle can be fabulously racy.
+> A vehicle can be fabulously racy.
 
 then the default is for this property not to be had. But when there are
 three or more alternatives, like so:
 
->> A vehicle can be petrol, diesel, electric or hybrid.
+> A vehicle can be petrol, diesel, electric or hybrid.
 
-the default is the first option -- petrol. This accords with the
+the default is the first option — petrol. This accords with the
 convention that the first-created value for an enumerated kind is always
 its default value.
 
@@ -405,7 +408,7 @@ would be. And there does seem to be some subtle difference in English
 meaning as to the suggested likelihood of possibilities, here. "You can
 be useful" has the sense that you aren't useful right at the moment,
 but "it can be blue, green or purple" tends to favour the front end
-of the list as likelier, if anything -- as when people offer an
+of the list as likelier, if anything — as when people offer an
 exaggeratedly unlikely final choice: "you can be black, white, brown,
 or sky blue pink".
 

@@ -101,7 +101,7 @@ void iFiction::write_ifiction_record(OUTPUT_STREAM, release_instructions *rel) {
 	}
 	OUTDENT; WRITE("</resources>\n");
 
-@ The |<description>| key here was added in version 8 of the Treaty of Babel,
+@ The `<description>` key here was added in version 8 of the Treaty of Babel,
 in February 2014.
 
 @<Write the cover tag of the iFiction record@> =
@@ -208,7 +208,7 @@ LISP.
 		WRITE("<compiler>Inform %B (build %B)</compiler>\n", FALSE, TRUE);
 	}
 	if (rel->release_cover)
-		WRITE("<coverpicture>%d</coverpicture>\n", rel->cover_picture_number);
+		WRITE("<coverpicture>1</coverpicture>\n");
 
 @ =
 int iFiction::write_var_to_XML(OUTPUT_STREAM, nonlocal_variable *nlv) {
