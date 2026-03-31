@@ -1849,6 +1849,9 @@ To say (C - RGB colour) letters:
 To set the background colour/color/-- to (C - RGB colour):
 	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
 
+To decide what RGB colour is (C - basic colour) as a RGB colour:
+	(- {C} -).
+
 @ Some basic window phrases, which are supported by both the Z-Machine and Glulx.
 (See the Glk Foundations for Glk-specific phrases.)
 
