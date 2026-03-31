@@ -203,6 +203,7 @@ feature in question is inactive, they will remain <code>NULL</code> and do nothi
 <span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_natural_language</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_object</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_abstract_object</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_real_number</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_response</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="type-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K_snippet</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -342,6 +343,9 @@ but are indexed together.</p>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">grammatical</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">tense</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">narrative</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">viewpoint</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">grammatical</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">case</span>
+
+<span class="Preform-function-syntax">&lt;notable-object-kinds&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">abstract</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">object</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b> </p>
@@ -358,6 +362,9 @@ but are indexed together.</p>
 <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">K_grammatical_gender</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;notable-object-kinds&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">K_abstract_object</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>

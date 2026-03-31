@@ -102,6 +102,7 @@ kind *K_grammatical_gender = NULL;
 kind *K_natural_language = NULL;
 kind *K_number = NULL;
 kind *K_object = NULL;
+kind *K_abstract_object = NULL;
 kind *K_real_number = NULL;
 kind *K_response = NULL;
 kind *K_snippet = NULL;
@@ -230,6 +231,9 @@ but are indexed together.
 	narrative viewpoint |
 	grammatical case
 
+<notable-object-kinds> ::=
+	abstract object
+
 @ =
 void FamiliarKinds::notice_new_kind(kind *K, wording W) {
 	if (<notable-linguistic-kinds>(W)) {
@@ -242,5 +246,8 @@ void FamiliarKinds::notice_new_kind(kind *K, wording W) {
 				break;
 			case 1: K_grammatical_gender = K; break;
 		}
+	}
+	if (<notable-object-kinds>(W)) {
+		K_abstract_object = K;
 	}
 }

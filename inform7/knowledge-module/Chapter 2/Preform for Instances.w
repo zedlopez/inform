@@ -19,21 +19,21 @@ full, whereas a "tuna fish" (an object) can be called just "tuna".
 =
 void InstancesPreform::create_as_noun(instance *I, kind *K, wording W) {
 	int exact_parsing = TRUE, any_parsing = TRUE;
+	unsigned int mc = NAMED_CONSTANT_MC;
 	property *cp = Properties::property_with_same_name_as(K);
 	if ((cp) && (ConditionsOfSubjects::of_what(cp))) any_parsing = FALSE;
 	if (Kinds::Behaviour::is_object(K)) exact_parsing = FALSE;
+	if ((K_abstract_object) && (Kinds::conforms_to(K, K_abstract_object))) {
+		exact_parsing = TRUE; mc = EXACT_NOUN_MC;
+	}
 	if (any_parsing) {
-		if (exact_parsing)
-			I->as_noun =
-				Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-					NAMED_CONSTANT_MC, Rvalues::from_instance(I), Task::language_of_syntax());
-		else
-			I->as_noun =
-				Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-					NOUN_MC, Rvalues::from_instance(I), Task::language_of_syntax());
+		if (exact_parsing == FALSE) mc = NOUN_MC;
+		I->as_noun =
+			Nouns::new_proper_noun(W, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
+				mc, Rvalues::from_instance(I), Task::language_of_syntax());
 	} else {
 		I->as_noun = Nouns::new_proper_noun(W, NEUTER_GENDER, 0,
-			NAMED_CONSTANT_MC, NULL, Task::language_of_syntax());
+			mc, NULL, Task::language_of_syntax());
 	}
 	NameResolution::initialise(I->as_noun);
 }
@@ -47,7 +47,7 @@ pointers.
 
 =
 <s-object-instance> internal {
-	parse_node *p = Lexicon::retrieve(NOUN_MC, W);
+	parse_node *p = Lexicon::retrieve(NOUN_MC + EXACT_NOUN_MC, W);
 	if (p) {
 		noun_usage *nu = Nouns::disambiguate(p, FALSE);
 		noun *nt = nu->noun_used;

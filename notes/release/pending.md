@@ -18,6 +18,11 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	default action success rule
 	```
 
+- Similarly: see Jira bug [I7-2556](https://inform7.atlassian.net/browse/I7-2556)
+	```
+	very likely to mean taking off what's currently worn rule
+	```
+
 - When releasing a story with a website, and a cover image which has alt-text
 	provided, that text is now used on the thumbnail cover images in the website.
 	(See Jira bug [I7-2615](https://inform7.atlassian.net/browse/I7-2615): the

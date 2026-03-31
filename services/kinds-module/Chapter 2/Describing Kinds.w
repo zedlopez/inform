@@ -124,7 +124,7 @@ make two further checks:
 			}
 			K = Kinds::base_construction(RETRIEVE_POINTER_kind_constructor(m));
 		} else {
-			p = Lexicon::retrieve(NOUN_MC, W);
+			p = Lexicon::retrieve(NOUN_MC + EXACT_NOUN_MC, W);
 			if (p) {
 				noun_usage *nu = Nouns::disambiguate(p, TRUE);
 				noun *nt = (nu)?(nu->noun_used):NULL;

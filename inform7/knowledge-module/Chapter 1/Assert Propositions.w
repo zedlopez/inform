@@ -217,7 +217,6 @@ so the new value has to be added to the identification slate.
 	wording NW = EMPTY_WORDING;
 	int is_a_var = FALSE, is_a_const = FALSE, is_a_kind = FALSE;
 	kind *K = NULL;
-
 	@<Scan subsequent atoms to find the name, nature and kind of what is to be created@>;
 	@<Create the object and add to the identification slate@>;
 	@<Record the new creation in the debugging log@>;

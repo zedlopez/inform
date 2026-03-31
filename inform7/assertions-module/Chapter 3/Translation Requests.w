@@ -492,7 +492,7 @@ void Translations::plus_responses(parse_node *p, rule *R) {
 	switch(category) {
 		case NOUN_I6TR: {
 			wording W = Wordings::trim_last_word(SP);
-			parse_node *res = Lexicon::retrieve(NOUN_MC, W);
+			parse_node *res = Lexicon::retrieve(NOUN_MC + EXACT_NOUN_MC, W);
 			if (res) {
 				if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
 					translates_into_verb = TRANSLATION_ACCESSIBLE_TO_FORM;

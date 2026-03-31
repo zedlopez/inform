@@ -299,7 +299,7 @@ int Nouns::is_eligible_match(noun *nt, int common_only) {
 
 =
 void Nouns::recognise(parse_node *p) {
-	parse_node *q = Lexicon::retrieve(NOUN_MC, Node::get_text(p));
+	parse_node *q = Lexicon::retrieve(NOUN_MC + EXACT_NOUN_MC, Node::get_text(p));
 	if (q) Nouns::set_node_to_be_usage_of_noun(p, Nouns::disambiguate(q, FALSE));
 }
 

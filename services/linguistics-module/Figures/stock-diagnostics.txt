@@ -1,12 +1,12 @@
 adjective: 148 items
 article: 2 items
-noun: 2582 items
+noun: 2583 items
 pronoun: 8 items
 preposition: 278 items
 determiner: 22 items
 verb: 109 items
 verb_form: 392 items
-total in all categories: 3541
+total in all categories: 3542
 
 adjective: 'supported'
 adjective: 'unsupported'
@@ -592,6 +592,7 @@ noun: proper: 'can't wear what's not clothing rule'
 noun: proper: 'can't wear what's already worn rule'
 noun: proper: 'standard wearing rule'
 noun: proper: 'standard report wearing rule'
+noun: proper: 'very likely to mean taking off a worn thing rule'
 noun: proper: 'can't take off what's not worn rule'
 noun: proper: 'can't exceed carrying capacity when taking off rule'
 noun: proper: 'standard taking off rule'

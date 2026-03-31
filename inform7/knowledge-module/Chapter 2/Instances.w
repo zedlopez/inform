@@ -80,7 +80,10 @@ more specific than "object", we nevertheless make it just "object" for now.
 
 @<Simplify the initial kind of the instance@> =
 	if (K == NULL) K = K_object;
-	K = Kinds::weaken(K, K_object);
+	if ((K_abstract_object) && (Kinds::conforms_to(K, K_abstract_object)))
+		K = K_abstract_object;
+	else
+		K = Kinds::weaken(K, K_object);
 
 @<Initialise the instance@> =
 	I->creating_sentence = current_sentence;

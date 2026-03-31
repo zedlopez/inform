@@ -172,6 +172,7 @@ in the node's subject, so this case is easy.
 		else if (Specifications::is_kind_like(spec)) found = Specifications::to_kind(spec);
 		if (found) {
 			*governing = p;
+			if ((K_abstract_object) && (Kinds::conforms_to(found, K_abstract_object))) return K_abstract_object;
 			if (Kinds::Behaviour::is_object(found)) return K_object;
 		}
 		return found;
@@ -557,7 +558,11 @@ to abbreviated forms of object names are normally allowed.
 	int is_a_kind = FALSE;
 	if ((governor) && (Node::get_type(governor) == KIND_NT)) is_a_kind = TRUE;
 
-	pcalc_prop *prop = Propositions::Abstract::to_create_something(K_object, W);
+	kind *K = K_object;
+	if ((is_a_kind == FALSE) && (K_abstract_object) &&
+		(Kinds::conforms_to(create_as, K_abstract_object)))
+		K = K_abstract_object;
+	pcalc_prop *prop = Propositions::Abstract::to_create_something(K, W);
 	if (is_a_kind)
 		prop = Propositions::concatenate(prop, Propositions::Abstract::to_make_a_kind(K_object));
 	Assert::true(prop, CERTAIN_CE);

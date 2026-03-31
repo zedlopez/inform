@@ -42,7 +42,13 @@ and the excerpt meaning can be recovered from it using `Node::get_meaning`.
 
 =
 parse_node *Lexicon::retrieve(unsigned int mc_bitmap, wording W) {
-	return FromLexicon::parse(mc_bitmap, W);
+	if (mc_bitmap == NOUN_MC + EXACT_NOUN_MC) {
+		parse_node *p = FromLexicon::parse(EXACT_NOUN_MC, W);
+		if (p) return p;
+		return FromLexicon::parse(NOUN_MC, W);
+	} else {
+		return FromLexicon::parse(mc_bitmap, W);
+	}
 }
 
 int lexicon_in_maximal_mode = FALSE;

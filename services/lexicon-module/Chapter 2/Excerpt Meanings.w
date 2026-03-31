@@ -51,7 +51,8 @@ a table name". But the `meaning_code` field of an //excerpt_meaning// is always
 a pure power of 2, i.e., a single bit.
 
 @d MISCELLANEOUS_MC			0x00000001 /* a grab-bag of other possible nouns */
-@d NOUN_MC					0x00000002 /* e.g., `upright chair` */
+@d NOUN_MC					0x00000002 /* e.g., `upright chair` or `chair` or `upright` */
+@d EXACT_NOUN_MC			0x00080000 /* e.g., `upright chair` */
 @d ADJECTIVE_MC				0x00000004 /* e.g., `invisible` */
 
 @h Annotating words.
@@ -408,7 +409,7 @@ excerpt_meaning *ExcerptMeanings::register(
 	if (Wordings::empty(W)) internal_error("tried to register empty excerpt meaning");
 
 	#ifdef CORE_MODULE
-	if (meaning_code == NOUN_MC)
+	if ((meaning_code == NOUN_MC) || (meaning_code == EXACT_NOUN_MC))
 		LOOP_THROUGH_WORDING(i, W)
 			NTI::mark_word(i, <s-object-instance>);
 	if (meaning_code == KIND_SLOW_MC)
