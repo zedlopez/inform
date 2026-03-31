@@ -13,6 +13,7 @@ the Inform user interface, they are either (for preference) stored in a
 alongside the Inform project file.
 
 =
+
 [ FileIO_Exists extf  fref struc rv usage;
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES)) rfalse;
 	struc = TableOfExternalFiles-->extf;
@@ -85,10 +86,11 @@ asterisk or hyphen into the initial character as needed.
 		glk_fileref_destroy(fref);
 		return FileIO_Error(extf, "only closed files can be marked");
 	}
-	str = glk_stream_open_file(fref, filemode_ReadWrite, 0);
+	if (usage = fileusage_BinaryMode) str = glk_stream_open_file(fref, filemode_ReadWrite, 0);
+	else str = glk_stream_open_file(fref, filemode_ReadWrite, 0);
 	glk_stream_set_position(str, 0, 0); ! seek start
 	if (readiness) ch = '*'; else ch = '-';
-	glk_put_char_stream(str, ch); ! mark as complete
+	glk_put_char_stream_uni(str, ch); ! mark as complete
 	glk_stream_close(str, 0);
 	glk_fileref_destroy(fref);
 ];
@@ -122,7 +124,8 @@ asterisk or hyphen into the initial character as needed.
 			return FileIO_Error(extf, "tried to open a file which does not exist");
 		}
 	}
-	str = glk_stream_open_file(fref, mode, 0);
+	if (usage == fileusage_TextMode) str = glk_stream_open_file_uni(fref, mode, 0);
+	else str = glk_stream_open_file(fref, mode, 0);
 	glk_fileref_destroy(fref);
 	if (str == 0) return FileIO_Error(extf, "tried to open a file but failed");
 	struc-->AUXF_STREAM = str;
@@ -214,7 +217,8 @@ Glk errors.
 	if ((extf < 1) || (extf > NO_EXTERNAL_FILES)) return -1;
 	struc = TableOfExternalFiles-->extf;
 	if (struc-->AUXF_STATUS ~= AUXF_STATUS_IS_OPEN_FOR_READ) return -1;
-	return glk_get_char_stream(struc-->AUXF_STREAM);
+	if (struc-->AUXF_BINARY) return glk_get_char_stream(struc-->AUXF_STREAM);
+	return glk_get_char_stream_uni(struc-->AUXF_STREAM);
 ];
 
 @h Put Character.
@@ -229,7 +233,8 @@ Glk errors.
 		AUXF_STATUS_IS_OPEN_FOR_APPEND)
 		return FileIO_Error(extf,
 			"tried to write to a file which is not open for writing");
-	return glk_put_char_stream(struc-->AUXF_STREAM, char);
+	if (struc-->AUXF_BINARY) return glk_put_char_stream(struc-->AUXF_STREAM, char);
+	return glk_put_char_stream_uni(struc-->AUXF_STREAM, char);
 ];
 
 @h Print Line.
@@ -246,7 +251,8 @@ single `0d`.) Each character is printed, and at the end we print a newline.
 		ch = FileIO_GetC(extf);
 		if (ch == -1) rfalse;
 		if (ch == 10 or 13) { print "^"; rtrue; }
-		print (char) ch;
+		if (struc-->AUXF_BINARY) print (char) ch;
+		else @streamunichar ch;
 	}
 ];
 
@@ -284,12 +290,14 @@ end (if true).
 	oldstream = glk_stream_get_current();
 	str = FileIO_Open(extf, true, append_flag);
 	if (str == 0) rfalse;
-	@push say__p; @push say__pc;
+	@push say__p;
+	@push say__pc;
 	ClearParagraphing(19);
 	TEXT_TY_Say(text);
 	FileIO_Close(extf);
 	if (oldstream) glk_stream_set_current(oldstream);
-	@pull say__pc; @pull say__p;
+	@pull say__pc;
+	@pull say__p;
 	rfalse;
 ];
 
