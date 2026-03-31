@@ -1,0 +1,33 @@
+Test: Articulation
+For: Glulx
+
+"Articulation" by "Zed Lopez"
+
+Use serial comma.
+Use command line echoing.
+
+Lab is a room.
+
+A traffic signal is in the Lab.
+Before printing the name of the traffic signal, say "[one of]green[or]amber[or]red[cycling] ".
+
+A book is in the lab. The book can be open. The book is open.
+Before printing the name of the open book: say "open ".
+
+An ostrich is an animal in the Lab. [ singular, improper, vowel ]
+An animal called a cat is in the Lab. [ singular, improper, consonant ]
+The eggs are a plural-named thing in the Lab. [ plural, improper, vowel ]
+Some magic beans are in the Lab. [ plural, improper, consonant ]
+A man called The Man with No Name is in the Lab. [ singular, proper ]
+Les Misérables are plural-named people in the Lab. [ plural, proper ]
+The water is in the Lab. The indefinite article is "some". [ singular, improper, "some" ]
+
+Reviewing is an action applying to nothing.
+Understand "review" as reviewing.
+
+Carry out reviewing:
+  say "In review:[line break]";
+  repeat with t running through things in the Lab begin;
+    say "[t]: [bracket] [if t is singular-named]singular[else]plural[end if]-named ; [if t is improper-named]im[end if]proper-named ; indefinite article: ['][indefinite article of t]['][close bracket][line break]";
+    say "  [The t] | [A t] | [An t] | [the t] | [a t] | [an t][line break]";
+  end repeat;
