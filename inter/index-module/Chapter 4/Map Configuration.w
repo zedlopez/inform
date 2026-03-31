@@ -155,7 +155,8 @@ If all are null, then the global scope is used.
 
 =
 void ConfigureIndexMap::put_mp(text_stream *name, map_parameter_scope *scope,
-	faux_instance *scope_I, text_stream *put_string, int put_integer, index_session *session) {
+	faux_instance *scope_I, text_stream *put_string, int put_integer, int is_int,
+	index_session *session) {
 	if (scope == NULL) {
 		if (scope_I == NULL) scope = Indexing::get_global_map_scope(session);
 		else scope = FauxInstances::get_parameters(scope_I);
@@ -167,8 +168,8 @@ void ConfigureIndexMap::put_mp(text_stream *name, map_parameter_scope *scope,
 	}
 	if (Str::cmp(name, I"room-name-colour") == 0)
 		if (scope_I) scope_I->fimd.text_colour = put_string;
-	if (put_string) ConfigureIndexMap::put_text_mp(name, scope, put_string, session);
-	else ConfigureIndexMap::put_int_mp(name, scope, put_integer, session);
+	if (is_int) ConfigureIndexMap::put_int_mp(name, scope, put_integer, session);
+	else ConfigureIndexMap::put_text_mp(name, scope, put_string, session);
 }
 
 @ Text parameters.

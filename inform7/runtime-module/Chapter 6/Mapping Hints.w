@@ -25,11 +25,14 @@ void RTMappingHints::compile(void) {
 			RTMappingHints::apply_metadata_from_wide_string(P, MH_NAME_HL, hint->name);
 			Hierarchy::apply_metadata_from_number(P, MH_SCOPE_LEVEL_HL,
 				(inter_ti) (hint->scope_level));
-			Hierarchy::apply_metadata_from_iname(P, MH_SCOPE_INSTANCE_HL,
-				RTInstances::value_iname(hint->scope_I));
+			if (hint->scope_I)
+				Hierarchy::apply_metadata_from_iname(P, MH_SCOPE_INSTANCE_HL,
+					RTInstances::value_iname(hint->scope_I));
 			RTMappingHints::apply_metadata_from_wide_string(P, MH_TEXT_HL, hint->put_string);
 			Hierarchy::apply_metadata_from_number(P, MH_NUMBER_HL,
 				(inter_ti) (hint->put_integer));
+			Hierarchy::apply_metadata_from_number(P, MH_IS_NUMBER_HL,
+				(inter_ti) (hint->is_integer));
 		} else if (hint->annotation) {
 			RTMappingHints::apply_metadata_from_wide_string(P, MH_ANNOTATION_HL, hint->annotation);
 			Hierarchy::apply_metadata_from_number(P, MH_POINT_SIZE_HL,

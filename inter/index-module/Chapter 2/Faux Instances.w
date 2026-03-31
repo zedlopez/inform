@@ -318,6 +318,7 @@ void FauxInstances::decode_hints(index_session *session, int pass) {
 			faux_instance *scope_I = FauxInstances::xref(faux_set, hint_pack, I"^scope_instance");
 			text_stream *text_val = Metadata::optional_textual(hint_pack, I"^text");
 			int int_val = (int) Metadata::read_optional_numeric(hint_pack, I"^number");
+			int is_int = (int) Metadata::read_optional_numeric(hint_pack, I"^is_number");
 			if (scope_level != 1000000) {
 				if (pass == 2) @<Decode a hint setting EPS map parameters relating to levels@>;
 			} else {
@@ -356,7 +357,7 @@ void FauxInstances::decode_hints(index_session *session, int pass) {
 immediately, i.e., on `pass` 1:
 
 @<Decode a hint setting EPS map parameters@> =
-	ConfigureIndexMap::put_mp(name, NULL, scope_I, text_val, int_val, session);
+	ConfigureIndexMap::put_mp(name, NULL, scope_I, text_val, int_val, is_int, session);
 
 @ ...but not those hints applying to a specific level of the map (e.g., level 4),
 since we do not initially know what level any given room actually lives on: that
@@ -370,7 +371,7 @@ can only be known once the spatial grid has been found, i.e., on `pass` 2.
 		if ((eml->contains_rooms)
 			&& (eml->map_level - SpatialMap::benchmark_level(session) == scope_level))
 			scope = &(eml->map_parameters);
-	if (scope) ConfigureIndexMap::put_mp(name, scope, scope_I, text_val, int_val, session);
+	if (scope) ConfigureIndexMap::put_mp(name, scope, scope_I, text_val, int_val, is_int, session);
 
 @h Instance set properties.
 

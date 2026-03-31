@@ -463,6 +463,7 @@ classdef mapping_hint {
 	inchar32_t *name;
 	int scope_level;
 	struct instance *scope_I;
+	int is_integer;
 	inchar32_t *put_string;
 	int put_integer;
 
@@ -485,6 +486,7 @@ mapping_hint *MappingHints::new_hint(void) {
 	hint->scope_I = NULL;
 	hint->put_string = NULL;
 	hint->put_integer = 0;
+	hint->is_integer = TRUE;
 
 	hint->annotation = NULL;
 	hint->point_size = 0;
@@ -536,6 +538,7 @@ void MappingHints::put_mp(inchar32_t *name, int scope_level, instance *scope_I,
 	hint->scope_level = scope_level;
 	hint->scope_I = scope_I;
 	hint->put_string = put_string;
+	if (put_string) hint->is_integer = FALSE;
 	hint->put_integer = put_integer;
 }
 

@@ -1455,6 +1455,7 @@ void Hierarchy::establish(void) {
 @e MH_SCOPE_INSTANCE_HL
 @e MH_TEXT_HL
 @e MH_NUMBER_HL
+@e MH_IS_NUMBER_HL
 @e MH_ANNOTATION_HL
 @e MH_POINT_SIZE_HL
 @e MH_FONT_HL
@@ -1476,6 +1477,7 @@ void Hierarchy::establish(void) {
 			H_C_U(MH_SCOPE_INSTANCE_HL,    I"^scope_instance")
 			H_C_U(MH_TEXT_HL,              I"^text")
 			H_C_U(MH_NUMBER_HL,            I"^number")
+			H_C_U(MH_IS_NUMBER_HL,         I"^is_number")
 			H_C_U(MH_ANNOTATION_HL,        I"^annotation")
 			H_C_U(MH_POINT_SIZE_HL,        I"^point_size")
 			H_C_U(MH_FONT_HL,              I"^font")

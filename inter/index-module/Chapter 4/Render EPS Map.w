@@ -9,7 +9,6 @@ file, which can be opened in Ghostscript, Photoshop or similar.
 
 =
 void RenderEPSMap::render_map_as_EPS(filename *F, text_stream *F_alt, index_session *session) {
-	localisation_dictionary *LD = Indexing::get_localisation(session);
 	SpatialMap::establish_spatial_coordinates(session);
 	HTMLMap::compute_room_colours(session);
 	@<Prepare the EPS levels@>;
@@ -33,11 +32,10 @@ void RenderEPSMap::render_map_as_EPS(filename *F, text_stream *F_alt, index_sess
 	main_eml->actual_height = 0;
 	main_eml->titling_point_size = ConfigureIndexMap::get_int_mp(I"title-size", NULL, session);
 	main_eml->titling = Str::new();
-	Localisation::roman(main_eml->titling, LD, I"Index.EPSMap.DefaultTitle");
+	WRITE_TO(main_eml->titling, "%S", ConfigureIndexMap::get_text_mp(I"title", NULL, session));
 	main_eml->contains_titling = TRUE;
 	main_eml->contains_rooms = FALSE;
 	ConfigureIndexMap::prepare_map_parameter_scope(&(main_eml->map_parameters), session);
-	ConfigureIndexMap::put_text_mp(I"title", &(main_eml->map_parameters), main_eml->titling, session);
 
 @<Create an EPS map level for this z-slice@> =
 	EPS_map_level *eml = CREATE(EPS_map_level);
