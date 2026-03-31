@@ -67,7 +67,7 @@ void Declarations::parse(parse_node *p) {
 
 @
 
-@d EXACT_PARSING_BITMAP (KIND_SLOW_MC)
+@d EXACT_PARSING_BITMAP (KIND_SLOW_MC + EXACT_NOUN_MC)
 
 =
 classdef kind_relationship {

@@ -245,8 +245,8 @@ require extensions.</p>
 <span class="plain-syntax">    (this is the set glk event processing variables rule):</span>
 <span class="plain-syntax">    now the event is the current glk event initialiser.</span>
 
-<span class="plain-syntax">To handle (ev - glk event):</span>
-<span class="plain-syntax">    (- GLK_EVENT_TY_Handle_Instead({ev}); rtrue; -).</span>
+<span class="plain-syntax">To replace current event with (ev - glk event):</span>
+<span class="plain-syntax">    (- GLK_EVENT_TY_Replace_Current({ev}); rtrue; -).</span>
 
 <span class="plain-syntax">Glk event handling rule for a screen resize event (this is the redraw the status line rule):</span>
 <span class="plain-syntax">    redraw the status window;</span>

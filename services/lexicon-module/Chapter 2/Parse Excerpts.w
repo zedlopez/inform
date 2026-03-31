@@ -11,7 +11,7 @@ certainly doesn't use settings as minimal as these — see
 @d ONE_WEIRD_TRICK_DISCOVERED_BY_A_MOM_MC 0x00000004 /* meaningless, so do not use */
 
 @default EXACT_PARSING_BITMAP
-	(MISCELLANEOUS_MC)
+	(MISCELLANEOUS_MC + EXACT_NOUN_MC)
 @default SUBSET_PARSING_BITMAP
 	(NOUN_MC)
 @default PARAMETRISED_PARSING_BITMAP
