@@ -1793,7 +1793,7 @@ Report an actor wearing (this is the standard report wearing rule):
 Taking off is an action applying to one thing.
 The taking off action is accessible to Inter as "Disrobe".
 
-Does the player mean taking off something worn: it is very likely.
+Does the player mean taking off something worn (this is the very likely to mean taking off a worn thing rule): it is very likely.
 
 The specification of the taking off action is "The Standard Rules give Inform
 only a simple model of clothing. A thing can be worn only if it has the
