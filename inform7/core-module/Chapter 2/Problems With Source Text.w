@@ -335,7 +335,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							_p_(PM_BadTitleSentence),
 							"The opening bibliographic sentence can only be a title in "
 							"double-quotes, possibly followed with 'by' and the name of "
-							"the author.");
+							"the author, without using any punctuation.");
 						break;
 					case UnknownLanguageElement_SYNERROR:
 						current_sentence = CE->details_node;

@@ -316,12 +316,14 @@ These affect documentation, or the wording of problem messages or the Index, but
 do not really change the compiler or other tools in any way which changes how
 source text is read.
 
+> [I7-2663](https://inform7.atlassian.net/browse/I7-2663),
 > [I7-2640](https://inform7.atlassian.net/browse/I7-2640),
 > [I7-2598](https://inform7.atlassian.net/browse/I7-2598),
 > [I7-2594](https://inform7.atlassian.net/browse/I7-2594),
 > [I7-2592](https://inform7.atlassian.net/browse/I7-2592),
 > [I7-2570](https://inform7.atlassian.net/browse/I7-2570),
 > [I7-2529](https://inform7.atlassian.net/browse/I7-2529),
+> [I7-2526](https://inform7.atlassian.net/browse/I7-2526),
 > [I7-2502](https://inform7.atlassian.net/browse/I7-2502),
 > [I7-2481](https://inform7.atlassian.net/browse/I7-2481),
 > [I7-2480](https://inform7.atlassian.net/browse/I7-2480),

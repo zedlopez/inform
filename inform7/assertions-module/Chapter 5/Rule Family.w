@@ -188,8 +188,24 @@ Now we take a closer look at the rule preamble.
 	rule                                                 ==> { FALSE, - }
 
 <unrecognised-rule-stem-diagnosis> ::=
+	the final *** |                                      ==> @<Issue PM_BadRulePreambleFinal@>
+	final *** |                                          ==> @<Issue PM_BadRulePreambleFinal@>
 	when *** |                                           ==> @<Issue PM_BadRulePreambleWhen@>
 	...                                                  ==> @<Issue PM_BadRulePreamble@>
+
+@<Issue PM_BadRulePreambleFinal@> =
+	Problems::quote_source(1, current_sentence);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadRulePreambleFinal));
+	Problems::issue_problem_segment(
+		"The punctuation makes me think %1 should be a definition of a phrase or a rule, "
+		"but it doesn't begin as it should, with either 'To' (e.g. 'To flood the riverplain:'), "
+		"'Definition:', a name for a rule (e.g. 'This is the devilishly cunning rule:'), "
+		"'At' plus a time (e.g. 'At 11:12 PM:' or 'At the time when the clock chimes:') or "
+		"the name of a rulebook. %P"
+		"I notice you began with the word 'Final'. Possibly you meant to use the word 'Last'? "
+		"Inform allows rules to be placed at the end of rulebooks with wording like "
+		"'Last every turn rule'.");
+	Problems::issue_problem_end();
 
 @<Issue PM_BadRulePreambleWhen@> =
 	Problems::quote_source(1, current_sentence);
