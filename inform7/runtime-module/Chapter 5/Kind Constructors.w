@@ -30,6 +30,7 @@ typedef struct kind_constructor_compilation_data {
 	struct inter_name *showme_fn_iname;
 
 	struct inter_name *GPR_iname;
+	int GPR_required;
 	struct inter_name *instance_GPR_iname;
 	struct inter_name *recognition_only_GPR_iname;
 	struct inter_name *distinguisher_function_iname;
@@ -65,6 +66,7 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 	kccd.showme_fn_iname = NULL;
 
 	kccd.GPR_iname = NULL;
+	kccd.GPR_required = FALSE;
 	kccd.instance_GPR_iname = NULL;
 	kccd.recognition_only_GPR_iname = NULL;
 	kccd.distinguisher_function_iname = NULL;
@@ -508,12 +510,30 @@ int RTKindConstructors::GPR_provided_by_kit(kind *K) {
 	return FALSE;
 }
 
-inter_name *RTKindConstructors::GPR_iname(kind *K) {
+inter_name *RTKindConstructors::GPR_iname(kind *K, int require_existence) {
 	if (K == NULL) return NULL;
 	kind_constructor *kc = Kinds::get_construct(K);
+	if (require_existence) RTKindConstructors::require_GPRs(K);
 	RETURN_INAME_IN(kc, GPR_iname, RTKindConstructors::create_GPR_iname(K))
 }
 
+void RTKindConstructors::require_GPRs(kind *K) {
+	if (K == NULL) return;
+	kind_constructor *kc = Kinds::get_construct(K);
+	if (kc->compilation_data.GPR_required == FALSE) {
+		if (Kinds::Behaviour::is_an_enumeration(K)) {
+				text_stream *desc = Str::new();
+				WRITE_TO(desc, "GPR for enumeration kind %u", K);
+				Sequence::queue(&KindGPRs::enumeration_agent, STORE_POINTER_kind(K), desc);
+		} else if (Kinds::Behaviour::is_quasinumerical(K)) {
+			text_stream *desc = Str::new();
+			WRITE_TO(desc, "GPR for quasinumerical kind %u", K);
+			Sequence::queue(&KindGPRs::quasinumerical_agent, STORE_POINTER_kind(K), desc);
+		}
+		kc->compilation_data.GPR_required = TRUE;
+	}
+}
+		
 inter_name *RTKindConstructors::create_GPR_iname(kind *K) {
 	if (RTKindConstructors::GPR_provided_by_kit(K))
 		return RTKindConstructors::iname_of_kit_function(K,
@@ -526,9 +546,10 @@ inter_name *RTKindConstructors::create_GPR_iname(kind *K) {
 following, for parsing non-standard names for instances:
 
 =
-inter_name *RTKindConstructors::instance_GPR_iname(kind *K) {
+inter_name *RTKindConstructors::instance_GPR_iname(kind *K, int require_existence) {
 	if (K == NULL) return NULL;
 	kind_constructor *kc = Kinds::get_construct(K);
+	if (require_existence) RTKindConstructors::require_GPRs(K);
 	RETURN_INAME_IN(kc, instance_GPR_iname,
 		Hierarchy::make_iname_in(INSTANCE_GPR_FN_HL, RTKindConstructors::package(kc)))
 }
@@ -931,7 +952,7 @@ or can come from the Neptune file creating a kind.
 		@<Apply SHOWME function metadata@>;
 		@<Compile SHOWME function@>;
 	}
-	if ((RTKindConstructors::GPR_compilation_enabled()) &&
+/*	if ((RTKindConstructors::GPR_compilation_enabled()) &&
 		(RTKindConstructors::GPR_provided_by_kit(K) == FALSE)) {
 		if (Kinds::Behaviour::is_an_enumeration(K)) {
 			@<Compile enumeration GPR@>;
@@ -939,6 +960,7 @@ or can come from the Neptune file creating a kind.
 			@<Compile quasinumerical GPR@>;
 		}
 	}
+*/
 
 @<Make icount constant@> =
 	inter_name *iname = RTKindConstructors::icount_iname(K);
@@ -1473,16 +1495,6 @@ but at present this can't happen.
 @<Compile SHOWME function@> =
 	inter_name *iname = RTKindConstructors::showme_fn_iname(K);
 	RTShowmeCommand::compile_kind_showme_fn(iname, K);
-
-@<Compile enumeration GPR@> =
-	text_stream *desc = Str::new();
-	WRITE_TO(desc, "GPR for enumeration kind %u", K);
-	Sequence::queue(&KindGPRs::enumeration_agent, STORE_POINTER_kind(K), desc);
-
-@<Compile quasinumerical GPR@> =
-	text_stream *desc = Str::new();
-	WRITE_TO(desc, "GPR for quasinumerical kind %u", K);
-	Sequence::queue(&KindGPRs::quasinumerical_agent, STORE_POINTER_kind(K), desc);
 
 @<Apply conformance metadata@> =
 	kind *K2;

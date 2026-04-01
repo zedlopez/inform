@@ -46,7 +46,16 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	Jira bug [I7-2516](https://inform7.atlassian.net/browse/I7-2516).
 
 - The Inform 6 compiler's built-in pseudofunction "random()" can now be replaced. See
-	Jira bug [I7-2516](https://inform7.atlassian.net/browse/I7-2435).
+	Jira bug [I7-2435](https://inform7.atlassian.net/browse/I7-2435).
+
+- Inform 7 now optimises compilation so that code to parse command text for kinds
+	is only generated if command grammar involving those kinds actually exists.
+	This makes little difference to eventual code size because the Inform 6
+	compiler would have removed those functions anyway, but it does reduce
+	dictionary word usage. Typically, it means about 120 words fewer in the
+	story file dictionary: only a trivial memory saving, but it avoids some
+	warnings due to dictionary entry clashes. See Jira bug (really a suggestion)
+	[I7-2573](https://inform7.atlassian.net/browse/I7-2573).
 
 ## Gender neutrality
 

@@ -961,7 +961,7 @@ void ParseName::parse_visible_property(gpr_kit *kit,
 					EmitCode::down();
 						EmitCode::inv(EQ_BIP);
 						EmitCode::down();
-							EmitCode::call(RTKindConstructors::GPR_iname(K));
+							EmitCode::call(RTKindConstructors::GPR_iname(K, TRUE));
 							EmitCode::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
 						EmitCode::up();
 						EmitCode::inv(EQ_BIP);
@@ -978,7 +978,7 @@ void ParseName::parse_visible_property(gpr_kit *kit,
 				} else if (Kinds::Behaviour::is_an_enumeration(K)) {
 					EmitCode::inv(EQ_BIP);
 					EmitCode::down();
-						EmitCode::call(RTKindConstructors::instance_GPR_iname(K));
+						EmitCode::call(RTKindConstructors::instance_GPR_iname(K, TRUE));
 						EmitCode::down();
 							EmitCode::inv(PROPERTYVALUE_BIP);
 							EmitCode::down();
@@ -994,7 +994,7 @@ void ParseName::parse_visible_property(gpr_kit *kit,
 					EmitCode::down();
 						EmitCode::inv(EQ_BIP);
 						EmitCode::down();
-							EmitCode::call(RTKindConstructors::GPR_iname(K));
+							EmitCode::call(RTKindConstructors::GPR_iname(K, TRUE));
 							EmitCode::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
 						EmitCode::up();
 						EmitCode::inv(EQ_BIP);

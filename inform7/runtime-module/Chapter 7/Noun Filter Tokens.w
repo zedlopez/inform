@@ -103,7 +103,7 @@ void NounFilterTokens::compilation_agent(compilation_subtask *t) {
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
 		EmitCode::ref_symbol(K_value, v_s);
-		EmitCode::call(RTKindConstructors::GPR_iname(K));
+		EmitCode::call(RTKindConstructors::GPR_iname(K, TRUE));
 	EmitCode::up();
 
 	EmitCode::inv(IF_BIP);

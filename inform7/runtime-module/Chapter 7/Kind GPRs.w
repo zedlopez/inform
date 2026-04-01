@@ -80,8 +80,9 @@ kind, trying each possible notation in turn until one matches:
 =
 void KindGPRs::quasinumerical_agent(compilation_subtask *t) {
 	kind *K = RETRIEVE_POINTER_kind(t->data);
+	if (RTKindConstructors::GPR_provided_by_kit(K)) return;
 	if (Kinds::Behaviour::is_quasinumerical(K) == FALSE) internal_error("miscall");
-	inter_name *iname = RTKindConstructors::GPR_iname(K);
+	inter_name *iname = RTKindConstructors::GPR_iname(K, FALSE);
 	packaging_state save = Functions::begin(iname);
 	gpr_kit kit = GPRs::new_kit();
 	GPRs::add_original_var(&kit);
@@ -150,6 +151,7 @@ void KindGPRs::quasinumerical_agent(compilation_subtask *t) {
 =
 void KindGPRs::enumeration_agent(compilation_subtask *t) {
 	kind *K = RETRIEVE_POINTER_kind(t->data);
+	if (RTKindConstructors::GPR_provided_by_kit(K)) return;
 	if (Kinds::Behaviour::is_an_enumeration(K) == FALSE) internal_error("miscall");
 	@<Compile the normal GPR@>;
 	@<Compile the instance GPR@>;
@@ -160,7 +162,7 @@ For example, for a kind called "colour", it might match any of "burnt umber",
 "cerulean blue" or "sienna".
 
 @<Compile the normal GPR@> =
-	inter_name *iname = RTKindConstructors::GPR_iname(K);
+	inter_name *iname = RTKindConstructors::GPR_iname(K, FALSE);
 	packaging_state save = Functions::begin(iname);
 	gpr_kit kit = GPRs::new_kit();
 	GPRs::add_original_var(&kit);
@@ -182,7 +184,7 @@ is the only way to allow, say, "Understand "sooty" as burnt umber." to work —
 the grammar holding "sooty" comes out only in the following function.
 
 @<Compile the instance GPR@> =
-	inter_name *iname = RTKindConstructors::instance_GPR_iname(K);
+	inter_name *iname = RTKindConstructors::instance_GPR_iname(K, FALSE);
 	packaging_state save = Functions::begin(iname);
 	gpr_kit kit = GPRs::new_kit();
 	GPRs::add_instance_var(&kit);
