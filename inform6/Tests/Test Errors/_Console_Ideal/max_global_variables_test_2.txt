@@ -1,4 +1,4 @@
-Inform 6.43 for MacOS (6th August 2025)
+Inform 6.45 for MacOS (in development)
 line 237: Error:  All 233 global variables already declared
 > Global var_233;
 line 238: Error:  All 233 global variables already declared

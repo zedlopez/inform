@@ -1,4 +1,4 @@
-Inform 6.43 for MacOS (6th August 2025)
+Inform 6.45 for MacOS (in development)
 line 119: Warning:  This statement can never be reached
 >  print "(BUG, should not get here.)^"
 line 132: Warning:  This statement can never be reached

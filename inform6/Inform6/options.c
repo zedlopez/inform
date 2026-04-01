@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "options" : Compiler options and memory settings                        */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.45                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -65,42 +65,6 @@ typedef struct optiont_s {
     platformval val;
     int precedence;
 } optiont;
-
-/* Enum for referring to individual options. This doesn't include obsolete
-   options, because we never have to refer to those.
-   
-   Must match the order of alloptions[], which is the order of the $LIST
-   in the old options system, which was not very systematic. */
-enum optionindex {
-    OPT_MAX_ABBREVS               = 0,
-    OPT_NUM_ATTR_BYTES            = 1,
-    OPT_DICT_WORD_SIZE            = 2,
-    OPT_DICT_CHAR_SIZE            = 3,
-    OPT_GRAMMAR_VERSION           = 4,
-    OPT_GRAMMAR_META_FLAG         = 5,
-    OPT_MAX_DYNAMIC_STRINGS       = 6,
-    OPT_HASH_TAB_SIZE             = 7,
-    OPT_ZCODE_HEADER_EXT_WORDS    = 8,
-    OPT_ZCODE_HEADER_FLAGS_3      = 9,
-    OPT_ZCODE_FILE_END_PADDING    = 10,
-    OPT_ZCODE_LESS_DICT_DATA      = 11,
-    OPT_ZCODE_MAX_INLINE_STRING   = 12,
-    OPT_ZCODE_COMPACT_GLOBALS     = 13,
-    OPT_INDIV_PROP_START          = 14,
-    OPT_MEMORY_MAP_EXTENSION      = 15,
-    OPT_GLULX_OBJECT_EXT_BYTES    = 16,
-    OPT_MAX_STACK_SIZE            = 17,
-    OPT_TRANSCRIPT_FORMAT         = 18,
-    OPT_WARN_UNUSED_ROUTINES      = 19,
-    OPT_OMIT_UNUSED_ROUTINES      = 20,
-    OPT_STRIP_UNREACHABLE_LABELS  = 21,
-    OPT_OMIT_SYMBOL_TABLE         = 22,
-    OPT_DICT_IMPLICIT_SINGULAR    = 23,
-    OPT_DICT_TRUNCATE_FLAG        = 24,
-    OPT_LONG_DICT_FLAG_BUG        = 25,
-    OPT_SERIAL                    = 26,
-    OPT_OPTIONS_COUNT             = 27, /* terminator */
-};
 
 /* Our catalog of options. */
 static optiont alloptions[] = {
@@ -207,12 +171,48 @@ static optiont alloptions[] = {
         DEFAULTVAL(3),
     },
     {
+        "ZCODE_HEADER_FLAGS_1",
+        "\
+  ZCODE_HEADER_FLAGS_1 gives bits to set in the Flags 1 byte of the \n\
+  header (address $1).\n",
+        OPTUSE_ZCODE,
+        { OPTLIM_TOMAX, 255 },
+        DEFAULTVAL(0),
+    },
+    {
+        "ZCODE_HEADER_FLAGS_1_CLR",
+        "\
+  ZCODE_HEADER_FLAGS_1_CLR gives bits to clear in the Flags 1 byte of the \n\
+  header (address $1).\n",
+        OPTUSE_ZCODE,
+        { OPTLIM_TOMAX, 255 },
+        DEFAULTVAL(0),
+    },
+    {
+        "ZCODE_HEADER_FLAGS_2",
+        "\
+  ZCODE_HEADER_FLAGS_2 gives bits to set in the Flags 2 word of the \n\
+  header (address $10-11).\n",
+        OPTUSE_ZCODE,
+        { OPTLIM_TOMAX, 65535 },
+        DEFAULTVAL(0),
+    },
+    {
+        "ZCODE_HEADER_FLAGS_2_CLR",
+        "\
+  ZCODE_HEADER_FLAGS_2 gives bits to clear in the Flags 2 word of the \n\
+  header (address $10-11).\n",
+        OPTUSE_ZCODE,
+        { OPTLIM_TOMAX, 65535 },
+        DEFAULTVAL(0),
+    },
+    {
         "ZCODE_HEADER_FLAGS_3",
         "\
   ZCODE_HEADER_FLAGS_3 is the value to store in the Flags 3 word of the \n\
   header extension table (Z-Spec 1.1).\n",
         OPTUSE_ZCODE,
-        { OPTLIM_ANY },
+        { OPTLIM_TOMAX, 65535 },
         DEFAULTVAL(0),
     },
     {
@@ -379,6 +379,26 @@ static optiont alloptions[] = {
         OPTUSE_ALL,
         { OPTLIM_TOMAX, 999999 },
         DEFAULTVAL(0),
+    },
+    {
+        "ZCHAR_TABLE",
+        "\
+  ZCHAR_TABLE, if set, gives characters to be placed in the Unicode \n\
+  translation table. If the first character is '+', the characters are \n\
+  added to the default set instead of replacing the default set. Spaces \n\
+  are ignored. @-escapes are allowed.\n",
+        OPTUSE_ZCODE,
+        { OPTLIM_STR },
+        DEFAULTSTR(NULL),
+    },
+    {
+        "ZALPHABET",
+        "\
+  ZALPHABET, if set, will provide the Z-machine alphabet table. Must be \n\
+  exactly 75 characters (ignoring spaces). @-escapes are allowed.\n",
+        OPTUSE_ZCODE,
+        { OPTLIM_STR },
+        DEFAULTSTR(NULL),
     },
     
     /* obsolete options run past OPT_OPTIONS_COUNT */
@@ -793,8 +813,10 @@ extern void list_compiler_options(void)
             continue;
         
         if (alloptions[ix].limit.limittype == OPTLIM_STR) {
-            /* Only display string options when non-NULL. */
-            if (alloptions[ix].val.s) 
+            /* String option could be NULL. */
+            if (!alloptions[ix].val.s) 
+                printf("|  %25s = not set |\n", alloptions[ix].name);
+            else
                 printf("|  %25s = \"%s\" |\n", alloptions[ix].name, alloptions[ix].val.s);
         }
         else {
@@ -832,8 +854,9 @@ extern void explain_compiler_option(char *str)
     if (opt->limit.limittype == OPTLIM_STR) {
         char *val = opt->val.s;
         if (val == NULL)
-            val = "(not set)";
-        printf("\n  (currently: \"%s\")\n", val);
+            printf("\n  (currently: not set)\n");
+        else
+            printf("\n  (currently: \"%s\")\n", val);
     }
     else if (opt->val.z == opt->val.g) {
         printf("\n  (currently: %d)\n", opt->val.z);
@@ -857,6 +880,10 @@ extern void apply_compiler_options(void)
     MAX_DYNAMIC_STRINGS = SELECTVAL(OPT_MAX_DYNAMIC_STRINGS);
     HASH_TAB_SIZE = SELECTVAL(OPT_HASH_TAB_SIZE);
     ZCODE_HEADER_EXT_WORDS = SELECTVAL(OPT_ZCODE_HEADER_EXT_WORDS);
+    ZCODE_HEADER_FLAGS_1_SET = SELECTVAL(OPT_ZCODE_HEADER_FLAGS_1);
+    ZCODE_HEADER_FLAGS_1_CLR = SELECTVAL(OPT_ZCODE_HEADER_FLAGS_1_CLR);
+    ZCODE_HEADER_FLAGS_2_SET = SELECTVAL(OPT_ZCODE_HEADER_FLAGS_2);
+    ZCODE_HEADER_FLAGS_2_CLR = SELECTVAL(OPT_ZCODE_HEADER_FLAGS_2_CLR);
     ZCODE_HEADER_FLAGS_3 = SELECTVAL(OPT_ZCODE_HEADER_FLAGS_3);
     ZCODE_FILE_END_PADDING = SELECTVAL(OPT_ZCODE_FILE_END_PADDING);
     ZCODE_LESS_DICT_DATA = SELECTVAL(OPT_ZCODE_LESS_DICT_DATA);
@@ -876,6 +903,7 @@ extern void apply_compiler_options(void)
     LONG_DICT_FLAG_BUG = SELECTVAL(OPT_LONG_DICT_FLAG_BUG);
 
     /* Grammar version: this will be handled later, in verbs_begin_pass(). */
+    /* Z-alphabet and Zchar-table: will be handled in chars_begin_pass(). */
 
     /* Serial number: only set it if a non-default value has been given. */
     if (alloptions[OPT_SERIAL].precedence > DEFAULT_OPTPREC) {
@@ -885,10 +913,41 @@ extern void apply_compiler_options(void)
     }
 }
 
-/* This option is handled a bit differently; we don't check the value
-   until verbs_begin_pass(). So we have an accessor for it.
+/* Fetch an option value. This is only needed for a couple of options
+   which are not fixed until late in compilation.
 */
-extern int32 get_grammar_version_option(void)
+extern int32 get_current_option_value(optionindex_e optnum)
 {
-    return SELECTVAL(OPT_GRAMMAR_VERSION);
+    return SELECTVAL(optnum);
 }
+
+/* Fetch a string option value. (OPTLIM_STR only.)
+*/
+extern char *get_current_option_string_value(optionindex_e optnum)
+{
+    return alloptions[optnum].val.s;
+}
+
+extern int get_current_option_precedence(optionindex_e optnum)
+{
+    return alloptions[optnum].precedence;
+}
+
+/* Set an option late in compilation.
+   If this returns false, the option has already been set with higher
+   precedence and should not change.
+*/
+extern int set_current_option_precedence(optionindex_e optnum, int32 val)
+{
+    if (alloptions[optnum].precedence > SRCCODE_OPTPREC)
+        return FALSE;
+
+    alloptions[optnum].precedence = SRCCODE_OPTPREC;
+    if (!glulx_mode)
+        alloptions[optnum].val.z = val;
+    else
+        alloptions[optnum].val.g = val;
+    
+    return TRUE;
+}
+

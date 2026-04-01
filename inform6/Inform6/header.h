@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   Header file for Inform:  Z-machine ("Infocom" format) compiler          */
 /*                                                                           */
-/*                              Inform 6.44                                  */
+/*                              Inform 6.45                                  */
 /*                                                                           */
 /*   This header file and the others making up the Inform source code are    */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
@@ -31,8 +31,8 @@
 /* ------------------------------------------------------------------------- */
 
 /* For releases, set to the release date in the form "1st January 2000" */
-#define RELEASE_DATE "11th September 2025"
-#define RELEASE_NUMBER 1644
+#define RELEASE_DATE "in development"
+#define RELEASE_NUMBER 1645
 #define GLULX_RELEASE_NUMBER 38
 #define VNUMBER RELEASE_NUMBER
 
@@ -594,10 +594,58 @@
     ((ptr)[0] = (uchar)(((int32)(val)) >> 8),           \
      (ptr)[1] = (uchar)(((int32)(val))     ) )
 
-/* Precedence for compiler options (see set_compiler_option()) */
+/* Precedence for compiler options (see set_compiler_option()).
+   Only a couple of options (GRAMMAR_VERSION, GRAMMAR_META_FLAG) can
+   be set at SRCCODE level.
+*/
 #define DEFAULT_OPTPREC (0)   /* original default value */
-#define HEADCOM_OPTPREC (1)   /* header comment line */
-#define CMDLINE_OPTPREC (2)   /* command-line option */
+#define SRCCODE_OPTPREC (1)   /* source code constant */
+#define HEADCOM_OPTPREC (2)   /* header comment line */
+#define CMDLINE_OPTPREC (3)   /* command-line option */
+
+/* Enum for referring to individual options. This doesn't include obsolete
+   options, because we never have to refer to those.
+   
+   Must match the order of alloptions[] in options.c. It's not alphabetical
+   or really systematic at all; it was the order of the $LIST in the old
+   options system.
+*/
+typedef enum optionindex {
+    OPT_MAX_ABBREVS               = 0,
+    OPT_NUM_ATTR_BYTES            = 1,
+    OPT_DICT_WORD_SIZE            = 2,
+    OPT_DICT_CHAR_SIZE            = 3,
+    OPT_GRAMMAR_VERSION           = 4,
+    OPT_GRAMMAR_META_FLAG         = 5,
+    OPT_MAX_DYNAMIC_STRINGS       = 6,
+    OPT_HASH_TAB_SIZE             = 7,
+    OPT_ZCODE_HEADER_EXT_WORDS    = 8,
+    OPT_ZCODE_HEADER_FLAGS_1      = 9,
+    OPT_ZCODE_HEADER_FLAGS_1_CLR  = 10,
+    OPT_ZCODE_HEADER_FLAGS_2      = 11,
+    OPT_ZCODE_HEADER_FLAGS_2_CLR  = 12,
+    OPT_ZCODE_HEADER_FLAGS_3      = 13,
+    OPT_ZCODE_FILE_END_PADDING    = 14,
+    OPT_ZCODE_LESS_DICT_DATA      = 15,
+    OPT_ZCODE_MAX_INLINE_STRING   = 16,
+    OPT_ZCODE_COMPACT_GLOBALS     = 17,
+    OPT_INDIV_PROP_START          = 18,
+    OPT_MEMORY_MAP_EXTENSION      = 19,
+    OPT_GLULX_OBJECT_EXT_BYTES    = 20,
+    OPT_MAX_STACK_SIZE            = 21,
+    OPT_TRANSCRIPT_FORMAT         = 22,
+    OPT_WARN_UNUSED_ROUTINES      = 23,
+    OPT_OMIT_UNUSED_ROUTINES      = 24,
+    OPT_STRIP_UNREACHABLE_LABELS  = 25,
+    OPT_OMIT_SYMBOL_TABLE         = 26,
+    OPT_DICT_IMPLICIT_SINGULAR    = 27,
+    OPT_DICT_TRUNCATE_FLAG        = 28,
+    OPT_LONG_DICT_FLAG_BUG        = 29,
+    OPT_SERIAL                    = 30,
+    OPT_ZCHAR_TABLE               = 31,
+    OPT_ZALPHABET                 = 32,
+    OPT_OPTIONS_COUNT             = 33, /* terminator */
+} optionindex_e;
 
 /* ------------------------------------------------------------------------- */
 /*   If your compiler doesn't recognise \t, and you use ASCII, you could     */
@@ -874,6 +922,7 @@ typedef struct arrayinfo_s {
 typedef struct labelinfo_s {
     int32 offset; /* Offset (zmachine_pc) value */
     int32 symbol; /* Symbol numbers if defined in source */
+    int never_reaches;  /* Set if execution never reaches here (from above) */
     int next;     /* For linked list */
     int prev;     /* For linked list */
 } labelinfo;
@@ -1972,17 +2021,18 @@ typedef struct operator_s
 /* Values 32-35 were used only for module import/export. */
 
 /* Values used only in branch backpatching: */
-/* BRANCH_MV must be last; Glulx uses the whole range from BRANCH_MV
-   to BRANCHMAX_MV. */
+/* BRANCH_MV must be last; the whole range from BRANCH_MV to BRANCHMAX_MV
+   are branch markers. The value (m-BRANCH_MV) is an offset in the range
+   0 to 63. Looking back this many bytes allows you to find the opcode
+   byte (Z) or the opmode byte (G).
+*/
 
-#define LABEL_MV              36     /* Ditto: marks "jump" operands */
-#define DELETED_MV            37     /* Ditto: marks bytes deleted from code */
-#define BRANCH_MV             38     /* Used in "asm.c" for routine coding */
-#define BRANCHMAX_MV          102    /* In fact, the range BRANCH_MV to 
-                                        BRANCHMAX_MV all means the same thing.
-                                        The position within the range means
-                                        how far back from the label to go
-                                        to find the opmode byte to modify. */
+#define DELETED_MV            36     /* Marks bytes deleted from code */
+#define DELETEDF_MV           37     /* ...branch arg rfalse */
+#define DELETEDT_MV           38     /* ...branch arg rtrue */
+#define JUMP_MV               39     /* Marks "jump" operands */
+#define BRANCH_MV             40     /* Marks "branch" operands... */
+#define BRANCHMAX_MV          104    /* ...through here */
 
 /* ------------------------------------------------------------------------- */
 /*   "String contexts"; the purpose for a given string. This info gets       */
@@ -2182,7 +2232,7 @@ extern debug_location statement_debug_location;
 extern int   execution_never_reaches_here;
 extern variableinfo *variables;
 extern memory_list variables_memlist;
-extern int   next_label, no_sequence_points;
+extern int   no_sequence_points;
 extern assembly_instruction AI;
 extern int32 *named_routine_symbols;
 
@@ -2199,6 +2249,7 @@ extern void assemble_label_no(int n);
 extern int assemble_forward_label_no(int n);
 extern void assemble_jump(int n);
 extern void define_symbol_label(int symbol);
+extern int alloc_label(void);
 extern int32 assemble_routine_header(int debug_flag,
     char *name, int embedded_flag, int the_symbol);
 extern void assemble_routine_end(int embedded_flag, debug_locations locations);
@@ -2323,16 +2374,16 @@ extern uchar alphabet[3][27];
 extern int   alphabet_modified;
 extern int   zscii_defn_modified;
 extern int   zscii_high_water_mark;
-extern char  alphabet_used[];
+extern int   alphabet_used[];
 extern int   iso_to_alphabet_grid[];
 extern int   zscii_to_alphabet_grid[];
-extern int   textual_form_length;
+extern int   textual_form_length, textual_form_error;
 
 extern int   iso_to_unicode(int iso);
 extern int   unicode_to_zscii(int32 u);
 extern int32 zscii_to_unicode(int z);
 extern int32 text_to_unicode(char *text);
-extern void  zscii_to_text(char *text, int zscii);
+extern int   zscii_to_text(char *text, int zscii);
 extern char *name_of_iso_set(int s);
 extern void  change_character_set(void);
 extern void  new_alphabet(char *text, int alphabet);
@@ -2341,6 +2392,7 @@ extern void  new_zscii_finished(void);
 extern void  map_new_zchar(int32 unicode);
 extern void  make_lower_case(char *str);
 extern void  make_upper_case(char *str);
+
 
 /* ------------------------------------------------------------------------- */
 /*   Extern definitions for "directs"                                        */
@@ -2519,7 +2571,7 @@ extern int
     define_DEBUG_switch,    define_INFIX_switch,
     runtime_error_checking_switch,
     list_verbs_setting,     list_dict_setting,    list_objects_setting,
-    list_symbols_setting;
+    list_symbols_setting,   list_unicode_setting;
 
 extern int oddeven_packing_switch;
 
@@ -2624,6 +2676,8 @@ extern int MAX_LOCAL_VARIABLES;
 extern int DICT_WORD_SIZE, DICT_CHAR_SIZE, DICT_WORD_BYTES;
 extern int GRAMMAR_META_FLAG;
 extern int ZCODE_HEADER_EXT_WORDS, ZCODE_HEADER_FLAGS_3;
+extern int ZCODE_HEADER_FLAGS_1_SET, ZCODE_HEADER_FLAGS_1_CLR;
+extern int ZCODE_HEADER_FLAGS_2_SET, ZCODE_HEADER_FLAGS_2_CLR;
 extern int ZCODE_FILE_END_PADDING;
 extern int ZCODE_LESS_DICT_DATA;
 extern int ZCODE_MAX_INLINE_STRING;
@@ -2704,7 +2758,10 @@ extern void set_compiler_option(char *str, char *sval, int prec);
 extern void list_compiler_options(void);
 extern void explain_compiler_option(char *str);
 extern void apply_compiler_options(void);
-extern int32 get_grammar_version_option(void);
+extern int32 get_current_option_value(optionindex_e optnum);
+extern char *get_current_option_string_value(optionindex_e optnum);
+extern int get_current_option_precedence(optionindex_e optnum);
+extern int set_current_option_precedence(optionindex_e optnum, int32 val);
 
 /* ------------------------------------------------------------------------- */
 /*   Extern definitions for "symbols"                                        */
@@ -2836,6 +2893,7 @@ extern int32 static_strings_extent;
 
 extern int32 no_strings, no_dynamic_strings;
 extern int no_unicode_chars;
+extern int no_user_strings;
 
 typedef struct unicode_usage_s unicode_usage_t;
 struct unicode_usage_s {
@@ -2886,7 +2944,6 @@ extern void  optimise_abbreviations(void);
 extern void  make_abbreviation(char *text);
 extern char *abbreviation_text(int num);
 extern void  show_dictionary(int level);
-extern void  word_to_ascii(uchar *p, char *result);
 extern void  print_dict_word(int node);
 extern void  write_dictionary_to_transcript(void);
 extern void  sort_dictionary(void);
@@ -2896,6 +2953,7 @@ extern int   dictionary_find(char *dword);
 extern void  dictionary_set_verb_number(int dictword, int to);
 extern int   compare_sorts(uchar *d1, uchar *d2);
 extern void  copy_sorts(uchar *d1, uchar *d2);
+extern void  show_unicode_translation_table(void);
 
 /* ------------------------------------------------------------------------- */
 /*   Extern definitions for "veneer"                                         */
@@ -2916,7 +2974,7 @@ extern void compile_veneer(void);
 extern int no_adjectives, no_Inform_verbs, no_grammar_token_routines,
            no_fake_actions, no_actions, no_grammar_lines, no_grammar_tokens,
            grammar_version_number;
-extern int32 grammar_version_symbol;
+extern int32 grammar_version_symbol, grammar_meta_value_symbol;
 extern verbt *Inform_verbs;
 extern uchar *grammar_lines;
 extern int32 grammar_lines_top;
@@ -2928,7 +2986,7 @@ extern int32 *grammar_token_routine,
              *adjectives;
 
 extern void set_grammar_version(int val);
-extern void set_grammar_option_constant(int optnum, assembly_operand AO);
+extern int set_grammar_option_constant(int optnum, assembly_operand AO);
 extern void find_the_actions(void);
 extern int lowest_fake_action(void);
 extern void make_fake_action(void);

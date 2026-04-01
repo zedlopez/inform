@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "symbols" :  The symbols table; creating stock of reserved words        */
 /*                                                                           */
-/*   Part of Inform 6.44                                                     */
+/*   Part of Inform 6.45                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -890,6 +890,8 @@ static void stockup_symbols(void)
     if (OMIT_SYMBOL_TABLE)
         create_symbol("OMIT_SYMBOL_TABLE", 0, CONSTANT_T);
 
+    create_rsymbol("Grammar_Meta__Value", GRAMMAR_META_FLAG, CONSTANT_T);
+    grammar_meta_value_symbol = get_symbol_index("Grammar_Meta__Value");
     if (GRAMMAR_META_FLAG)
         create_symbol("GRAMMAR_META_FLAG", 0, CONSTANT_T);
 

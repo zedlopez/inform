@@ -1,4 +1,4 @@
-Inform 6.43 for MacOS (6th August 2025)
+Inform 6.45 for MacOS (in development)
 line 262: Error:  Z-code is limited to 255 verbs.
 > Verb 'verbCFF' *
 line 263: Error:  Z-code is limited to 255 verbs.
