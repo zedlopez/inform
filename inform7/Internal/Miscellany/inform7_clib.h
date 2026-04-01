@@ -443,6 +443,7 @@ typedef struct i7_mg_file_t {
 	i7word_t rock;
 	char leafname[I7_MINIGLK_LEAFNAME_LENGTH + 32];
 	FILE *handle;
+	int encode_UTF8;
 } i7_mg_file_t;
 
 typedef struct i7_mg_stream_t {
@@ -520,6 +521,8 @@ i7word_t i7_miniglk_stream_open_memory_uni(i7process_t *proc, i7word_t buffer,
 	i7word_t len, i7word_t fmode, i7word_t rock);
 i7word_t i7_miniglk_stream_open_file(i7process_t *proc, i7word_t fileref,
 	i7word_t usage, i7word_t rock);
+i7word_t i7_miniglk_stream_open_file_uni(i7process_t *proc, i7word_t fileref,
+	i7word_t usage, i7word_t rock);
 void i7_miniglk_stream_set_position(i7process_t *proc, i7word_t id, i7word_t pos,
 	i7word_t seekmode);
 i7word_t i7_miniglk_stream_get_position(i7process_t *proc, i7word_t id);
@@ -528,6 +531,7 @@ void i7_miniglk_stream_set_current(i7process_t *proc, i7word_t id);
 void i7_mg_put_to_stream(i7process_t *proc, i7word_t rock, wchar_t c);
 void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t x);
 i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id);
+i7word_t i7_miniglk_get_char_stream_uni(i7process_t *proc, i7word_t stream_id);
 void i7_miniglk_stream_close(i7process_t *proc, i7word_t id, i7word_t result);
 i7word_t i7_miniglk_window_open(i7process_t *proc, i7word_t split, i7word_t method,
 	i7word_t size, i7word_t wintype, i7word_t rock);

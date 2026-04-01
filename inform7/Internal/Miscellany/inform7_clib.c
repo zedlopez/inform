@@ -1240,12 +1240,18 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 			rv = i7_miniglk_stream_open_memory_uni(proc, a[0], a[1], a[2], a[3]); break;
 		case i7_glk_stream_open_file:
 			rv = i7_miniglk_stream_open_file(proc, a[0], a[1], a[2]); break;
+		case i7_glk_stream_open_file_uni:
+			rv = i7_miniglk_stream_open_file_uni(proc, a[0], a[1], a[2]); break;
 		case i7_glk_stream_set_position:
 			i7_miniglk_stream_set_position(proc, a[0], a[1], a[2]); break;
 		case i7_glk_put_char_stream:
 			i7_miniglk_put_char_stream(proc, a[0], a[1]); break;
+		case i7_glk_put_char_stream_uni:
+			i7_miniglk_put_char_stream(proc, a[0], a[1]); break;
 		case i7_glk_get_char_stream:
 			rv = i7_miniglk_get_char_stream(proc, a[0]); break;
+		case i7_glk_get_char_stream_uni:
+			rv = i7_miniglk_get_char_stream_uni(proc, a[0]); break;
 		case i7_glk_put_buffer_uni:
 			{
 				i7word_t str = i7_miniglk_stream_get_current(proc);
@@ -1292,7 +1298,7 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 	}
 	if (z) *z = rv;
 }
-#line 153 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 159 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_gestalt(i7process_t *proc, i7word_t g) {
 	switch (g) {
 		case i7_gestalt_Version:
@@ -1325,7 +1331,7 @@ i7word_t i7_miniglk_gestalt(i7process_t *proc, i7word_t g) {
 	}
 	return 0;
 }
-#line 194 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 200 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_char_to_lower(i7process_t *proc, i7word_t c) {
 	if (((c >= 0x41) && (c <= 0x5A)) ||
 		((c >= 0xC0) && (c <= 0xD6)) ||
@@ -1339,7 +1345,7 @@ i7word_t i7_miniglk_char_to_upper(i7process_t *proc, i7word_t c) {
 		((c >= 0xF8) && (c <= 0xFE))) c -= 32;
 	return c;
 }
-#line 281 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 288 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_initialise_miniglk_data(i7process_t *proc) {
 	proc->miniglk = malloc(sizeof(miniglk_data));
 	if (proc->miniglk == NULL) {
@@ -1354,7 +1360,7 @@ void i7_initialise_miniglk_data(i7process_t *proc) {
 	proc->miniglk->rb_front = 0;
 	proc->miniglk->no_line_events = 0;
 }
-#line 303 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 310 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_initialise_miniglk(i7process_t *proc) {
 	for (int i=0; i<I7_MINIGLK_MAX_STREAMS; i++)
 		proc->miniglk->memory_streams[i] = i7_mg_new_stream(proc, NULL, 0);
@@ -1368,7 +1374,7 @@ void i7_initialise_miniglk(i7process_t *proc) {
 	proc->miniglk->memory_streams[proc->miniglk->stderr_stream_id] = stderr_stream;
 	i7_miniglk_stream_set_current(proc, proc->miniglk->stdout_stream_id);
 }
-#line 329 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 336 "inter/final-module/Chapter 5/C Miniglk.w"
 int i7_mg_new_file(i7process_t *proc) {
 	if (proc->miniglk->no_files >= I7_MINIGLK_MAX_FILES) {
 		fprintf(stderr, "Out of files\n"); i7_fatal_exit(proc);
@@ -1403,7 +1409,7 @@ int i7_mg_ftell(i7process_t *proc, int id) {
 	return t;
 }
 
-int i7_mg_fopen(i7process_t *proc, int id, int mode) {
+int i7_mg_fopen_inner(i7process_t *proc, int id, int mode, int unicode) {
 	if ((id < 0) || (id >= I7_MINIGLK_MAX_FILES)) {
 		fprintf(stderr, "Bad file ID\n"); i7_fatal_exit(proc);
 	}
@@ -1420,8 +1426,17 @@ int i7_mg_fopen(i7process_t *proc, int id, int mode) {
 	FILE *h = fopen(proc->miniglk->files[id].leafname, c_mode);
 	if (h == NULL) return 0;
 	proc->miniglk->files[id].handle = h;
+	proc->miniglk->files[id].encode_UTF8 = unicode;
 	if (mode == i7_filemode_WriteAppend) i7_mg_fseek(proc, id, 0, SEEK_END);
 	return 1;
+}
+
+int i7_mg_fopen(i7process_t *proc, int id, int mode) {
+	return i7_mg_fopen_inner(proc, id, mode, 0);
+}
+
+int i7_mg_fopen_uni(i7process_t *proc, int id, int mode) {
+	return i7_mg_fopen_inner(proc, id, mode, 1);
 }
 
 void i7_mg_fclose(i7process_t *proc, int id) {
@@ -1456,7 +1471,7 @@ int i7_mg_fgetc(i7process_t *proc, int id) {
 	int c = fgetc(proc->miniglk->files[id].handle);
 	return c;
 }
-#line 425 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 441 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_fileref_create_by_name(i7process_t *proc, i7word_t usage,
 	i7word_t name, i7word_t rock) {
 	int id = i7_mg_new_file(proc);
@@ -1483,7 +1498,7 @@ i7word_t i7_miniglk_fileref_does_file_exist(i7process_t *proc, i7word_t id) {
 	}
 	return 0;
 }
-#line 460 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 476 "inter/final-module/Chapter 5/C Miniglk.w"
 i7_mg_stream_t i7_mg_new_stream(i7process_t *proc, FILE *F, int win_id) {
 	i7_mg_stream_t S;
 	S.to_file = F;
@@ -1519,7 +1534,7 @@ i7word_t i7_mg_open_stream(i7process_t *proc, FILE *F, int win_id) {
 	fprintf(stderr, "Out of streams\n"); i7_fatal_exit(proc);
 	return 0;
 }
-#line 508 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 526 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_stream_open_memory(i7process_t *proc, i7word_t buffer,
 	i7word_t len, i7word_t fmode, i7word_t rock) {
 	if (fmode != i7_filemode_Write) {
@@ -1555,7 +1570,16 @@ i7word_t i7_miniglk_stream_open_file(i7process_t *proc, i7word_t fileref,
 	if (i7_mg_fopen(proc, fileref, usage) == 0) return 0;
 	return id;
 }
-#line 553 "inter/final-module/Chapter 5/C Miniglk.w"
+
+i7word_t i7_miniglk_stream_open_file_uni(i7process_t *proc, i7word_t fileref,
+	i7word_t usage, i7word_t rock) {
+	i7word_t id = i7_mg_open_stream(proc, NULL, 0);
+	proc->miniglk->memory_streams[id].encode_UTF8 = 1;
+	proc->miniglk->memory_streams[id].to_file_id = fileref;
+	if (i7_mg_fopen_uni(proc, fileref, usage) == 0) return 0;
+	return id;
+}
+#line 580 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_miniglk_stream_set_position(i7process_t *proc, i7word_t id, i7word_t pos,
 	i7word_t seekmode) {
 	if ((id < 0) || (id >= I7_MINIGLK_MAX_STREAMS)) {
@@ -1587,7 +1611,7 @@ i7word_t i7_miniglk_stream_get_position(i7process_t *proc, i7word_t id) {
 	}
 	return (i7word_t) S->memory_used;
 }
-#line 593 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 620 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_stream_get_current(i7process_t *proc) {
 	return proc->state.current_output_stream_ID;
 }
@@ -1598,7 +1622,7 @@ void i7_miniglk_stream_set_current(i7process_t *proc, i7word_t id) {
 	}
 	proc->state.current_output_stream_ID = id;
 }
-#line 612 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 639 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_mg_put_to_stream(i7process_t *proc, i7word_t rock, wchar_t c) {
 	i7_mg_stream_t *S =
 		&(proc->miniglk->memory_streams[proc->state.current_output_stream_ID]);
@@ -1650,7 +1674,7 @@ void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t 
 		S->to_memory[S->memory_used++] = (wchar_t) x;
 	}
 }
-#line 671 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 698 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id) {
 	i7_mg_stream_t *S = &(proc->miniglk->memory_streams[stream_id]);
 	if (S->to_file_id >= 0) {
@@ -1659,7 +1683,33 @@ i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id) {
 	}
 	return 0;
 }
-#line 688 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 713 "inter/final-module/Chapter 5/C Miniglk.w"
+i7word_t i7_miniglk_get_char_stream_uni(i7process_t *proc, i7word_t stream_id) {
+	i7_mg_stream_t *S = &(proc->miniglk->memory_streams[stream_id]);
+	if (S->to_file_id >= 0) {
+		i7word_t c = i7_mg_fgetc(proc, S->to_file_id);
+		if (c == EOF) return c;
+		S->chars_read++;
+		if (c<0x80) return c; 
+		int conts = 0;
+		if (c<0xC0) return '?'; 
+		if (c<0xE0) { c = c & 0x1f; conts = 1; }
+		else if (c<0xF0) { c = c & 0xf; conts = 2; }
+		else if (c<0xF8) { c = c & 0x7; conts = 3; }
+		else if (c<0xFC) { c = c & 0x3; conts = 4; }
+		else { c = c & 0x1; conts = 5; }
+		while (conts > 0) {
+			i7word_t d = i7_mg_fgetc(proc, S->to_file_id);
+			if (d == EOF) return '?'; 
+			c = c << 6;
+			c = c + (d & 0x3F);
+			conts--;
+		}
+		return c;
+	}
+	return EOF;
+}
+#line 747 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_miniglk_stream_close(i7process_t *proc, i7word_t id, i7word_t result) {
 	if ((id < 0) || (id >= I7_MINIGLK_MAX_STREAMS)) {
 		fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(proc);
@@ -1698,7 +1748,7 @@ void i7_miniglk_stream_close(i7process_t *proc, i7word_t id, i7word_t result) {
 	S->active = 0;
 	S->memory_used = 0;
 }
-#line 750 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 809 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_window_open(i7process_t *proc, i7word_t split, i7word_t method,
 	i7word_t size, i7word_t wintype, i7word_t rock) {
 	if (proc->miniglk->no_windows >= 128) {
@@ -1732,7 +1782,7 @@ i7word_t i7_miniglk_window_get_size(i7process_t *proc, i7word_t id, i7word_t a1,
 	if (a2) i7_write_word(proc, a2, 0, 8);
 	return 0;
 }
-#line 795 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 854 "inter/final-module/Chapter 5/C Miniglk.w"
 void i7_mg_add_event_to_buffer(i7process_t *proc, i7_mg_event_t e) {
 	proc->miniglk->events_ring_buffer[proc->miniglk->rb_front] = e;
 	proc->miniglk->rb_front++;
@@ -1748,7 +1798,7 @@ i7_mg_event_t *i7_mg_get_event_from_buffer(i7process_t *proc) {
 		proc->miniglk->rb_back = 0;
 	return e;
 }
-#line 819 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 878 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_select(i7process_t *proc, i7word_t structure) {
 	i7_mg_event_t *e = i7_mg_get_event_from_buffer(proc);
 	if (e == NULL) {
@@ -1769,7 +1819,7 @@ i7word_t i7_miniglk_select(i7process_t *proc, i7word_t structure) {
 	}
 	return 0;
 }
-#line 852 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 911 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_miniglk_request_line_event(i7process_t *proc, i7word_t window_id,
 	i7word_t buffer, i7word_t max_len, i7word_t init_len) {
 	i7_mg_event_t e;
@@ -1823,7 +1873,7 @@ i7word_t i7_miniglk_request_line_event_uni(i7process_t *proc, i7word_t window_id
 	}
 	return 0;
 }
-#line 915 "inter/final-module/Chapter 5/C Miniglk.w"
+#line 974 "inter/final-module/Chapter 5/C Miniglk.w"
 i7word_t i7_fn_TEXT_TY_CharacterLength(i7process_t *proc, i7word_t i7_mgl_local_txt,
 	i7word_t i7_mgl_local_ch, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_dsize,
 	i7word_t i7_mgl_local_p, i7word_t i7_mgl_local_cp, i7word_t i7_mgl_local_r);

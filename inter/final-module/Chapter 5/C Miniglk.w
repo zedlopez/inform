@@ -89,12 +89,18 @@ void i7_default_glk(i7process_t *proc, i7word_t selector, i7word_t varargc, i7wo
 			rv = i7_miniglk_stream_open_memory_uni(proc, a[0], a[1], a[2], a[3]); break;
 		case i7_glk_stream_open_file:
 			rv = i7_miniglk_stream_open_file(proc, a[0], a[1], a[2]); break;
+		case i7_glk_stream_open_file_uni:
+			rv = i7_miniglk_stream_open_file_uni(proc, a[0], a[1], a[2]); break;
 		case i7_glk_stream_set_position:
 			i7_miniglk_stream_set_position(proc, a[0], a[1], a[2]); break;
 		case i7_glk_put_char_stream:
 			i7_miniglk_put_char_stream(proc, a[0], a[1]); break;
+		case i7_glk_put_char_stream_uni:
+			i7_miniglk_put_char_stream(proc, a[0], a[1]); break;
 		case i7_glk_get_char_stream:
 			rv = i7_miniglk_get_char_stream(proc, a[0]); break;
+		case i7_glk_get_char_stream_uni:
+			rv = i7_miniglk_get_char_stream_uni(proc, a[0]); break;
 		case i7_glk_put_buffer_uni:
 			{
 				i7word_t str = i7_miniglk_stream_get_current(proc);
@@ -218,6 +224,7 @@ typedef struct i7_mg_file_t {
 	i7word_t rock;
 	char leafname[I7_MINIGLK_LEAFNAME_LENGTH + 32];
 	FILE *handle;
+	int encode_UTF8;
 } i7_mg_file_t;
 
 typedef struct i7_mg_stream_t {
@@ -360,7 +367,7 @@ int i7_mg_ftell(i7process_t *proc, int id) {
 	return t;
 }
 
-int i7_mg_fopen(i7process_t *proc, int id, int mode) {
+int i7_mg_fopen_inner(i7process_t *proc, int id, int mode, int unicode) {
 	if ((id < 0) || (id >= I7_MINIGLK_MAX_FILES)) {
 		fprintf(stderr, "Bad file ID\n"); i7_fatal_exit(proc);
 	}
@@ -377,8 +384,17 @@ int i7_mg_fopen(i7process_t *proc, int id, int mode) {
 	FILE *h = fopen(proc->miniglk->files[id].leafname, c_mode);
 	if (h == NULL) return 0;
 	proc->miniglk->files[id].handle = h;
+	proc->miniglk->files[id].encode_UTF8 = unicode;
 	if (mode == i7_filemode_WriteAppend) i7_mg_fseek(proc, id, 0, SEEK_END);
 	return 1;
+}
+
+int i7_mg_fopen(i7process_t *proc, int id, int mode) {
+	return i7_mg_fopen_inner(proc, id, mode, 0);
+}
+
+int i7_mg_fopen_uni(i7process_t *proc, int id, int mode) {
+	return i7_mg_fopen_inner(proc, id, mode, 1);
 }
 
 void i7_mg_fclose(i7process_t *proc, int id) {
@@ -503,6 +519,8 @@ i7word_t i7_miniglk_stream_open_memory_uni(i7process_t *proc, i7word_t buffer,
 	i7word_t len, i7word_t fmode, i7word_t rock);
 i7word_t i7_miniglk_stream_open_file(i7process_t *proc, i7word_t fileref,
 	i7word_t usage, i7word_t rock);
+i7word_t i7_miniglk_stream_open_file_uni(i7process_t *proc, i7word_t fileref,
+	i7word_t usage, i7word_t rock);
 
 @<C library code@> +=
 i7word_t i7_miniglk_stream_open_memory(i7process_t *proc, i7word_t buffer,
@@ -538,6 +556,15 @@ i7word_t i7_miniglk_stream_open_file(i7process_t *proc, i7word_t fileref,
 	i7word_t id = i7_mg_open_stream(proc, NULL, 0);
 	proc->miniglk->memory_streams[id].to_file_id = fileref;
 	if (i7_mg_fopen(proc, fileref, usage) == 0) return 0;
+	return id;
+}
+
+i7word_t i7_miniglk_stream_open_file_uni(i7process_t *proc, i7word_t fileref,
+	i7word_t usage, i7word_t rock) {
+	i7word_t id = i7_mg_open_stream(proc, NULL, 0);
+	proc->miniglk->memory_streams[id].encode_UTF8 = 1;
+	proc->miniglk->memory_streams[id].to_file_id = fileref;
+	if (i7_mg_fopen_uni(proc, fileref, usage) == 0) return 0;
 	return id;
 }
 
@@ -675,6 +702,38 @@ i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id) {
 		return i7_mg_fgetc(proc, S->to_file_id);
 	}
 	return 0;
+}
+
+@ And the analogue for UTF-8 files:
+
+@<C library header@> +=
+i7word_t i7_miniglk_get_char_stream_uni(i7process_t *proc, i7word_t stream_id);
+
+@<C library code@> +=
+i7word_t i7_miniglk_get_char_stream_uni(i7process_t *proc, i7word_t stream_id) {
+	i7_mg_stream_t *S = &(proc->miniglk->memory_streams[stream_id]);
+	if (S->to_file_id >= 0) {
+		i7word_t c = i7_mg_fgetc(proc, S->to_file_id);
+		if (c == EOF) return c;
+		S->chars_read++;
+		if (c<0x80) return c; /* in all other cases, a UTF-8 continuation sequence begins */
+		int conts = 0;
+		if (c<0xC0) return '?'; /* malformed UTF-8 */
+		if (c<0xE0) { c = c & 0x1f; conts = 1; }
+		else if (c<0xF0) { c = c & 0xf; conts = 2; }
+		else if (c<0xF8) { c = c & 0x7; conts = 3; }
+		else if (c<0xFC) { c = c & 0x3; conts = 4; }
+		else { c = c & 0x1; conts = 5; }
+		while (conts > 0) {
+			i7word_t d = i7_mg_fgetc(proc, S->to_file_id);
+			if (d == EOF) return '?'; /* malformed UTF-8 */
+			c = c << 6;
+			c = c + (d & 0x3F);
+			conts--;
+		}
+		return c;
+	}
+	return EOF;
 }
 
 @ And finally `glk_stream_close`, which is far from being an empty courtesy:

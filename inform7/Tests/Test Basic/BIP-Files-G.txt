@@ -12,6 +12,6 @@ The heading of the notebook is "Observations in the Pottingham Green Case".
 
 To begin:
 	write "[heading of the notebook][paragraph break]" to the text file of the notebook;
-	append "Here's a comment.[line break]" to the text file of the notebook;
-	append "Here's a secomd comment.[line break]" to the text file of the notebook;
+	append "Here's a comment, with élan en français.[line break]" to the text file of the notebook;
+	append "Here's a second comment.🎉[line break]" to the text file of the notebook;
 	say "You read back: [paragraph break][text of the text file of the notebook]".

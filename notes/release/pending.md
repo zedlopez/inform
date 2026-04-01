@@ -6,6 +6,10 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 
 ## Featurettes arising from bug reports, but too small for Inform Evolution proposals
 
+- External files are now stored as UTF-8 encoded Unicode, rather than ISO Latin-1,
+	extending the range of characters they can store, and meaning that they can
+	hold anything Inform stories can print. See [PR#192](https://github.com/ganelson/inform/pull/192).
+
 - This was reported as Jira bug [I7-2087](https://inform7.atlassian.net/browse/I7-2087)
 	"three anonymous standard rules", but is arguably a feature request: that three
 	rules in the Standard Rules should have names. All three are simple rules, two
