@@ -501,6 +501,11 @@ an instance of the kind. See //Kind GPRs// for more.
 
 When kits create kinds using Neptune files, they will often supply their own
 GPR functions, and if they do then we use those rather than construct our own.
+Even then, we only construct them if their inames are actually needed by
+the compiler: in effect, this means that for a kind which never appears in
+command grammar (or by virtue of `described by`), no GPRs will actually be
+compiled, because the relevant agents won't be queued. This saves unnecessarily
+stocking the story file dictionary.
 
 =
 int RTKindConstructors::GPR_provided_by_kit(kind *K) {
@@ -952,15 +957,6 @@ or can come from the Neptune file creating a kind.
 		@<Apply SHOWME function metadata@>;
 		@<Compile SHOWME function@>;
 	}
-/*	if ((RTKindConstructors::GPR_compilation_enabled()) &&
-		(RTKindConstructors::GPR_provided_by_kit(K) == FALSE)) {
-		if (Kinds::Behaviour::is_an_enumeration(K)) {
-			@<Compile enumeration GPR@>;
-		} else if (Kinds::Behaviour::is_quasinumerical(K)) {
-			@<Compile quasinumerical GPR@>;
-		}
-	}
-*/
 
 @<Make icount constant@> =
 	inter_name *iname = RTKindConstructors::icount_iname(K);

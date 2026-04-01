@@ -1,4 +1,4 @@
-Total memory consumption was 167752K = 164 MB
+Total memory consumption was 167749K = 164 MB
 
  ---- was used for 2345965 objects, in 425039 frames in 0 x 800K = 0K = 0 MB:
 
@@ -298,9 +298,9 @@ Total memory consumption was 167752K = 164 MB
      ----  md_links_dictionary                      1 object, 32 bytes
      ----  i6_memory_setting                        1 object, 32 bytes
 
-100.0% was used for memory not allocated for objects:
+99.9% was used for memory not allocated for objects:
 
-    67.4%  text stream storage                      115863620 bytes in 630807 claims
+    67.4%  text stream storage                      115863564 bytes in 630807 claims
      3.6%  dictionary storage                       6307648 bytes in 8246 claims
      ----  sorting                                  20984 bytes in 2690 claims
      4.1%  source text                              7200000 bytes in 3 claims
@@ -309,7 +309,7 @@ Total memory consumption was 167752K = 164 MB
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
      2.8%  inter symbols storage                    4886720 bytes in 29330 claims
-     9.7%  inter bytecode storage                   16777324 bytes in 15 claims
+     9.7%  inter bytecode storage                   16773592 bytes in 15 claims
      3.6%  inter links storage                      6222976 bytes in 11 claims
      0.1%  inter tree location list storage         191232 bytes in 32 claims
      1.5%  instance-of-kind counting                2715904 bytes in 1 claim

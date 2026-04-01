@@ -69,7 +69,8 @@ void KindGPRs::truth_state(void) {
 }
 
 @ More generally, we can make a GPR for values of any enumeration or quasinumerical
-kind on request.
+kind on request, though we do so only if the kinds in question are ever needed to
+be parsed.
 
 This does not work for other kinds, and in particular for kinds of object. Those
 are handled elsewhere by //Noun Filter Tokens//.
