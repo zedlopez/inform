@@ -35,14 +35,22 @@ int ShortenWiringStage::run(pipeline_step *step) {
 	state.bad_plug_names = NEW_LINKED_LIST(text_stream);
 	InterTree::traverse(I, ShortenWiringStage::visitor, &state, NULL, PACKAGE_IST);
 	if (LinkedLists::len(state.bad_plug_names) > 0) {
+		int string_used = FALSE;
 		TEMPORARY_TEXT(NS)
 		text_stream *N;
 		LOOP_OVER_LINKED_LIST(N, text_stream, state.bad_plug_names) {
 			if (Str::len(NS) > 0) WRITE_TO(NS, ", ");
 			WRITE_TO(NS, "%S", N);
+			if (Str::eq_insensitive(N, I"string")) string_used = TRUE;
 		}
-		PipelineErrors::error_with(step,
-			"unable to find definitions for the following name(s): %S", NS);
+		if (string_used)
+			WRITE_TO(NS, " (did you try to use the unsupported Inform 6 'String' directive?)");
+		if (LinkedLists::len(state.bad_plug_names) == 1)
+			PipelineErrors::error_with(step,
+				"unable to find definition for the name: %S", NS);
+		else
+			PipelineErrors::error_with(step,
+				"unable to find definitions for the following name(s): %S", NS);
 		DISCARD_TEXT(NS)
 		return FALSE;
 	}

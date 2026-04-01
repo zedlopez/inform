@@ -338,6 +338,7 @@ source text is read.
 > [I7-2311](https://inform7.atlassian.net/browse/I7-2311),
 > [I7-2299](https://inform7.atlassian.net/browse/I7-2299),
 > [I7-2293](https://inform7.atlassian.net/browse/I7-2293),
+> [I7-2286](https://inform7.atlassian.net/browse/I7-2286),
 > [I7-2270](https://inform7.atlassian.net/browse/I7-2270),
 > [I7-2268](https://inform7.atlassian.net/browse/I7-2268),
 > [I7-2221](https://inform7.atlassian.net/browse/I7-2221),
