@@ -190,6 +190,8 @@ Now we take a closer look at the rule preamble.
 <unrecognised-rule-stem-diagnosis> ::=
 	the final *** |                                      ==> @<Issue PM_BadRulePreambleFinal@>
 	final *** |                                          ==> @<Issue PM_BadRulePreambleFinal@>
+	when *** starts |                                    ==> @<Issue PM_BadRulePreambleWhenStarts@>
+	when *** finishes |                                  ==> @<Issue PM_BadRulePreambleWhenStarts@>
 	when *** |                                           ==> @<Issue PM_BadRulePreambleWhen@>
 	...                                                  ==> @<Issue PM_BadRulePreamble@>
 
@@ -205,6 +207,19 @@ Now we take a closer look at the rule preamble.
 		"I notice you began with the word 'Final'. Possibly you meant to use the word 'Last'? "
 		"Inform allows rules to be placed at the end of rulebooks with wording like "
 		"'Last every turn rule'.");
+	Problems::issue_problem_end();
+
+@<Issue PM_BadRulePreambleWhenStarts@> =
+	Problems::quote_source(1, current_sentence);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadRulePreambleWhenStarts));
+	Problems::issue_problem_segment(
+		"The punctuation makes me think %1 should be a definition of a phrase or a rule, "
+		"but it doesn't begin as it should, with either 'To' (e.g. 'To flood the riverplain:'), "
+		"'Definition:', a name for a rule (e.g. 'This is the devilishly cunning rule:'), "
+		"'At' plus a time (e.g. 'At 11:12 PM:' or 'At the time when the clock chimes:') or "
+		"the name of a rulebook. %P"
+		"I wonder if you were trying to talk about a scene here? If S is a scene name, then "
+		"'When S begins' or 'When S ends' are legal, but not 'When S starts' or 'When S finishes'.");
 	Problems::issue_problem_end();
 
 @<Issue PM_BadRulePreambleWhen@> =

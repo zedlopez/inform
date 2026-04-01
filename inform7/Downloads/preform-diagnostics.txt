@@ -7222,6 +7222,10 @@
           constraint DS = {6} extremes [2, infinity)
         final {***} 
           constraint DS = {6} extremes [1, infinity)
+        when {***} starts 
+          constraint DS = {6} extremes [2, infinity)
+        when {***} finishes 
+          constraint DS = {6} extremes [2, infinity)
         when {***} 
           constraint DS = {6} extremes [1, infinity)
         {...} 
