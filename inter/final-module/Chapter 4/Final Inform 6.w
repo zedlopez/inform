@@ -62,7 +62,8 @@ int I6_target_segments[] = {
 
 =
 classdef I6_generation_data {
-	int attribute_slots_used;
+	int discretionary_attribute_slots_used;
+	int total_attribute_slots_used;
 	int value_ranges_needed;
 	int value_property_holders_needed;
 	int DebugAttribute_seen;
@@ -72,7 +73,8 @@ classdef I6_generation_data {
 
 I6_generation_data *I6Target::new_data(void) {
 	I6_generation_data *data = CREATE(I6_generation_data);
-	data->attribute_slots_used = 0;
+	data->discretionary_attribute_slots_used = 0;
+	data->total_attribute_slots_used = 0;
 	data->value_ranges_needed = FALSE;
 	data->value_property_holders_needed = FALSE;
 	data->DebugAttribute_seen = FALSE;

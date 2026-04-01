@@ -115,6 +115,7 @@ that definition to be the true one.
 		inter_symbol *p;
 		LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
 			InterSymbol::set_flag(p, ATTRIBUTE_MARK_ISYMF);
+		I6_GEN_DATA(total_attribute_slots_used)++;
 	} else if (store_in_VM_attribute == FALSE) {
 		inter_symbol *p;
 		LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
@@ -159,18 +160,21 @@ and CommandParserKit are by far the most frequently used.
 available in versions 5 and higher of the Z-machine VM, but the standard
 kits consume so many that only a few slots remain for the user's own
 creations. Giving these away to the first-created properties is the
-simplest way to allocate them, and in fact that works pretty well, because
-the first such either/or properties tend to be created in extensions and
-to be frequently used.
+simplest way to allocate them. On Glulx, matters are easier because we
+can configure the number of attributes available.
 
-@d ATTRIBUTE_SLOTS_TO_GIVE_AWAY 11
+@d ATTRIBUTE_SLOTS_TO_GIVE_AWAY 9
 
 @<Otherwise give away attribute slots on a first-come-first-served basis@> =
 	if (store_in_VM_attribute == NOT_APPLICABLE) {
-		if (I6_GEN_DATA(attribute_slots_used)++ < ATTRIBUTE_SLOTS_TO_GIVE_AWAY)
+		if (TargetVMs::is_16_bit(gen->for_VM)) {
+			if (I6_GEN_DATA(discretionary_attribute_slots_used)++ < ATTRIBUTE_SLOTS_TO_GIVE_AWAY)
+				store_in_VM_attribute = TRUE;
+			else
+				store_in_VM_attribute = FALSE;
+		} else {
 			store_in_VM_attribute = TRUE;
-		else
-			store_in_VM_attribute = FALSE;
+		}
 	}
 
 @ Okay, declaration time. The I6 `Attribute` directive creates a VM-attribute.
@@ -470,6 +474,8 @@ void I6TargetObjects::end_generation(code_generator *gtr, code_generation *gen) 
 		@<Compile the value_ranges array@>;
 	if (I6_GEN_DATA(value_property_holders_needed)) /* almost always happens */
 		@<Compile the value_property_holders array@>;
+	if (TargetVMs::is_16_bit(gen->for_VM) == FALSE)
+		@<Compile the attribute-count configuration@>;
 }
 
 @ I6 compiles a thin layer veneer code in addition to the source code which is
@@ -540,4 +546,23 @@ the value property holders for each enumerative kind.
 		}
 		WRITE(";\n");
 	}
+	CodeGen::deselect(gen, saved);
+
+@ On Glulx, we can set the constant `NUM_ATTR_BYTES` via ICL to set up the virtual
+machine so that each object has room for whatever number of attribute flags we
+need. 8 flags are stored per byte, but the number of bytes per object has to
+be 3 mod 4 for the sake of word-alignment.
+
+On Z, `NUM_ATTR_BYTES` would have no effect, and so we don't generate it. See
+above for what we do instead to stay under the fixed limit of 48 attributes.
+
+@<Compile the attribute-count configuration@> =
+	int N = I6_GEN_DATA(total_attribute_slots_used);
+	if (N < 48) N = 48;
+	int bytes = N/8;
+	if (N%8 != 0) bytes++;
+	while ((bytes % 4) != 3) bytes++;
+	segmentation_pos saved = CodeGen::select(gen, ICL_directives_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("!%% $NUM_ATTR_BYTES=%d\n", bytes);
 	CodeGen::deselect(gen, saved);
