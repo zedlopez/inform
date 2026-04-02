@@ -72,6 +72,15 @@ has been renamed:
 
 	player aware of their own actions rule
 
+## Version updates
+
+The Inform repository (and thus its released app) includes a few resources by
+external developers, which are periodically updated. In this release:
+
+- The Quixe web-based interpreter has been updated to version 2.2.6.
+- The embedded copy of Inform 6 has been updated to an unstable version 6.45,
+	and we expect this to be replaced by release 6.45 when the latter is ready.
+
 ## Bug fixes
 
 - Fix for Jira bug [I7-2665](https://inform7.atlassian.net/browse/I7-2665)
