@@ -1,0 +1,15 @@
+
+
+
+
+"list of impetuous people" = list of people: {Pais}
+"list of luminous people" = list of people: {Pais}
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+Sparta
+You can see Pais here.
+
+>Are you sure you want to quit? 

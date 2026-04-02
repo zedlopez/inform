@@ -1,0 +1,64 @@
+Test: ManyAttributes-G
+For: Glulx
+
+Sparta is a room. Pais is a man in Sparta. Pais carries a fox.
+
+Color is a kind of value. The colors are silver and red. The fox has color.
+The fox is silver. Understand the color property as referring to the fox.
+
+A thing can be abundant or scarce.
+A thing can be ambiguous or clear.
+A thing can be benevolent or malevolent.
+A thing can be candid or deceptive.
+A thing can be capacious or cramped.
+A thing can be cohesive or fragmented.
+A thing can be conspicuous or inconspicuous.
+A thing can be credible or implausible.
+A thing can be dauntless or cowardly.
+A thing can be debonair or awkward.
+A thing can be defiant or submissive.
+A thing can be deliberate or hasty.
+A thing can be despondent or elated.
+A thing can be dexterous or clumsy.
+A thing can be discreet or indiscreet.
+A thing can be dogmatic or open-minded.
+A thing can be dubious or certain.
+A thing can be ebullient or subdued.
+A thing can be eloquent or inarticulate.
+A thing can be emancipated or enslaved.
+A thing can be ephemeral or eternal.
+A thing can be esoteric or common.
+A thing can be expedited or delayed.
+A thing can be extravagant or frugal.
+A thing can be fallacious or accurate.
+A thing can be fastidious or careless.
+A thing can be flamboyant or modest.
+A thing can be fleeting or permanent.
+A thing can be forlorn or cheerful.
+A thing can be fortuitous or intentional.
+A thing can be garrulous or taciturn.
+A thing can be gratuitous or necessary.
+A thing can be hackneyed or innovative.
+A thing can be hapless or fortunate.
+A thing can be haughty or humble.
+A thing can be illustrious or obscure.
+A thing can be immaculate or stained.
+A thing can be impartial or biased.
+A thing can be impervious or vulnerable.
+A thing can be impetuous or cautious.
+A thing can be indomitable or yielding.
+A thing can be insatiable or satiable.
+A thing can be insipid or flavorful.
+A thing can be irrevocable or reversible.
+A thing can be judicious or foolish.
+A thing can be luminous or dim.
+A thing can be magnanimous or petty.
+A thing can be nefarious or honorable.
+A thing can be obstinate or flexible.
+
+Pais is luminous.
+
+When play begins:
+	now Pais is impetuous;
+	showme list of impetuous people;
+	showme list of luminous people;
