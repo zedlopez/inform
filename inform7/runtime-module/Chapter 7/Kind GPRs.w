@@ -97,7 +97,7 @@ void KindGPRs::quasinumerical_agent(compilation_subtask *t) {
 		EmitCode::inv(STORE_BIP);
 		EmitCode::down();
 			EmitCode::ref_symbol(K_value, kit.rv_s);
-			EmitCode::call(RTLiteralPatterns::parse_fn_iname(lp));
+			EmitCode::call(RTLiteralPatterns::parse_fn_iname(lp, TRUE));
 		EmitCode::up();
 		EmitCode::inv(IF_BIP);
 		EmitCode::down();
