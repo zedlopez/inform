@@ -27,6 +27,17 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	very likely to mean taking off what's currently worn rule
 	```
 
+- In past builds it caused some surprise that `[regarding...]` did not affect
+	`[s]`, the text substitution which adds an "s" if the last thing(s) discussed
+	are plurally named. This was reported as [I7-2605](https://inform7.atlassian.net/browse/I7-2605).
+	That behaviour was correct as documented, but rather than dismiss the bug report
+	it seemed more helpful to implement this implied feature request. So:
+	```
+	"the [regarding the number of animals in the crate]animal[s] in the crate"
+	```
+	now prints "animals", plural, if the number is 0 or at least 2, and "animal", singular,
+	if there's just one in the crate.
+
 - When releasing a story with a website, and a cover image which has alt-text
 	provided, that text is now used on the thumbnail cover images in the website.
 	(See Jira bug [I7-2615](https://inform7.atlassian.net/browse/I7-2615): the

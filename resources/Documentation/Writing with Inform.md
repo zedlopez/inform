@@ -2299,7 +2299,7 @@ We can avoid this using the special substitution:
 
 > phrase: {phs_s} say "[s]"
 >
-> This text substitution prints a letter ``s`` unless the last number printed was 1. Example:
+> This text substitution prints a letter ``s`` unless the last number printed (or referred to with `[regarding ...]`) was 1. Example:
 >
 >     "You've been wandering around for [turn count in words] turn[s] now."
 >
@@ -2320,6 +2320,8 @@ Sometimes it's good to pad numbers out so that they occupy a fixed number of dig
 ### See Also
 
 - [Numbers, ranges, overflows, and number bases] for how to deal with writing numbers in binary or hexadecimal, and a little more on unsigned numbers.
+
+- [Adapting text about the player] for how `[regarding ...]` can be used with `[s]`.
 
 ## Text with lists
 
@@ -9976,6 +9978,12 @@ do the obvious thing using the current story tense.
 Finally, we occasionally want to agree with a number:
 
 	"Honestly, [dud count][regarding the dud count] of these [are] broken."
+
+As a convenience, `[regarding...]` also affects `[s]`, the text substitution which adds an "s" if the last thing(s) discussed are plural:
+
+	"the [regarding the number of animals in the crate]animal[s] in the crate"
+
+Which prints "animals" if the number is 0 or at least 2, and "animal" if there's just one in the crate.
 
 ## Adapting demonstratives and possessives
 
