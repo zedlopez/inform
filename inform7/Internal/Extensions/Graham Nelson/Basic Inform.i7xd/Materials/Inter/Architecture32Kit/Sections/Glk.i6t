@@ -20,8 +20,11 @@ A few small definitions for handling Glk/Glulx gestalts.
 
 =
 ! Can't use gestalt_GarglkText_FAKE or GLULX_GESTALT_Double here as they don't have the correct values yet
-Array Cached_Glk_Gestalts --> (24 + 7);
-Array Cached_Glulx_Gestalts --> (13 + 1);
+! https://inform7.atlassian.net/browse/I7-2403
+! Also assign extra capacity in case extensions want to define some of their own, even though that won't work yet
+! https://inform7.atlassian.net/browse/I7-2676
+Array Cached_Glk_Gestalts --> (25 + 7 + 5);
+Array Cached_Glulx_Gestalts --> (13 + 1 + 5);
 
 [ GlkFeatureTest id;
 	return Cached_Glk_Gestalts-->id;
