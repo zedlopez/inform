@@ -5,6 +5,7 @@ new base GLK_FEATURE_TY {
 
 	specification-text: Glk features which may or may not be supported by the interpreter.
 
+	! These features values must match exactly the gestalt selector numbers
 	instance: timers feature                          = gestalt_Timer_                = 5
 	instance: graphics feature                        = gestalt_Graphics_             = 6
 	instance: basic sounds feature                    = gestalt_Sound_                = 8
@@ -21,13 +22,15 @@ new base GLK_FEATURE_TY {
 	instance: extended sounds feature                 = gestalt_Sound2_               = 21
 	instance: resource streams feature                = gestalt_ResourceStream_       = 22
 	instance: graphics window character input feature = gestalt_GraphicsCharInput_    = 23
-	instance: text formatting feature                 = gestalt_GarglkText_FAKE       = 24
-	instance: buffer window graphics feature          = gestalt_DrawImage_BUFFER      = 25
-	instance: graphics window graphics feature        = gestalt_DrawImage_GRAPHICS    = 26
-	instance: buffer window hyperlinks feature        = gestalt_HyperlinkInput_BUFFER = 27
-	instance: grid window hyperlinks feature          = gestalt_HyperlinkInput_GRID   = 28
-	instance: graphics window mouse input feature     = gestalt_MouseInput_GRAPHICS   = 29
-	instance: grid window mouse input feature         = gestalt_MouseInput_GRID       = 30
+	instance: extended graphics feature               = gestalt_DrawImageScale_       = 24
+	! These features are derived so their values do not matter
+	instance: text formatting feature                 = gestalt_GarglkText_FAKE
+	instance: buffer window graphics feature          = gestalt_DrawImage_BUFFER
+	instance: graphics window graphics feature        = gestalt_DrawImage_GRAPHICS
+	instance: buffer window hyperlinks feature        = gestalt_HyperlinkInput_BUFFER
+	instance: grid window hyperlinks feature          = gestalt_HyperlinkInput_GRID
+	instance: graphics window mouse input feature     = gestalt_MouseInput_GRAPHICS
+	instance: grid window mouse input feature         = gestalt_MouseInput_GRID
 }
 
 new base GLULX_FEATURE_TY {
