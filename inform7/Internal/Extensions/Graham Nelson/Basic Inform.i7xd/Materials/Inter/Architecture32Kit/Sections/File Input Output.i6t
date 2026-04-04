@@ -132,6 +132,7 @@ asterisk or hyphen into the initial character as needed.
 	glk_fileref_destroy(fref);
 	if (str == 0) return FileIO_Error(extf, "tried to open a file but failed");
 	struc-->AUXF_STREAM = str;
+	owner = struc-->AUXF_IFID_OF_OWNER;
 	if (write_flag) {
 		if (append_flag)
 			struc-->AUXF_STATUS = AUXF_STATUS_IS_OPEN_FOR_APPEND;
@@ -140,7 +141,15 @@ asterisk or hyphen into the initial character as needed.
 		glk_stream_set_current(str);
 		if ((append_flag == false) || (force_header)) {
 			print "- ";
-			for (ix=6: ix <= UUID_ARRAY->0: ix++) print (char) UUID_ARRAY->ix;
+			if (owner == UUID_ARRAY) {
+				for (ix = 6: ix <= UUID_ARRAY->0: ix++) print (char) UUID_ARRAY->ix;
+			}
+			else if (owner == NULL) {
+				print "////";
+			}
+			else {
+				for (ix = 1: ix <= owner->0: ix++) print (char) owner->ix;
+			}
 			print " ", (string) struc-->AUXF_FILENAME, "^";
 		}
 	} else {
@@ -155,7 +164,6 @@ asterisk or hyphen into the initial character as needed.
 		if (ch ~= '/') { jump BadFile; }
 		ch = FileIO_GetC(extf);
 		if (ch ~= '/') { jump BadFile; }
-		owner = struc-->AUXF_IFID_OF_OWNER;
 		ix = 3;
 		if (owner == UUID_ARRAY) ix = 8;
 		if (owner ~= NULL) {
