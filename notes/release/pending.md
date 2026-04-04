@@ -96,10 +96,15 @@ external developers, which are periodically updated. In this release:
 
 - Fix for Jira bug [I7-2665](https://inform7.atlassian.net/browse/I7-2665)
 	"Compilation error when an `Index map with` assertions refers to `level`"
+- Fix for Jira bug [I7-2625](https://inform7.atlassian.net/browse/I7-2625)
+	"`use unabbreviated object names` isn't working"
 - Fix for Jira bug [I7-2619](https://inform7.atlassian.net/browse/I7-2619)
 	"Upon `resume the story` in a Final Question rule, `when play ends` rules are followed again before resumption"
 - Fix for Jira bug [I7-2608](https://inform7.atlassian.net/browse/I7-2608)
 	"Equations `given by x =` in Basic Inform breaks the use of x as an identifier in other contexts"
+- Fix for Jira bug [I7-2603](https://inform7.atlassian.net/browse/I7-2603)
+	"`window` in object names conflicting with `glk window`", and its duplicate
+	[I7-2649](https://inform7.atlassian.net/browse/I7-2649)
 - Fix for Jira bug [I7-2568](https://inform7.atlassian.net/browse/I7-2568)
 	"Setting numeric EPS map parameters causes parts of the EPS map to vanish"
 - Fix for Jira bug [I7-2589](https://inform7.atlassian.net/browse/I7-2589)
