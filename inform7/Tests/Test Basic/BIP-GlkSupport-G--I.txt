@@ -15,6 +15,7 @@ system clock feature: true.
 extended sounds feature: false.
 resource streams feature: true.
 graphics window character input feature: false.
+extended graphics feature: false.
 text formatting feature: false.
 buffer window graphics feature: false.
 graphics window graphics feature: false.

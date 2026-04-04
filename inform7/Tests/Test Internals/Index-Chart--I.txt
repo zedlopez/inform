@@ -676,7 +676,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            glk feature [23]&nbsp;<a href=#A47><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            glk feature [24]&nbsp;<a href=#A47><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             timers feature&nbsp;
@@ -1437,12 +1437,12 @@ A basic text colour.<br>
 <p class="halftightin1"><a name=A47></a><b>glk feature</b> (<i>plural</i> glk features)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
 Glk features which may or may not be supported by the interpreter.<br>
-<p class="tightin1"><a href="#" onclick="showExtra('extra1', 'plus1'); return false;"><img border=0 id="plus1" src=inform:/doc_images/extra.png></a>&nbsp;<span class="indexgrey">23 glk features</span></p>
+<p class="tightin1"><a href="#" onclick="showExtra('extra1', 'plus1'); return false;"><img border=0 id="plus1" src=inform:/doc_images/extra.png></a>&nbsp;<span class="indexgrey">24 glk features</span></p>
 <div id="extra1" style="display: none;">
     <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td>
-                <span class="indexgrey">timers feature</span>, <span class="indexgrey">graphics feature</span>, <span class="indexgrey">basic sounds feature</span>, <span class="indexgrey">sound volume feature</span>, <span class="indexgrey">sound notifications feature</span>, <span class="indexgrey">hyperlinks feature</span>, <span class="indexgrey">MOD sounds feature</span>, <span class="indexgrey">PNG transparency feature</span>, <span class="indexgrey">glk unicode feature</span>, <span class="indexgrey">unicode normalization feature</span>, <span class="indexgrey">line input echo suppression feature</span>, <span class="indexgrey">line input terminators feature</span>, <span class="indexgrey">system clock feature</span>, <span class="indexgrey">extended sounds feature</span>, <span class="indexgrey">resource streams feature</span>, <span class="indexgrey">graphics window character input feature</span>, <span class="indexgrey">text formatting feature</span>, <span class="indexgrey">buffer window graphics feature</span>, <span class="indexgrey">graphics window graphics feature</span>, <span class="indexgrey">buffer window hyperlinks feature</span>, <span class="indexgrey">grid window hyperlinks feature</span>, <span class="indexgrey">graphics window mouse input feature</span>, <span class="indexgrey">grid window mouse input feature</span>
+                <span class="indexgrey">timers feature</span>, <span class="indexgrey">graphics feature</span>, <span class="indexgrey">basic sounds feature</span>, <span class="indexgrey">sound volume feature</span>, <span class="indexgrey">sound notifications feature</span>, <span class="indexgrey">hyperlinks feature</span>, <span class="indexgrey">MOD sounds feature</span>, <span class="indexgrey">PNG transparency feature</span>, <span class="indexgrey">glk unicode feature</span>, <span class="indexgrey">unicode normalization feature</span>, <span class="indexgrey">line input echo suppression feature</span>, <span class="indexgrey">line input terminators feature</span>, <span class="indexgrey">system clock feature</span>, <span class="indexgrey">extended sounds feature</span>, <span class="indexgrey">resource streams feature</span>, <span class="indexgrey">graphics window character input feature</span>, <span class="indexgrey">extended graphics feature</span>, <span class="indexgrey">text formatting feature</span>, <span class="indexgrey">buffer window graphics feature</span>, <span class="indexgrey">graphics window graphics feature</span>, <span class="indexgrey">buffer window hyperlinks feature</span>, <span class="indexgrey">grid window hyperlinks feature</span>, <span class="indexgrey">graphics window mouse input feature</span>, <span class="indexgrey">grid window mouse input feature</span>
             </td>
         </tr>
     </table>

@@ -118,7 +118,7 @@ passed to the <code>desc</code> function, if there is one.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LatestRTPData</span><span class="plain-syntax">--&gt;0 = </span><span class="constant-syntax">-2</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">suspended</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SuspendTextInput</span><span class="plain-syntax">(</span><span class="identifier-syntax">Main_Window</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">suspended</span><span class="plain-syntax"> = </span><span class="identifier-syntax">SuspendTextInput</span><span class="plain-syntax">(</span><span class="identifier-syntax">active_window</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"^*** Run-time problem "</span><span class="plain-syntax">, (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
@@ -136,7 +136,7 @@ passed to the <code>desc</code> function, if there is one.</p>
 
 <span class="plain-syntax">#</span><span class="identifier-syntax">Ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">TARGET_GLULX</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">suspended</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">ResumeTextInput</span><span class="plain-syntax">(</span><span class="identifier-syntax">Main_Window</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">ResumeTextInput</span><span class="plain-syntax">(</span><span class="identifier-syntax">active_window</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>

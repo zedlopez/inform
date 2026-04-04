@@ -1,4 +1,4 @@
-Size of lexicon: 3660 excerpt meanings
+Size of lexicon: 3661 excerpt meanings
   Stored among 940 words out of total vocabulary of 11004
   804 words have a start list: longest belongs to report (with 296 meanings)
   24 words have an end list: longest belongs to digits (with 7 meanings)

@@ -4743,7 +4743,7 @@
         <article> {...} 
           constraint (none) extremes [2, infinity)
 
-<article> internal hits 16357/114538 nti r2 constraint (none) extremes [1, 1]
+<article> internal hits 16357/114542 nti r2 constraint (none) extremes [1, 1]
 
 <definite-article> internal hits 19897/252254 nti r2 constraint (none) extremes [1, 1]
 
@@ -8733,14 +8733,14 @@
 
 <name-local-to-inline-stack-frame> internal hits 1807/3614 nti 30 constraint (none) extremes [1, infinity)
 
-<map-name-abbreviation-omission-words> hits 30/824 nti 20 constraint (none) extremes [1, 1]
+<map-name-abbreviation-omission-words> hits 30/828 nti 20 constraint (none) extremes [1, 1]
     English:
         in 
           (hits 6/70) (matched: 'in') constraint CS = {20} extremes [1, 1]
         of 
           (hits 8/64) (matched: 'of') constraint CS = {20} extremes [1, 1]
         <article> 
-          (hits 16/398) (matched: 'a') constraint (none) extremes [1, 1]
+          (hits 16/400) (matched: 'a') constraint (none) extremes [1, 1]
 
 <silently-modifier> nti 21 constraint DS = {21} extremes [2, infinity)
     English:
@@ -8970,7 +8970,7 @@
         time of day 
           (hits 1/1) (matched: 'time of day') constraint CS = {13} extremes [3, 3]
 
-<notable-player-instances> hits 1/454 nti 14 constraint CS = {14} extremes [1, 1]
+<notable-player-instances> hits 1/456 nti 14 constraint CS = {14} extremes [1, 1]
     English:
         yourself 
           (hits 1/13) (matched: 'yourself') constraint CS = {14} extremes [1, 1]

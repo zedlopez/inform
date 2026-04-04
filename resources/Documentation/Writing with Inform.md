@@ -1551,6 +1551,12 @@ And this would produce a run-time problem:
 	After rubbing the lamp:
 		now the paranormal is in the Cave.
 
+Another point of difference has to do with abbreviated names as used in sentences. Consider:
+
+	The West Dining Hall is a room. Binky Henderson is in the Hall. Binky is a woman.
+
+Here the `West Dining Hall` is called just the `Hall` in the second sentence, and `Binky Henderson` is called just `Binky` in the third. This is not allowed for abstract objects: their names must be given in full at all times. This is a useful convention since abstract objects are sometimes used for large sets of values with complicated names; if these could also be abbreviated, many ambiguities would arise.
+
 Why do we need abstract objects? It's all very well to write something like:
 
 	An emotion is a kind of abstract object.
