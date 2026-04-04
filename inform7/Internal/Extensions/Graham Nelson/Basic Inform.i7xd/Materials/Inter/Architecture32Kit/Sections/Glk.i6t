@@ -84,9 +84,6 @@ Global current_glk_object_reference = 0;
 	Status_Window.glk_rock = GG_STATUSWIN_ROCK;
 	Quote_Window.glk_ref = 0;
 	Quote_Window.glk_rock = GG_QUOTEWIN_ROCK;
-	gg_mainwin = 0;
-	gg_statuswin = 0;
-	gg_quotewin = 0;
 	gg_scriptfref = 0;
 	gg_scriptstr = 0;
 	gg_savestr = 0;
@@ -121,14 +118,11 @@ Global current_glk_object_reference = 0;
 [ IDENTIFY_WINDOWS_R;
 	switch (current_glk_object_rock) {
 		GG_MAINWIN_ROCK:
-			gg_mainwin = current_glk_object_reference;
-			Main_Window.glk_ref = gg_mainwin;
+			Main_Window.glk_ref = current_glk_object_reference;
 		GG_STATUSWIN_ROCK:
-			gg_statuswin = current_glk_object_reference;
-			Status_Window.glk_ref = gg_statuswin;
+			Status_Window.glk_ref = current_glk_object_reference;
 		GG_QUOTEWIN_ROCK:
-			gg_quotewin = current_glk_object_reference;
-			Quote_Window.glk_ref = gg_quotewin;
+			Quote_Window.glk_ref = current_glk_object_reference;
 	}
 	rfalse;
 ];
@@ -360,7 +354,7 @@ event BVs.
 =
 [ GLK_EVENT_TY_New ev evtype win_obj val1 val2 text;
 	if (win_obj == 0 && evtype == evtype_CharInput or evtype_LineInput or evtype_MouseInput or evtype_Hyperlink) {
-		win_obj = FindGlkWindowFromRefNum(gg_mainwin);
+		win_obj = Main_Window;
 	}
 	! Event type specific processing
 	switch (evtype) {
