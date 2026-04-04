@@ -5,10 +5,12 @@ with the Glulx virtual machine, but not used only for that. All 32-bit Inform
 programs use Glk.
 
 @h Glk definitions.
-General Glk constants and properties.
+General Glk definitions.
 
 =
 Constant GLK_NULL 0;
+
+Global active_window = Main_Window;
 
 Property line_input_buffer_addr;
 Property line_input_buffer_curlen;
@@ -354,7 +356,7 @@ event BVs.
 =
 [ GLK_EVENT_TY_New ev evtype win_obj val1 val2 text;
 	if (win_obj == 0 && evtype == evtype_CharInput or evtype_LineInput or evtype_MouseInput or evtype_Hyperlink) {
-		win_obj = Main_Window;
+		win_obj = active_window;
 	}
 	! Event type specific processing
 	switch (evtype) {

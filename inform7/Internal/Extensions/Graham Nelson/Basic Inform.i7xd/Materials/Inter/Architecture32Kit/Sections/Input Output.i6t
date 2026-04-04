@@ -52,7 +52,7 @@ Global gg_scriptstr = 0;
 			gg_scriptfref = 0;
 			continue;
 		}
-		glk_window_set_echo_stream(Main_Window.glk_ref, gg_scriptstr);
+		glk_window_set_echo_stream(active_window.glk_ref, gg_scriptstr);
 		rtrue;
 	}
 ];
@@ -180,7 +180,7 @@ to document all of that.
 =
 [ VM_KeyChar win done res ix jx ch;
     jx = ch; ! squash compiler warnings
-    if (win == 0) win = Main_Window.glk_ref;
+    if (win == 0) win = active_window.glk_ref;
 #Ifdef COMMAND_STREAM;
     if (gg_commandstr ~= 0 && gg_command_reading ~= false) {
         done = glk_get_line_stream(gg_commandstr, gg_arguments, 31);
@@ -253,7 +253,7 @@ to document all of that.
 ];
 
 [ VM_KeyDelay tenths  key done;
-	glk_request_char_event(Main_Window.glk_ref);
+	glk_request_char_event(active_window.glk_ref);
 	glk_request_timer_events(tenths * 100);
 	while (~~done) {
 		glk_select(gg_event);
@@ -262,7 +262,7 @@ to document all of that.
 			done = true;
 		}
 	}
-	glk_cancel_char_event(Main_Window.glk_ref);
+	glk_cancel_char_event(active_window.glk_ref);
 	glk_request_timer_events(0);
 	return key;
 ];
@@ -292,12 +292,12 @@ Constant UnicodeWhitespaceLen = 8;
     }
 #Endif;
 	done = false;
-	glk_request_line_event_uni(Main_Window.glk_ref, a_buffer + WORDSIZE, INPUT_BUFFER_LEN - 1, 0);
+	glk_request_line_event_uni(active_window.glk_ref, a_buffer + WORDSIZE, INPUT_BUFFER_LEN - 1, 0);
 	while (~~done) {
 		glk_select(gg_event);
 		switch (gg_event-->0) {
 			evtype_LineInput:
-			if (gg_event-->1 == Main_Window.glk_ref) {
+			if (gg_event-->1 == active_window.glk_ref) {
 				a_buffer-->0 = gg_event-->2;
 				done = true;
 			}
@@ -711,7 +711,7 @@ make little sense there.
 =
 [ VM_ClearScreen window;
 	if (window == WIN_ALL or WIN_MAIN) {
-		glk_window_clear(Main_Window.glk_ref);
+		glk_window_clear(active_window.glk_ref);
 		if (Quote_Window.glk_ref) {
 			glk_window_close(Quote_Window.glk_ref, 0);
 			Quote_Window.glk_ref = 0;
@@ -723,7 +723,7 @@ make little sense there.
 ];
 
 [ VM_ScreenWidth  id;
-	id = Main_Window.glk_ref;
+	id = active_window.glk_ref;
 	if (Status_Window.glk_ref) {
 		id = Status_Window.glk_ref;
 	}
@@ -732,7 +732,7 @@ make little sense there.
 ];
 
 [ VM_ScreenHeight  height;
-	glk_window_get_size(Main_Window.glk_ref, 0, gg_arguments);
+	glk_window_get_size(active_window.glk_ref, 0, gg_arguments);
 	height = gg_arguments-->0;
 	if (Status_Window.glk_ref) {
 		glk_window_get_size(Status_Window.glk_ref, 0, gg_arguments);
@@ -768,7 +768,7 @@ status line, to the main window.
 
 =
 [ VM_MainWindow;
-	glk_set_window(Main_Window.glk_ref); ! set_window
+	glk_set_window(active_window.glk_ref); ! set_window
 	statuswin_current = 0;
 ];
 
@@ -824,7 +824,7 @@ text just appears in the main window.
 		gg_arguments-->0 = lines;
 		if (ix == 0) {
 			Quote_Window.glk_ref =
-				glk_window_open(Main_Window.glk_ref, winmethod_Fixed + winmethod_Above,
+				glk_window_open(active_window.glk_ref, winmethod_Fixed + winmethod_Above,
 					lines, wintype_TextBuffer, GG_QUOTEWIN_ROCK);
 		}
 	} else {
@@ -847,6 +847,6 @@ text just appears in the main window.
 	VM_Style(NORMAL_VMSTY);
 
 	if (Quote_Window.glk_ref) {
-		glk_set_window(Main_Window.glk_ref);
+		glk_set_window(active_window.glk_ref);
 	}
 ];

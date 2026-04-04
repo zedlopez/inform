@@ -120,7 +120,7 @@ investigate the "gestalt" to find out.
 =
 [ VM_Picture resource_ID;
 	if (glk_gestalt(gestalt_Graphics, 0)) {
-		glk_image_draw(Main_Window.glk_ref, resource_ID, imagealign_InlineCenter, 0);
+		glk_image_draw(active_window.glk_ref, resource_ID, imagealign_InlineCenter, 0);
 	} else {
 		print "[Picture number ", resource_ID, " here.]^";
 	}
