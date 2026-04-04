@@ -1,0 +1,12 @@
+Test: UAO
+For: Z-Machine
+
+Use unabbreviated object names.
+
+The West Dining Hall is a room. Binky Henderson is in the Hall. Binky is a woman.
+
+When play begins:
+	repeat with X running through things:
+		showme X;
+	repeat with X running through rooms:
+		showme X;
