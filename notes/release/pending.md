@@ -94,6 +94,8 @@ external developers, which are periodically updated. In this release:
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2673](https://inform7.atlassian.net/browse/I7-2673)
+	"External files owned by other projects headers rewritten by current UUID"
 - Fix for Jira bug [I7-2665](https://inform7.atlassian.net/browse/I7-2665)
 	"Compilation error when an `Index map with` assertions refers to `level`"
 - Fix for Jira bug [I7-2625](https://inform7.atlassian.net/browse/I7-2625)
