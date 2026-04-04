@@ -52,7 +52,7 @@ Global gg_scriptstr = 0;
 			gg_scriptfref = 0;
 			continue;
 		}
-		glk_window_set_echo_stream(gg_mainwin, gg_scriptstr);
+		glk_window_set_echo_stream(active_window.glk_ref, gg_scriptstr);
 		rtrue;
 	}
 ];
@@ -135,9 +135,6 @@ routine was added to concentrate lookups of this field in one place.
 =
 Array gg_event --> 4;
 Array gg_arguments buffer 28;
-Global gg_mainwin = 0;
-Global gg_statuswin = 0;
-Global gg_quotewin = 0;
 Global gg_savestr = 0;
 #Ifdef COMMAND_STREAM;
 Global gg_commandstr = 0;
@@ -183,7 +180,7 @@ to document all of that.
 =
 [ VM_KeyChar win done res ix jx ch;
     jx = ch; ! squash compiler warnings
-    if (win == 0) win = gg_mainwin;
+    if (win == 0) win = active_window.glk_ref;
 #Ifdef COMMAND_STREAM;
     if (gg_commandstr ~= 0 && gg_command_reading ~= false) {
         done = glk_get_line_stream(gg_commandstr, gg_arguments, 31);
@@ -256,18 +253,18 @@ to document all of that.
 ];
 
 [ VM_KeyDelay tenths  key done;
-    glk_request_char_event(gg_mainwin);
-    glk_request_timer_events(tenths*100);
-    while (~~done) {
-        glk_select(gg_event);
-        if (gg_event-->0 == evtype_Timer or evtype_CharInput) {
-            key = gg_event-->2;
-            done = true;
-        }
-    }
-    glk_cancel_char_event(gg_mainwin);
-    glk_request_timer_events(0);
-    return key;
+	glk_request_char_event(active_window.glk_ref);
+	glk_request_timer_events(tenths * 100);
+	while (~~done) {
+		glk_select(gg_event);
+		if (gg_event-->0 == evtype_Timer or evtype_CharInput) {
+			key = gg_event-->2;
+			done = true;
+		}
+	}
+	glk_cancel_char_event(active_window.glk_ref);
+	glk_request_timer_events(0);
+	return key;
 ];
 
 Array UnicodeWhitespace --> 133 160 5760 8232 8233 8239 8287 12288;
@@ -294,18 +291,18 @@ Constant UnicodeWhitespaceLen = 8;
         }
     }
 #Endif;
-    done = false;
-    glk_request_line_event_uni(gg_mainwin, a_buffer+WORDSIZE, INPUT_BUFFER_LEN-1, 0);
-    while (~~done) {
-        glk_select(gg_event);
-        switch (gg_event-->0) {
-          evtype_LineInput:
-            if (gg_event-->1 == gg_mainwin) {
-                a_buffer-->0 = gg_event-->2;
-                done = true;
-            }
-        }
-    }
+	done = false;
+	glk_request_line_event_uni(active_window.glk_ref, a_buffer + WORDSIZE, INPUT_BUFFER_LEN - 1, 0);
+	while (~~done) {
+		glk_select(gg_event);
+		switch (gg_event-->0) {
+			evtype_LineInput:
+			if (gg_event-->1 == active_window.glk_ref) {
+				a_buffer-->0 = gg_event-->2;
+				done = true;
+			}
+		}
+	}
 	! Manually echo the command if required
 	if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && Cached_Glk_Gestalts-->gestalt_LineInputEcho) {
 		glk_set_style(style_Input);
@@ -333,12 +330,11 @@ Constant UnicodeWhitespaceLen = 8;
 	if (a_table) {
 		VM_Tokenise(a_buffer, a_table);
 	}
-    ! It's time to close any quote window we've got going.
-    if (gg_quotewin) {
-        glk_window_close(gg_quotewin, 0);
-        gg_quotewin = 0;
+	! It's time to close any quote window we've got going.
+	if (Quote_Window.glk_ref) {
+		glk_window_close(Quote_Window.glk_ref, 0);
 		Quote_Window.glk_ref = 0;
-    }
+	}
 ];
 
 @h Buffer Functions.
@@ -714,31 +710,32 @@ make little sense there.
 
 =
 [ VM_ClearScreen window;
-    if (window == WIN_ALL or WIN_MAIN) {
-        glk_window_clear(gg_mainwin);
-        if (gg_quotewin) {
-            glk_window_close(gg_quotewin, 0);
-            gg_quotewin = 0;
+	if (window == WIN_ALL or WIN_MAIN) {
+		glk_window_clear(active_window.glk_ref);
+		if (Quote_Window.glk_ref) {
+			glk_window_close(Quote_Window.glk_ref, 0);
 			Quote_Window.glk_ref = 0;
-        }
-    }
-    if (gg_statuswin && window == WIN_ALL or WIN_STATUS) glk_window_clear(gg_statuswin);
+		}
+	}
+	if (Status_Window.glk_ref && window == WIN_ALL or WIN_STATUS) {
+		glk_window_clear(Status_Window.glk_ref);
+	}
 ];
 
 [ VM_ScreenWidth  id;
-	id = gg_mainwin;
-	if (gg_statuswin) {
-		id = gg_statuswin
+	id = active_window.glk_ref;
+	if (Status_Window.glk_ref) {
+		id = Status_Window.glk_ref;
 	}
 	glk_window_get_size(id, gg_arguments, 0);
 	return gg_arguments-->0;
 ];
 
 [ VM_ScreenHeight  height;
-	glk_window_get_size(gg_mainwin, 0, gg_arguments);
+	glk_window_get_size(active_window.glk_ref, 0, gg_arguments);
 	height = gg_arguments-->0;
-	if (gg_statuswin) {
-		glk_window_get_size(gg_statuswin, 0, gg_arguments);
+	if (Status_Window.glk_ref) {
+		glk_window_get_size(Status_Window.glk_ref, 0, gg_arguments);
 		height = height + gg_arguments-->0;
 	}
 	return height;
@@ -771,8 +768,8 @@ status line, to the main window.
 
 =
 [ VM_MainWindow;
-    glk_set_window(gg_mainwin); ! set_window
-    statuswin_current=0;
+	glk_set_window(active_window.glk_ref); ! set_window
+	statuswin_current = 0;
 ];
 
 @h Status Line.
@@ -795,24 +792,27 @@ line; line 2 is underneath, and so on; columns are similarly numbered from
 
 =
 [ VM_StatusLineHeight hgt;
-	if (gg_statuswin == 0) return;
+	if (Status_Window.glk_ref == 0) return;
 	if (hgt == statuswin_cursize) return;
-	glk_window_set_arrangement(glk_window_get_parent(gg_statuswin), winmethod_Fixed + winmethod_Above, hgt, 0);
+	glk_window_set_arrangement(glk_window_get_parent(Status_Window.glk_ref), winmethod_Fixed + winmethod_Above, hgt, 0);
 	statuswin_cursize = hgt;
 ];
 
 [ VM_MoveCursorInStatusLine line column;
-    if (gg_statuswin == 0) return;
-    glk_set_window(gg_statuswin);
-    if (line == 0) { line = 1; column = 1; }
-    glk_window_move_cursor(gg_statuswin, column-1, line-1);
-    statuswin_current=1;
+	if (Status_Window.glk_ref == 0) return;
+	glk_set_window(Status_Window.glk_ref);
+	if (line == 0) {
+		line = 1;
+		column = 1;
+	}
+	glk_window_move_cursor(Status_Window.glk_ref, column - 1, line - 1);
+	statuswin_current = 1;
 ];
 
 @h Quotation Boxes.
 On the Z-machine, quotation boxes are produced by stretching the status line,
 but on Glulx they usually occupy windows of their own. If it isn't possible
-to create such a window, so that `gg_quotewin` is zero below, the quotation
+to create such a window, so that `Quote_Window.glk_ref` is zero below, the quotation
 text just appears in the main window.
 
 =
@@ -820,23 +820,22 @@ text just appears in the main window.
 	maxwid = 0; ! squash compiler warning
 	lines = arr-->0;
 
-	if (gg_quotewin == 0) {
+	if (Quote_Window.glk_ref == 0) {
 		gg_arguments-->0 = lines;
 		if (ix == 0) {
-			gg_quotewin =
-				glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
+			Quote_Window.glk_ref =
+				glk_window_open(active_window.glk_ref, winmethod_Fixed + winmethod_Above,
 					lines, wintype_TextBuffer, GG_QUOTEWIN_ROCK);
-			Quote_Window.glk_ref = gg_quotewin;
 		}
 	} else {
-		parwin = glk_window_get_parent(gg_quotewin);
+		parwin = glk_window_get_parent(Quote_Window.glk_ref);
 		glk_window_set_arrangement(parwin, winmethod_Fixed + winmethod_Above, lines, 0);
 	}
 
 	lastnl = true;
-	if (gg_quotewin) {
-		glk_window_clear(gg_quotewin);
-		glk_set_window(gg_quotewin);
+	if (Quote_Window.glk_ref) {
+		glk_window_clear(Quote_Window.glk_ref);
+		glk_set_window(Quote_Window.glk_ref);
 		lastnl = false;
 	}
 
@@ -847,7 +846,7 @@ text just appears in the main window.
 	}
 	VM_Style(NORMAL_VMSTY);
 
-	if (gg_quotewin) {
-		glk_set_window(gg_mainwin);
+	if (Quote_Window.glk_ref) {
+		glk_set_window(active_window.glk_ref);
 	}
 ];

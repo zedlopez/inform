@@ -25,9 +25,9 @@ requirements is not met an error message will be shown before quitting.
 	}
 ];
 
-[ Fatal_Error msg;
-	gg_mainwin = glk_window_open(0, 0, 0, wintype_TextBuffer, GG_MAINWIN_ROCK);
-	glk_set_window(gg_mainwin);
+[ Fatal_Error msg win;
+	win = glk_window_open(0, 0, 0, wintype_TextBuffer, 0);
+	glk_set_window(win);
 	print "Fatal Error: ", (string) msg, "^";
 	quit;
 ];
@@ -100,40 +100,38 @@ Global Pre_Startup_Text_Capture_Stream;
 ];
 
 [ OPEN_BUILT_IN_WINDOWS_R;
-	! gg_mainwin and gg_storywin might already be set. If not, create them.
+	! Main_Window and Status_Window might already exist. If not, create them.
 
-	if (gg_mainwin == 0) {
+	if (Main_Window.glk_ref == 0) {
 		! Open the story window.
-		gg_mainwin = glk_window_open(0, 0, 0, wintype_TextBuffer, GG_MAINWIN_ROCK);
-		Main_Window.glk_ref = gg_mainwin;
-		if (gg_mainwin == 0) {
+		Main_Window.glk_ref = glk_window_open(0, 0, 0, wintype_TextBuffer, GG_MAINWIN_ROCK);
+		if (Main_Window.glk_ref == 0) {
 			! If we can't even open one window, give in
 			quit;
 		}
 		if (BasicInformKit`MANUAL_INPUT_ECHOING_CFGF && Cached_Glk_Gestalts-->gestalt_LineInputEcho) {
-			glk_set_echo_line_event(gg_mainwin, 0);
+			glk_set_echo_line_event(Main_Window.glk_ref, 0);
 		}
 	} else {
 		! There was already a story window. We should erase it.
-		glk_window_clear(gg_mainwin);
+		glk_window_clear(Main_Window.glk_ref);
 	}
 
 	if (BasicInformKit`NO_STATUS_WINDOW_CFGF == 0) {
-		if (gg_statuswin == 0) {
+		if (Status_Window.glk_ref == 0) {
 			statuswin_cursize = statuswin_size;
-			gg_statuswin =
-				glk_window_open(gg_mainwin, winmethod_Fixed + winmethod_Above,
+			Status_Window.glk_ref =
+				glk_window_open(Main_Window.glk_ref, winmethod_Fixed + winmethod_Above,
 					statuswin_cursize, wintype_TextGrid, GG_STATUSWIN_ROCK);
 		}
 	}
-	else if (gg_statuswin) {
-		glk_window_close(gg_statuswin, GLK_NULL);
-		gg_statuswin = 0;
+	else if (Status_Window.glk_ref) {
+		glk_window_close(Status_Window.glk_ref, GLK_NULL);
+		Status_Window.glk_ref = 0;
 	}
-	Status_Window.glk_ref = gg_statuswin;
 	! It's possible that the status window is not open, in which case
-	! gg_statuswin is now zero. We must allow for that later on.
+	! Status_Window.glk_ref is now zero. We must allow for that later on.
 
-	glk_set_window(gg_mainwin);
+	glk_set_window(Main_Window.glk_ref);
 	rfalse;
 ];

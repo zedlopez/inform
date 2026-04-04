@@ -154,7 +154,7 @@ paragraph control system.
 =
 [ DrawStatusLine width posb;
 	#ifdef TARGET_GLULX;
-		if (gg_statuswin == 0) return;
+		if (Status_Window.glk_ref == 0) return;
 	#endif;
 	@push say__p; @push say__pc;
 	VM_MoveCursorInStatusLine(1, 1);
