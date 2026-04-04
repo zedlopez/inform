@@ -163,12 +163,12 @@ Total memory consumption was 167806K = 164 MB
      ----  inbuild_licence                          65 objects, 5200 bytes
      ----  activity                                 35 objects, 5040 bytes
      ----  parsing_pp_data                          103 objects, 4944 bytes
+     ----  use_option                               34 objects, 4896 bytes
      ----  explicit_action_array                    1 x 100 objects, 4832 bytes
-     ----  use_option                               34 objects, 4624 bytes
      ----  command_line_switch                      56 objects, 4480 bytes
      ----  fsm_state                                55 objects, 4400 bytes
-     ----  ls_unit                                  13 objects, 4160 bytes
      ----  property_setting_bp_data                 104 objects, 4160 bytes
+     ----  ls_unit                                  13 objects, 4160 bytes
      ----  either_or_property_data                  64 objects, 4096 bytes
      ----  parse_node_annotation_type               127 objects, 4064 bytes
      ----  definition                               52 objects, 3744 bytes
@@ -318,5 +318,5 @@ Total memory consumption was 167806K = 164 MB
      ----  code generation workspace for objects    3616 bytes in 19 claims
      0.1%  emitter array storage                    295200 bytes in 2112 claims
 
--132.-1% was overhead - -227115744 bytes = -221792K = -216 MB
+-132.-1% was overhead - -227116016 bytes = -221792K = -216 MB
 

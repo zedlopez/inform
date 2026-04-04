@@ -108,34 +108,26 @@ void CompilationSettings::set(int U, int N, source_file *from) {
 			break;
 		}
 		case ENGINEERING_NOTATION_UO:          g->allow_engineering_notation = TRUE; break;
-		case MEMORY_ECONOMY_UO:                g->memory_economy_in_force = TRUE; break;
-		case NO_DEPRECATED_FEATURES_UO:        g->no_deprecated_features = TRUE; break;
-		case NO_SCORING_UO:                    g->scoring_option_set = FALSE; break;
-		case NUMBERED_RULES_UO:                g->number_rules_in_index = TRUE; break;
-		case SCORING_UO:                       g->scoring_option_set = TRUE; break;
+		case MEMORY_ECONOMY_UO:                g->memory_economy_in_force = TRUE;  break;
+		case NO_DEPRECATED_FEATURES_UO:        g->no_deprecated_features = TRUE;   break;
+		case NO_SCORING_UO:                    g->scoring_option_set = FALSE;      break;
+		case NUMBERED_RULES_UO:                g->number_rules_in_index = TRUE;    break;
+		case SCORING_UO:                       g->scoring_option_set = TRUE;       break;
 		case UNABBREVIATED_OBJECT_NAMES_UO:    g->use_exact_parsing_option = TRUE; break;
-        case NO_AUTO_PLURAL_NAMES_UO:          g->no_auto_plural_names = TRUE; break; 
-		case FAST_ROUTE_FINDING_UO:            g->fast_route_finding = TRUE; break;
-		case SLOW_ROUTE_FINDING_UO:            g->slow_route_finding = TRUE; break;
+        case NO_AUTO_PLURAL_NAMES_UO:          g->no_auto_plural_names = TRUE;     break; 
+		case FAST_ROUTE_FINDING_UO:            g->fast_route_finding = TRUE;       break;
+		case SLOW_ROUTE_FINDING_UO:            g->slow_route_finding = TRUE;       break;
 	}
 	if (N > 0) {
 		switch (U) {
 			case DYNAMIC_MEMORY_ALLOCATION_UO: g->dynamic_memory_allocation = N; break;
 			case INDEX_FIGURE_THUMBNAILS_UO:   g->index_figure_thumbnails = N;   break;
-			case DICTIONARY_RESOLUTION_UO:     g->dictionary_resolution = N;            break;
+			case DICTIONARY_RESOLUTION_UO:     g->dictionary_resolution = N;     break;
 		}
 	}
 }
 
-@ Exact parsing in the //lexicon// module results from one such setting:
-
-@d PARSE_EXACTLY_LEXICON_CALLBACK CompilationSettings::parse_exactly
-
-=
-int CompilationSettings::parse_exactly(excerpt_meaning *em) {
-	if (em->meaning_code == NOUN_MC) {
-		if (global_compilation_settings.use_exact_parsing_option) return TRUE;
-		return FALSE;
-	}
-	return TRUE;
+int CompilationSettings::using_exact_parsing_option(void) {
+	if (global_compilation_settings.use_exact_parsing_option) return TRUE;
+	return FALSE;
 }

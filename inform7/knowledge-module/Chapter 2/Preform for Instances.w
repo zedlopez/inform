@@ -23,7 +23,8 @@ void InstancesPreform::create_as_noun(instance *I, kind *K, wording W) {
 	property *cp = Properties::property_with_same_name_as(K);
 	if ((cp) && (ConditionsOfSubjects::of_what(cp))) any_parsing = FALSE;
 	if (Kinds::Behaviour::is_object(K)) exact_parsing = FALSE;
-	if ((K_abstract_object) && (Kinds::conforms_to(K, K_abstract_object))) {
+	if ((CompilationSettings::using_exact_parsing_option()) ||
+		((K_abstract_object) && (Kinds::conforms_to(K, K_abstract_object)))) {
 		exact_parsing = TRUE; mc = EXACT_NOUN_MC;
 	}
 	if (any_parsing) {

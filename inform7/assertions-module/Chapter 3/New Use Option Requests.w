@@ -103,6 +103,7 @@ classdef use_option {
 	struct linked_list *settings_made; /* of `parsed_use_option_setting` */
 	int is_explicitly_numerical; /* must a Use sentence give a number? */
 	int notable_option_code; /* or negative if not notable */
+	int urgent; /* act on this in pass 1 of reading assertions */
 	struct use_option_compilation_data compilation_data;
 	int no_Inter_presence;
 }
@@ -171,6 +172,8 @@ classdef use_option {
 	uo->notable_option_code = -1;
 	if (<notable-use-option-name>(uo->name)) uo->notable_option_code = <<r>>;
 	if (uo->notable_option_code == AUTHORIAL_MODESTY_UO) uo->source_file_scoped = TRUE;
+	uo->urgent = FALSE;
+	if (uo->notable_option_code == UNABBREVIATED_OBJECT_NAMES_UO) uo->urgent = TRUE;
 	uo->where_created = current_sentence;
 	uo->compilation_data = RTUseOptions::new_compilation_data(uo);
 	Nouns::new_proper_noun(uo->name, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
