@@ -83,6 +83,26 @@ has been renamed:
 
 	player aware of their own actions rule
 
+## Language kit changes to article-handling
+
+A low-level change to Inform's system for printing in natural languages at
+runtime will affect anybody translating Inform to write stories in languages
+other than English, so we're flagging it up here. It was always an anomaly
+that the `LanguageArticles` array (defined in `EnglishLanguageKit`, but other
+language kits would have to define it too) had slots for the capitalised
+definite, uncapitalised definite, and uncapitalised indefinite articles —
+but not the capitalised indefinite, which Inform instead attempted to
+synthesize by printing to an array and then capitalising the first word. That
+worked most of the time, but caused problems with rules written for the
+`printing the name of` activity, which was being called twice over. This has
+long been a nuisance, as the existence of extensions like `Indefinite Article Substitution Fix`
+by Matt Weiner and `Print Stage Detection` by Taryn Michelle go to show.
+
+`LanguageArticles` now has a slot for capitalised indefinite articles, and
+this is all more consistent. See Jira bug [I7-2138](https://inform7.atlassian.net/browse/I7-2138)
+for more on why we've done this, and see [PR#190](https://github.com/ganelson/inform/pull/190)
+for more on how.
+
 ## Version updates
 
 The Inform repository (and thus its released app) includes a few resources by
@@ -326,6 +346,8 @@ external developers, which are periodically updated. In this release:
 - Fix for Jira bug [I7-2139](https://inform7.atlassian.net/browse/I7-2139)
 	"Articles become part of relation name"
 	([commit 85110a9](https://github.com/ganelson/inform/commit/85110a981a3d2419b3778eb383408de122c301a8))
+- Fix for Jira bug [I7-2138](https://inform7.atlassian.net/browse/I7-2138)
+	to do with capitalised indefinite articles: see notes above.
 - Fix for Jira bug [I7-2129](https://inform7.atlassian.net/browse/I7-2129)
 	"Quiet supporters from The Eye of the Idol no longer work"
 	([PR#114](https://github.com/ganelson/inform/pull/114))
