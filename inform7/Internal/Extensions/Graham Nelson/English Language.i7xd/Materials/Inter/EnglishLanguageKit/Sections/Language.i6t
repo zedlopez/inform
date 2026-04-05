@@ -185,17 +185,23 @@ Constant LanguageCases = 1;     ! The number of article cases; English has one
 
 Array LanguageArticles -->
 
- !   Contraction form 0:     Contraction form 1:
- !   Cdef   Def    Indef     Cdef   Def    Indef
+ !   Contraction form 0:             Contraction form 1:
+ !   Cdef   Def    CIndef  Indef     Cdef   Def    CIndef  Indef
 
-     "The " "the " "a "      "The " "the " "an "          ! Case 0, articles 0
-     "The " "the " "some "   "The " "the " "some ";       ! Case 0, articles 1
 
+     "The " "the " "A "    "a "      "The " "the " "An "   "an "       ! Articles 0
+     "The " "the " "Some " "some "   "The " "the " "Some " "some ";    ! Articles 1
                    !             a           i
                    !             s     p     s     p
                    !             m f n m f n m f n m f n
 
 Array LanguageGNAsToArticles --> 0 0 0 1 1 1 0 0 0 1 1 1;
+
+Constant CDEFART_INDEX = 0;
+Constant DEFART_INDEX = 1;
+Constant CINDEFART_INDEX = 2;
+Constant INDEFART_INDEX = 3;
+Constant ARTBLOCK_LEN = 4;
 
 @h Commands.
 `LanguageVerbLikesAdverb` is called by `PrintCommand` when printing an `UPTO_PE`
