@@ -946,8 +946,7 @@ A specific action-processing rule (this is the carry out stage rule):
 
 A specific action-processing rule (this is the after stage rule):
 	if action in world is true:
-		follow the after rules;
-		rule succeeds;
+		abide by the after rules.
 
 A specific action-processing rule
 	(this is the investigate player's awareness after action rule):
