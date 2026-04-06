@@ -5,13 +5,13 @@ Here is how bytecode for instructions inside functions is emitted.
 @h Introduction.
 Many sections of //runtime// need to create functions by explicitly giving
 their bytecode. This is quite verbose, but with practice easy enough to read.
-For example, here's bytecode equivalent to |return 13|:
-= (text as InC)
+For example, here's bytecode equivalent to `return 13`:
+
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		EmitCode::val_number(13);
 	EmitCode::up();
-=
+
 We conventionally indent this code to reflect the structure of what is being
 generated, so that the source code in this module looks like the Inter tree
 structure which emerges.
@@ -27,9 +27,10 @@ inter_bookmark *EmitCode::at(void) {
 }
 
 @ These should always be used in ways guaranteed to match:
-(*) //EmitCode::down// shifts us so that we are now creating bytecode below the
+
+- //EmitCode::down// shifts us so that we are now creating bytecode below the
 instruction last emitted, not after it.
-(*) //EmitCode::up// then returns us back to where we were.
+- //EmitCode::up// then returns us back to where we were.
 
 =
 void EmitCode::up(void) {
@@ -78,7 +79,7 @@ void EmitCode::provenance(text_provenance from) {
 }
 
 @h In value context.
-These functions all generate a |val| opcode:
+These functions all generate a `val` opcode:
 
 =
 void EmitCode::val_number(inter_ti N) {
@@ -118,9 +119,9 @@ void EmitCode::val_symbol(kind *K, inter_symbol *S) {
 }
 
 @h Either/or property testing.
-This compiles code for the test |N has prn|, that is, compiles a condition
-which is true if the value of |prn| for |N| is |true|, and correspondingly
-false for |false|.
+This compiles code for the test `N has prn`, that is, compiles a condition
+which is true if the value of `prn` for `N` is `true`, and correspondingly
+false for `false`.
 
 =
 void EmitCode::test_if_iname_has_property(kind *K, inter_name *N, property *prn) {
@@ -150,7 +151,7 @@ void EmitCode::test_if_symbol_has_property(kind *K, inter_symbol *S, property *p
 
 @h Casts.
 These are value conversions from one kind to another. In some simple cases,
-this can be achieved with an Inter |cast|:
+this can be achieved with an Inter `cast`:
 
 =
 void EmitCode::cast(kind *F, kind *T) {
@@ -173,8 +174,8 @@ int EmitCode::cast_possible(kind *F, kind *T) {
 }
 
 @ Casts are in many cases implicit, so that nothing need be done, and the
-following simply returns |TRUE| to indicate success. But in a few cases, a
-function call must be inserted, with a name like |SNIPPET_TY_to_TEXT_TY|;
+following simply returns `TRUE` to indicate success. But in a few cases, a
+function call must be inserted, with a name like `SNIPPET_TY_to_TEXT_TY`;
 in such cases, this function must exist in the kits somewhere.
 
 =
@@ -203,7 +204,7 @@ int EmitCode::casting_call(kind *F, kind *T, int *down) {
 }
 
 @h In reference context.
-And these produce a |ref|:
+And these produce a `ref`:
 
 =
 void EmitCode::ref_iname(kind *K, inter_name *iname) {
@@ -215,7 +216,7 @@ void EmitCode::ref_symbol(kind *K, inter_symbol *S) {
 }
 
 @h Invocations.
-These three produce |inv| opcodes:
+These three produce `inv` opcodes:
 
 =
 void EmitCode::inv(inter_ti bip) {
@@ -231,7 +232,7 @@ void EmitCode::call_symbol(inter_symbol *S) {
 }
 
 @ These conveniences functions produce an invocation and argument all in one,
-so they generate several opcodes. Here we return |true| or |false| from the
+so they generate several opcodes. Here we return `true` or `false` from the
 current function:
 
 =

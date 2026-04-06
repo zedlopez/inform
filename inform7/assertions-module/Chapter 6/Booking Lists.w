@@ -8,34 +8,33 @@ Bookings are intended to be bound together in linked lists, each of which
 represents the interior pages of a single rulebook.
 
 =
-typedef struct booking_list {
+classdef booking_list {
 	struct booking *list_head; /* the dummy entry at the front */
-	CLASS_DEFINITION
-} booking_list;
+}
 
 @ There are only three operations on lists: creation, addition of a booking,
 and removal of a booking. The following invariants are preserved:
 
-(a) The list head is a dummy, i.e., meaningless, booking which has never been
+- The list head is a dummy, i.e., meaningless, booking which has never been
 the subject of any addition operation and has never moved.
 
-(b) The only |FIRST_PLACEMENT| entries in the list immediately follow the list
+- The only `FIRST_PLACEMENT` entries in the list immediately follow the list
 head. Those which were added explicitly as first-placed are in reverse order
 of addition to the list.
 
-(c) The only |LAST_PLACEMENT| entries in the list are at the end. Those which
+- The only `LAST_PLACEMENT` entries in the list are at the end. Those which
 were added explicitly as last-placed are in order of addition to the list.
 
-(d) If R and S are middle-placed rules which were placed in the list within
+- If R and S are middle-placed rules which were placed in the list within
 the same range (say, both anywhere, or both "after T" or "before U") and R
 precedes S, then either R is more specific than S, or they are equally specific
 and R was added to the list before S.
 
-(e) The list never contains duplicates, that is, never contains two bookings
+- The list never contains duplicates, that is, never contains two bookings
 whose rules are equal, in the sense of //Rules::eq//.
 
 @ These macros are useful for iterating through the contents in sequence;
-note that |br| is never equal to the dummy head, and that |pr| is never |NULL| --
+note that `br` is never equal to the dummy head, and that `pr` is never `NULL` —
 though it is initially equal to the dummy, which of course is the point of
 having the dummy.
 
@@ -66,14 +65,14 @@ booking_list *BookingLists::new(void) {
 }
 
 @h Addition.
-The following is called when a booking |br| for the rule R needs to be placed 
-into list |L|, which is the contents of a rulebook we will call B. This happens,
+The following is called when a booking `br` for the rule R needs to be placed 
+into list `L`, which is the contents of a rulebook we will call B. This happens,
 for example, in response to an an assertion like "R is listed after S in B";
-in that cast the |side| would be |AFTER_SIDE|, and the |ref_rule| would be S.
+in that cast the `side` would be `AFTER_SIDE`, and the `ref_rule` would be S.
 
-It is also possible to specify a |placing|. For example, for a rule described
+It is also possible to specify a `placing`. For example, for a rule described
 as "First every turn rule: ...", this would be added to the every turn rulebook
-with placing |FIRST_PLACEMENT|. There are three possible placings: see //booking//
+with placing `FIRST_PLACEMENT`. There are three possible placings: see //booking//
 for what they are.
 
 And since there are four possible sides, the following function effectively has
@@ -124,9 +123,9 @@ because nothing need be done: the rule's there already, so be happy. Otherwise,
 we remove R's existing booking in order that it can be rebooked in a new position.
 
 This is a change in semantics from the original Inform 7 design for rulebooks,
-under which a rule could be booked multiple times in the same rulebook -- which
+under which a rule could be booked multiple times in the same rulebook — which
 was then called "duplication". Following debate on the Usenet newsgroup
-|rec.arts.int-fiction| in February and March 2009, it was decided to abolish
+`rec.arts.int-fiction` in February and March 2009, it was decided to abolish
 duplication in favour of the clean principle that a rule can only be in a
 single rulebook once. This makes it easier to place rules with tricky preambles,
 though there were arguments on both sides.
@@ -178,7 +177,7 @@ though there were arguments on both sides.
 
 @ If we insert a rule as first-placed rule when there already is a first-placed
 rule, the new one displaces it to go first, but both continue to be labelled as
-having |FIRST_PLACEMENT|, so that subsequent rule insertions of middle-placed rules
+having `FIRST_PLACEMENT`, so that subsequent rule insertions of middle-placed rules
 will still go after both of them. If there's a very first rule, there's just one,
 and it sits right at the front; mere first rules won't displace it.
 
@@ -198,7 +197,7 @@ and it sits right at the front; mere first rules won't displace it.
 	}
 
 @ Symmetrically, a second last-placed rule is inserted after any existing one, but
-both are labelled as having |LAST_PLACEMENT|. But we cannot go past the very
+both are labelled as having `LAST_PLACEMENT`. But we cannot go past the very
 last rule, if there is one.
 
 @<Handle all placements made with the LAST placement@> =
@@ -226,7 +225,7 @@ last rule, if there is one.
 
 @<Handle what's left: MIDDLE placements on the IN, BEFORE or AFTER sides@> =
 	booking *start_rule = L->list_head; /* valid interval begins after this rule */
-	booking *end_rule = NULL; /* valid interval ends before this rule, or runs to end if |NULL| */
+	booking *end_rule = NULL; /* valid interval ends before this rule, or runs to end if `NULL` */
 	@<Adjust the valid interval to take care of BEFORE and AFTER side requirements@>;
 	@<Check that the valid interval is indeed as advertised@>;
 	booking *insert_after = start_rule; /* insertion point is after this */
@@ -280,7 +279,7 @@ last rule, if there is one.
 		insert_after = insert_after->next_booking;
 
 @ Since this part of the algorithm is used only when we've requested MIDDLE
-placement, it might seem that |new_br->placement| should always be set to
+placement, it might seem that `new_br->placement` should always be set to
 that. This does indeed mostly happen, but not always. To preserve rulebook
 invariants (b) and (c), we need to force anything added after a LAST rule
 to be LAST as well, and similarly for FIRSTs. (This will only happen in

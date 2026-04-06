@@ -19,8 +19,8 @@ void PermissionInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |permission| instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+In bytecode, the frame of a `permission` instruction is laid out with the
+compulsory words — see //Inter Nodes// — followed by:
 
 @d PROP_PERM_IFLD    (DATA_IFLD + 0)
 @d OWNER_PERM_IFLD   (DATA_IFLD + 1)

@@ -4,23 +4,22 @@ To compile the adjectives submodule for a compilation unit, which contains
 _adjective, _adjective_phrase and _measurement packages.
 
 @h Compilation data.
-Each |adjective| object contains this data:
+Each `adjective` object contains this data:
 
 =
 typedef struct adjective_compilation_data {
 	struct inter_name *adaptive_printing_fn_iname;
 	struct package_request *aph_package;
-	struct linked_list *held_inames[NO_ATOM_TASKS + 1]; /* of |adjective_iname_holder| */
+	struct linked_list *held_inames[NO_ATOM_TASKS + 1]; /* of `adjective_iname_holder` */
 	struct wording index_wording;
 } adjective_compilation_data;
 
-typedef struct adjective_iname_holder {
+classdef adjective_iname_holder {
 	struct kind *weakened_domain;
 	struct inter_name *task_fn_iname;
-	CLASS_DEFINITION
-} adjective_iname_holder;
+}
 
-@ This is added in the //linguistics// module, where |adjective| is defined.
+@ This is added in the //linguistics// module, where `adjective` is defined.
 
 @d ADJECTIVE_COMPILATION_LINGUISTICS_CALLBACK RTAdjectives::initialise_compilation_data
 
@@ -34,8 +33,8 @@ void RTAdjectives::initialise_compilation_data(adjective *adj, wording W) {
 	adj->adjective_compilation.index_wording = W;
 }
 
-@ An adjective can be defined in multiple senses -- "empty" for containers does
-not mean the same thing as "empty" for rulebooks -- and so the following can
+@ An adjective can be defined in multiple senses — "empty" for containers does
+not mean the same thing as "empty" for rulebooks — and so the following can
 return a variety of different runtime functions.
 
 The following generates names for functions to carry out adjective tasks on
@@ -64,8 +63,8 @@ inter_name *RTAdjectives::task_fn_iname(adjective *adj, int task, kind *K) {
 
 @ The following much less satisfactory function takes a stab in the dark about
 what the likely meaning is of an adjective whose name appears without context
-inside |(+| and |+)| markers, within what's otherwise |(-| and |-)| inline code.
-This "feature" is hardly ever used; the test case |BracketPlus| exercises it,
+inside `(+` and `+)` markers, within what's otherwise `(-` and `-)` inline code.
+This "feature" is hardly ever used; the test case `BracketPlus` exercises it,
 but a standard Inform installation makes no use of it in any examples.
 
 Since inline Inter code written in I6 notation is typeless, there's no good way
@@ -96,7 +95,7 @@ void RTAdjectives::compile(void) {
 	}
 }
 
-@ So the following makes a single |_adjective| package, and the main contents
+@ So the following makes a single `_adjective` package, and the main contents
 will be the task functions given names above.
 
 =
@@ -193,18 +192,18 @@ prefaced "(of a rulebook)", "(of an activity)", and so on.
 might not, be such that adjective($x$) is true. We allow this to be called
 "it", though it can also have a calling name in some cases (see below).
 
-Clearly it ought to have the kind which defines the domain -- so it's a rulebook
-if the domain is all rulebooks, and so on -- but it doesn't always do so. The
+Clearly it ought to have the kind which defines the domain — so it's a rulebook
+if the domain is all rulebooks, and so on — but it doesn't always do so. The
 exception is that it is bogusly given the kind "number" if the adjective is
 being defined only by I6 routines. This is done to avoid compiling very
 inefficient code from the Standard Rules. For instance, the SR reads, in
 slightly simplified form:
 
->> Definition: a text is empty if I6 routine |"TEXT\_TY\_Empty"| says so.
+> Definition: a text is empty if I6 routine `"TEXT_TY_Empty"` says so.
 
 rather than the more obvious:
 
->> Definition: a text is empty if it is not |""|.
+> Definition: a text is empty if it is not `""`.
 
 Both of these definitions work. But if the routine defining "empty" for text
 is allowed to act on a text variable, Inform needs to compile code which acts
@@ -410,7 +409,7 @@ void RTAdjectives::invoke(adjective *adj) {
 }
 
 @h Adjectival phrase packages.
-When an adjective is given a |Definition:|, the result will be an |_adjective_phrase|
+When an adjective is given a `Definition:`, the result will be an `_adjective_phrase`
 package, which contains a suitable function defining the adjective:
 
 =
@@ -519,7 +518,7 @@ int RTAdjectives::support_for_I7_condition(adjective_meaning_family *family,
 }
 
 @h Measurement packages.
-The following makes |_measurement| packages for each use of a definition such
+The following makes `_measurement` packages for each use of a definition such
 as "a container is roomy if its carrying capacity is 20 or more".
 
 =

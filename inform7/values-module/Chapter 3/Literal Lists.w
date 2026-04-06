@@ -4,14 +4,14 @@ Parsing and vetting the kinds of literal lists written in braces.
 
 @ Literal lists in Inform are written in braces: for example,
 
->> let L be {2, 12, 13};
+> let L be {2, 12, 13};
 
 Here "{2, 12, 13}" is parsed to an rvalue specification. Various syntactic
 things can go wrong with those commas and braces, which must be detected, and
-Inform must also work out the kind -- here, it's "list of numbers".
+Inform must also work out the kind — here, it's "list of numbers".
 
 Note that the empty list "{}" is valid as a constant, but that it contains
-no indication of its kind -- this must be determined from context.
+no indication of its kind — this must be determined from context.
 
 The following Preform grammar handles the syntax, at least:
 
@@ -37,12 +37,13 @@ parse_node *Lists::at(literal_list *L, wording W) {
 
 @ Each different literal list (LL) found in the source text generates an
 instance of the following structure. Note that:
-(1) every LL structure represents a syntactically well-formed list, in which
+
+- every LL structure represents a syntactically well-formed list, in which
 braces and commas balance; and
-(2) there can be at most one LL structure at any word position.
+- there can be at most one LL structure at any word position.
 
 =
-typedef struct literal_list {
+classdef literal_list {
 	struct wording unbraced_text; /* position in the source of quoted text, excluding braces */
 	struct parse_node *list_text; /* used for problem reporting only */
 	int listed_within_code; /* appears within a phrase, rather than (say) a table entry? */
@@ -54,19 +55,17 @@ typedef struct literal_list {
 
 	struct package_request *ll_package; /* which will be the enclosure for... */
 	struct inter_name *ll_iname;
-	CLASS_DEFINITION
-} literal_list;
+}
 
 @ I believe "llath" is the Welsh word for "yard": not sure about "llist".
 
 =
-typedef struct llist_entry {
+classdef llist_entry {
 	struct parse_node *llist_entry_value;
 	struct llist_entry *next_llist_entry;
-	CLASS_DEFINITION
-} llist_entry;
+}
 
-@ These structures are built incrementally, adding one |llist_entry| at a time.
+@ These structures are built incrementally, adding one `llist_entry` at a time.
 They begin with a call to:
 
 =
@@ -120,7 +119,7 @@ literal_list *Lists::add(parse_node *spec, literal_list *ll, wording W, int bad)
 
 @ With all the entries in place, we now have to reconcile their kinds, if
 that's possible. Problems are only issued on request, and with the current
-sentence cut down to just the list itself -- since otherwise we might be
+sentence cut down to just the list itself — since otherwise we might be
 printing out an entire huge table to report a problem in a single entry
 which happens to be a malformed list.
 
@@ -228,7 +227,7 @@ incomparable, and "thing" being the max of "person" and "door").
 
 @ The following allow other parts of Inform to find the kind of a constant
 list at a given word position; either to discover the answer, or to force
-problem messages out into the open --
+problem messages out into the open —
 
 =
 kind *Lists::kind_of_list_at(wording W) {

@@ -100,13 +100,13 @@ local_variable *LocalVariables::new_let_value(wording W, kind *K) {
 	return lvar;
 }
 
-@ Some |LET_VALUE_LV| variables are protected from being changed by "let" or "now" --
+@ Some `LET_VALUE_LV` variables are protected from being changed by "let" or "now" —
 that sounds contradictory, but for example loop counters in "repeat" constructs are
-also |LET_VALUE_LV| locals, and we want to stop the source text from altering
+also `LET_VALUE_LV` locals, and we want to stop the source text from altering
 those. Protection is opt-out for let values: we have to call //LocalVariables::unprotect//
 if we want a let value to be modifiable from source text.
 
-Note that |TOKEN_CALL_PARAMETER_LV| locals are unprotected, which means that it's
+Note that `TOKEN_CALL_PARAMETER_LV` locals are unprotected, which means that it's
 legal in Inform to modify one of the call parameters to a phrase.[1] Protection
 would be meaningless for the other two sorts of local, since they aren't accessible
 from I7 source text anyway.
@@ -170,7 +170,7 @@ inter_symbol *LocalVariables::new_internal_commented_as_symbol(text_stream *iden
 	return LocalVariables::declare(v);
 }
 
-@ For example, |ct_0| and |ct_1| contain the current table and row selection,
+@ For example, `ct_0` and `ct_1` contain the current table and row selection,
 in phrases for which that's relevant.
 
 =
@@ -188,7 +188,7 @@ int LocalVariables::are_we_using_table_lookup(void) {
 	return FALSE;
 }
 
-@ Similarly |sw_v| holds a temporary switch value, in some cases.
+@ Similarly `sw_v` holds a temporary switch value, in some cases.
 
 =
 local_variable *LocalVariables::add_switch_value(kind *K) {
@@ -219,8 +219,8 @@ local_variable *LocalVariables::by_identifier(text_stream *name) {
 	return NULL;
 }
 
-@ Locals used in predicate calculus have the names |x|, |y|, |z|, |a|, |b|, ...;
-the following looks for this identifier, where |v| counts from 0 to 25 through
+@ Locals used in predicate calculus have the names `x`, `y`, `z`, `a`, `b`, ...;
+the following looks for this identifier, where `v` counts from 0 to 25 through
 this reordered alphabet.
 
 =
@@ -238,7 +238,7 @@ local_variable *LocalVariables::find_pcalc_var(int v) {
 
 @h Searching by index.
 Another way to search is by index. The following, for instance, returns
-the ith call parameter on the current slate (counting from 0), or |NULL| if
+the ith call parameter on the current slate (counting from 0), or `NULL` if
 there isn't one.
 
 =
@@ -312,7 +312,7 @@ for it, so it doesn't seem worth hashing this:
 
 @ Earlier builds of Inform went to some trouble to parse these in reverse
 creation order, so that if the same name existed both as a loop variable
-and outside it, the inner one would always be parsed -- compare C, where
+and outside it, the inner one would always be parsed — compare C, where
 this is legal (if doubtful in style). But since the Inform language no
 longer permits local names to be overloaded like this, there's no longer
 any need.
@@ -374,7 +374,7 @@ int LocalVariables::local_parsed_recently(stack_frame *frame) {
 @h Callings.
 A "calling" is a declaration of the sort found in text like "a body which is part
 of a person (called the owner)". This will need to create a local variable with
-the name "the owner". Here |W| would be that name, and |K| would be |K_body|:
+the name "the owner". Here `W` would be that name, and `K` would be `K_body`:
 
 =
 wording PM_CalledWithDash_wording = EMPTY_WORDING_INIT;
@@ -449,7 +449,7 @@ void LocalVariables::make_necessary_callings(wording W) {
 @h Permissible names.
 This is an interesting issue of policy. Suppose the source text says:
 
->> let the slate be 1;
+> let the slate be 1;
 
 and, far away, an object called "the slate" is sitting on a schoolroom desk.
 Do we allow this, thus temporarily changing the meaning of "slate", or do
@@ -459,18 +459,18 @@ we cause all sorts of things to go wrong with extensions (including not least
 the Standard Rules): because suppose they contain a local called "slate"
 somewhere, and then the unsuspecting user writes
 
->> The slate is on the desk.
+> The slate is on the desk.
 
 Now there's a conflict, and the user will be baffled, never having read the
 extension he's using. So we do allow this, and certain other overloadings
 of meanings, too, but it would be too much to say that every phrase has its
 own namespace.
 
-Callings get one extra benefit, because they typically exist more fleetingly --
-often only for the sentence where they're defined -- and because the syntax
+Callings get one extra benefit, because they typically exist more fleetingly —
+often only for the sentence where they're defined — and because the syntax
 is more explicit. So you can write:
 
->> if an infected person can see a healthy person (called random bystander), ...
+> if an infected person can see a healthy person (called random bystander), ...
 
 even if "random bystander" might otherwise be a request to randomly generate
 an instance of the kind "bystander".
@@ -485,6 +485,7 @@ int LocalVariables::permit_as_new_local(parse_node *found, int as_calling) {
 		(Specifications::is_description(found)) ||
 		(Rvalues::is_object(found)) ||
 		(Rvalues::to_instance(found)) ||
+		(Rvalues::is_CONSTANT_construction(found, CON_rulebook)) ||
 		(Rvalues::is_CONSTANT_construction(found, CON_table_column)) ||
 		(Rvalues::is_CONSTANT_construction(found, CON_property))) return TRUE;
 	if (as_calling)
@@ -522,7 +523,7 @@ void LocalVariables::writer(OUTPUT_STREAM, char *format_string, void *vL) {
 	local_variable *lvar = (local_variable *) vL;
 	if (lvar == NULL) internal_error("no such variable");
 	switch (format_string[0]) {
-		case 'L': /* bare |%L| means the same as |%+L|, so fall through to... */
+		case 'L': /* bare `%L` means the same as `%+L`, so fall through to... */
 		case '+': WRITE("%+W", lvar->current_usage.varname); break;
 		case '-': WRITE("%-W", lvar->current_usage.varname); break;
 		case '~': WRITE("%S", lvar->identifier); break;

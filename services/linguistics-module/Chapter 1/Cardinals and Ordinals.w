@@ -6,7 +6,7 @@ To parse integers seen from a grammatical point of view.
 We read a few low numbers in text, but larger numbers only in digits. Textual
 numbers run from 0 to 12 since that's what clocks need.
 
-By a cardinal we mean a number such as |five| or |351|.
+By a cardinal we mean a number such as `five` or `351`.
 
 =
 <cardinal-number-in-words> ::=
@@ -24,7 +24,7 @@ By a cardinal we mean a number such as |five| or |351|.
 	eleven |
 	twelve
 
-@ And by an ordinal we mean a number such as |fifth| or |351st|; note that
+@ And by an ordinal we mean a number such as `fifth` or `351st`; note that
 this is not a noun, and isn't allowed as a constant value in Inform.
 
 =
@@ -110,7 +110,7 @@ is parsing text in a work intended for a 16-bit VM.
 
 Why do we catch this here? The answer is probably that it's an excess of
 caution, but this is a rare case where the choice of virtual machine affects
-the legal syntax for Inform source text -- text originally written for use on
+the legal syntax for Inform source text — text originally written for use on
 Glulx, which allows for larger integers, might be moved over to a Z-machine
 project, with the user not realising the consequences.
 

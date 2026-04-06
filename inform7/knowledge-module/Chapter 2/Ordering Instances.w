@@ -9,9 +9,9 @@ the compilation phase, too.
 
 They are stored as a linked list with the links in an array indexed by the
 allocation IDs of the objects. This could all now alternatively be done with
-the |linked_list| type provided by //foundation//, but never mind: it works.
+the `linked_list` type provided by //foundation//, but never mind: it works.
 
-= (early code)
+@<Global knowledge variable definitions@> +=
 instance *first_instance_in_list = NULL;
 instance **next_instance_in_current_list = NULL;
 instance *last_instance_in_list = NULL;

@@ -8,17 +8,18 @@ The relations created in this section belong to the "explicit" family,
 named so because their definitions are explicit in the source text. Initially,
 there are none.
 
-= (early code)
+@<Global assertions variable definitions@> +=
 bp_family *explicit_bp_family = NULL;
 bp_family *by_function_bp_family = NULL;
-typedef struct explicit_bp_data {
-	int form_of_relation; /* one of the |Relation_*| constants defined below */
+
+@ =
+classdef explicit_bp_data {
+	int form_of_relation; /* one of the `Relation_*` constants defined below */
 	struct property *i6_storage_property; /* provides run-time storage */
-	struct equivalence_bp_data *equiv_data; /* only used for |Relation_Equiv| */
-	struct inter_name *v2v_bitmap_iname; /* only used for |Relation_VtoV| and |Relation_Sym_VtoV| */
+	struct equivalence_bp_data *equiv_data; /* only used for `Relation_Equiv` */
+	struct inter_name *v2v_bitmap_iname; /* only used for `Relation_VtoV` and `Relation_Sym_VtoV` */
 	int store_dynamically;
-	CLASS_DEFINITION
-} explicit_bp_data;
+}
 
 @ =
 void ExplicitRelations::start(void) {
@@ -92,7 +93,7 @@ int ExplicitRelations::relates_values_not_objects(binary_predicate *bp) {
 
 @ When the source text declares new relations, it turns out to be convenient
 to make their BPs in a two-stage process: to make sketchy, mostly-blank BP
-structures for them early on -- but getting their names registered -- and
+structures for them early on — but getting their names registered — and
 then fill in the correct details later. This is where such sketchy pairs are
 made:
 
@@ -205,8 +206,8 @@ int ExplicitRelations::assert(bp_family *self, binary_predicate *bp,
 
 @ This routine converts the knowledge that $R(ox, oy)$ into a single
 inference. It can only be used for a simple subclass of the relations:
-those which store |oy|, the only thing related to |ox|, in a given property
-of |ox|. The beauty of this is that the "only thing related to" business
+those which store `oy`, the only thing related to `ox`, in a given property
+of `ox`. The beauty of this is that the "only thing related to" business
 is then enforced by the inference mechanism, since an attempt to assert
 both $R(x,y)$ and $R(x,z)$ will result in contradictory property value
 inferences for $y$ and $z$.

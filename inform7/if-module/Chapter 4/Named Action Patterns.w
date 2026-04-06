@@ -7,19 +7,17 @@ which is little more than a list of action patterns; a given action falls under
 this category if it matches one of the patterns.
 
 =
-typedef struct named_action_pattern {
+classdef named_action_pattern {
 	struct noun *as_noun;
-	struct linked_list *patterns; /* of |action_pattern| */
+	struct linked_list *patterns; /* of `action_pattern` */
 	struct wording text_of_declaration;
 	struct nap_compilation_data compilation_data;
-	CLASS_DEFINITION
-} named_action_pattern;
+}
 
-typedef struct named_action_pattern_entry {
+classdef named_action_pattern_entry {
 	struct action_pattern *behaviour;
 	struct parse_node *where_decided;
-	CLASS_DEFINITION
-} named_action_pattern_entry;
+}
 
 @ We are allowed to give names to certain kinds of behaviour by "characterising"
 an action.
@@ -46,7 +44,7 @@ void NamedActionPatterns::characterise(action_pattern *ap, wording W) {
 	NamedActionPatterns::add(ap, W);
 }
 
-@ So, then, the following adds an action pattern to a NAP identified only by its name, |W|:
+@ So, then, the following adds an action pattern to a NAP identified only by its name, `W`:
 
 =
 named_action_pattern *NamedActionPatterns::add(action_pattern *ap, wording W) {

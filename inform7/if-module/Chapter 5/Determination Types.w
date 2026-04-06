@@ -6,13 +6,15 @@ two values, and here we provide a way to describe the range of those.
 @ Determination is the process by which Inform looks at a command grammar,
 or a line in one, or a token in one of those lines, and works out what value
 or values this grammar is talking about. Those could be specific values or
-whole kinds, and so we use a specification -- which will always be an rvalue
-or a description -- for each value.
+whole kinds, and so we use a specification — which will always be an rvalue
+or a description — for each value.
 
 For example, the grammar line created in:
->> Understand "put [other things] on/onto [something]" as putting it on.
-has a determination type with two terms, one a description of |K_thing| with
-multiplicity |TRUE|, and the other a description of |K_thing| without.
+
+> Understand "put [other things] on/onto [something]" as putting it on.
+
+has a determination type with two terms, one a description of `K_thing` with
+multiplicity `TRUE`, and the other a description of `K_thing` without.
 
 @d MAX_DETERMINATION_TYPE_TERMS 2
 
@@ -39,7 +41,7 @@ void DeterminationTypes::log(determination_type *dt) {
 			(dt->term[t].multiplicity)?"(multiple)":"");
 }
 
-@ This function returns the equivalent of the |void| type in C: something
+@ This function returns the equivalent of the `void` type in C: something
 which describes no values at all.
 
 =

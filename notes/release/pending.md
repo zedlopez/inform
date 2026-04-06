@@ -6,6 +6,10 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 
 ## Featurettes arising from bug reports, but too small for Inform Evolution proposals
 
+- External files are now stored as UTF-8 encoded Unicode, rather than ISO Latin-1,
+	extending the range of characters they can store, and meaning that they can
+	hold anything Inform stories can print. See [PR#192](https://github.com/ganelson/inform/pull/192).
+
 - This was reported as Jira bug [I7-2087](https://inform7.atlassian.net/browse/I7-2087)
 	"three anonymous standard rules", but is arguably a feature request: that three
 	rules in the Standard Rules should have names. All three are simple rules, two
@@ -17,6 +21,17 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	late scene changing stage
 	default action success rule
 	```
+
+- Similarly: see Jira bug [I7-2556](https://inform7.atlassian.net/browse/I7-2556)
+	```
+	very likely to mean taking off what's currently worn rule
+	```
+
+- When releasing a story with a website, and a cover image which has alt-text
+	provided, that text is now used on the thumbnail cover images in the website.
+	(See Jira bug [I7-2615](https://inform7.atlassian.net/browse/I7-2615): the
+	lack of this feature could very fairly have been called a bug.)
+
 - Errors occurring in I6-syntax code, either in `(- ... -)` inclusions into I7
 	source text or in kit source code, are now reported more fully, with source
 	references and links provided. (A feature request for this was filed as
@@ -31,7 +46,16 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	Jira bug [I7-2516](https://inform7.atlassian.net/browse/I7-2516).
 
 - The Inform 6 compiler's built-in pseudofunction "random()" can now be replaced. See
-	Jira bug [I7-2516](https://inform7.atlassian.net/browse/I7-2435).
+	Jira bug [I7-2435](https://inform7.atlassian.net/browse/I7-2435).
+
+- Inform 7 now optimises compilation so that code to parse command text for kinds
+	is only generated if command grammar involving those kinds actually exists.
+	This makes little difference to eventual code size because the Inform 6
+	compiler would have removed those functions anyway, but it does reduce
+	dictionary word usage. Typically, it means about 120 words fewer in the
+	story file dictionary: only a trivial memory saving, but it avoids some
+	warnings due to dictionary entry clashes. See Jira bug (really a suggestion)
+	[I7-2573](https://inform7.atlassian.net/browse/I7-2573).
 
 ## Gender neutrality
 
@@ -50,6 +74,16 @@ has been renamed:
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2665](https://inform7.atlassian.net/browse/I7-2665)
+	"Compilation error when an `Index map with` assertions refers to `level`"
+- Fix for Jira bug [I7-2619](https://inform7.atlassian.net/browse/I7-2619)
+	"Upon `resume the story` in a Final Question rule, `when play ends` rules are followed again before resumption"
+- Fix for Jira bug [I7-2608](https://inform7.atlassian.net/browse/I7-2608)
+	"Equations `given by x =` in Basic Inform breaks the use of x as an identifier in other contexts"
+- Fix for Jira bug [I7-2568](https://inform7.atlassian.net/browse/I7-2568)
+	"Setting numeric EPS map parameters causes parts of the EPS map to vanish"
+- Fix for Jira bug [I7-2589](https://inform7.atlassian.net/browse/I7-2589)
+	"Abject failure when giving another name to an `at the time when` rule"
 - Fix for Jira bug [I7-2551](https://inform7.atlassian.net/browse/I7-2551)
 	"The parser nothing error internal rule response (C) is badly worded"
 	([commit 9175435](https://github.com/ganelson/inform/commit/9175435a7a45acd1257812871bc1068818d65573))
@@ -107,6 +141,8 @@ has been renamed:
 - Fix for Jira bug [I7-2384](https://inform7.atlassian.net/browse/I7-2384)
 	"Some Standard Rule responses use 'here' instead of '[here]', producing 'here' in cases that should be 'there'"
 	([PR#116](https://github.com/ganelson/inform/pull/116))
+- Fix for Jira bug [I7-2382](https://inform7.atlassian.net/browse/I7-2382)
+	"creating a specific number of things causing P49: Memory allocation proved impossible on Z-machine"
 - Fix for Jira bug [I7-2376](https://inform7.atlassian.net/browse/I7-2376)
 	"Incorrect behavior for 'empty' adjective applied to 1-to-1 relations"
 	(see [commit 918f9c3](https://github.com/ganelson/inform/commit/918f9c37193ea4aa09a21e34c622233fe4cc69db))
@@ -245,6 +281,8 @@ has been renamed:
 - Fix for Jira bug [I7-2234](https://inform7.atlassian.net/browse/I7-2234)
 	"Non-heading @ sections not supported in template files"
 	(Inweb: [commit f2aaa32](https://github.com/ganelson/inweb/commit/f2aaa32479e14187679828e3e5696f5951b43b38))
+- Fix for Jira bug [I7-2230](https://inform7.atlassian.net/browse/I7-2230)
+	"When specifying an irregular verb, present participle is based on the verb identifier, not contents of irregular spec"
 - Fix for Jira bug [I7-2227](https://inform7.atlassian.net/browse/I7-2227)
 	"Backdrop placement assertions being ignored"
 	(Inweb: [commit 4943a61](https://github.com/ganelson/inweb/commit/4943a6157c18810b2de949c0bd0d79c81d136fe3))
@@ -281,7 +319,41 @@ has been renamed:
 	"When defining a kind-of-object via table, properties are misplaced"
 	([commit 70fa464](https://github.com/ganelson/inweb/commit/70fa464c677791501bd83efda9bf63802a77e558))
 
-- Cosmetic fixes not worth linking to (I7-2570, I7-2529, I7-2502, I7-2481, I7-2480, I7-2478, I7-2473, I7-2350, I7-2348, I7-2319, I7-2316, I7-2315, I7-2311, I7-2299, I7-2293, I7-2270, I7-2268, I7-2221, I7-2214, I7-2210, I7-2120)
+## Cosmetic fixes
+
+These affect documentation, or the wording of problem messages or the Index, but
+do not really change the compiler or other tools in any way which changes how
+source text is read.
+
+> [I7-2663](https://inform7.atlassian.net/browse/I7-2663),
+> [I7-2662](https://inform7.atlassian.net/browse/I7-2662),
+> [I7-2640](https://inform7.atlassian.net/browse/I7-2640),
+> [I7-2598](https://inform7.atlassian.net/browse/I7-2598),
+> [I7-2594](https://inform7.atlassian.net/browse/I7-2594),
+> [I7-2592](https://inform7.atlassian.net/browse/I7-2592),
+> [I7-2570](https://inform7.atlassian.net/browse/I7-2570),
+> [I7-2529](https://inform7.atlassian.net/browse/I7-2529),
+> [I7-2526](https://inform7.atlassian.net/browse/I7-2526),
+> [I7-2502](https://inform7.atlassian.net/browse/I7-2502),
+> [I7-2481](https://inform7.atlassian.net/browse/I7-2481),
+> [I7-2480](https://inform7.atlassian.net/browse/I7-2480),
+> [I7-2478](https://inform7.atlassian.net/browse/I7-2478),
+> [I7-2473](https://inform7.atlassian.net/browse/I7-2473),
+> [I7-2350](https://inform7.atlassian.net/browse/I7-2350),
+> [I7-2348](https://inform7.atlassian.net/browse/I7-2348),
+> [I7-2319](https://inform7.atlassian.net/browse/I7-2319),
+> [I7-2316](https://inform7.atlassian.net/browse/I7-2316),
+> [I7-2315](https://inform7.atlassian.net/browse/I7-2315),
+> [I7-2311](https://inform7.atlassian.net/browse/I7-2311),
+> [I7-2299](https://inform7.atlassian.net/browse/I7-2299),
+> [I7-2293](https://inform7.atlassian.net/browse/I7-2293),
+> [I7-2286](https://inform7.atlassian.net/browse/I7-2286),
+> [I7-2270](https://inform7.atlassian.net/browse/I7-2270),
+> [I7-2268](https://inform7.atlassian.net/browse/I7-2268),
+> [I7-2221](https://inform7.atlassian.net/browse/I7-2221),
+> [I7-2214](https://inform7.atlassian.net/browse/I7-2214),
+> [I7-2210](https://inform7.atlassian.net/browse/I7-2210),
+> [I7-2120](https://inform7.atlassian.net/browse/I7-2120)
 
 ## Bugs fixed but not from tracked reports
 

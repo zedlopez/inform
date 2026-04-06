@@ -7,7 +7,7 @@ subjects or values are related by it. Thus, if Charles "knows" Sebastian,
 this fact is an inference about the knowledge relation, not about either
 Charles or Sebastian, who are only the terms listed in its data.
 
-= (early code)
+@<Global knowledge variable definitions@> +=
 inference_family *relation_inf = NULL;
 
 @ =
@@ -22,14 +22,13 @@ change to Inform, which came in with dynamic relations between (say) numbers,
 and therefore the need to set up an initial state for those relations.
 
 The terms will either both be subjects, or both be values, so at all times
-exactly one of these pairs of pointers is |NULL|.
+exactly one of these pairs of pointers is `NULL`.
 
 =
-typedef struct relation_inference_data {
+classdef relation_inference_data {
 	struct inference_subject *terms_as_subjects[2];
 	struct parse_node *terms_as_values[2];
-	CLASS_DEFINITION
-} relation_inference_data;
+}
 
 inference *RelationInferences::new(inference_subject *subj0,
 	inference_subject *subj1, parse_node *val0, parse_node *val1) {

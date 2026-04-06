@@ -127,11 +127,11 @@ void Sounds::register_sound(wording W, wording FN) {
 
 @h One significant kind.
 
-= (early code)
+@<Global multimedia variable definitions@> +=
 kind *K_sound_name = NULL;
 
 @ This is created by an Inter kit early in Inform's run; the function below
-detects that this has happened, and sets |K_sound_name| to point to it.
+detects that this has happened, and sets `K_sound_name` to point to it.
 
 =
 int Sounds::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
@@ -145,14 +145,13 @@ int Sounds::new_base_kind_notify(kind *new_base, text_stream *name, wording W) {
 This structure of additional data is attached to each sound instance:
 
 =
-typedef struct sounds_data {
+classdef sounds_data {
 	struct wording name; /* text of name */
 	struct filename *filename_of_sound_file; /* relative to the Resources folder */
 	int sound_number; /* resource number of this picture inside Blorb */
 	int alt_description; /* word number of double-quoted description */
 	struct instance *as_instance;
-	CLASS_DEFINITION
-} sounds_data;
+}
 
 @ We allow instances of "sound name" to be created only through the above
 code calling //Sounds::sounds_create//. If any other proposition somehow
@@ -192,8 +191,8 @@ int Sounds::new_named_instance_notify(instance *I) {
 @h Blurb and manifest.
 The sounds manifest is used by the implementation of Glulx within the Inform
 application to connect picture ID numbers with filenames relative to the
-|.materials| folder for its project. (It's part of the XML manifest file
-created from |Figures.w|.)
+`.materials` folder for its project. (It's part of the XML manifest file
+created from `Figures.w`.)
 
 =
 void Sounds::write_sounds_manifest(OUTPUT_STREAM) {

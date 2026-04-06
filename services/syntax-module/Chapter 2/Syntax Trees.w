@@ -9,9 +9,9 @@ Within //inform7// and //inbuild//, the code in this section is augmented by
 source headings; but as far as //syntax// is concerned, that's all an optional
 extra.
 
-Code using //syntax// in this way must define |HEADING_TREE_SYNTAX_TYPE| as the
-class of object to which our |headings| field will point, and callback functions
-|NEW_HEADING_TREE_SYNTAX_CALLBACK| and |NEW_HEADING_SYNTAX_CALLBACK| to
+Code using //syntax// in this way must define `HEADING_TREE_SYNTAX_TYPE` as the
+class of object to which our `headings` field will point, and callback functions
+`NEW_HEADING_TREE_SYNTAX_CALLBACK` and `NEW_HEADING_SYNTAX_CALLBACK` to
 initialise and add to it.
 
 @default HEADING_TREE_SYNTAX_TYPE void /* in which case, never used */
@@ -24,7 +24,7 @@ it includes, will form a single //parse_node_tree//.
 @d MAX_BUD_STACK_SIZE 100 /* must be at least the number of heading levels plus 3 */
 
 =
-typedef struct parse_node_tree {
+classdef parse_node_tree {
 	struct parse_node *root_node;
 	int bud_parent_sp;
 	struct parse_node *bud_parent_stack[MAX_BUD_STACK_SIZE];
@@ -33,8 +33,7 @@ typedef struct parse_node_tree {
 	int contains_dialogue;
 	int trace_sentences;
 	HEADING_TREE_SYNTAX_TYPE *headings;
-	CLASS_DEFINITION
-} parse_node_tree;
+}
 
 parse_node_tree *SyntaxTree::new(void) {
 	parse_node_tree *T = CREATE(parse_node_tree);
@@ -112,12 +111,12 @@ void SyntaxTree::disable_last_sentence_cache(parse_node_tree *T) {
 	T->allow_last_sentence_cacheing = FALSE;
 }
 
-@ The function |SyntaxTree::graft| is named by analogy with gardening, where the
+@ The function `SyntaxTree::graft` is named by analogy with gardening, where the
 rootstock of one plant is joined to a scion (or cutting) of another, so that a
 root chosen for strength can be combined with the fruits or blossom of the scion.
 
-|SyntaxTree::graft| returns the node for which |scion| is the immediate sibling,
-that is, it returns the previously youngest child of the |rootstock| (or |NULL|
+`SyntaxTree::graft` returns the node for which `scion` is the immediate sibling,
+that is, it returns the previously youngest child of the `rootstock` (or `NULL`
 if it previously had no children).
 
 =
@@ -169,11 +168,11 @@ Inform makes many traverses through the big parse tree, often modifying as it
 goes, and keeps track of its position so that it can make any problem messages
 correctly refer to the location of the faulty text in the original source files.
 
-During such traverses, |current_sentence| is always the subtree being looked
-at: it is always a child of the tree root, and is usually a |SENTENCE_NT|
+During such traverses, `current_sentence` is always the subtree being looked
+at: it is always a child of the tree root, and is usually a `SENTENCE_NT`
 node, hence the name.
 
-= (early code)
+@<Global syntax variable definitions@> (tangled early) =
 parse_node *current_sentence = NULL;
 
 @h General traversals.
@@ -186,7 +185,7 @@ All these do basically the same thing. //SyntaxTree::traverse// calls a visitor
 function on each node; //SyntaxTree::traverse_from// the same, but from a
 chosen start position, rather than the root of the tree.
 
-In this first version, the visitor function has type signature |parse_node * -> void|.
+In this first version, the visitor function has type signature `parse_node * -> void`.
 
 =
 void SyntaxTree::traverse(parse_node_tree *T, void (*visitor)(parse_node *)) {
@@ -226,7 +225,7 @@ int SyntaxTree::visitable(node_type_t t) {
 }
 
 @ And now the same thing, but where the visitor function has the type
-signature |text_stream *, parse_node * -> void|.
+signature `text_stream *, parse_node * -> void`.
 
 =
 void SyntaxTree::traverse_text(parse_node_tree *T, text_stream *OUT,
@@ -248,7 +247,7 @@ void SyntaxTree::traverse_text_from(text_stream *OUT, parse_node *pn,
 }
 
 @ And now the same thing, but where the visitor function has the type
-signature |parse_node *, int * -> void|.
+signature `parse_node *, int * -> void`.
 
 =
 void SyntaxTree::traverse_intp(parse_node_tree *T,
@@ -270,7 +269,7 @@ void SyntaxTree::traverse_intp_from(parse_node *pn,
 }
 
 @ And the same thing, but where the visitor function has the type signature
-|parse_node *, int *, int * -> void|.
+`parse_node *, int *, int * -> void`.
 
 =
 void SyntaxTree::traverse_intp_intp(parse_node_tree *T,
@@ -291,7 +290,7 @@ void SyntaxTree::traverse_intp_intp_from(parse_node *pn,
 	current_sentence = SCS;
 }
 
-@ And now for |parse_node *, parse_node ** -> void|.
+@ And now for `parse_node *, parse_node ** -> void`.
 
 =
 void SyntaxTree::traverse_nodep(parse_node_tree *T,
@@ -314,7 +313,7 @@ void SyntaxTree::traverse_nodep_from(parse_node *pn,
 
 @ This is a tricksier sort of traverse, which tells the visitor function the
 heading node it belongs to. The visitor function now has type signature
-|parse_node_tree *, parse_node *, parse_node *, int * -> void|, where the
+`parse_node_tree *, parse_node *, parse_node *, int * -> void`, where the
 two nodes are the one being visited and its heading, respectively.
 
 =
@@ -344,11 +343,11 @@ void SyntaxTree::traverse_headingwise_from(parse_node_tree *T, parse_node *pn,
 
 @ And this is another variation: a traverse to find a node with a particular
 property. The process halts as soon as the visitor function, which has
-signature |parse_node *, parse_node *, parse_node ** -> int|, returns |TRUE|,
-and the idea is that the visitor will store its result in the |parse_node *|
+signature `parse_node *, parse_node *, parse_node ** -> int`, returns `TRUE`,
+and the idea is that the visitor will store its result in the `parse_node *`
 pointed to by its last argument.
 
-Note that this one doesn't record its position in |current_sentence|. The
+Note that this one doesn't record its position in `current_sentence`. The
 fuss over top-level nodes is to ensure recursion even though top-level
 nodes are not visitable; otherwise the function would never find anything
 because no visitable nodes would ever be reached.
@@ -374,8 +373,8 @@ int SyntaxTree::traverse_to_find_from(parse_node *pn,
 }
 
 @ And still another. This one traverses only up to a given stop position,
-and the visitor has signature |parse_node *, void ** -> void|, the idea
-being that the final |void **| is a pointer to a general object pointer.
+and the visitor has signature `parse_node *, void ** -> void`, the idea
+being that the final `void **` is a pointer to a general object pointer.
 This is the sort of thing which brings C into disrepute, but we don't use
 it very much.
 
@@ -406,7 +405,7 @@ int SyntaxTree::traverse_from_up_to_ip(parse_node *end, parse_node *pn,
 @h Cautious traverses.
 When logging or verifying the tree, we cannot use the carefree functions
 above: the tree might be malformed. As a way to detect cycles, we call for
-a new "traverse token" -- just a unique integer value -- and mark all nodes
+a new "traverse token" — just a unique integer value — and mark all nodes
 visited with that value.
 
 =
@@ -438,31 +437,36 @@ void SyntaxTree::toggle_trace(parse_node_tree *T) {
 }
 
 @h Ambiguity subtrees.
-The following function adds a new |reading| to an |existing| interpretation
-of some wording |W|, and return the node now representing. For example,
+The following function adds a new `reading` to an `existing` interpretation
+of some wording `W`, and return the node now representing. For example,
 suppose the text "orange" can be read as a noun for fruit, a noun for colour,
-or an adjective, resulting in nodes |fruit_node| and |colour_node| and |adj_node|.
+or an adjective, resulting in nodes `fruit_node` and `colour_node` and `adj_node`.
 Then:
-(a) |SyntaxTree::add_reading(NULL, fruit_node, W)| returns |noun_node|,
-(b) but |SyntaxTree::add_reading(fruit_node, colour_node, W)| returns this subtree:
-= (text)
+
+- `SyntaxTree::add_reading(NULL, fruit_node, W)` returns `noun_node`,
+- but `SyntaxTree::add_reading(fruit_node, colour_node, W)` returns this subtree:
+
+``` None
 	AMBIGUITY_NT A
 	    fruit_node
 		colour_node
-=
-(c) and |SyntaxTree::add_reading(A, adj_node, W)| returns the subtree:
-= (text)
+```
+
+- and `SyntaxTree::add_reading(A, adj_node, W)` returns the subtree:
+
+``` None
 	AMBIGUITY_NT A
 	    fruit_node
 		colour_node
 		adj_node
-=
+```
+
 Thus it accumulates possible readings of a given text.
 
 A complication is that the following callback function is offered the chance
-to amend this process in individual cases; it's called whenever |reading|
-is about to become one of the alternatives to some existing |E|. If it returns
-|TRUE|, we assume it has done something of its own already, and do nothing
+to amend this process in individual cases; it's called whenever `reading`
+is about to become one of the alternatives to some existing `E`. If it returns
+`TRUE`, we assume it has done something of its own already, and do nothing
 further.
 
 (//inform7// uses this to rearrange ambiguous phrase invocations to be sorted

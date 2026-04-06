@@ -10,44 +10,44 @@ toolchain standardises both: see //Inform Primitives// and //Inform Annotations/
 
 Similarly, the Inter specification allows great flexibility in how packages are
 used to structure a program, but the Inform toolchain has definite ideas about
-that -- as follows.
+that — as follows.
 
 @h Global area and main.
 As in every Inter program, the global area (outside of all packages) simply
 defines packages and pragmas. At present, Inform generates pragmas only for
 Inform 6 memory settings: even those are now probably not needed, and may go.
-All of the actual program is in the |/main| package, which has type |_plain|.
+All of the actual program is in the `/main` package, which has type `_plain`.
 
-|/main| contains the standard subpackages |/main/architecture| and |/main/connectors|,
-both of which have type |_linkage|. The first defines architectural constants
-such as |WORDSIZE|, while the second is used to manage the import and export of
+`/main` contains the standard subpackages `/main/architecture` and `/main/connectors`,
+both of which have type `_linkage`. The first defines architectural constants
+such as `WORDSIZE`, while the second is used to manage the import and export of
 symbols while linking trees together, and cannot contain content other than
 symbols. Neither really contains the program as such.
 
 @h Compilation modules.
-The only other content of |/main| is its set of "modules". Each one is a subpackage
-of type |_module|. They originate as follows:
+The only other content of `/main` is its set of "modules". Each one is a subpackage
+of type `_module`. They originate as follows:
 
-(a) The "generic module" |/main/generic| contains material which is the same
-on every run. For example, the definition of the typename |text_literal| can
+- The "generic module" `/main/generic` contains material which is the same
+on every run. For example, the definition of the typename `text_literal` can
 be found here.
 
-(b) There is one module for each "compilation unit" of source code contributing
-to the program. |/main/source_text| is always one of these, and contains matter
+- There is one module for each "compilation unit" of source code contributing
+to the program. `/main/source_text` is always one of these, and contains matter
 coming directly from the main I7 source text. There is then one compilation
-unit for each included extension, such as |/main/locksmith_by_emily_short|,
-and one for each included kit of Inter code, such as |/main/BasicInformKit|.
+unit for each included extension, such as `/main/locksmith_by_emily_short`,
+and one for each included kit of Inter code, such as `/main/BasicInformKit`.
 
-(c) //inform7// also produces the "completion module" |/main/completion|,
+- //inform7// also produces the "completion module" `/main/completion`,
 which contains resources put together from the (natural language part of) the
 program as a whole, but which can't be tied to any specific compilation unit.
 For example, in an interactive fiction project, the spatial map is such a
 resource.
 
-(d) //inter// also produces the "synoptic module" |/main/synoptic|, which
+- //inter// also produces the "synoptic module" `/main/synoptic`, which
 contains material indexing and cross-referencing material in the other modules.
 This is built last of all. For example, the synoptic module includes an array
-at |/main/synoptic/actions/ActionCoding| which consolidates metadata on all
+at `/main/synoptic/actions/ActionCoding` which consolidates metadata on all
 of the actions present in the program. This could not have been made as
 part of the completion module because it includes references to actions only
 found in the kits, and could not have been made as part of any kit because
@@ -56,7 +56,7 @@ it includes references to actions found only in the I7 source text.
 In a sense the completion and synoptic modules play a similar role to each
 other, and a long-term aspiration might be to move more of the former into
 the latter, with a view to full linking of code some day. (At present the
-tool-chain can precompile -- "assimilate" -- kits and link them in, but not
+tool-chain can precompile — "assimilate" — kits and link them in, but not
 extensions written in Inform 7 source text.) Many structural choices have
 been made in order to keep this option open, but it is not simple to do.
 
@@ -65,7 +65,7 @@ produced independently. The module for each kit, in particular, is essentially
 compiled as a stand-alone Inter program and only joins the finished program
 at the linking stage.
 
-= (text as BoxArt)
+``` BoxArt
 +-------------------------------+   +---------------------+   +---------------------+
 |   architecture                |   |   architecture      |   |   architecture      |
 |   generic                     |   |   BasicInformKit    |   |   WorldModelKit     |
@@ -95,15 +95,16 @@ at the linking stage.
                                             |   synoptic                    |
                                             |   connectors                  |
                                             +-------------------------------+
-=
+```
 
 @ Modules subdivide the program by origin. But each module is further subdivided
-into "submodules", packages of type |_submodule|, and those divide it by its
-ingredients. For example, the global variables in module |M| will all be in
-the submodule |/main/M/variables|.
+into "submodules", packages of type `_submodule`, and those divide it by its
+ingredients. For example, the global variables in module `M` will all be in
+the submodule `/main/M/variables`.
 
 At present, the full range of possible subpackages is:
-= (text as Inter)
+
+``` Inter
 	/main/M/actions
 	/main/M/activities
 	/main/M/adjectives
@@ -134,7 +135,7 @@ At present, the full range of possible subpackages is:
 	/main/M/text
 	/main/M/use_options
 	/main/M/variables
-=
+```
 
 @ Metadata is extensively used throughout Inter trees generated by Inform.
 This is not simply to serve human readers who happen to be glancing at them:
@@ -142,14 +143,15 @@ it's essential to the process that generous and systematic metadata is present,
 because both the synoptic module and the index[1] for a project are both generated
 using that metadata.
 
-[1] Again, this architectural choice is more work for us -- it was much easier
-to produce the index higher up in the compiler, as was done until 2021 -- but
+[1] Again, this architectural choice is more work for us — it was much easier
+to produce the index higher up in the compiler, as was done until 2021 — but
 generating the index only in //inter// right at the end of the compilation
 process, using only the Inter tree and its metadata, leaves open the possibility
 of fuller linking of Inter code later on.
 
 @ As an example, every module includes metadata at its top level like so:
-= (text as Inter)
+
+``` Inter
 	package main _plain
 	    ...
 	    package basic_inform_by_graham_nelson _module
@@ -161,51 +163,57 @@ of fuller linking of Inter code later on.
 			constant (int32) ^modesty = 0
 			constant (int32) ^word_count = 7691
 			...
-=
+```
 
 @h Function packages.
-All functions are expressed in Inter code by packages of type |_function|.
+All functions are expressed in Inter code by packages of type `_function`.
 This contains the function body as a subpackage, but it may also contain
-resources needed by that function body -- for example, literal texts, arrays
-and so on. (The idea is that a |_function| package can be "transmigrated"
+resources needed by that function body — for example, literal texts, arrays
+and so on. (The idea is that a `_function` package can be "transmigrated"
 from one tree to another, without losing the resources it depends on.)
 
-Usually this |_function| package will contain only one function body, often
-but not always called just |call|:
-= (text as Inter)
+Usually this `_function` package will contain only one function body, often
+but not always called just `call`:
+
+``` Inter
 				package rule_fn _function
 					package call _code
 						...
-=
+```
+
 But if the function needs to manipulate or refer to data not expressible in
 single words, such as lists or texts, then it will probably need to create and
 subsequently destroy a stack frame. The mechanism will then be:
-= (text as Inter)
+
+``` Inter
 				package rule_fn _function
 					package call _code
 						...
 					package kernel _code
 					    ...
-=
-The "shell" function, |call|, creates a stack frame and then calls the "kernel"
+```
+
+The "shell" function, `call`, creates a stack frame and then calls the "kernel"
 function, which does the actual work; when that returns to the "shell", the
 stack frame is disposed of again. This is all transparent to the user, who
-simply calls |call| and doesn't need to know which mechanism is in play.
+simply calls `call` and doesn't need to know which mechanism is in play.
 
 @h Looking at the Inter produced.
 The following commands produce the final state of the Inter code for the test
-case |Acidity|, in binary and textual form:
-= (text as ConsoleText)
+case `Acidity`, in binary and textual form:
+
+``` ConsoleText
 $ 'inform7/Tangled/inform7' -source inform7/Tests/Test\ Cases/Acidity.txt -o Acidity.interb -format=binary
 $ 'inform7/Tangled/inform7' -source inform7/Tests/Test\ Cases/Acidity.txt -o Acidity.intert -format=text
-=
+```
+
 Be warned that these are large: they have several large kits linked into them
 by the time they have reached this final state, and thus contain many modules.
-|Acidity.intert| runs to about 250,000 lines of textual Inter.
+`Acidity.intert` runs to about 250,000 lines of textual Inter.
 
 It's also possible to access the Inter output by the top half of //inform7//
-before it passes through any linking process: simply add |-pipeline unlinked|.
-Unlike the default pipeline |-pipeline compile|, |unlinked| just saves out
+before it passes through any linking process: simply add `-pipeline unlinked`.
+Unlike the default pipeline `-pipeline compile`, `unlinked` just saves out
 the Inter straight to an external file. (Of course, saving out unlinked Inter
 to a format like Inform 6 will not produce viable code: linking is done for
 a reason.)

@@ -1,0 +1,5 @@
+Problem: PM_ActionAppliedToSubkind
+
+Xanadu is a room.
+
+Decreeing is an action applying to one vehicle.

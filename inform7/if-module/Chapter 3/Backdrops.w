@@ -6,7 +6,7 @@ as scenery in multiple rooms at once.
 @ While we normally assume that nothing can be in more than one place at
 once, backdrops are an exception. These are intended to represent widely
 spread, probably background, things, such as the sky, and then placing one
-inside something generates |found_in_inf| rather than |parentage_inf|
+inside something generates `found_in_inf` rather than `parentage_inf`
 inferences to avoid piling up bogus inconsistencies.
 
 =
@@ -30,11 +30,10 @@ following minimal structure, though it will only be relevant for instances of
 @d BACKDROPS_DATA(I) FEATURE_DATA_ON_INSTANCE(backdrops, I)
 
 =
-typedef struct backdrops_data {
+classdef backdrops_data {
 	struct inter_name *found_in_fn_iname;
 	int many_places;
-	CLASS_DEFINITION
-} backdrops_data;
+}
 
 int Backdrops::new_subject_notify(inference_subject *subj) {
 	backdrops_data *bd = CREATE(backdrops_data);
@@ -49,7 +48,7 @@ This a kind name to do with backdrops which Inform provides special support
 for; it recognises the English name when defined by the Standard Rules. (So
 there is no need to translate this to other languages.)
 
-= (early code)
+@<Global IF variable definitions@> +=
 kind *K_backdrop = NULL;
 
 @ =
@@ -91,11 +90,11 @@ int Backdrops::object_is_scenery(instance *I) {
 }
 
 @ Here we look at "in" and "part of" relationships to see if they concern
-backdrops; if they do, then they need to become |found_in_inf| inferences.
+backdrops; if they do, then they need to become `found_in_inf` inferences.
 Without this intervention, they'd be subject to the usual spatial rules
 and text like
 
->> The sky is in the Grand Balcony. The sky is in the Vizier's Lawn.
+> The sky is in the Grand Balcony. The sky is in the Vizier's Lawn.
 
 would lead to contradiction problem messages.
 
@@ -208,10 +207,10 @@ int Backdrops::complete_model(int stage) {
 @<The object is found in many rooms or in whole regions, so make it a routine@> =
 	val_of_found_in = Rvalues::from_iname(RTBackdropInstances::found_in_val(I, TRUE));
 
-@ |absent| is an I6-only attribute which marks a backdrop has having been removed
-from the world model. It's not sufficient for an object's |found_in| always to
+@ `absent` is an I6-only attribute which marks a backdrop has having been removed
+from the world model. It's not sufficient for an object's `found_in` always to
 say no to the question "are you in the current location?"; the I6 template
-code, derived from the old I6 library, requires |absent| to be set. So:
+code, derived from the old I6 library, requires `absent` to be set. So:
 
 @<The object is found nowhere, so give it a stub found-in property and mark it absent@> =
 	val_of_found_in = Rvalues::from_iname(RTBackdropInstances::found_in_val(I, FALSE));
@@ -221,7 +220,7 @@ code, derived from the old I6 library, requires |absent| to be set. So:
 @h Inference families.
 Two sorts of inferences are used only for backdrops:
 
-= (early code)
+@<Global IF variable definitions@> +=
 inference_family *found_in_inf = NULL; /* for backdrop things in many places */
 inference_family *found_everywhere_inf = NULL; /* ditto */
 
@@ -234,14 +233,13 @@ void Backdrops::create_inference_families(void) {
 	found_everywhere_inf = Inferences::new_family(I"found_everywhere_inf");
 }
 
-@ |found_in_inf| infers that the named room is one of the locations of the
+@ `found_in_inf` infers that the named room is one of the locations of the
 backdrop.
 
 =
-typedef struct found_in_inference_data {
+classdef found_in_inference_data {
 	struct inference_subject *location;
-	CLASS_DEFINITION
-} found_in_inference_data;
+}
 
 inference *Backdrops::new_found_in_inference(inference_subject *loc, int certitude) {
 	PROTECTED_MODEL_PROCEDURE;
@@ -276,7 +274,7 @@ instance *Backdrops::get_inferred_location(inference *i) {
 	return InstanceSubjects::to_instance(data->location);
 }
 
-@ |found_everywhere_inf| infers that the backdrop is visible in every location.
+@ `found_everywhere_inf` infers that the backdrop is visible in every location.
 
 =
 void Backdrops::infer_presence_everywhere(instance *I) {

@@ -49,7 +49,7 @@ or 2^6 = 64 words of storage.
 	}
 
 @h Compilation data.
-Each |binary_predicate| object contains this data:
+Each `binary_predicate` object contains this data:
 
 =
 typedef struct bp_compilation_data {
@@ -85,7 +85,7 @@ package_request *RTRelations::package(binary_predicate *bp) {
 @ Some relations are never needed or referred to by runtime code: for example,
 reversals of relations used only one way around. It would be wasteful to
 compile arrays or functions for those, so we keep track of which have actually
-been requested -- it will be just those for which the runtime representation,
+been requested — it will be just those for which the runtime representation,
 i.e., the result of //RTRelations::iname//, has been called for. This can
 therefore be forced with:
 
@@ -207,14 +207,14 @@ void RTRelations::metadata_agent(compilation_subtask *t) {
 		(inter_ti) Wordings::first_wn(Node::get_text(bp->bp_created_at)));
 }
 
-@ So the following makes a single |_relation| package.
+@ So the following makes a single `_relation` package.
 
 It might seem that this can never be called on a relation which is the wrong
 way round, and in fact it almost never is. But on rare occasions the runtime
-does need to represent the value (i.e. the metadata array) for such a relation --
+does need to represent the value (i.e. the metadata array) for such a relation —
 for example, because it's possible for the runtime to determine the meaning
 of any verb, and because some verbs can be given a wrong-way-round relation
-as their meanings. See the test case |PronounVariation|.
+as their meanings. See the test case `PronounVariation`.
 
 =
 void RTRelations::compilation_agent(compilation_subtask *t) {
@@ -428,7 +428,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	} else {
 		switch(ExplicitRelations::get_form_of_relation(dbp)) {
 			case Relation_Implicit: /* Field 0 is not used */
-				EmitArrays::numeric_entry(0); /* which is not the same as |NULL|, unlike in C */
+				EmitArrays::numeric_entry(0); /* which is not the same as `NULL`, unlike in C */
 				break;
 			case Relation_OtoO:
 			case Relation_OtoV:
@@ -1067,8 +1067,8 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 
 @h Default values of relation kinds.
 The following will be called just once for each different relation kind needing
-a default value; for example, |K| might be "relation of texts to numbers". We
-need to compile an array at |iname| which will have the meaning of an empty
+a default value; for example, `K` might be "relation of texts to numbers". We
+need to compile an array at `iname` which will have the meaning of an empty
 relation of the right kind.
 
 =
@@ -1126,7 +1126,7 @@ void RTRelations::end_bit_stream(void) {
 }
 
 @ As was implied above, the run-time storage for a various to various relation
-whose BP has allocation ID number |X| is an I6 word array called |V2V_Bitmap_X|.
+whose BP has allocation ID number `X` is an I6 word array called `V2V_Bitmap_X`.
 This begins with a header of 8 words and is then followed by a bitmap.
 
 =
@@ -1157,18 +1157,18 @@ void RTRelations::compile_vtov_storage(binary_predicate *bp) {
 the possible left values are indexed $0, 1, 2, ..., L-1$ and the possible
 right values $0, 1, 2, ..., R-1$. Note that in a relation such as
 
->> Roominess relates various things to various containers.
+> Roominess relates various things to various containers.
 
 the same object (if a container) might be in both the left and right domains,
 and be indexed differently on each side: it might be thing number 11 but
 container number 6, for instance.
 
-$L$ and $R$ are stored in the variables |left_count| and |right_count|. If
-the left domain contains objects, the index of a member |I| is stored in
+$L$ and $R$ are stored in the variables `left_count` and `right_count`. If
+the left domain contains objects, the index of a member `I` is stored in
 RI 0; if the right domain does, then in RI 1. If the domain set is an
 enumerated kind of value, no index needs to be stored, because the values
 are already enumerated $1, 2, 3, ..., N$ for some $N$. The actual work in
-this is done by the function |RTRelations::relation_range| (below).
+this is done by the function `RTRelations::relation_range` (below).
 
 @<Index the left and right domains and calculate their sizes@> =
 	left_count = RTRelations::relation_range(bp, 0);
@@ -1235,7 +1235,7 @@ above: it forces the template layer to generate the cache when first used.
 @ The following function conveniently determines whether a given INFS is
 within the domain of one of the terms of a relation; the rule is that it
 mustn't itself express a domain (otherwise, e.g., the kind "woman" would
-show up as within the domain of "person" -- we want only instances here,
+show up as within the domain of "person" — we want only instances here,
 not kinds); and that it must inherit from the domain of the term.
 
 =
@@ -1287,7 +1287,7 @@ to send the pairs in that row in any order.
 		if (infs == left_infs) row_flags[RTRelations::get_relation_index(right_infs, 1)] = 1;
 	}
 
-@ Lastly on this: the way we count and index the left (|index=0|) or right (1)
+@ Lastly on this: the way we count and index the left (`index=0`) or right (1)
 domain. We count upwards from 0 (in order of creation).
 
 =
@@ -1333,18 +1333,18 @@ $E(x, y)$ if and only if $E(y, x)$, and such that $E(x, y)$ and $E(y, z)$
 together imply $E(x, z)$: the properties of being reflexive, symmetric
 and transitive. The relation constructed by a sentence like
 
->> Alliance relates people to each other in groups.
+> Alliance relates people to each other in groups.
 
 is to be an equivalence relation. This means we need to ensure first that
 the original state of the relation, resulting from assertions such as...
 
->>  The verb to be allied to implies the alliance relation. Louis is allied to Otto. Otto is allied to Helene.
+>  The verb to be allied to implies the alliance relation. Louis is allied to Otto. Otto is allied to Helene.
 
 ...satisfies the reflexive, symmetric and transitive properties; and then
 also that these properties are maintained at run-time when the situation
 changes as a result of executing phrases such as
 
->> now Louis is allied to Gustav;
+> now Louis is allied to Gustav;
 
 We use the same solution both in the compiler and at run-time, which is to
 exploit an elementary theorem about ERs. Let $E$ be an equivalence relation
@@ -1352,9 +1352,9 @@ on the members of a set $S$ (say, the set of people in Central Europe).
 Then there is a unique way to divide up $S$ into a "partition" of subsets
 called "equivalence classes" such that:
 
-(a) every member of $S$ is in exactly one of the classes,
-(b) none of the classes is empty, and
-(c) $E(x, y)$ is true if and only if $x$ and $y$ belong to the same class.
+- every member of $S$ is in exactly one of the classes,
+- none of the classes is empty, and
+- $E(x, y)$ is true if and only if $x$ and $y$ belong to the same class.
 
 Conversely, given any partition of $S$ (i.e., satisfying (a) and (b)),
 there is a unique equivalence relation $E$ such that (c) is true. In short:
@@ -1364,15 +1364,15 @@ possible ways to divide it up into non-empty, non-overlapping pieces.
 We therefore store the current state not as some list of which pairs $(x, y)$
 for which $E(x, y)$ is true, but instead as a partition of the set $S$. We
 store this as a function $p:S\rightarrow \lbrace 1, 2, 3, ...\rbrace$ such
-that $x$ and $y$ belong in the same class -- or to put it another way, such
-that $E(x, y)$ is true -- if and only if $p(x) = p(y)$. When we are assembling
+that $x$ and $y$ belong in the same class — or to put it another way, such
+that $E(x, y)$ is true — if and only if $p(x) = p(y)$. When we are assembling
 the initial state, the function $p$ is an array of integers whose address is
-stored in the |bp->equivalence_partition| field of the BP structure. It is
+stored in the `bp->equivalence_partition` field of the BP structure. It is
 then compiled into the storage properties of the I6 objects concerned. For
-instance, if we have |p44_alliance| as the storage property for the "alliance"
-relation, then |O31_Louis.p44_alliance| and |O32_Otto.p44_alliance| will be
+instance, if we have `p44_alliance` as the storage property for the "alliance"
+relation, then `O31_Louis.p44_alliance` and `O32_Otto.p44_alliance` will be
 set to the same partition number. The template functions which set and remove
-alliance then maintain the collective values of the |p44_alliance| property,
+alliance then maintain the collective values of the `p44_alliance` property,
 keeping it always a valid partition function for the relation.
 
 @ We calculate the initial partition by starting with the sparsest possible
@@ -1402,7 +1402,7 @@ void RTRelations::equivalence_relation_make_singleton_partitions(binary_predicat
 
 @ The A-parser has meanwhile been reading in facts about the helping relation:
 
->> Sophie helps Ryan. Daisy helps Ryan. Owen helps the player.
+> Sophie helps Ryan. Daisy helps Ryan. Owen helps the player.
 
 And it feeds these facts to us one at a time. It tells us that $A(S, R)$
 has to be true by calling the function below for the helping relation with
@@ -1424,7 +1424,7 @@ rather than 12 and 23, but there's really no need and we don't bother.
 Note that the A-parser does not allow negative assertions about equivalence
 relations to be made:
 
->> Daisy does not help Ryan.
+> Daisy does not help Ryan.
 
 While we could try to accommodate this (using the same method we use at
 run-time to handle "now Daisy does not help Ryan"), it would only invite
@@ -1451,7 +1451,7 @@ void RTRelations::equivalence_relation_merge_classes(binary_predicate *bp,
 
 @ Once that process has completed, the code which compiles the
 initial state of the I6 object tree calls the following function to ask it
-to fill in the (let's say) |p63_helping| property for each person
+to fill in the (let's say) `p63_helping` property for each person
 in turn.
 
 =
@@ -1498,7 +1498,7 @@ not used with the wrong kinds of object. (Compile-time checking excludes
 other cases.)
 
 =
-typedef struct relation_guard {
+classdef relation_guard {
 	struct binary_predicate *guarding; /* which one is being defended */
 	struct kind *check_L; /* or null if no check needed */
 	struct kind *check_R; /* or null if no check needed */
@@ -1512,8 +1512,7 @@ typedef struct relation_guard {
 	struct inter_name *guard_test_iname;
 	struct inter_name *guard_make_true_iname;
 	struct inter_name *guard_make_false_iname;
-	CLASS_DEFINITION
-} relation_guard;
+}
 
 @ 
 
@@ -1762,12 +1761,12 @@ void RTRelations::guard_compilation_agent(compilation_subtask *t) {
 	}
 
 @h Relations tested by an I7 condition.
-When a relation has to be tested as a condition (in the wording |W|), we can't
+When a relation has to be tested as a condition (in the wording `W`), we can't
 simply embed that condition as the Inter schema for "test relation": it might
 very well need local variables, the table row-choosing variables, etc., to
 evaluate. It has to be tested in its own context. So we generate a function
-which takes two parameters |t_0| and |t_1| and returns true or false according
-to whether or not $R(|t_0|, |t_1|)$.
+which takes two parameters `t_0` and `t_1` and returns true or false according
+to whether or not $R(`t_0`, `t_1`)$.
 
 This is where those functions are compiled.
 

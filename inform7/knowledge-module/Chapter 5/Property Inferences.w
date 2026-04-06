@@ -5,7 +5,7 @@ Inferences that a property of something is true, or has a particular value.
 @ Property inferences say that the subject has a property, which can be
 either-or or valued.
 
-= (early code)
+@<Global knowledge variable definitions@> +=
 inference_family *property_inf = NULL;
 
 @ =
@@ -20,11 +20,10 @@ void PropertyInferences::start(void) {
 @ Creation:
 
 =
-typedef struct property_inference_data {
+classdef property_inference_data {
 	struct property *inferred_property; /* property referred to */
 	struct parse_node *inferred_property_value; /* and its value, if any */	
-	CLASS_DEFINITION
-} property_inference_data;
+}
 
 inference *PropertyInferences::new(inference_subject *subj,
 	property *prn, parse_node *val) {
@@ -70,7 +69,7 @@ void PropertyInferences::log_details(inference_family *f, inference *inf) {
 }
 
 @ By convention, a pair of attached either/or properties which are negations of
-each other -- say "open" and "closed" -- are treated as if they were the
+each other — say "open" and "closed" — are treated as if they were the
 same property but with different values.
 
 =
@@ -211,8 +210,8 @@ parse_node *PropertyInferences::set_value_kind(inference *i, kind *K) {
 are for working out what properties a subject actually has, on the basis of
 its inference list.
 
-First, this returns the level of certainty that |subj| has the either-or
-property |prn|:
+First, this returns the level of certainty that `subj` has the either-or
+property `prn`:
 
 =
 int PropertyInferences::either_or_state(inference_subject *subj, property *prn) {
@@ -236,9 +235,9 @@ int PropertyInferences::either_or_state(inference_subject *subj, property *prn) 
 
 @ And this is a variant which does not inherit: e.g. if the kind "bird" has
 the property "flightless" but Orville, an individual instance of "bird" has no
-inference about this property, then we would return |LIKELY_CE| if asked about
-"bird", but |UNKNOWN_CE| if asked Orville. The previous function would return
-|LIKELY_CE| to both because Orville ordinarily inherits from his kind.
+inference about this property, then we would return `LIKELY_CE` if asked about
+"bird", but `UNKNOWN_CE` if asked Orville. The previous function would return
+`LIKELY_CE` to both because Orville ordinarily inherits from his kind.
 
 =
 int PropertyInferences::either_or_state_without_inheritance(inference_subject *subj,
@@ -316,7 +315,7 @@ void PropertyInferences::verify_prop_states(inference_subject *subj) {
 }
 
 @ And these three function calls are all variants on reading the value of
-property |prn| for subject |subj|.
+property `prn` for subject `subj`.
 
 =
 parse_node *PropertyInferences::value_of(inference_subject *subj, property *prn) {

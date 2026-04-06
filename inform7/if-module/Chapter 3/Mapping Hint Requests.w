@@ -45,7 +45,7 @@ int MappingHints::index_map_with_SMF(int task, parse_node *V, wording *NPs) {
 
 @ The subject noun phrase of sentences like this:
 
->> Index map with Chamber mapped north of Cave and EPS file.
+> Index map with Chamber mapped north of Cave and EPS file.
 
 is an articled list of subjects (in this case, two of them); each subject
 is parsed with the following grammar, which is almost a mini-language in
@@ -106,10 +106,13 @@ int MappingHints::setting(int N) {
 
 @ Now we parse the setting to be set. For example,
 
->> title-size of the first room
->> border-size of level 1
->> room-outline-thickness of the Taj Mahal
->> title-size
+> title-size of the first room
+
+> border-size of level 1
+
+> room-outline-thickness of the Taj Mahal
+
+> title-size
 
 =
 <map-setting> ::=
@@ -130,7 +133,7 @@ int MappingHints::setting(int N) {
 @ The map parameters all have one-word, sometimes hyphenated, names, such
 as the following:
 
->> vertical-spacing, monochrome, annotation-size
+> vertical-spacing, monochrome, annotation-size
 
 For now, at least, these are all in English only.
 
@@ -170,10 +173,10 @@ Never mind.
 	on |                     ==> { TRUE, - }
 	off                      ==> { FALSE, - }
 
-@ Map offsets have a cutesy notation: |10&-30|, for example, written as a
+@ Map offsets have a cutesy notation: `10&-30`, for example, written as a
 single word. The following nonterminal actually matches any single word
 (so that problems can be caught later, not now), returning either a valid
-offset or else the |ERRONEOUS_OFFSET_VALUE| sentinel.
+offset or else the `ERRONEOUS_OFFSET_VALUE` sentinel.
 
 =
 <map-offset> internal 1 {
@@ -451,7 +454,7 @@ void MappingHints::new_map_hint_sentence(parse_node *p) {
 @ 
 
 =
-typedef struct mapping_hint {
+classdef mapping_hint {
 	struct instance *from;
 	struct instance *to;
 	struct instance *dir;
@@ -460,6 +463,7 @@ typedef struct mapping_hint {
 	inchar32_t *name;
 	int scope_level;
 	struct instance *scope_I;
+	int is_integer;
 	inchar32_t *put_string;
 	int put_integer;
 
@@ -469,9 +473,7 @@ typedef struct mapping_hint {
 	inchar32_t *colour;
 	int at_offset;
 	struct instance *offset_from;
-	
-	CLASS_DEFINITION
-} mapping_hint;
+}
 
 mapping_hint *MappingHints::new_hint(void) {
 	mapping_hint *hint = CREATE(mapping_hint);
@@ -484,6 +486,7 @@ mapping_hint *MappingHints::new_hint(void) {
 	hint->scope_I = NULL;
 	hint->put_string = NULL;
 	hint->put_integer = 0;
+	hint->is_integer = TRUE;
 
 	hint->annotation = NULL;
 	hint->point_size = 0;
@@ -535,6 +538,7 @@ void MappingHints::put_mp(inchar32_t *name, int scope_level, instance *scope_I,
 	hint->scope_level = scope_level;
 	hint->scope_I = scope_I;
 	hint->put_string = put_string;
+	if (put_string) hint->is_integer = FALSE;
 	hint->put_integer = put_integer;
 }
 
@@ -553,7 +557,7 @@ void MappingHints::make_rubric(inchar32_t *annotation, int point_size, inchar32_
 The offset parameter $(x, y)$ is stored as the integer $10000y + x$. Except
 for the error value, we are required to have $-9999 \leq x, y \leq 9999$, and
 the syntax to specify this is two literal numbers divided by an ampersand.
-For instance, |28&-125| means $(28, -125)$ which is stored as $-1249972$.
+For instance, `28&-125` means $(28, -125)$ which is stored as $-1249972$.
 
 @d ERRONEOUS_OFFSET_VALUE 100000000
 

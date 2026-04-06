@@ -1,4 +1,4 @@
-Inform 6.43 for MacOS (6th August 2025)
+Inform 6.45 for MacOS (in development)
 The Inform 6 memory setting "MAX_ARRAYS" is no longer needed and has been withdrawn.
 The Inform 6 memory setting "MAX_CLASSES" is no longer needed and has been withdrawn.
 The Inform 6 memory setting "MAX_VERBS" is no longer needed and has been withdrawn.

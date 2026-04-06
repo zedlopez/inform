@@ -3,8 +3,8 @@
 To parse the many forms a verb can take.
 
 @h Verb usages.
-We already have the ability to conjugate verbs -- to turn "to have" into "I have",
-"you have", "he has", "they have had", "we will have" and so on -- from the
+We already have the ability to conjugate verbs — to turn "to have" into "I have",
+"you have", "he has", "they have had", "we will have" and so on — from the
 //inflections// module. However, we won't necessarily want to recognise all of
 those forms in sentences in the source text. For example, Inform only looks
 at present tense forms of verbs in the third person, or at imperative forms.
@@ -13,7 +13,7 @@ To be recognised as referring to a given verb, a conjugated form of it must
 be turned into one of the following structures:
 
 =
-typedef struct verb_usage {
+classdef verb_usage {
 	struct grammatical_usage *usage;        /* includes verb, voice, tense, sense */
 	struct word_assemblage vu_text;			/* text to recognise */
 	int vu_allow_unexpected_upper_case; 	/* for verbs like "to Hoover" or "to Google" */
@@ -24,8 +24,7 @@ typedef struct verb_usage {
 	struct linguistic_stock_item *in_stock;
 
 	struct verb_conjugation *vu_lex_entry; 	/* for use when indexing */
-	CLASS_DEFINITION
-} verb_usage;
+}
 
 @ =
 void VerbUsages::write_usage(OUTPUT_STREAM, verb_usage *vu) {
@@ -81,12 +80,11 @@ If two usages belong to the same tier, the earlier in a sentence is preferred.
 The tiers are stored as a linked list, in priority order:
 
 =
-typedef struct verb_usage_tier {
+classdef verb_usage_tier {
 	int priority;
 	struct verb_usage *tier_contents; /* head of linked list for this tier */
 	struct verb_usage_tier *next_tier;
-	CLASS_DEFINITION
-} verb_usage_tier;
+}
 
 verb_usage_tier *first_search_tier = NULL; /* head of linked list of tiers */
 
@@ -216,13 +214,13 @@ the persons from 1PS to 3PP.
 Moreover, we need to group together identical wordings, so that each is
 registered only once, but with an accumulated grammatical usage marker.
 For example, consider the regular English verb "to carry". Of the six present
-tense active voice forms, only one -- "carries" -- uniquely identifies its
+tense active voice forms, only one — "carries" — uniquely identifies its
 number and person (i.e., as third person singular); the other five are all
 "carry". So we make two registrations, one with a //grammatical_usage//
 containing a single linguistic constant, the other with one containing five.
 
-We do this by accumulating a to-do list of forms we are interested in --
-callback functions can tell us to ignore certain forms -- and the worst-case
+We do this by accumulating a to-do list of forms we are interested in —
+callback functions can tell us to ignore certain forms — and the worst-case
 scenario is if every imaginable form is different, so the to-do list needs
 to be this long just in case:
 
@@ -423,7 +421,7 @@ int VerbUsages::is_used_negatively(verb_usage *vu) {
 }
 
 @h Parsing source text against verb usages.
-Given a particular VU, and a word range |w1| to |w2|, we test whether the
+Given a particular VU, and a word range `w1` to `w2`, we test whether the
 range begins with but does not consist only of the text of the VU. We return
 the first word after the VU text if it does (which will therefore be a
 word number still inside the range), or $-1$ if it doesn't.
@@ -448,9 +446,11 @@ verb *permitted_verb = NULL;
 
 @ We now define a whole run of internals to parse verbs. As examples,
 
->> is
->> has not been
->> was carried by
+> is
+
+> has not been
+
+> was carried by
 
 are all, in the sense we mean it here, "verbs".
 

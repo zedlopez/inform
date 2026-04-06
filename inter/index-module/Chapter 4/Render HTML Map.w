@@ -6,8 +6,8 @@ To render the spatial map of rooms as HTML.
 Three three-dimensional arrays called "grids" are used to store a rasterised
 version of the map before we render this on screen.
 
-The |room_grid| tells us which room can be found at $(x, y, z)$, while the
-|icon_grid| is 25 times larger since it splits each room cell into a 5 by 5
+The `room_grid` tells us which room can be found at $(x, y, z)$, while the
+`icon_grid` is 25 times larger since it splits each room cell into a 5 by 5
 subgrid of icons. Bitmaps stored in the 16 icon cells around the perimeter
 of the 5 by 5 subgrid tell us which exits to mark (and since we map only 12
 kinds of exit, this means that four of them are unused). The central 3 by 3
@@ -17,7 +17,7 @@ HTML table routine below. We will often use the wasteful coordinate system
 $(x, y, z, i_1, i_2)$ to mean the icon at $(i_1, i_2)$ (with $0\leq i_1,
 i_2\leq 4$) associated with the room cell at $(x, y, z)$.
 
-The |exit_grid| stores which direction number is the exit being marked at
+The `exit_grid` stores which direction number is the exit being marked at
 this icon position, and has the same indexing as the icon grid.
 
 @d ROOM_GRID_POS(P) Geometry::cuboid_index(P, session->calc.Universe)
@@ -137,7 +137,7 @@ a single square distant, then we get the "aligned" bit as a consolation prize.
 			else bitmap |= ALIGNED_MAPBIT;
 		}
 
-@ If a different room altogether -- say, the Tack Room -- is being plotted one
+@ If a different room altogether — say, the Tack Room — is being plotted one
 square east of the Ballroom, even though the map connection leads to the
 Kitchens, then we get the "fading" bit. (At one time connections like this
 were going to be plotted in a sort of fading-away grey gradient, hence the
@@ -204,7 +204,7 @@ void HTMLMap::correct_pair(vector P, vector D, int from_i1, int from_i2, int to_
 @ Let's see how the "long" bits are added first, since that's easier. The
 following looks disturbingly like an infinite loop: it lays out the roadway,
 one cell at a time (adding the direction vector $D$ to our position $P$ each
-turn) but stops when it hits an occupied cell -- one with a room plotted in
+turn) but stops when it hits an occupied cell — one with a room plotted in
 it. This must eventually happen because the exit is "aligned", which means
 that it leads to a room whose position is some multiple of $D$ offset from
 the original. So the loop always terminates.
@@ -370,7 +370,7 @@ void HTMLMap::end_map_table(OUTPUT_STREAM) {
 	for (int i=0; i<map_tables_begun; i++) WRITE("  ");
 
 @h Icon images.
-The icons we use will all be PNGs, and all stored in the |map_icons|
+The icons we use will all be PNGs, and all stored in the `map_icons`
 directory. A "tool tip" is the text which appears over the mouse arrow
 when it hovers for long enough over the icon.
 
@@ -633,7 +633,7 @@ The grid background must have pixel dimensions $(2x_o+x_i)\times (2x_o+x_i)$.
 @d MAP_CELL_SIZE (MAP_CELL_OUTER_SIZE + MAP_CELL_INNER_SIZE + MAP_CELL_OUTER_SIZE)
 
 @ This is going to be a height-19 blank row of a table with a different
-background image to the regular grid background -- it's an icon of the grid
+background image to the regular grid background — it's an icon of the grid
 with breaks in it. So we need to end the existing table, start a new one,
 end it again, and start another table like the original.
 
@@ -810,7 +810,7 @@ There are 15 possibilities, and their icons are named as the following shows:
 
 @h Numbering cells.
 If we're displaying a numbering in the map, that means there are two
-columns -- the first and last -- which don't contain rooms or exits, but
+columns — the first and last — which don't contain rooms or exits, but
 are simply blank except for an italic row number.
 
 @<Render a top or bottom stripe for a blank cell@> =

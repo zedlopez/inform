@@ -5,11 +5,11 @@ at runtime.
 
 @ The I6 implementation of two-way doors is quite complicated; see the Inform
 Designer's Manual, fourth edition (the "DM4") for explanations, but basically
-it means giving instances of such doors three low-level properties --
+it means giving instances of such doors three low-level properties —
 
-(*) |door_dir|, the map direction through the door;
-(*) |door_to|, the room on the other side;
-(*) |found_in|, the two rooms in which the door is located.
+- `door_dir`, the map direction through the door;
+- `door_to`, the room on the other side;
+- `found_in`, the two rooms in which the door is located.
 
 We continue to use that implementation because there is no pressing reason to
 change it: I7 authors are never even aware of how this is all done, and do not
@@ -18,14 +18,13 @@ have to see or think about these properties.
 @h Door direction.
 
 =
-typedef struct door_dir_notice {
+classdef door_dir_notice {
 	struct inter_name *ddn_iname;
 	struct instance *door;
 	struct instance *R1;
 	struct instance *D1;
 	struct instance *D2;
-	CLASS_DEFINITION
-} door_dir_notice;
+}
 
 parse_node *RTDoors::door_dir_for_2_sided(instance *I, instance *R1, instance *D1,
 	instance *D2) {
@@ -102,13 +101,12 @@ void RTDoors::door_dir_agent(compilation_subtask *t) {
 @h Door to.
 
 =
-typedef struct door_to_notice {
+classdef door_to_notice {
 	struct inter_name *dtn_iname;
 	struct instance *door;
 	struct instance *R1;
 	struct instance *R2;
-	CLASS_DEFINITION
-} door_to_notice;
+}
 
 parse_node *RTDoors::door_to_for_2_sided(instance *I, instance *R1, instance *R2) {
 	door_to_notice *notice = CREATE(door_to_notice);
@@ -179,7 +177,7 @@ void RTDoors::door_to_agent(compilation_subtask *t) {
 }
 
 @h Found in.
-And this is a two-element array, simply giving the two rooms |R1| and |R2|
+And this is a two-element array, simply giving the two rooms `R1` and `R2`
 which the door is found in:
 
 =

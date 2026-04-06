@@ -4,13 +4,13 @@ To manage tree structures of inter code, and manage the movement of nodes
 within these trees.
 
 @ An //inter_tree// expresses a single program: see //What This Module Does//
-for more. At first sight, it's a very small object, but |root_node| leads
-to a massive tree structure, and the |inter_warehouse| and |building_site|
+for more. At first sight, it's a very small object, but `root_node` leads
+to a massive tree structure, and the `inter_warehouse` and `building_site`
 components can also be huge. Note that the latter is managed entirely by
 the //building// module, but that everything else here is ours.
 
 =
-typedef struct inter_tree {
+classdef inter_tree {
 	struct inter_tree_node *root_node;
 	struct inter_package *root_package;
 	struct inter_warehouse *housed;
@@ -18,8 +18,7 @@ typedef struct inter_tree {
 	struct building_site site;
 	struct filename *blame_errors_on_this_file;
 	int cross_referencing_suspended;
-	CLASS_DEFINITION
-} inter_tree;
+}
 
 @ The warehouse must be created before anything else can be done, since we can't
 make symbols tables without it:
@@ -49,7 +48,7 @@ Every package has a "head node": the content of the package will be the
 children and descendants of that node. The root node for the tree is by
 definition the head node for the root package of the tree.
 
-|N| here is the warehouse ID number for the global symbols table of the tree,
+`N` here is the warehouse ID number for the global symbols table of the tree,
 which is by definition the symbols table for the root package.
 
 @<Make the root node and the root package@> =
@@ -181,7 +180,7 @@ inter_tree_node *InterTree::parent(inter_tree_node *F) {
 	return F->parent_itn;
 }
 
-@ Accessing child nodes one by one -- //InterTree::third_child//, etc. --
+@ Accessing child nodes one by one — //InterTree::third_child//, etc. —
 can only take you so far. Here's a convenient fast way to loop through:
 
 @d LOOP_THROUGH_INTER_CHILDREN(F, P)
@@ -196,12 +195,12 @@ node won't cause the loop to terminate early:
 
 @h Traversing an entire tree.
 The following traverses through all of the root nodes of a tree, calling the
-|visitor| function on each node matching the given type filter. If |filter|
-is 0, that's every node; if it is something like |PACKAGE_IST|, then it
-visits only nodes of type |PACKAGE_IST|; if it is |-PACKAGE_IST|, it visits
-only nodes of types other than |PACKAGE_IST|.
+`visitor` function on each node matching the given type filter. If `filter`
+is 0, that's every node; if it is something like `PACKAGE_IST`, then it
+visits only nodes of type `PACKAGE_IST`; if it is `-PACKAGE_IST`, it visits
+only nodes of types other than `PACKAGE_IST`.
 
-|state| is opaque to us, and is a way for the caller to have persistent state
+`state` is opaque to us, and is a way for the caller to have persistent state
 across visits to different nodes.
 
 =
@@ -216,9 +215,9 @@ void InterTree::traverse_root_only(inter_tree *from,
 	}
 }
 
-@ This is similar, but begins at the root of the package |mp|, and recurses
-downwards through it and all its subpackages. If |mp| is null, recursion is
-from the tree's |/main| package. Note that this does not visit nodes at the
+@ This is similar, but begins at the root of the package `mp`, and recurses
+downwards through it and all its subpackages. If `mp` is null, recursion is
+from the tree's `/main` package. Note that this does not visit nodes at the
 root level, for which see above.
 
 The same filter conventions apply.
@@ -281,7 +280,7 @@ Until just that morning, it had been the oldest tree in the world.
 Inter trees also record their history, though can safely accommodate only 32
 different events, identified as flag bits 0 to 31.
 
-Calling |InterTree::set_history(I, B)| sets flag |B|; |InterTree::test_history|
+Calling `InterTree::set_history(I, B)` sets flag `B`; `InterTree::test_history`
 then tests it. There is purposely no way to clear these flags once set. They
 should only be used to record that irrevocable, one-time-only, things have
 been done.
@@ -299,18 +298,18 @@ int InterTree::test_history(inter_tree *I, int bit) {
 }
 
 @h The file to blame.
-The |blame_errors_on_this_file| field for a tree is meaningful only during the
+The `blame_errors_on_this_file` field for a tree is meaningful only during the
 period when an instruction is being read in from a text or binary Inter file.
-Such a file is untrustworthy -- we didn't make it ourselves -- and so we
+Such a file is untrustworthy — we didn't make it ourselves — and so we
 check it in many ways, and need a way to throw error messages if it is corrupt.
 
 Since Inter instructions can come in either from a binary or a text file, we
 need a unified way to express positions in these, as an unsigned integer stored
 in the preframe for an instruction (see //Inter Nodes//).
 
-By convention, an origin value below |INTER_ERROR_ORIGIN_OFFSET| is a line
+By convention, an origin value below `INTER_ERROR_ORIGIN_OFFSET` is a line
 number; an origin above that is a binary address within a file (plus
-|INTER_ERROR_ORIGIN_OFFSET|). We record such addresses only up to a file
+`INTER_ERROR_ORIGIN_OFFSET`). We record such addresses only up to a file
 position equivalent to about 179 megabytes; in practice the largest binary
 inter files now in existence are about 8 megabytes, so this seems fine for now.
 
@@ -338,11 +337,10 @@ memory, since an //inter_error_location// only holds pointers to the position
 data, not the position data itself. So:
 
 =
-typedef struct inter_error_stash {
+classdef inter_error_stash in 1024s {
 	struct inter_error_location stashed_eloc;
 	struct text_file_position stashed_tfp;
-	CLASS_DEFINITION
-} inter_error_stash;
+}
 
 @ =
 inter_error_location *InterTree::origin_word_to_eloc(inter_tree *tree, inter_ti C) {

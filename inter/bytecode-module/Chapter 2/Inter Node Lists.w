@@ -8,10 +8,9 @@ Well, these are short and sweet. An //inter_node_list// is just an efficiently
 stored linked list of //inter_tree_node//s.
 
 =
-typedef struct inter_node_list {
-	struct linked_list *the_nodes; /* of |inter_tree_node| */
-	CLASS_DEFINITION
-} inter_node_list;
+classdef inter_node_list {
+	struct linked_list *the_nodes; /* of `inter_tree_node` */
+}
 
 inter_node_list *InterNodeList::new(void) {
 	inter_node_list *ifl = CREATE(inter_node_list);
@@ -45,12 +44,11 @@ Unlike an //inter_node_list//, an //inter_node_array// has entries which are
 accessible in O(1) time, and can easily be sorted; but it takes more memory.
 
 =
-typedef struct inter_node_array {
+classdef inter_node_array {
 	int list_extent;
 	int list_used;
 	struct ina_entry *list;
-	CLASS_DEFINITION
-} inter_node_array;
+}
 
 typedef struct ina_entry {
 	int sort_key;
@@ -96,11 +94,11 @@ void InterNodeList::array_add(inter_node_array *NL, inter_tree_node *P) {
 	NL->list[NL->list_used++].node = P;
 }
 
-@ Note that this defers to the sorting method supplied in |cmp|; that might
-choose to use the |sort_key| value, or might not. |sort_key| is initialised to
+@ Note that this defers to the sorting method supplied in `cmp`; that might
+choose to use the `sort_key` value, or might not. `sort_key` is initialised to
 be the original position in the array, because that can then be used as a last
 resort to ensure that the sorting algorithm is stable; most implementations
-of |qsort| in the C standard library are variations on quicksort and are unstable.
+of `qsort` in the C standard library are variations on quicksort and are unstable.
 
 =
 void InterNodeList::array_sort(inter_node_array *NL,

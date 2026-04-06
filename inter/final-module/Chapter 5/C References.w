@@ -8,7 +8,7 @@ modified, rather than having their current contents read.
 There are seven possible ways to modify something identified by a reference,
 and we need constants to identify these ways in the code we generate:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2
 #define i7_lvalue_POSTDEC 3
@@ -16,11 +16,11 @@ and we need constants to identify these ways in the code we generate:
 #define i7_lvalue_POSTINC 5
 #define i7_lvalue_SETBIT 6
 #define i7_lvalue_CLEARBIT 7
-=
 
 @ Those seven ways correspond to seven Inter primitives, with the following
 signatures:
-= (text)
+
+``` None
 primitive !store         ref val -> val
 primitive !preincrement  ref -> val
 primitive !postincrement ref -> val
@@ -28,10 +28,11 @@ primitive !predecrement  ref -> val
 primitive !postdecrement ref -> val
 primitive !setbit        ref val -> void
 primitive !clearbit      ref val -> void
-=
+```
+
 Since C functions can have their return values freely ignored, we will in fact
-implement |!setbit| and |!clearbit| as if they too had the signature
-|ref val -> val|.
+implement `!setbit` and `!clearbit` as if they too had the signature
+`ref val -> val`.
 
 =
 int CReferences::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
@@ -52,10 +53,10 @@ int CReferences::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 }
 
 @ Some storage objects, like variables, can be generated to C code which works
-in either an lvalue or rvalue context. For example, the Inter variable |frog|
-generates just as the C variable |i7_mgl_frog|.[1] It's then fine to generate
-code like either |10 + i7_mgl_frog|, where it is used in a |val| context, or
-like |i7_mgl_frog++|, where it is used in a |ref| context.
+in either an lvalue or rvalue context. For example, the Inter variable `frog`
+generates just as the C variable `i7_mgl_frog`.[1] It's then fine to generate
+code like either `10 + i7_mgl_frog`, where it is used in a `val` context, or
+like `i7_mgl_frog++`, where it is used in a `ref` context.
 
 But other storage objects are not so lucky, and can only be written to by
 calling functions.

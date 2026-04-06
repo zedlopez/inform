@@ -9,7 +9,7 @@ space and time.
 
 Although users often think of the protagonist object as a fixed object
 whose name is "player", this is a variable, and it is possible to change
-perspective during play and become somebody else -- at which point the
+perspective during play and become somebody else — at which point the
 "player" variable will point to a different object.
 
 =
@@ -23,12 +23,12 @@ Section 1 - Situation
 The player is a person that varies.
 The player variable is defined by Inter as "player".
 
-@ The I7 variable "location" corresponds to I6's |real_location|, not
-|location|. Its value is never equal to a pseudo-room representing darkness:
+@ The I7 variable "location" corresponds to I6's `real_location`, not
+`location`. Its value is never equal to a pseudo-room representing darkness:
 it is always an actual room, and I7 has nothing corresponding to I6's
-|thedark| "room". Similarly, we use an I7 variable "darkness witnessed" for a
-flag which the I6 library would have stored as the |visited| attribute for the
-|thedark| object.
+`thedark` "room". Similarly, we use an I7 variable "darkness witnessed" for a
+flag which the I6 library would have stored as the `visited` attribute for the
+`thedark` object.
 
 =
 The location -- documented at var_location -- is an object that varies.
@@ -56,7 +56,7 @@ after it has finished, and making them global variables also makes them a
 little faster to look up (a good thing since they are used so much), and
 causes them to be indexed more prominently.
 
-"Item described" is simply an I7 name for |self|. (This is an Inter variable
+"Item described" is simply an I7 name for `self`. (This is an Inter variable
 which refers to the object currently under discussion.) In early drafts of I7,
 it was called "this object", but somehow this raised expectations too high
 about how often it would be meaningful: it looked like a pronoun running
@@ -79,7 +79,7 @@ The reason the action failed variable is defined by Inter as "reason_the_action_
 The item described variable is defined by Inter as "self".
 
 @ "Person reaching" turns out to have exactly the same meaning as "person
-asked" -- they are both the |actor|, in Inter terms, but are used in different
+asked" — they are both the `actor`, in Inter terms, but are used in different
 situations.
 
 =
@@ -96,12 +96,12 @@ The supporter in question variable is defined by Inter as "parameter_object".
 The particular possession variable is defined by Inter as "particular_possession".
 
 @ Parsing variables follow. The I6 parser tends to put any data read as part
-of a command into the variable |parsed_number|, but then, Inter is typeless:
+of a command into the variable `parsed_number`, but then, Inter is typeless:
 we can't have a single I7 variable for all these possibilities since it could
 then have no legal type. We solve this as follows. Whenever a kind of value
 $K$ is created which can be parsed as part of a command, an I7 variable "the
 $K$ understood" is also created, as a $K$ that varies. All of these variables
-are translated into Inter's |parsed_number|, so in effect they provide aliases
+are translated into Inter's `parsed_number`, so in effect they provide aliases
 of each possible type for the same underlying memory location. The one exception
 is for "the topic understood" (for historical reasons this one is not called
 "the snippet understood", and so we make it by hand).
@@ -158,7 +158,7 @@ second, we don't want users to think of them as manipulable during play.
 Rather sneakily, we also define a Figure here. This is done in order to
 make it legal to declare variables and properties of the kind of value
 "figure name" (because it ensures that such variables can always be
-initialised -- there is always at least one Figure in the world). Of
+initialised — there is always at least one Figure in the world). Of
 course plenty of Inform projects have no artwork at all: so the cover art
 figure is unique in that it might refer to nothing. That sounds a little
 arbitrary but in fact follows a convention used by the Blorb format for
@@ -203,7 +203,7 @@ such logical propositions, it often needs to substitute $x=c$, that is, to
 replace $x$ with a given constant $c$. But it can only do this if $c$ is an
 Inform 7 value. This is a problem if what it wants is to substitute in
 something which is only meaningful at the I6 level: say, it wants to
-substitute a value $c$ which will eventually translate to |whatever|, but
+substitute a value $c$ which will eventually translate to `whatever`, but
 it can't find any I7 value $c$ which will do this.
 
 We solve this problem by constructing some unusual I7 variables whose only
@@ -211,18 +211,18 @@ purpose is that Inform can use them in substitutions. They should never be
 referred to in I7 source text anywhere else at all, not even elsewhere in
 the Standard Rules.
 
-(1) The sentence "The i6-nothing-constant is an object that varies." is
+- The sentence "The i6-nothing-constant is an object that varies." is
 a rare example of a flat lie in the Standard Rules, as it is the I6 constant
-|nothing| and never varies at all. It exists as a "variable" so that the
-substitution $x=$~|nothing| can be made.
+`nothing` and never varies at all. It exists as a "variable" so that the
+substitution $x=$~`nothing` can be made.
 
-(2) Well, once you start telling lies it's so hard to stop, and it's also a
-lie that the "I6-varying-global" translates to |nothing|. It actually
+- Well, once you start telling lies it's so hard to stop, and it's also a
+lie that the "I6-varying-global" translates to `nothing`. It actually
 translates to whatever the Inform machinery for compiling propositions happens
 to want at the moment, so it has no permanent meaning at all. (It will
 always translate to an I6 global variable storing a value whose I7 kind
 is "object", so the type-checking machinery isn't endangered by this
-chicanery. It will in fact never translate to |nothing|, but we make the
+chicanery. It will in fact never translate to `nothing`, but we make the
 translation sentence below in order to avoid allocating any storage at
 run-time for what is in the end only a label.)
 
@@ -237,18 +237,18 @@ The I6-varying-global variable is defined by Inter as "nothing".
 
 @ The remaining secret variables are:
 
-(1) The "item-pushed-between-rooms" is needed to get the identity of
+- The "item-pushed-between-rooms" is needed to get the identity of
 an object being pushed by a command like PUSH ARMCHAIR NORTH out of I6
 and into the action variable "thing gone with" of the going action.
 
-(2) The "actor-location" is needed temporarily to store the room in
+- The "actor-location" is needed temporarily to store the room in
 which the actor of the current action is standing, and it wants to be
 an I6 global (rather than, say, a rulebook variable belonging to the
 action-processing rulebook) so that Inform can use common code to handle
-this alongside |noun|, |second| and |actor| when compiling preambles
+this alongside `noun`, `second` and `actor` when compiling preambles
 to rules.
 
-(3) The "parameter-object" is likewise needed in order to compile
+- The "parameter-object" is likewise needed in order to compile
 preambles to rules in object-based rulebooks.
 
 =
@@ -268,11 +268,11 @@ to start out, the Standard Rules are replete with them.
 When an interactive fiction project using the Standard Rules starts up,
 it does the following:
 
-(1) Consider the startup rules.
-(2) Repeatedly follow the turn sequence rules until the Inter variable
-|deadflag| is set, which is used to indicate that the game has ended in one
+- Consider the startup rules.
+- Repeatedly follow the turn sequence rules until the Inter variable
+`deadflag` is set, which is used to indicate that the game has ended in one
 way or another (though not necessarily in "death").
-(3) Follow the shutdown rules.
+- Follow the shutdown rules.
 
 Briefly, the startup phase takes us to the end of the room description
 after the banner is printed. The turn sequence covers a complete turn,
@@ -306,7 +306,7 @@ Every turn rules is a rulebook.
 The every turn rulebook is accessible to Inter as "EVERY_TURN_RB".
 
 @ The action machinery requires some 16 rulebooks to work, though that is
-the result of gradual simplification -- in 2006 it required 25, for instance.
+the result of gradual simplification — in 2006 it required 25, for instance.
 The "action-processing" rulebook, like the turn sequence rulebook, is a
 master of ceremonies: it belongs to the Standard Rules and is only rarely if
 at all referred to by users.
@@ -319,7 +319,7 @@ global variables (and thus in scope everywhere).
 The main action-processing rulebook delegates most of its detailed work to
 a subsidiary, the "specific action-processing" rulebook, at the point where
 what rulebooks we consult next depends on what the action is (hence "specific")
--- see below for more on how check/carry out/report rules are filed.
+— see below for more on how check/carry out/report rules are filed.
 
 =
 Action-processing rules is a rulebook.
@@ -371,17 +371,17 @@ is sometimes some ambiguity about which rulebook to use if one wants to
 achieve a given effect. There are really two reasons why things are done
 this way:
 
-(a) To try to encourage a distinction between:
+- To try to encourage a distinction between:
 
-(-i) the general implementation of an action, made with carry out, check
-and report rules -- say, a "photographing" action which could be used in
-any situation and could be copied and pasted into another project; and
+	- the general implementation of an action, made with carry out, check
+	and report rules — say, a "photographing" action which could be used in
+	any situation and could be copied and pasted into another project; and
+	
+	- the contingent rules applying in particular situations in play, made
+	with before, instead and after rules, such as that custodians at the
+	Metropolitan Museum of Art forbid flash photography.
 
-(-ii) the contingent rules applying in particular situations in play, made
-with before, instead and after rules, such as that custodians at the
-Metropolitan Museum of Art forbid flash photography.
-
-(b) To improve the efficiency of action-processing by forcing control to
+- To improve the efficiency of action-processing by forcing control to
 run only through those carry out, check and report rules which can possibly
 be relevant to the current action. Whereas all before, instead and after
 rules are all piled up together in their own rulebooks, check, carry out
@@ -390,13 +390,13 @@ particular action in progress. Thus on a taking action, the six stages
 followed are before, instead, check taking, carry out taking, after and
 report taking.
 
-During play, then, the three rulebooks "check", "after" and "report"
+During play, then, the three rulebooks "check", "carry out" and "report"
 are completely empty. This is the result of a reform in April 2007 which
 wasn't altogether popular. Before then, Inform rather cleverly filed rules like
 "Check doing something with the haddock" in the generic "check"
 rulebook and ran this rulebook as part of the action processing sequence.
 But this clearly broke principle (i) above, and meant that the six-stage
-process -- already quite complicated enough -- was actually a nine-stage
+process — already quite complicated enough — was actually a nine-stage
 process only pretending, by deceitful syntax, to be a six-stage one. Check
 rules sometimes appeared to be filed in the wrong order, breaking the
 ordinary precedence conventions, and this was not due to a bug but because
@@ -409,7 +409,7 @@ and also a clearer conceptual definition of what these rulebooks were for.
 withdrawn.)
 
 So if they are always empty and never used, why are the three rulebooks
-called simply "check", "after" and "report" created in the first
+called simply "check", "carry out" and "report" created in the first
 place? The answer is that this is a convenience for parsing rule preambles
 in Inform: it provides a temporary home for such rules before they are divided up
 into their specific rulebooks, and it also makes it easier for Inform to detect
@@ -439,10 +439,10 @@ doesn't really make any sense to split that question into a before, for and
 after stage. So this is a named rulebook instead.
 
 "Does the player mean" is essentially a front end for the I6 parser's
-|ChooseObjects| entry point, which relies on numerical scores to assess the
+`ChooseObjects` entry point, which relies on numerical scores to assess the
 likelihood of possible choices. To facilitate that, the I7 compiler recognises
 these five outcome names and translates them into the Inter constants
-|RBNO4_OUTCOME|, |RBNO3_OUTCOME|, ..., |RBNO0_OUTCOME| respectively. So don't
+`RBNO4_OUTCOME`, `RBNO3_OUTCOME`, ..., `RBNO0_OUTCOME` respectively. So don't
 change the names of these outcomes.
 
 =
@@ -461,9 +461,9 @@ The multiple action processing rulebook is accessible to Inter as "MULTIPLE_ACTI
 
 @ And that's it: all of the named rulebooks now exist. There will, of
 course, be hundreds more rulebooks soon, created automatically as activities
-and actions are created -- when we create the "dropping" action, for
+and actions are created — when we create the "dropping" action, for
 instance, we also create the "check dropping", "carry out dropping" and
-"report dropping" rulebooks -- but there are no more stand-alone rulebooks.
+"report dropping" rulebooks — but there are no more stand-alone rulebooks.
 
 @h Rules.
 At run-time, the value of a rule is the (packed) address of an I6 routine.
@@ -488,12 +488,12 @@ The little-used do nothing rule is defined by Inter as "LITTLE_USED_DO_NOTHING_R
 @h Startup.
 These startup rules prepare the various world model specific systems.
 
-(a) The printing of three blank lines at the start of play is traditional: on early
+- The printing of three blank lines at the start of play is traditional: on early
 Z-machine interpreters such as InfoTaskForce and Zip it was a necessity because
 of the way they buffered output. On modern windowed ones it still helps to
 space the opening text better.
 
-(b) The "update chronological records rule" is described in further detail
+- The "update chronological records rule" is described in further detail
 below, since it appears both here and also in the turn sequence rulebook.
 Here it's providing us with a baseline of initial truths from which we can
 later assess conditions such as "the marble door has been open". A subtle
@@ -505,10 +505,10 @@ Dining Room for three turns". It's as if the player teleports into an
 already-existing world, like some Star Trek crewman, just in time for the
 first command.
 
-(c) The "position player in model world rule" completes the initial
+- The "position player in model world rule" completes the initial
 construction of the spatial model world.
 
-(d) The "start in the correct scenes rule" ensures that we start out
+- The "start in the correct scenes rule" ensures that we start out
 in the correct scenes. (This can't wait, because it's just conceivable
 that somebody has written a rule with a preamble like "When play
 begins during the Hunting Season...": it's also where the scene
@@ -557,7 +557,7 @@ action(s) that requested is or are processed. (And may in turn cause
 other actions, which must also be processed.) There is then a fair
 amount of business needed to end one turn and get ready for another.
 
-The turn sequences rulebook terminates early if |deadflag| becomes set at
+The turn sequences rulebook terminates early if `deadflag` becomes set at
 any point, so the last turn of play will be incomplete. Besides that
 consideration, it can also end early if the command for the turn was
 for an out-of-world action such as saving the game: in such cases, the
@@ -568,40 +568,40 @@ this list of rules over and over again.
 @ The "first" rules in the turn sequence cover us up to the end of the
 events which take place in the model world during this turn's action(s).
 
-(a) The "parse command rule" prints up the prompt, reads a command from
+- The "parse command rule" prints up the prompt, reads a command from
 the keyboard, parses it into dictionary words, deals with niceties such as
 UNDO or OOPS, and then runs it through the traditional I6 parser to turn
 it into a request for an action or list of actions. But see note below.
 
-(b) The "mentioned" property records whether something's name has been
+- The "mentioned" property records whether something's name has been
 printed since the last command.
 
-(c) The "generate action rule" then either sends a single action to the
+- The "generate action rule" then either sends a single action to the
 action-processing rules, or else runs through the list, printing the noun
 up with a colon each time and then sending the action to the action-processing
 rules. But see note below.
 
-(d) We then run the scene changing rulebook, because people often write
+- We then run the scene changing rulebook, because people often write
 every turn rules which are predicated on particular scenes ("Every turn
 during the Grand Waltz: ..."), and such rules will fail if we haven't kept
 up with possible scene changes arising from something done in the action(s)
 just completed.
 
-(e) The "every turn stage rule" follows the every turn rulebook. This
+- The "every turn stage rule" follows the every turn rulebook. This
 earns its place among the "first" rules in order for it to have priority
-over all the other book-keeping rules at the end of a turn -- including any
+over all the other book-keeping rules at the end of a turn — including any
 which the user, or an extension included by the user, chooses to add to the
 turn sequence rules.
 
 An unusual point here is that the "parse command rule" and the
 "generate action rule" are written such that they do nothing unless
-the turn sequence rulebook is being followed at the top level (by |Main|,
+the turn sequence rulebook is being followed at the top level (by `Main`,
 that is). This prevents them from being used recursively, which would not
 work properly, and enables a popular trick from the time before the 2008
 reform to keep working: we can simulate six turns going by in which the
 player does nothing by running "follow the turn sequence rules" six
-times in a row. Everything happens exactly as it should -- the turn count,
-the time of day, timed events, and so on -- except that no commands are
+times in a row. Everything happens exactly as it should — the turn count,
+the time of day, timed events, and so on — except that no commands are
 read and no consequent actions generated.
 
 =
@@ -619,13 +619,13 @@ The parse command rule is listed first in the turn sequence rulebook. [1st.]
 @ Three miscellaneous things then happen, all implemented by primitives
 in the template I6 layer:
 
-(e) The "timed events rule" is the one which causes other rules, keyed
+- The "timed events rule" is the one which causes other rules, keyed
 to particular times of day, to fire.
 
-(f) The "advance time rule" then causes the "time of day" global variable
+- The "advance time rule" then causes the "time of day" global variable
 to advance by the duration of a single turn, which by default is 1 minute.
 
-(g) The "update chronological records rule" tells the chronology machine
+- The "update chronological records rule" tells the chronology machine
 that a slice of time has been completed. Inform can only decide past tense
 conditions like "the black door has been open" by continuously measuring
 the present to see if the black door is open now, and making a note for
@@ -643,27 +643,27 @@ The update chronological records rule is listed in the turn sequence rulebook.
 the rulebook is reserved for book-keeping which has to happen positively
 at the end of the turn.
 
-(h) First, we check for scene changes again. We did this only a short while
+- First, we check for scene changes again. We did this only a short while
 ago, but scene changes might well have arisen as a result of rules which
 fired during the every turn rulebook, or from timed events, or in some other
-way, and it's important to start the next turn in the correct scene -- so we
+way, and it's important to start the next turn in the correct scene — so we
 check again to make sure.
 
-(i) Then we run the "adjust light rule". Keeping track of light and darkness
+- Then we run the "adjust light rule". Keeping track of light and darkness
 is quite difficult, and potentially also quite slow: it's not unlike a sort
 of discretised version of ray-tracing, with many light sources and barriers
 to think about (some transparent, some opaque). So we do this as little as
 possible: once per turn we calculate whether the player is in light or not,
 and act accordingly if so.
 
-(j) The "note object acquisitions rule" does two things:
+- The "note object acquisitions rule" does two things:
 
-(-i) Gives the "handled" property to everything carried or worn by the player.
-(-ii) Changes the current player's holdall in use, if necessary. (That's to
-say: if the player has dropped their previous player's holdall, we try to find a
-new one to use from their remaining possessions.)
-
-(k) The "notify score changes rule" tells the player if the score has changed
+	- Gives the "handled" property to everything carried or worn by the player.
+	- Changes the current player's holdall in use, if necessary. (That's to
+	say: if the player has dropped their previous player's holdall, we try to find a
+	new one to use from their remaining possessions.)
+	
+- The "notify score changes rule" tells the player if the score has changed
 during the turn, or rather, since the last time either this rule or the startup
 "fix baseline scoring rule" ran. (If the score were to change in the course
 of an out-of-world action, it would be notified a turn late, but of course
@@ -702,16 +702,16 @@ work. It might not actually be goodbye, for one thing: if this rulebook ends
 in success, then we go back to repeating the turn sequence rulebook just as
 if nothing had happened.
 
-(a) The "when play ends stage rule" follows the rulebook of the same name.
+- The "when play ends stage rule" follows the rulebook of the same name.
 
-(b) The "resurrect player if asked rule" does nothing unless one of the
+- The "resurrect player if asked rule" does nothing unless one of the
 "when play ends" rules ran the "resume the game" phrase, in which case
 it stops the rulebook with success (see above).
 
-(c) The "print player's obituary rule" carries out the activity of nearly
+- The "print player's obituary rule" carries out the activity of nearly
 the same name (see below).
 
-(d) The "ask the final question rule" asks the celebrated "Would you like
+- The "ask the final question rule" asks the celebrated "Would you like
 to RESTART, RESTORE a saved game or QUIT?" question, and acts on the
 consequences. It can also cause an UNDO, and on a victorious ending may
 carry out the "amusing a victorious player" activity (see below). The rule
@@ -733,7 +733,7 @@ The resurrect player if asked rule is defined by Inter as "RESURRECT_PLAYER_IF_A
 The ask the final question rule is defined by Inter as "ASK_FINAL_QUESTION_R".
 
 @h Scene changing.
-Scene changing is handled by a routine called |DetectSceneChange| which is
+Scene changing is handled by a routine called `DetectSceneChange` which is
 compiled directly by Inform: this is so primitive that it can't even be handled
 at the template layer. The rulebook is all a little elaborate given that
 it contains only one rule, but it's possible to imagine extensions which
@@ -762,24 +762,24 @@ Action-processing happens on two levels: an upper level, handled by the main
 This division clearly complicates matters, so why do we do it? It turns out be
 convenient for several reasons:
 
-(a) Out-of-world actions like "saving the game" need to run through the
+- Out-of-world actions like "saving the game" need to run through the
 lower level, or they won't do anything at all, but must not run through the
 upper level, or in-world rules (before or instead rules, for instance) might
 prevent them from happening.
 
-(b) Requested actions such as generated by a command like "CLARK, BLOW WHISTLE"
+- Requested actions such as generated by a command like "CLARK, BLOW WHISTLE"
 have the reverse behaviour, being handled at the upper level but not the lower.
 (If Clark should agree, a definite non-request action "Clark blowing the whistle"
 is generated afresh: that one does indeed get to the lower level, but the original
 request action doesn't.)
 
-(c) Specific action-processing has a rather complicated range of outcomes:
+- Specific action-processing has a rather complicated range of outcomes:
 it must succeed or fail, according to whether the action either reaches the
 carry out rules or is converted into another action which does, but also
 ensure that in the event of failure, the exact rule causing the failure is
 recorded in the "reason the action failed" variable.
 
-(d) The specific action-processing stage is where we have to split consideration
+- The specific action-processing stage is where we have to split consideration
 into action-specific rulebooks (like "check taking") rather than general ones
 (like "instead"). To get this right, we want to use some rulebook variables,
 and these need to be set at exactly the correct moment. It's tricky to
@@ -788,7 +788,7 @@ beginning, so we want the start of the SA-P stage to happen at the start of
 a rulebook.
 
 This does mean that an attempt by the user to move the before stage to just
-after the check stage (say) will fail -- the before and check stages happen
+after the check stage (say) will fail — the before and check stages happen
 in different rulebooks, so no amount of rearranging will do this.
 
 @ The upper level of action-processing consists of seeing whether the actor's
@@ -861,27 +861,27 @@ This is the end action-processing in success rule: rule succeeds.
 
 @ The action-processing rulebook contains six primitives:
 
-(1) The "basic visibility rule" checks the action to see if it requires
+- The "basic visibility rule" checks the action to see if it requires
 light, and if so, and if the actor is the player and in darkness, asks
 the visibility rules (see below) whether the lack of light should stop
 the action. (It would be cleaner to apply this rule to all actors, but we
 would need much more extensive light calculations to do this.)
 
-(2) The "basic accessibility rule" checks the action to see if it requires
+- The "basic accessibility rule" checks the action to see if it requires
 the noun to be touchable, and if so, asks the accessibility rulebook to
 adjudicate (see below); then repeats the process for the second noun.
 
-(3) The "carrying requirements rule" checks the action to see if it requires
+- The "carrying requirements rule" checks the action to see if it requires
 the noun to be carried. If so, but the noun is not carried, it generates an
 implicit taking action (in effect, "try silently taking $N$"); and if that
 fails, then the rulebook is halted in failure. The process is then repeated
 for the second noun.
 
-(4) If the action is one where the player requests somebody else to do
+- If the action is one where the player requests somebody else to do
 something, the "requested actions require persuasion rule" asks the
 persuasion rulebook for permission.
 
-(5) If the action is one where the player requests somebody else to do
+- If the action is one where the player requests somebody else to do
 something, the "carry out requested actions rule" starts a new action by
 the person asked, and looks at the result: if it failed, the "unsuccessful
 attempt by" rulebook is run to tell the player what has (not) happened.
@@ -890,12 +890,12 @@ original action of requesting is ended in success: a success because,
 whatever happened, the request succeeded in making the actor try to do
 something.
 
-(6) The "descend to specific action-processing rule" really only runs the
+- The "descend to specific action-processing rule" really only runs the
 specific action-processing rulebook, but it's implemented as a primitive in
 the template I6 layer because it must also find out which are the
 specific check, carry out and report rulebooks for the current action (for
 instance, "check taking" is the specific check rulebook for the
-"taking" action -- which seems obvious from the names: but at run-time,
+"taking" action — which seems obvious from the names: but at run-time,
 the names aren't so visible).
 
 =
@@ -976,8 +976,9 @@ failure.)
 @ The specific action-processing rulebook is probably more fruitful than the
 main one if we want to modify what happens. For instance:
 
->> This is the sixth sense rule: if the player is not the actor, say "You sense that [the actor] is up to something."
->> The sixth sense rule is listed before the carry out stage rule in the specific action-processing rules.
+> This is the sixth sense rule: if the player is not the actor, say "You sense that [the actor] is up to something."
+
+> The sixth sense rule is listed before the carry out stage rule in the specific action-processing rules.
 
 ...produces the message at a time when the action is definitely possible and
 will succeed, but before anything has been done.
@@ -1089,7 +1090,7 @@ Does the player mean taking something which is carried by the player
 	it is very unlikely.
 
 @ And that completes the creation and stocking of the 25 rulebooks. More than
-half of them are initially empty, including before, instead and after -- at the
+half of them are initially empty, including before, instead and after — at the
 end of the day, these rulebooks are hooks allowing the user to change the
 ordinary behaviour of things, but ordinariness is exactly what the Standard
 Rules is all about.
@@ -1116,7 +1117,7 @@ When a scene (called the event) begins (this is the scene description text rule)
 
 @h Command parser errors.
 This abstracts a set of return codes from the I6 parser, which are written
-there as constants with the notation |*_ETYPE|.
+there as constants with the notation `*_ETYPE`.
 
 =
 Section 8 - Command parser errors

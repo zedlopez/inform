@@ -10,7 +10,7 @@ a convenient holder for such composites.
 
 =
 typedef struct word_assemblage {
-	int no_indiv_words; /* should be between 0 and |MAX_WORDS_IN_ASSEMBLAGE| */
+	int no_indiv_words; /* should be between 0 and `MAX_WORDS_IN_ASSEMBLAGE` */
 	struct vocabulary_entry *indiv_words[MAX_WORDS_IN_ASSEMBLAGE]; /* some may be null */
 } word_assemblage;
 
@@ -108,6 +108,11 @@ void WordAssemblages::truncate_to(word_assemblage *wa, int n) {
 int WordAssemblages::nonempty(word_assemblage wa1) {
 	if (wa1.no_indiv_words > 0) return TRUE;
 	return FALSE;
+}
+
+int WordAssemblages::empty(word_assemblage wa1) {
+	if (wa1.no_indiv_words > 0) return FALSE;
+	return TRUE;
 }
 
 void WordAssemblages::writer(OUTPUT_STREAM, char *format_string, void *vW) {

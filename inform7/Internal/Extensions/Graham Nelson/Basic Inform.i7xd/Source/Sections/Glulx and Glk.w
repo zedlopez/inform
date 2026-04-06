@@ -189,8 +189,8 @@ Very first glk event handling rule for a glk event type
 	(this is the set glk event processing variables rule):
 	now the event is the current glk event initialiser.
 
-To handle (ev - glk event):
-	(- GLK_EVENT_TY_Handle_Instead({ev}); rtrue; -).
+To replace current event with (ev - glk event):
+	(- GLK_EVENT_TY_Replace_Current({ev}); rtrue; -).
 
 Glk event handling rule for a screen resize event (this is the redraw the status line rule):
 	redraw the status window;
@@ -227,15 +227,15 @@ windows, sound channels etc. will be kept as they were, even though the game fil
 might be expecting a different state. This extension allows Inform 7 game files
 to ensure that the IO state is as it should be. It does this in three stages:
 
-(a) The "reset glk references rules" is run. Rules should be added to reset all
+- The "reset glk references rules" is run. Rules should be added to reset all
 Glk references as if none existed.
 
-(b) The "identify glk windows rules" etc. are run. These rulebooks will be run
+- The "identify glk windows rules" etc. are run. These rulebooks will be run
 once for each Glk IO object which currently exists. Objects can be identified
 through the current glk object rock number and current glk object reference
 number variables.
 
-(c) The "glk object updating rules" is run. Rules should be added to correct the
+- The "glk object updating rules" is run. Rules should be added to correct the
 Glk IO state by, for example, closing windows which shouldn't exist, and opening
 windows which should but currently do not.
 

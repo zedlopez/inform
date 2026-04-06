@@ -1,4 +1,4 @@
-Inform 6.43 for MacOS (6th August 2025)
+Inform 6.45 for MacOS (in development)
 line 11: Error:  Grammar version 1 cannot support more than 255 prepositions
 >  * 'p255'
 Compiled with 1 error (no output)

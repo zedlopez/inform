@@ -10,13 +10,14 @@ for example, some either-or properties of objects may be represented as
 simple as possible here.
 
 What we assume is that:
-(a) A property |P| is represented at runtime by a small word array.
-(b) The meaning of the first two words, |P-->0| and |P-->1|, is up to the
+
+- A property `P` is represented at runtime by a small word array.
+- The meaning of the first two words, `P-->0` and `P-->1`, is up to the
 generator. It can put anything it likes in them.
-(c) |P-->2| is 1 for either-or properties, 0 for all others.
-(d) |P-->3| is the printed name of the property, for use in debugging or
+- `P-->2` is 1 for either-or properties, 0 for all others.
+- `P-->3` is the printed name of the property, for use in debugging or
 runtime problem messages.
-(e) |P-->4| onwards is a set of permissions, a concise representation of
+- `P-->4` onwards is a set of permissions, a concise representation of
 which instances can have the property in question. This is 0-terminated.
 
 @ The biggest complication we face is that the linking process has left us, in
@@ -24,15 +25,19 @@ some cases, with multiple property declarations for what is actually the same
 property.
 
 For example, this arises when a property is defined in Inform 7 source like so:
-= (text as Inform 7)
+
+``` Inform7
 A room can be privately-named or publicly-named.
 The privately-named property translates into Inter as "privately_named".
-=
-...where the property |privately_named| actually originates in a kit, written
+```
+
+...where the property `privately_named` actually originates in a kit, written
 in Inform 6 notation like so:
-= (text as Inform 6)
+
+``` Inform6
 Attribute privately_named;
-=
+```
+
 We now have two property declarations, one in the Standard Rules module, the
 other in the BasicInformKit module. It's tempting to have the linker delete
 the Standard Rules one and convert references to it to point them to the kit
@@ -40,28 +45,28 @@ definition, but this is not a good idea because the kit definition doesn't
 have the metadata or permissions which the Standard Rules definition has. So
 we keep both in play, and reconcile them in the code below.
 
-It gets worse: the Standard Rules properties "lighted" and "lit", though different --
-one applies to rooms, one to things -- both translate to the same BasicInformKit
-property |light|. At present that's the worst case scenario (i.e., three different
+It gets worse: the Standard Rules properties "lighted" and "lit", though different —
+one applies to rooms, one to things — both translate to the same BasicInformKit
+property `light`. At present that's the worst case scenario (i.e., three different
 properties all coinciding) but we won't assume that.
 
 So what we do is to work through the properties and group them into equivalence
 classes by their final identifier names. Here, for example, we recognise these
-two properties as the same because they both want to be called |privately_named|.
+two properties as the same because they both want to be called `privately_named`.
 By scanning the assimilated properties (i.e. those from kits) first, we ensure
 that the first one found in each set will be the definitive source of the property.
 But it will likely be the later members of the set which have the necessary
 metadata attached.
 
 Of course, in the benign case where there is just one Inform 7-level definition
-of a property, |first_with_name| and |last_with_name| will be the same, and the
+of a property, `first_with_name` and `last_with_name` will be the same, and the
 list will be a singleton.
 
 =
 void VanillaObjects::declare_properties(code_generation *gen) {
-	dictionary *first_with_name = Dictionaries::new(1024, FALSE); /* of |inter_symbol| */
-	dictionary *last_with_name = Dictionaries::new(1024, FALSE); /* of |inter_symbol| */
-	dictionary *all_with_name = Dictionaries::new(1024, FALSE); /* of |linked_list| of |inter_symbol| */
+	dictionary *first_with_name = Dictionaries::new(1024, FALSE); /* of `inter_symbol` */
+	dictionary *last_with_name = Dictionaries::new(1024, FALSE); /* of `inter_symbol` */
+	dictionary *all_with_name = Dictionaries::new(1024, FALSE); /* of `linked_list` of `inter_symbol` */
 
 	inter_symbol *prop_name;
 	LOOP_OVER_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties)
@@ -92,25 +97,27 @@ void VanillaObjects::declare_properties(code_generation *gen) {
 
 @ So here's an annoyance. We will need two identifier names for each property.
 One is the metadata array, while the other will probably be used by the generator
-to hold the actual storage -- that other is called the "inner name".
+to hold the actual storage — that other is called the "inner name".
 
-In the case of our |privately_named| example, the metadata array will be called
-something like |A_privately_named|, and any references to the property in kit
+In the case of our `privately_named` example, the metadata array will be called
+something like `A_privately_named`, and any references to the property in kit
 code or in Inform 7 source text will compile to this array. The inner name will
-preserve the original identifier |privately_named|, and will likely be used by
+preserve the original identifier `privately_named`, and will likely be used by
 the final generator for where a property value is actually stored. For Inform 6,
 for example, we will have:
-= (text)
+
+``` None
 	A_privately_named --> 0		2
 	                  --> 1		privately_named (an I6 attribute)
 	                  --> 2     1
 	                  --> 3     "privately named"
 	                  --> 4     ... permissions follow
-=
+```
+
 In some ways it would be more convenient to use these names the other way around:
-to call the array itself |privately_named| and have the inner identifier be
-something like |I_privately_named|. But this fails on Inform 6 in exasperating
-ways because of the built-in |name| property, whose name cannot be declared or
+to call the array itself `privately_named` and have the inner identifier be
+something like `I_privately_named`. But this fails on Inform 6 in exasperating
+ways because of the built-in `name` property, whose name cannot be declared or
 altered.
 
 @<Declare one property for each name group@> =
@@ -188,14 +195,14 @@ because that will come from an I7 source text definition.
 checking. Compile-time checking polices all uses of properties of values other
 than objects, but it will usually allow any object property of any object to
 be accessed, because it's not usually possible for the typechecker to know if
-an object value |O| is a vehicle, a direction, and so on. For this reason
+an object value `O` is a vehicle, a direction, and so on. For this reason
 some runtime checking is needed, and to perform that checking, properties need
 a list of permissions to be stored in memory. This is where.
 
 Note that permissions are accumulated for all of the properties in a given
-name set. In the case of "lighted" and "lit" and |light|, therefore, the
+name set. In the case of "lighted" and "lit" and `light`, therefore, the
 permissions written will be those for "lighted" (rooms, basically) and then
-those for "lit" (things); |light|, the WorldModelKit original, has no permissions --
+those for "lit" (things); `light`, the WorldModelKit original, has no permissions —
 assimilated properties never do have.
 
 @<Write a list of kinds or objects which are permitted to have this property@> =
@@ -237,7 +244,7 @@ can be given properties, even when other objects of the same kind may lack them.
 			}
 		}
 
-@ It's happily a rare occurrence, but "object" itself can have properties -- so
+@ It's happily a rare occurrence, but "object" itself can have properties — so
 that every object of any kind has permission to have that. We convey that by giving
 permission for every top-level kind of object. (There are typically only four of
 these top-level kinds, and not many properties have these permissions, so it's
@@ -334,7 +341,8 @@ so we use "marks" on those already done.
 	}
 
 @ In the case where a kind of value has been created by table, as in this example:
-= (text as Inform 7)	
+
+``` Inform7	
 	Planet is a kind of value. The planets are defined by the Table of Outer Planets.
 
 	Table of Outer Planets
@@ -344,7 +352,8 @@ so we use "marks" on those already done.
 	Uranus		19 AU
 	Neptune		30 AU
 	Pluto		39 AU
-=
+```
+
 the property "semimajor axis" is already stored in a table column. That becomes
 our stick array. But in other cases, where the instances have not been created
 by table, no sticks exist and we must compile them.
@@ -363,9 +372,9 @@ by table, no sticks exist and we must compile them.
 
 @ These little arrays are sticks of property values, and they are laid out
 as if they were column arrays in a Table data structure. This means they must
-be |TABLE_ARRAY_FORMAT| arrays (which wastes one word of memory) and must have
+be `TABLE_ARRAY_FORMAT` arrays (which wastes one word of memory) and must have
 blanked-out table column header words at the front (which wastes a further
-|COL_HSIZE| words). But the cost is a simple overhead, not rising with the
+`COL_HSIZE` words). But the cost is a simple overhead, not rising with the
 number of instances, and is worth it for simplicity and speed.
 
 @<Compile a stick of property values and put its address here@> =
@@ -463,13 +472,15 @@ which the generator is making.
 
 This is a bad idea, because it presupposes which generator is being used, or
 at any rate what the syntax will be. It arises from source text like this:
-= (text as Inform 7)
+
+``` Inform7
 Include (-
 	with before [; Go: return 1; ],
 -) when defining a rideable vehicle.
-=
-...which should probably not be allowed. The splat is the text between |(-|
-and |-)| here, and as can be seen, it's in Inform 6 syntax, which would be bad
+```
+
+...which should probably not be allowed. The splat is the text between `(-`
+and `-)` here, and as can be seen, it's in Inform 6 syntax, which would be bad
 news for, say, the C generator.
 
 =
@@ -493,7 +504,7 @@ int VanillaObjects::weak_id(inter_symbol *kind_s) {
 	return 0;
 }
 
-@ |TRUE| for something like "thing" or "room", but |FALSE| for "object" itself.
+@ `TRUE` for something like "thing" or "room", but `FALSE` for "object" itself.
 
 =
 int VanillaObjects::is_kind_of_object(code_generation *gen, inter_symbol *kind_s) {
@@ -505,7 +516,7 @@ int VanillaObjects::is_kind_of_object(code_generation *gen, inter_symbol *kind_s
 	return FALSE;
 }
 
-@ |TRUE| for a kind which can have properties but is not any sort of object.
+@ `TRUE` for a kind which can have properties but is not any sort of object.
 
 =
 int VanillaObjects::value_kind_with_properties(code_generation *gen, inter_symbol *kind_s) {
@@ -524,7 +535,7 @@ int VanillaObjects::value_kind_with_properties(code_generation *gen, inter_symbo
 	return FALSE;
 }
 
-@ |TRUE| for a property which might be held by one or more instances which
+@ `TRUE` for a property which might be held by one or more instances which
 are not objects.
 
 =
@@ -552,7 +563,7 @@ int VanillaObjects::is_property_of_values(code_generation *gen, inter_symbol *pr
 	return FALSE;
 }
 
-@ |TRUE| for an either-or property.
+@ `TRUE` for an either-or property.
 
 =
 int VanillaObjects::is_either_or_property(inter_symbol *prop_s) {

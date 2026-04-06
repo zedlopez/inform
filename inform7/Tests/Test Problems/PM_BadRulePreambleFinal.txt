@@ -1,0 +1,5 @@
+Problem: PM_BadRulePreambleFinal
+
+Home is a room.
+
+Final every turn rule: say "Yes."

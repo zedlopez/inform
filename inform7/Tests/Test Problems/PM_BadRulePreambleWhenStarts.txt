@@ -1,0 +1,7 @@
+Problem: PM_BadRulePreambleWhenStarts
+
+Home is a room.
+
+When the opening scene starts: say "Yes."
+
+When the opening scene finishes: say "Yes."

@@ -11,16 +11,15 @@ within them representing symbols which also do not exist yet. Eventually,
 though, such tools need to make good on their promises and "incarnate" them.
 
 =
-typedef struct package_request {
+classdef package_request {
 	struct inter_tree *tree;
 	struct inter_name *eventual_name;
 	struct inter_symbol *eventual_type;
 	struct package_request *parent_request;
 	struct inter_bookmark write_position;
-	struct linked_list *iname_generators; /* of |inter_name_generator| */
-	struct inter_package *actual_package; /* |NULL| until this is incarnated */
-	CLASS_DEFINITION
-} package_request;
+	struct linked_list *iname_generators; /* of `inter_name_generator` */
+	struct inter_package *actual_package; /* `NULL` until this is incarnated */
+}
 
 @ =
 package_request *Packaging::request(inter_tree *I, inter_name *name, inter_symbol *pt) {
@@ -59,7 +58,7 @@ void Packaging::log(OUTPUT_STREAM, void *vR) {
 
 @h The packaging state.
 At any given time, Inter code is being produced at a particular position
-(in some incarnated package) and in the context of a given enclosure -- see
+(in some incarnated package) and in the context of a given enclosure — see
 //LargeScale::package_type//. This is summarised by the following state:
 
 =
@@ -71,7 +70,7 @@ typedef struct packaging_state {
 @ It is not legal to make any use of the following state, which exists only to
 initialise variables to neutral contents (and thus to avoid warnings generated
 because our C compiler is not able to prove that they will never be used in an
-uninitialised state -- though in fact they will not).
+uninitialised state — though in fact they will not).
 
 =
 packaging_state Packaging::stateless(void) {
@@ -109,11 +108,11 @@ void Packaging::pop_state(inter_tree *I) {
 @ We store the current state at all times in the building site, and it has the
 following invariant:
 
-(*) The |saved_bookmark| always points to a validly initialised |inter_bookmark|;
-(*) The |saved_enclosure| is always either |NULL| or points to a package of a
+- The `saved_bookmark` always points to a validly initialised `inter_bookmark`;
+- The `saved_enclosure` is always either `NULL` or points to a package of a
 type which is enclosing.
 
-In fact, |saved_enclosure| is |NULL| only fleetingly: as soon as the |main|
+In fact, `saved_enclosure` is `NULL` only fleetingly: as soon as the `main`
 package is created, very early on, the enclosure is always an enclosing package.
 
 =
@@ -135,8 +134,8 @@ void Packaging::initialise_state(inter_tree *I) {
 	I->site.spdata.current_state.saved_enclosure = NULL;
 }
 
-@ When we set the state, |saved_enclosure| becomes the smallest package containing
-(or equal to) |PR|.
+@ When we set the state, `saved_enclosure` becomes the smallest package containing
+(or equal to) `PR`.
 
 =
 void Packaging::set_state(inter_tree *I, inter_bookmark *to, package_request *PR) {
@@ -150,11 +149,11 @@ void Packaging::set_state(inter_tree *I, inter_bookmark *to, package_request *PR
 @h Bubbles.
 Inter code is stored in memory as a linked list. This is fast and compact, but
 can make it awkward to insert material other than at the end, particularly if
-one insertion leads to another close by, midway in the process -- which is
+one insertion leads to another close by, midway in the process — which is
 exactly what can happen when incarnating a nested set of packages.
 
 It is also tricky to bookmark positions if nearby code may later be rewritten
-or removed, as sometimes happens. A bookmark meaning "after this |INV_IST|
+or removed, as sometimes happens. A bookmark meaning "after this `INV_IST`
 instruction here" would be rendered invalid if that instruction were for some
 reason removed.
 
@@ -163,16 +162,17 @@ it is difficult to place a bookmark in an empty package.
 
 We avoid all these difficulties by placing "bubbles" at positions in the
 linked list where we will later need to return and place new material.
-A bubble is simply a pair of |NOP_IST| (no operation) instructions; any
+A bubble is simply a pair of `NOP_IST` (no operation) instructions; any
 later inserted material will be placed between them. For example:
-= (text)
+
+``` None
 	...
 	inv Whatever
 	nop                                       } this is the bubble
 		<--- bookmark position is here        }
 	nop	                                      }
 	...
-=
+```
 
 To insert a bubble at the current write-position:
 
@@ -196,7 +196,7 @@ inter_bookmark Packaging::bubble_at(inter_bookmark *IBM) {
 
 @ It's true that the Inter hierarchy does become fairly carbonated with these
 bubbles, which costs us some memory; but in practice they cause no real speed
-overhead, because |nop| instructions are so quickly skipped over.
+overhead, because `nop` instructions are so quickly skipped over.
 
 @h Entry and exit.
 Each PR contains a "write position". This is where emitted Inter code will go;
@@ -207,8 +207,8 @@ package we wsnt to extend next.
 
 That switching is called "entering" a package. Every entry must be followed
 by a matching exit, which restores the write position to where it was before
-the entry. (The one exception is that the very first entry, into |main| --
-see //LargeScale::begin_new_tree// -- is never followed by an exit.)
+the entry. (The one exception is that the very first entry, into `main` —
+see //LargeScale::begin_new_tree// — is never followed by an exit.)
 
 =
 packaging_state Packaging::enter_home_of(inter_name *N) {
@@ -273,7 +273,7 @@ inter_package *Packaging::incarnate(package_request *R) {
 
 @h Functions.
 Inter code has a standard layout for functions: an outer, enclosing, package of type
-|_function|, inside which is an iname |call| for the actual code to call. All such
+`_function`, inside which is an iname `call` for the actual code to call. All such
 functions are produced by the following:
 
 =
@@ -308,8 +308,8 @@ inter_name *Packaging::datum_text(inter_tree *I, inter_name *function_iname,
 
 @h Generating inames.
 The following allows a sequence of different inames to be generated inside a
-package: for example, |Packaging::make_iname_within(R, I"acorn")| produces a
-sequence of inames |acorn1|, |acorn2|, ..., as it's called over and over again.
+package: for example, `Packaging::make_iname_within(R, I"acorn")` produces a
+sequence of inames `acorn1`, `acorn2`, ..., as it's called over and over again.
 
 The linked list here is invariably short, in practice, often with only 1 entry,
 and so this naive algorithm is probably faster than using a hashed dictionary

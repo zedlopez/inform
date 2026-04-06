@@ -127,7 +127,7 @@ p.purpose {
 
 /* Blocks of code appear in these */
 
-pre.all-displayed-code {
+pre.all-displayed-code, div.lsmarkdown pre.all-displayed-code {
 	padding: 10px;
 	margin-top: 5px;
 	margin-bottom: 5px;
@@ -142,6 +142,7 @@ pre.definitions {
 	margin-top: 0px;
 	margin-left: 0px;
 	margin-right: 10px;
+	margin-bottom: 3px;
 	word-wrap: break-word;
 	white-space: pre-wrap;
 }
@@ -259,19 +260,32 @@ a.paragraph-anchor::before {
 
 /* These are for commentary rendered out from Markdown */
 
-div.lsmarkdown li {
+div.lsmarkdown ul {
 	list-style-type:circle;
 	margin-left: 30px;
 }
 
+div.lsmarkdown ol {
+	list-style-type:decimal;
+	margin-left: 30px;
+}
+
+div.lsmarkdown li {
+	list-style-type:inherit;
+}
+
 div.lsmarkdown pre {
-	padding-top: 0px;
+	padding: 3px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 	margin-left: 30px;
 	margin-right: 10px;
 	word-wrap: break-word;
 	white-space: pre-wrap;
+	border: 1px solid #e8e8e8;
+	border-radius: 3px;
+	background-color: #eef;
+	tab-size: 4
 }
 
 div.lsmarkdown code {
@@ -291,6 +305,16 @@ div.lsmarkdown pre code {
 	padding: 0px;
 }
 
+span.comment-syntax code {
+	font-size: 15px;
+	font-style: normal;
+	border: 1px solid #e8e8e8;
+	border-radius: 3px;
+	background-color: #eef;
+	width: 100%;
+	padding: 3px;
+}
+
 div.lsmarkdown table {
 	margin-top: 12px;
 	margin-bottom: 12px;
@@ -305,3 +329,19 @@ div.lsmarkdown th, div.lsmarkdown td {
 	padding: 8px;
 }
 
+div.lsmarkdown p {
+	width: 60em;
+}
+
+div.lsmarkdown p {
+	width: 60em;
+}
+
+div.lsmarkdown p.inwebfootnote {
+	width: 100%;
+}
+
+div.lsmarkdown img {
+	display: block;
+	margin: auto;
+}

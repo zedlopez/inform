@@ -5,7 +5,7 @@ Six families of inference used by the spatial feature.
 @ Spatial has no fewer than six of its own inference families, needed to store vague
 indications of spatial structure:
 
-= (early code)
+@<Global IF variable definitions@> +=
 inference_family *is_room_inf = NULL;           /* is O a room? */
 inference_family *contains_things_inf = NULL;   /* does O contain things? */
 inference_family *parentage_inf = NULL;         /* where is O located? */
@@ -38,7 +38,7 @@ void SpatialInferences::create(void) {
 	METHOD_ADD(part_of_inf, COMPARE_INF_MTID, SpatialInferences::cmp_part_of);
 }
 
-@ Details for |is_room_inf|:
+@ Details for `is_room_inf`:
 
 =
 void SpatialInferences::infer_is_room(inference_subject *R, int certitude) {
@@ -56,7 +56,7 @@ int SpatialInferences::is_room_explain_contradiction(inference_family *f, infere
 	return TRUE;
 }
 
-@ Details for |contains_things_inf|:
+@ Details for `contains_things_inf`:
 
 =
 void SpatialInferences::infer_contains_things(inference_subject *R, int certitude) {
@@ -65,13 +65,12 @@ void SpatialInferences::infer_contains_things(inference_subject *R, int certitud
 			NULL_GENERAL_POINTER, certitude), R);
 }
 
-@ Details for |parentage_inf|:
+@ Details for `parentage_inf`:
 
 =
-typedef struct parentage_inference_data {
+classdef parentage_inference_data {
 	struct inference_subject *parent;
-	CLASS_DEFINITION	
-} parentage_inference_data;
+}
 
 void SpatialInferences::infer_parentage(inference_subject *inner, int certitude,
 	inference_subject *outer) {
@@ -125,13 +124,12 @@ int SpatialInferences::parentage_explain_contradiction(inference_family *f, infe
 	return FALSE;
 }
 
-@ Details for |parentage_here_inf|:
+@ Details for `parentage_here_inf`:
 
 =
-typedef struct parentage_here_inference_data {
+classdef parentage_here_inference_data {
 	struct inference_subject *parent;
-	CLASS_DEFINITION	
-} parentage_here_inference_data;
+}
 
 void SpatialInferences::infer_parentage_here(inference_subject *inner, int certitude,
 	inference_subject *outer) {
@@ -164,7 +162,7 @@ int SpatialInferences::cmp_parentage_here(inference_family *f, inference *i1,
 	return CI_IDENTICAL;
 }
 
-@ Details for |parentage_nowhere_inf|:
+@ Details for `parentage_nowhere_inf`:
 
 =
 void SpatialInferences::infer_is_nowhere(inference_subject *R, int certitude) {
@@ -172,7 +170,7 @@ void SpatialInferences::infer_is_nowhere(inference_subject *R, int certitude) {
 		NULL_GENERAL_POINTER, certitude), R);
 }
 
-@ Details for |part_of_inf|:
+@ Details for `part_of_inf`:
 
 =
 void SpatialInferences::infer_part_of(inference_subject *inner, int certitude,
@@ -184,11 +182,9 @@ void SpatialInferences::infer_part_of(inference_subject *inner, int certitude,
 	Inferences::join_inference(i, inner);
 }
 
-typedef struct part_of_inference_data {
+classdef part_of_inference_data {
 	struct inference_subject *parent;
-	CLASS_DEFINITION	
-} part_of_inference_data;
-
+}
 
 void SpatialInferences::log_part_of(inference_family *f, inference *inf) {
 	part_of_inference_data *data = RETRIEVE_POINTER_part_of_inference_data(inf->data);

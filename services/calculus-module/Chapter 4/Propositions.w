@@ -7,44 +7,44 @@ predicate calculus.
 There is no perfectly convenient way to represent propositions. The two
 obvious strategies are:
 
-(a) Hold them more or less as written, in a flat sequence of atoms.
-(b) Hold them in a tree which branches at each logical operation.
+- (a) Hold them more or less as written, in a flat sequence of atoms.
+- (b) Hold them in a tree which branches at each logical operation.
 
 We follow (a), which is easier to iterate through without tiresome amounts
 of recursion, but comes at the cost of extra complexity when it comes to
-grouping the terms -- this is why we need the awkward |NOT<| and |NOT>|
+grouping the terms — this is why we need the awkward `NOT<` and `NOT>`
 atoms, for example. (b) would almost certainly be better if we needed to
 accommodate disjunction as well as conjunction, but we do not. The main
 demerit of (a) is that it is easy to make malformed propositions, so we have
 to build and edit carefully.
 
 So propositions are represented by the //pcalc_prop// object at the front, an
-atomic proposition, and this leads via its |next| field to a second atomit
+atomic proposition, and this leads via its `next` field to a second atomit
 proposition, and so on. Now there's a natural way to store incomplete
 propositions and a natural build-point (at the end), and depth-first traverses
-are easy -- just work along from left to right.
+are easy — just work along from left to right.
 
 @ In particular:
 
-(1) The empty list, a |NULL| pointer, represents the universally true
+- The empty list, a `NULL` pointer, represents the universally true
 proposition $\top$. Asserting it does nothing; testing it at run-time always
-evaluates to |true|.
-(2) The conjunction $\alpha\land\beta$ is almost the concatenation of their
-linked lists |A --> B|, except that we must be careful if they appear to have
+evaluates to `true`.
+- The conjunction $\alpha\land\beta$ is almost the concatenation of their
+linked lists `A --> B`, except that we must be careful if they appear to have
 variables in common.
-(3) Negation $\lnot(\phi)$ is the concatenation |NOT< --> P --> NOT>|,
-where |P| is the linked list for $\phi$.
-(4) The quantifier $Q v\in \lbrace v\mid\phi(v)\rbrace$ is
-|QUANTIFIER --> IN< --> P --> IN>|, where |P| is the linked list for $\phi$.
+- Negation $\lnot(\phi)$ is the concatenation `NOT< --> P --> NOT>`,
+where `P` is the linked list for $\phi$.
+- The quantifier $Q v\in \lbrace v\mid\phi(v)\rbrace$ is
+`QUANTIFIER --> IN< --> P --> IN>`, where `P` is the linked list for $\phi$.
 
 Conjunction occurs so densely in propositions arising from
 natural language that we save a lot of memory and fuss by simply implying it:
-thus "great green dragon" is |PREDICATE --> PREDICATE --> PREDICATE|, rather than
-something like |PREDICATE --> AND_SIGN --> PREDICATE --> AND_SIGN --> PREDICATE|.
+thus "great green dragon" is `PREDICATE --> PREDICATE --> PREDICATE`, rather than
+something like `PREDICATE --> AND_SIGN --> PREDICATE --> AND_SIGN --> PREDICATE`.
 Disjunction hardly ever occurs, so although the above scheme could simulate
 it with $\alpha\lor\beta = \lnot((\lnot\alpha)\land(\lnot\beta))$, we never do.
 
-The following function determines whether or not |P1 --> P2| should be
+The following function determines whether or not `P1 --> P2` should be
 understood as a conjunction.
 =
 int Propositions::implied_conjunction_between(pcalc_prop *p1, pcalc_prop *p2) {
@@ -69,21 +69,21 @@ char *Propositions::debugging_log_text_between(pcalc_prop *p1, pcalc_prop *p2) {
 	if (p1->element == DOMAIN_CLOSE_ATOM) return ":";
 	if (Propositions::implied_conjunction_between(p1, p2)) {
 		if (Streams::I6_escapes_enabled(DL))
-			return("&"); /* since |^| in Inter strings means newline */
+			return("&"); /* since `^` in Inter strings means newline */
 		return ("^");
 	}
 	return "";
 }
 
 @h Walking through propositions.
-We sometimes need to indicate a position within a proposition -- a position
+We sometimes need to indicate a position within a proposition — a position
 not of an atom, but between atoms. Consider the possible places where letters
 could be inserted into the word "rap": before the "r" (trap), between "r" and
 "a" (reap), between "a" and "p" (ramp), after the "p" (rapt). Though "rap" is
-a three-letter word, there are four possible insertion points -- so they can't
+a three-letter word, there are four possible insertion points — so they can't
 exactly correspond to letters. The convention we use is that a position marker
-points to the //|pcalc_prop// structure for the atom before the position
-meant: and a |NULL| pointer in this context means the front position, before
+points to the //pcalc_prop// structure for the atom before the position
+meant: and a `NULL` pointer in this context means the front position, before
 the opening atom.
 
 @ The code needed to walk through a proposition is abstracted by the following
@@ -93,8 +93,8 @@ having to maintain the proposition data structure as a doubly linked list,
 which would be harder to edit.)
 
 One macro declares the name of a marker variable to be used when traversing;
-the other is the necessary loop head. Note that we do not assume that |p|
-will still be non-|NULL| at the end of a loop iteration, just because it
+the other is the necessary loop head. Note that we do not assume that `p`
+will still be non-`NULL` at the end of a loop iteration, just because it
 was at the beginning: local edits are sometimes performed in the traverse,
 and it can happen that an edit truncates the proposition so savagely that the
 loop finds its ground cut out from under it.
@@ -109,23 +109,23 @@ loop finds its ground cut out from under it.
 		(p##_repeat == FALSE)?(p##_prev=p, p=(p)?(p->next):NULL):0, p##_repeat = FALSE)
 
 @ An edit which happens during a traverse is permitted to make any change
-to the proposition at and beyond the marker position |p|, but not allowed
-to change what came before. Since such an edit might leave |p| pointing
+to the proposition at and beyond the marker position `p`, but not allowed
+to change what came before. Since such an edit might leave `p` pointing
 to an atom which has been cut, or moved later, we must perform the following
-macro after edits to restore |p|. We know that the atom which was before
-|p| at the start of the loop has not been changed -- since edits aren't
-allowed there -- so |p_prev| must be correct, and we therefore restore
-|p| to the next atom after |p_prev|.
+macro after edits to restore `p`. We know that the atom which was before
+`p` at the start of the loop has not been changed — since edits aren't
+allowed there — so `p_prev` must be correct, and we therefore restore
+`p` to the next atom after `p_prev`.
 
 There is a catch, however: if our edit consists only of deleting some
-atoms then using |PROPOSITION_EDITED| correctly resets |p| to the current
+atoms then using `PROPOSITION_EDITED` correctly resets `p` to the current
 atom at the marker position, and that will be the first atom after the
 ones deleted. If we then just go around the loop, we move on to the next
 atom; as a result, the first atom after the deleted ones is skipped over.
-We can avoid this by using |PROPOSITION_EDITED_REPEATING_CURRENT| instead.
+We can avoid this by using `PROPOSITION_EDITED_REPEATING_CURRENT` instead.
 
-Every routine which simplifies a proposition is expected to have an |int *|
-argument called |changed|: on exit, the |int| variable this points to
+Every routine which simplifies a proposition is expected to have an `int *`
+argument called `changed`: on exit, the `int` variable this points to
 should be set if and only if a change has been made to the proposition.
 
 @d PROPOSITION_EDITED(p, prop)
@@ -137,7 +137,7 @@ should be set if and only if a change has been made to the proposition.
 	p##_repeat = TRUE;
 
 @ So we may as well complete the debugging log code now. Note that $\top$ is
-logged as just |<< >>|.
+logged as just `<< >>`.
 
 =
 void Propositions::log(pcalc_prop *prop) {
@@ -157,14 +157,17 @@ void Propositions::write(OUTPUT_STREAM, pcalc_prop *prop) {
 
 @h Validity.
 Since the proposition data structure lets us build all kinds of nonsense,
-we'll be much safer if we can check our working -- if we can verify that a
+we'll be much safer if we can check our working — if we can verify that a
 proposition is valid. But what does that mean? We might mean:
 
-(i) a proposition is good if its sequence of |next| pointers all correctly
-point to |pcalc_prop| structures, and don't loop around into a circle;
+(i) a proposition is good if its sequence of `next` pointers all correctly
+point to `pcalc_prop` structures, and don't loop around into a circle;
+
 (ii) a proposition is good if (i) is true, and it is correctly punctuated;
+
 (iii) a proposition is good if (ii) is true, and it never confuses
 together two different variables by giving both the same letter;
+
 (iv) a proposition is good if (iii) is true, and all of its predicates
 can safely be applied to all of their terms, and we can identify what
 kind of value each variable ranges over.
@@ -178,30 +181,37 @@ properties, but intermediate half-built states often satisfy only (i).
 
 @ The following examples illustrate the differences. This one is not even
 syntactically valid:
-= (text)
-|IN< --> NOT> --> NOT>|
-=
+
+``` None
+`IN< --> NOT> --> NOT>`
+```
+
 This one is syntactically valid, but not well-formed:
-= (text)
-|EVERYWHERE(x) --> QUANTIFIER x --> PREDICATE(x)|
-=
-(If |x| ranges over all objects at the middle of the proposition, it had
+
+``` None
+`EVERYWHERE(x) --> QUANTIFIER x --> PREDICATE(x)`
+```
+
+(If `x` ranges over all objects at the middle of the proposition, it had
 better not already have a value, but if it doesn't, what can that first
 atom mean? It would be like writing the formula $n + \sum_{n=1}^{10} n^2$,
 where clearly two different things have been called $n$.)
 
 And this proposition is well-formed but not type-safe:
-= (text)
-|QUANTIFIER(x) --> kind=number(x) --> EVERYWHERE(x)|
-=
-(Here |x| is supposed to be a number, and therefore has no location, but
-|EVERYWHERE| can validly be applied only to backdrop objects, so what
-could |EVERYWHERE(x)| possibly mean?)
+
+``` None
+`QUANTIFIER(x) --> kind=number(x) --> EVERYWHERE(x)`
+```
+
+(Here `x` is supposed to be a number, and therefore has no location, but
+`EVERYWHERE` can validly be applied only to backdrop objects, so what
+could `EVERYWHERE(x)` possibly mean?)
 
 @ The following tests only (ii), validity. //calculus-test// is unable to make
 atoms which fail to pass //Atoms::validate//, nor can it make some of the
 misconstructions tested for below, but numerous other defects can be tested:
-= (text from Figures/validity.txt as REPL)
+
+![text as REPL](Figures/validity.txt)
 
 @d MAX_PROPOSITION_GROUP_NESTING 100 /* vastly more than could realistically be used */
 
@@ -251,8 +261,9 @@ Simple propositions contain only unary predicates or assertions that the
 free variable has a given kind, or a given value. For example, "a closed
 lockable door" is a simple proposition, but "four women in a lighted room"
 is complex. The only simple binary predicate is one which assigns a definite
-value to |x|. Examples:
-= (text from Figures/complexity.txt as REPL)
+value to `x`. Examples:
+
+![text as REPL](Figures/complexity.txt)
 
 =
 int Propositions::is_complex(pcalc_prop *prop) {
@@ -274,10 +285,11 @@ int Propositions::is_complex(pcalc_prop *prop) {
 
 @h Primitive operations on propositions.
 Now for some basic operations, as shown in the following examples:
-= (text from Figures/operations.txt as REPL)
 
-Note that the conjunction of A and B renamed the variable |x| in B to |y|,
-so that it no longer clashed with the meaning of |x| in A. The concatenation
+![text as REPL](Figures/operations.txt)
+
+Note that the conjunction of A and B renamed the variable `x` in B to `y`,
+so that it no longer clashed with the meaning of `x` in A. The concatenation
 did not, simply writing one after the other.
 
 @ First, copying, which means copying not just the current atom, but all
@@ -376,10 +388,11 @@ pcalc_prop *Propositions::quantify_using(pcalc_prop *Q, pcalc_prop *domain,
 @h Inserting and deleting atoms.
 These operations do what they say, but the result is often syntactically
 invalid. Handle with care.
-= (text from Figures/editing.txt as REPL)
+
+![text as REPL](Figures/editing.txt)
 
 @ Here we insert an atom at a given position, or at the front if the position
-is |NULL|.
+is `NULL`.
 
 =
 pcalc_prop *Propositions::insert_atom(pcalc_prop *prop, pcalc_prop *position,
@@ -411,7 +424,8 @@ pcalc_prop *Propositions::delete_atom(pcalc_prop *prop, pcalc_prop *position) {
 
 @h Miscellaneous further operations.
 The rest of this section is given over to miscellaneous utility functions:
-= (text from Figures/miscellaneous.txt as REPL)
+
+![text as REPL](Figures/miscellaneous.txt)
 
 @h Inspecting contents.
 First, we count the number of atoms in a given proposition. This is used by
@@ -430,23 +444,27 @@ int Propositions::length(pcalc_prop *prop) {
 @h Matching sequences of atoms.
 The following sneakily variable-argument-length function can be used to
 detect subsequences within a proposition: say, the sequence
-= (text)
+
+``` None
 	QUANTIFIER --> PREDICATE --> anything --> PREDICATE
-=
+```
+
 starting at the current position, which could be tested with:
-= (text)
+
+``` None
 	Propositions::match(p, 4,
 		QUANTIFIER_ATOM, NULL,
 		PREDICATE_ATOM, NULL, NULL,
 		ANY_ATOM_HERE, NULL,
 		PREDICATE_ATOM, &pp, NULL);
-=
+```
+
 As can be seen, each atom is tested with an element number and an optional
 pointer; when a successful match is made, the optional pointer is set to
-the atom making the match. |PREDICATE_ATOM| atoms are followed by a third
-parameter, which if not |NULL| requires it to be a unary predicate of that
-family. (So if the routine returns |TRUE| then we can be certain that |pp|
-points to the |PREDICATE_ATOM| at the end of the run of four.) There are
+the atom making the match. `PREDICATE_ATOM` atoms are followed by a third
+parameter, which if not `NULL` requires it to be a unary predicate of that
+family. (So if the routine returns `TRUE` then we can be certain that `pp`
+points to the `PREDICATE_ATOM` at the end of the run of four.) There are
 two special pseudo-element-numbers:
 
 @d ANY_ATOM_HERE 0 /* match any atom, but don't match beyond the end of the proposition */
@@ -609,11 +627,11 @@ pcalc_term Propositions::get_first_cited_term(pcalc_prop *prop) {
 		if (p->arity > 0)
 			return p->terms[0];
 	internal_error("Propositions::get_first_cited_term on termless proposition");
-	return Terms::new_variable(0); /* never executed, but needed to prevent |gcc| warnings */
+	return Terms::new_variable(0); /* never executed, but needed to prevent `gcc` warnings */
 }
 
 @ Here we attempt, if possible, to read a proposition as being either
-{\it adjective}($v$) or $\exists v: {\it adjective}(v)$, where the adjective
+${\it adjective}(v)$ or $\exists v: {\it adjective}(v)$, where the adjective
 can be also be read as a noun, and if so we return a constant term $t$ for
 that noun; or if the proposition isn't in that form, we return $t=x$, that
 is, variable 0.
@@ -664,9 +682,11 @@ unary_predicate *Propositions::next_unary_predicate(pcalc_prop **ppp) {
 @h Bracketed groups.
 The following routine tests whether the entire proposition is a single
 bracketed group. For instance:
-= (text)
+
+``` None
 	NOT< --> PREDICATE --> NOT>
-=
+```
+
 would qualify. Note that detection succeeds only if the parentheses match,
 and that they may be nested.
 

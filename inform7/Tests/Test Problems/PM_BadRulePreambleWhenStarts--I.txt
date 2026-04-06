@@ -1,0 +1,24 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 18 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 10706 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35533 words long.
+Problem__ PM_BadRulePreambleWhenStarts
+  >--> The punctuation makes me think 'When the opening scene starts' (source
+    text, line 3) should be a definition of a phrase or a rule, but it doesn't
+    begin as it should, with either 'To' (e.g. 'To flood the riverplain:'),
+    'Definition:', a name for a rule (e.g. 'This is the devilishly cunning
+    rule:'), 'At' plus a time (e.g. 'At 11:12 PM:' or 'At the time when the
+    clock chimes:') or the name of a rulebook. I wonder if you were trying to
+    talk about a scene here? If S is a scene name, then 'When S begins' or
+    'When S ends' are legal, but not 'When S starts' or 'When S finishes'.
+Problem__ PM_BadRulePreambleWhenStarts
+  >--> The punctuation makes me think 'When the opening scene finishes' (source
+    text, line 5) should be a definition of a phrase or a rule, but it doesn't
+    begin as it should, with either 'To' (e.g. 'To flood the riverplain:'),
+    'Definition:', a name for a rule (e.g. 'This is the devilishly cunning
+    rule:'), 'At' plus a time (e.g. 'At 11:12 PM:' or 'At the time when the
+    clock chimes:') or the name of a rulebook. I wonder if you were trying to
+    talk about a scene here? If S is a scene name, then 'When S begins' or
+    'When S ends' are legal, but not 'When S starts' or 'When S finishes'.
+Inform 7 has finished.

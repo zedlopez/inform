@@ -16,7 +16,7 @@ game-based purpose nevertheless still shows through in places, as with the
 quaint idea of having enumerated ways in which they finish (see //outcomes//).
 
 =
-typedef struct rulebook {
+classdef rulebook {
 	struct wording primary_name; /* name in source text */
 	struct wording alternative_name; /* alternative form of name */
 	int action_stem_length; /* to do with parsing, but 0 for most rulebooks */
@@ -34,8 +34,7 @@ typedef struct rulebook {
 	struct shared_variable_access_list *accessible_variables; /* and which can be named here */
 
 	struct rulebook_compilation_data compilation_data;
-	CLASS_DEFINITION
-} rulebook;
+}
 
 @ The following creates one:
 
@@ -221,7 +220,7 @@ void Rulebooks::set_alt_name(rulebook *B, wording AW) {
 @ And these up to four nouns can be matched with the following nonterminal.
 
 The process of noticing rulebook names inside parts of rule names is much
-more complex -- see //Rulebooks::rb_match_from_description// below.
+more complex — see //Rulebooks::rb_match_from_description// below.
 
 =
 <rulebook-name> internal {
@@ -304,7 +303,7 @@ int Rulebooks::runs_during_activities(rulebook *B) {
 	return B->runs_during_activities;
 }
 
-@ |rules_always_test_actor| is set (and meaningful) only for action focuses.
+@ `rules_always_test_actor` is set (and meaningful) only for action focuses.
 It marks a rulebook as definitely needing to check the actor.
 
 =
@@ -464,8 +463,8 @@ void Rulebooks::add_variable(rulebook *B, parse_node *cnode) {
 	}
 
 @ Rulebooks can also be given access to other sets of variables which are
-defined somewhere else -- but they still don't belong to |B|, so they do not
-go into |B->my_variables|.
+defined somewhere else — but they still don't belong to `B`, so they do not
+go into `B->my_variables`.
 
 =
 void Rulebooks::grant_access_to_variables(rulebook *B, shared_variable_set *set) {
@@ -542,13 +541,14 @@ void Rulebooks::detach_rule(rulebook *B, rule *R) {
 The voracious nonterminal <rulebook-stem> finds the "stem" of a rule, that is,
 the part which identifies which rulebook it will go into. For example, in;
 
->> Before printing the name of the peach: ...
->> Instead of eating: ...
+> Before printing the name of the peach: ...
+
+> Instead of eating: ...
 
 the stems are "before printing the name" and "instead".
 
 The results are, however, too complicated to return from <rulebook-stem>; since
-it is not used recursively, we store the results in |parsed_rm| on success.
+it is not used recursively, we store the results in `parsed_rm` on success.
 
 =
 typedef struct rulebook_match {
@@ -557,8 +557,8 @@ typedef struct rulebook_match {
 	int match_length; /* number of words in matched text */
 	int advance_words; /* how far the nonterminal should advance */
 	int tail_words; /* for rulebook names split by scene start or end */
-	struct article *article_used; /* or |NULL| if none was */
-	int placement_requested; /* one of the |*_PLACEMENT| values */
+	struct article *article_used; /* or `NULL` if none was */
+	int placement_requested; /* one of the `*_PLACEMENT` values */
 } rulebook_match;
 
 rulebook_match parsed_rm;
@@ -601,7 +601,7 @@ rulebook *parsed_scene_stem_B = NULL;
 
 @ Suppose this is our rule:
 
->> The first rule for printing the name of something: ...
+> The first rule for printing the name of something: ...
 
 the following grammar peels away the easier-to-read indications at the front. It
 notes the use of "The", and the placement "first"; it throws away other verbiage so
@@ -641,7 +641,7 @@ that <rulebook-stem-name> matches "printing the name of something".
 	parsed_scene_stem_len = 2;
 	==> { -, - };
 
-@ In this function, |SB| will be set for the hacky exceptional case where it's
+@ In this function, `SB` will be set for the hacky exceptional case where it's
 known that the remaining text matches "when ... begins/ends", one of the scenes
 rulebooks. This is all a bit inelegant, but we manage.
 
@@ -683,13 +683,13 @@ int Rulebooks::rb_match_from_description(wording W, rulebook *SB, int len, ruleb
 		}
 	}
 
-@ |action_stem_length| is zero except for rulebooks derived from actions, such
+@ `action_stem_length` is zero except for rulebooks derived from actions, such
 as "check taking". It is by definition the difference in length between the
-rulebook name and the action name -- here, therefore, it's 2 - 1 = 1.
+rulebook name and the action name — here, therefore, it's $2 - 1 = 1$.
 
-If the entire text |W| is the rulebook name -- in this case, "check taking" --
-we match that as normal. But if there is more text -- say, "check taking an
-open container" -- then we retreat slightly and match only the prefix "check".
+If the entire text `W` is the rulebook name — in this case, "check taking" —
+we match that as normal. But if there is more text — say, "check taking an
+open container" — then we retreat slightly and match only the prefix "check".
 This ensures that something like "check taking or dropping something" is
 initially, at least, put into the general check rulebook and not the specific
 one for taking, where the "or dropping" part would never have effect.
@@ -719,9 +719,7 @@ as used when they are created by the Standard Rules extension.
 	when scene begins |
 	when scene ends
 
-@
-
-= (early code)
+@<Global assertions variable definitions@> +=
 rulebook *RB_action_processing = NULL;
 rulebook *RB_after = NULL;
 rulebook *RB_before = NULL;

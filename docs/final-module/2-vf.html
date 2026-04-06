@@ -3,15 +3,16 @@
 	<head>
 		<title>Vanilla Functions</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
   var popup = document.getElementById(material_id);
@@ -19,15 +20,17 @@ function togglePopup(material_id) {
 }
 </script>
 
-<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
 		<nav role="navigation">
-		<h1><a href="../index.html">
-<img src="../docs-assets/Inform.png" height=72">
-</a></h1>
+		<h1><a href="../index.html"><img src="../docs-assets/Inform.png" height=72> </a></h1>
 <ul><li><a href="../index.html">home</a></li>
 </ul><h2>Compiler</h2><ul>
 <li><a href="../structure.html">structure</a></li>
@@ -38,18 +41,16 @@ function togglePopup(material_id) {
 <li><a href="../secrets.html">secrets</a></li>
 </ul><h2>Other Tools</h2><ul>
 <li><a href="../inblorbn.html">inblorb</a></li>
-<li><a href="../indocn.html">indoc</a></li>
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
 </ul><h2>Resources</h2><ul>
 <li><a href="../extensions.html">extensions</a></li>
 <li><a href="../kits.html">kits</a></li>
 </ul><h2>Repository</h2><ul>
-<li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
+<li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/index.html">inweb</a></li>
-<li><a href="../../../intest/index.html">intest</a></li>
-
+<li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> inweb</a></li>
+<li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=0> intest</a></li>
 </ul>
 		</nav>
 		<main role="main">
@@ -58,73 +59,82 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../intern.html">Inter Modules</a></li><li><a href="index.html">final</a></li><li><a href="index.html#2">Chapter 2: Mechanism</a></li><li><b>Vanilla Functions</b></li></ul></div>
 <p class="purpose">How the vanilla code generation strategy declares functions.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>The following traverses the Inter tree to discover all of the functions
-defined within it, and does two important things for each:
-</p>
-
-<ul class="items"><li>(a) Assigns it a <a href="2-vf.html#SP3" class="internal">vanilla_function</a> of metadata, and then
-</li><li>(b) Calls <a href="2-cg2.html#SP6" class="internal">Generators::predeclare_function</a> to let the generator know that
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  The following traverses the Inter tree to discover all of the functions
+defined within it, and does two important things for each:</p>
+<ul>
+<li>Assigns it a <a href="2-vf.html#SP3" class="internal">vanilla_function</a> of metadata, and then</li>
+<li>Calls <a href="2-cg2.html#SP6" class="internal">Generators::predeclare_function</a> to let the generator know that
 the function exists. Not all target languages require functions to be predeclared,
-so generators can if they choose ignore this.
-</li></ul>
+so generators can if they choose ignore this.</li>
+</ul>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::predeclare_functions</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::predeclare_functions</span></span>:<br/>Vanilla - <a href="2-vnl.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::predeclare_functions</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::predeclare_functions</span></span>:<br/>Vanilla - <a href="2-vnl.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">InterTree::traverse</span><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">, </span><a href="2-vf.html#SP2" class="function-link"><span class="function-syntax">VanillaFunctions::predeclare_this</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">PACKAGE_IST</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::predeclare_this</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::predeclare_this</span></span>:<br/><a href="2-vf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::predeclare_this</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::predeclare_this</span></span>:<br/><a href="2-vf.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax"> = (</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PackageInstruction::name_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">PackageInstruction::at_this_head</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">PackageInstruction::is_function</span><span class="plain-syntax">(</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax"> = </span><a href="2-vf.html#SP6" class="function-link"><span class="function-syntax">VanillaFunctions::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="type-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax"> = </span><a href="2-vf.html#SP6" class="function-link"><span class="function-syntax">VanillaFunctions::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="2-cg2.html#SP6" class="function-link"><span class="function-syntax">Generators::predeclare_function</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">vf</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>Each function has metadata as follows. Note that:
-</p>
-
-<ul class="items"><li>(a) Phrase syntax will only exist for functions which originated in Inform 7
-source text; so for functions coming from kits, <span class="extract"><span class="extract-syntax">phrase_syntax</span></span> will be empty
-and <span class="extract"><span class="extract-syntax">formal_arity</span></span> will be 0.
-</li><li>(b) For I7 functions, <span class="extract"><span class="extract-syntax">formal_arity</span></span> will be the number of arguments in the
-phrase preamble.
-</li><li>(c) For all functions, <span class="extract"><span class="extract-syntax">max_arity</span></span> is the total number of local variables in
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Each function has metadata as follows. Note that:</p>
+<ul>
+<li>
+<p>Phrase syntax will only exist for functions which originated in Inform 7
+source text; so for functions coming from kits, <code>phrase_syntax</code> will be empty
+and <code>formal_arity</code> will be 0.</p>
+</li>
+<li>
+<p>For I7 functions, <code>formal_arity</code> will be the number of arguments in the
+phrase preamble.</p>
+</li>
+<li>
+<p>For all functions, <code>max_arity</code> is the total number of local variables in
 the function, and that is by definition the largest number of arguments which
 could possibly be passed to this function by a call. Note that it will always
-be true that <span class="extract"><span class="extract-syntax">max_arity &gt;= formal_arity</span></span>.
-</li><li>(d) Calling conventions for Inter functions are not entirely simple: see
+be true that <code>max_arity &gt;= formal_arity</code>.</p>
+</li>
+<li>
+<p>Calling conventions for Inter functions are not entirely simple: see
 <a href="5-cfm.html" class="internal">C Function Model</a> for discussion of how they differ from regular C functions.
-In particular, any function with a local variable called <span class="extract"><span class="extract-syntax">_vararg_count</span></span> is
+In particular, any function with a local variable called <code>_vararg_count</code> is
 called with a variable number of arguments, placed on the stack before the call,
-rather than with arguments placed into local variables in the usual way.
-</li></ul>
+rather than with arguments placed into local variables in the usual way.</p>
+</li>
+</ul>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">vanilla_function</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">identifier</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phrase_syntax</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">locals</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">text_stream</span></span><span class="comment-syntax">, the names only</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">function_body</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">takes_variable_arguments</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">max_arity</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">formal_arity</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="reserved-syntax">vanilla_function</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">vanilla_function</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">identifier</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">phrase_syntax</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">locals</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>text_stream</code>, the names only */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">function_body</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">takes_variable_arguments</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">max_arity</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">formal_arity</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure vanilla_function is accessed in 2/vi, 4/i6c2, 5/clt, 5/cfm and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>This produces a synopsis of the phrase syntax which can be used in an identifier.
-For example, for "To award (N - number) points to (P - person)", the following
-writes <span class="extract"><span class="extract-syntax">award_X_points_to_X</span></span>:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  This produces a synopsis of the phrase syntax which can be used in an identifier.
+For example, for &quot;To award (N - number) points to (P - person)&quot;, the following
+writes <code>award_X_points_to_X</code>:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::syntax_synopsis</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::syntax_synopsis</span></span>:<br/>C Function Model - <a href="5-cfm.html#SP14_3">&#167;14.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::syntax_synopsis</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::syntax_synopsis</span></span>:<br/>C Function Model - <a href="5-cfm.html#SP15_3">&#167;15.3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">phrase_syntax</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=3, </span><span class="identifier-syntax">bracketed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">md</span><span class="plain-syntax">); </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::get_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">md</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=3, </span><span class="identifier-syntax">bracketed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">md</span><span class="plain-syntax">); </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
+<span class="plain-syntax">        </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::get_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">md</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">bracketed</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">')'</span><span class="plain-syntax">) </span><span class="identifier-syntax">bracketed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'('</span><span class="plain-syntax">) {</span>
@@ -138,27 +148,27 @@ writes <span class="extract"><span class="extract-syntax">award_X_points_to_X</s
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>And on the same example, this would return 2:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  And on the same example, this would return 2:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::formal_arity</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::formal_arity</span></span>:<br/><a href="2-vf.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::formal_arity</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::formal_arity</span></span>:<br/><a href="2-vf.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">phrase_syntax</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::get</span><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">) == </span><span class="character-syntax">'('</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">A</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>So, then:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  So, then:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="function-syntax">VanillaFunctions::new</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::new</span></span>:<br/><a href="2-vf.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="function-syntax">VanillaFunctions::new</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::new</span></span>:<br/><a href="2-vf.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterPackage::container</span><span class="plain-syntax">(</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">definition</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">PP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterPackage::parent</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">i7_syntax</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PP</span><span class="plain-syntax">?(</span><span class="identifier-syntax">Metadata::optional_textual</span><span class="plain-syntax">(</span><span class="identifier-syntax">PP</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"^phrase_syntax"</span><span class="plain-syntax">)):</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">vanilla_function</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="type-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">vanilla_function</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">takes_variable_arguments</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">identifier</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterSymbol::trans</span><span class="plain-syntax">(</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">locals</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax">);</span>
@@ -176,19 +186,17 @@ writes <span class="extract"><span class="extract-syntax">award_X_points_to_X</s
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">vf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>This performs a local traverse of the body of the function to look for local
-variable declarations.
-</p>
-
-<p class="commentary">Note that we look at <span class="extract"><span class="extract-syntax">InterSymbol::identifier(local_s)</span></span> not <span class="extract"><span class="extract-syntax">InterSymbol::trans(local_s)</span></span>
-when checking for <span class="extract"><span class="extract-syntax">_vararg_count</span></span> because the translated name may have been mangled
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  This performs a local traverse of the body of the function to look for local
+variable declarations.</p>
+<p>Note that we look at <code>InterSymbol::identifier(local_s)</code> not <code>InterSymbol::trans(local_s)</code>
+when checking for <code>_vararg_count</code> because the translated name may have been mangled
 in some way by the generator. (As indeed the C generator does, mangling this to
-<span class="extract"><span class="extract-syntax">local__vararg_count</span></span>.)
-</p>
-
+<code>local__vararg_count</code>.)</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::seek_locals</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::seek_locals</span></span>:<br/><a href="2-vf.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::seek_locals</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::seek_locals</span></span>:<br/><a href="2-vf.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="type-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inode::is</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">LOCAL_IST</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">local_s</span><span class="plain-syntax"> = </span><span class="identifier-syntax">LocalInstruction::variable</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">InterSymbol::trans</span><span class="plain-syntax">(</span><span class="identifier-syntax">local_s</span><span class="plain-syntax">), </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax">, </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">locals</span><span class="plain-syntax">);</span>
@@ -198,20 +206,20 @@ in some way by the generator. (As indeed the C generator does, mangling this to
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_INTER_CHILDREN</span><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">) </span><a href="2-vf.html#SP7" class="function-link"><span class="function-syntax">VanillaFunctions::seek_locals</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">vf</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>Note that a pointer to <span class="extract"><span class="extract-syntax">vf</span></span> is cached with each function name symbol for speed:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Note that a pointer to <code>vf</code> is cached with each function name symbol for speed:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::declare_function</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::declare_function</span></span>:<br/>Vanilla - <a href="2-vnl.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RETRIEVE_POINTER_vanilla_function</span><span class="plain-syntax">(</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">translation_data</span><span class="plain-syntax">);</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::declare_function</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::declare_function</span></span>:<br/>Vanilla - <a href="2-vnl.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="type-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RETRIEVE_POINTER_vanilla_function</span><span class="plain-syntax">(</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">translation_data</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-cg2.html#SP9" class="function-link"><span class="function-syntax">Generators::declare_function</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">vf</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::invoke_function</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::invoke_function</span></span>:<br/>Vanilla Code - <a href="2-vc2.html#SP3_2">&#167;3.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">void_context</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VanillaFunctions::invoke_function</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">VanillaFunctions::invoke_function</span></span>:<br/>Vanilla Code - <a href="2-vc2.html#SP3_2">&#167;3.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">void_context</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">definition</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Inode::is</span><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="identifier-syntax">CONSTANT_IST</span><span class="plain-syntax">)) &amp;&amp;</span>
 <span class="plain-syntax">        (</span><span class="identifier-syntax">ConstantInstruction::list_format</span><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">) == </span><span class="identifier-syntax">CONST_LIST_FORMAT_NONE</span><span class="plain-syntax">)) {</span>
@@ -221,13 +229,13 @@ in some way by the generator. (As indeed the C generator does, mangling this to
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax">) </span><span class="identifier-syntax">fn_s</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RETRIEVE_POINTER_vanilla_function</span><span class="plain-syntax">(</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">translation_data</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="type-syntax">vanilla_function</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RETRIEVE_POINTER_vanilla_function</span><span class="plain-syntax">(</span><span class="identifier-syntax">fn_s</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">translation_data</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">vf</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no translation data"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-cg2.html#SP15" class="function-link"><span class="function-syntax">Generators::invoke_function</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">vf</span><span class="plain-syntax">, </span><span class="identifier-syntax">void_context</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-vc.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-cg.html">cg</a></li><li class="progresssection"><a href="2-cg2.html">cg2</a></li><li class="progresssection"><a href="2-vnl.html">vnl</a></li><li class="progresssection"><a href="2-vc.html">vc</a></li><li class="progresscurrent">vf</li><li class="progresssection"><a href="2-vo.html">vo</a></li><li class="progresssection"><a href="2-vc2.html">vc2</a></li><li class="progresssection"><a href="2-vi.html">vi</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-gi6.html">4</a></li><li class="progresschapter"><a href="5-fnc.html">5</a></li><li class="progressnext"><a href="2-vo.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-vc.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-cg.html">cg</a></li><li class="progresssection"><a href="2-cg2.html">cg2</a></li><li class="progresssection"><a href="2-vnl.html">vnl</a></li><li class="progresssection"><a href="2-vc.html">vc</a></li><li class="progresscurrent">vf</li><li class="progresssection"><a href="2-vo.html">vo</a></li><li class="progresssection"><a href="2-vc2.html">vc2</a></li><li class="progresssection"><a href="2-vi.html">vi</a></li><li class="progresschapter"><a href="3-fti.html">3</a></li><li class="progresschapter"><a href="4-fi6.html">4</a></li><li class="progresschapter"><a href="5-fnc.html">5</a></li><li class="progressnext"><a href="2-vo.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

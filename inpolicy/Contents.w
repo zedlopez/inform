@@ -7,13 +7,13 @@ Version Number: 1
 Version Name: Plan A
 
 Import: foundation
+Import: literate
 
 Manual
 	Using Inpolicy
 	Reference Card
 
 Chapter 1: Setting Up
-	Basics
 	Main
 
 Chapter 2: Policies

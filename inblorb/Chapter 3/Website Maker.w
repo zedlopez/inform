@@ -10,70 +10,69 @@ scanning the source text for typographically significant structures:
 @d ABBREVIATED_HEADING_LENGTH 1000
 
 =
-typedef struct table {
+classdef table {
 	int table_line_start; /* line number in the source where the table heading appears */
 	int table_line_end; /* line number of the blank line which marks the end of the table body */
-	CLASS_DEFINITION
-} table;
+}
 
-typedef struct heading {
+classdef heading {
 	int heading_line; /* line number in the source at which the heading appears */
 	int heading_level; /* a low number makes this a more significant heading than a high number */
 	int heading_has_content; /* is there anything other than white space before the next heading? */
 	struct segment *heading_to_segment; /* which segment contains the heading */
 	struct text_stream *heading_text;
-	CLASS_DEFINITION
-} heading;
+}
 
 @ Segments are used to divide the source text into pieces of what we hope will
 be a manageable size.
 
 It is not true that the source text is partitioned exactly by segments. The
 topmost segment begins at the first heading in the source text. So there
-will usually be at least a few prefatory lines before this point -- perhaps
-the title, some extension inclusions, and so on -- and it's even possible,
+will usually be at least a few prefatory lines before this point — perhaps
+the title, some extension inclusions, and so on — and it's even possible,
 if there are no headings at all, for there to be no segments so that the
 entire source text is "prefatory". If we have three segments, then, we
 will split the source text into four HTML files:
 
-|source0.html| -- "Page 1 of 4", the preface and then contents
+`source0.html` — "Page 1 of 4", the preface and then contents
 
-|source1.html| -- "Page 2 of 4", first segment (with allocation ID 0)
+`source1.html` — "Page 2 of 4", first segment (with allocation ID 0)
 
-|source2.html| -- "Page 3 of 4", second segment (with allocation ID 1)
+`source2.html` — "Page 3 of 4", second segment (with allocation ID 1)
 
-|source3.html| -- "Page 4 of 4", third segment (with allocation ID 2)
+`source3.html` — "Page 4 of 4", third segment (with allocation ID 2)
 
 Note that the prefatory lines contain no headings, that every heading
-belongs to a unique segment (hence the |heading_to_segment| field above)
+belongs to a unique segment (hence the `heading_to_segment` field above)
 and that the top line of every segment is always a heading. A single
 segment can contain multiple headings, because we run on a heading if it
 contains no content except white space: this is so that, e.g.,
 
->> Part I - Up the Amazon
->> Section I.1 - The lower delta
->> Rickety Jetty is a room. [...]
+> Part I - Up the Amazon
+>
+> Section I.1 - The lower delta
+>
+> Rickety Jetty is a room. [...]
 
 would be combined into a single segment, rather than a pointlessly short
 segment just containing the "Part I" heading followed by a second segment
 opening with "Section I.1".
 
 =
-typedef struct segment {
+classdef segment {
 	int begins_at; /* line number on which the segment begins */
-	int ends_at; /* line number of the last line of the segment, or |MAX_SOURCE_TEXT_LINES| if it runs to the end */
+	int ends_at; /* line number of the last line of the segment, or `MAX_SOURCE_TEXT_LINES` if it runs to the end */
 	int documentation; /* is this in the documentation of an extension? */
 	struct text_file_position start_position_in_file; /* within the source text */
-	struct heading *most_recent_heading; /* or |NULL| if there hasn't been one */
-	struct table *most_recent_table; /* or |NULL| if there hasn't been one */
+	struct heading *most_recent_heading; /* or `NULL` if there hasn't been one */
+	struct table *most_recent_table; /* or `NULL` if there hasn't been one */
 	struct text_stream *segment_url;
 	struct text_stream *link_home;
 	struct text_stream *link_contents;
 	struct text_stream *link_previous;
 	struct text_stream *link_next;
 	int page_number;
-	CLASS_DEFINITION
-} segment;
+}
 
 @h Styling with CSS.
 We try to give the template files as much freedom as possible to define
@@ -82,18 +81,20 @@ variables, so Inblorb itself has to choose CSS styles for anything interesting
 that is displayed there. We use the following style names, which a CSS file
 is required to define:
 
-(a) |columnhead| -- the heading of a column in a Table in I7 source text
-(b) |comment| -- comments in I7 source text
-(c) |filetype| -- the "(pdf, 150KB)" text annotating links
-(d) |heading| -- heading or top line of a Table in I7 source text
-(e) |i6code| -- verbatim I6 code in I7 source text
-(f) |notecue| -- footnote cues which annotate I7 source text
-(g) |notesheading| -- the little "Notes" subheading above the footnotes to source text
-(h) |notetext| -- texts of footnotes which annotate I7 source text
-(i) |quote| -- double-quoted text in I7 source text
-(j) |substitution| -- text substitution inside double-quoted text in I7 source text
+style          | purpose
+-------------- | -------------------------------------------------------
+`columnhead`   | the heading of a column in a Table in I7 source text
+`comment`      | comments in I7 source text
+`filetype`     | the "(pdf, 150KB)" text annotating links
+`heading`      | heading or top line of a Table in I7 source text
+`i6code`       | verbatim I6 code in I7 source text
+`notecue`      | footnote cues which annotate I7 source text
+`notesheading` | the little "Notes" subheading above the footnotes to source text
+`notetext`     | texts of footnotes which annotate I7 source text
+`quote`        | double-quoted text in I7 source text
+`substitution` | text substitution inside double-quoted text in I7 source text
 
-In addition it must provide paragraph classes |indent0| to |indent9| for code
+In addition it must provide paragraph classes `indent0` to `indent9` for code
 which begins at tab positions 0 to 9 (see below). Although "Standard.css"
 contains other names of classes, these are only needed because "Standard.html"
 or "Standard-Source.html" say so: Inblorb does not mandate them.
@@ -139,7 +140,7 @@ void Websites::close_style(OUTPUT_STREAM, char *old) {
 
 @ In what follows, we will need to have a current typographic style for text,
 and may need to change it at any point inside the paragraph. We represent the
-current style by the global variable |current_style|, which is either |NULL|
+current style by the global variable `current_style`, which is either `NULL`
 (for ordinary text) or the name of one of the styles above.
 
 =
@@ -203,7 +204,7 @@ void Websites::close_code_paragraph(OUTPUT_STREAM) {
 	}
 }
 
-@ In the age of CSS, old-fashioned elements like |halign| for individual table
+@ In the age of CSS, old-fashioned elements like `halign` for individual table
 cells are deprecated, so:
 
 =
@@ -246,7 +247,7 @@ void Websites::web_copy(filename *from, filename *to) {
 
 @ Each line in turn comes here, then.
 
-For this to work we rely on the source template containing a |</head>| tag,
+For this to work we rely on the source template containing a `</head>` tag,
 in exactly that casing and spacing, but that's safe enough for the templates
 used by Inform.
 
@@ -305,17 +306,17 @@ During this scan, we will maintain the following variables:
 int within_a_table; /* are we inside a Table declaration in the source text? */
 int scan_quoted_matter; /* are we inside double-quoted matter in the source text? */
 int scan_comment_nesting; /* level of nesting of comments in source text: 0 means "not in a comment" */
-text_file_position *latest_line_position; /* |ftell|-reported byte offset of the start of the current line in the source */
-table *current_table; /* the Table which started most recently, or |NULL| if none has */
-heading *current_heading; /* the heading seen most recently, or |NULL| if none has been */
-segment *current_segment; /* the segment which started most recently, or |NULL| if none has */
-int position_of_documentation_bar; /* line count of the |---- Documentation ----| line, if there is one */
+text_file_position *latest_line_position; /* `ftell`-reported byte offset of the start of the current line in the source */
+table *current_table; /* the Table which started most recently, or `NULL` if none has */
+heading *current_heading; /* the heading seen most recently, or `NULL` if none has been */
+segment *current_segment; /* the segment which started most recently, or `NULL` if none has */
+int position_of_documentation_bar; /* line count of the `---- Documentation ----` line, if there is one */
 
-@ Pass 1 has running time $O(N)$ since it calls |Websites::scan_source_line| exactly once
-for each line in the source, and |Websites::scan_source_line| looks only at a single line
+@ Pass 1 has running time $O(N)$ since it calls `Websites::scan_source_line` exactly once
+for each line in the source, and `Websites::scan_source_line` looks only at a single line
 and at the current table, heading and segment.
 
-@d MAX_SOURCE_TEXT_LINES 2000000000; /* enough for 300 copies of the Linux kernel source -- plenty! */
+@d MAX_SOURCE_TEXT_LINES 2000000000; /* enough for 300 copies of the Linux kernel source... */
 
 =
 void Websites::scan_source_text(void) {
@@ -334,7 +335,7 @@ void Websites::scan_source_text(void) {
 
 @ Suppose our source contains only headings at levels 3 and 4: we can reduce these
 to levels 0 and 1 without disturbing their relative importance, and that makes it
-easier for us to typeset them in a sensible way -- there's no point making any
+easier for us to typeset them in a sensible way — there's no point making any
 typographic allowance for three sizes of headings greater than are found anywhere
 in the source text.
 
@@ -371,7 +372,7 @@ void Websites::scan_source_line(text_stream *line, text_file_position *tfp, void
 
 @ Looking at the first word, if any, tells whether we are a heading, or the start
 of a table, or an empty line, or none of these (in which case a line is perhaps
-unfairly called "dull"). We set |lv| accordingly.
+unfairly called "dull"). We set `lv` accordingly.
 
 @d EMPTY_LEVEL -1
 @d DULL_LEVEL 0
@@ -444,7 +445,7 @@ unfairly called "dull"). We set |lv| accordingly.
 
 @h Pass 2: writing the source text pages.
 Though there is no obvious way that the following routine passes control
-to the routines below it, in fact it does: |Websites::web_copy| works on the template
+to the routines below it, in fact it does: `Websites::web_copy` works on the template
 and finds reserved variables such as "[SOURCE]"; expanding those then calls
 the routines below.
 
@@ -465,8 +466,8 @@ void Websites::write_source_text_pages(filename *template, pathname *website_pat
 }
 
 @ Calling these URLs is a bit grand, since they are only leafnames. The
-source segments have pages |source_0.html| and so on up; the documentation
-pages |doc_0.html| and so on up.
+source segments have pages `source_0.html` and so on up; the documentation
+pages `doc_0.html` and so on up.
 
 @<Devise URLs for the segments@> =
 	segment *seg;
@@ -591,12 +592,12 @@ void Websites::expand_SOURCELINKS_variable(OUTPUT_STREAM) {
 
 @ When working on "[SOURCE]" or "[SOURCENOTES]", we will need to run
 through a segment of the source text, one line at a time. As we do so, we'll
-maintain the following variables, along with |current_style| (for which
+maintain the following variables, along with `current_style` (for which
 see the CSS discussion above):
 
 =
 text_stream *SPAGE = NULL; /* where the output is going */
-int SOURCENOTES_mode = FALSE; /* |TRUE| for "[SOURCENOTES]", |FALSE| for "[SOURCE]" */
+int SOURCENOTES_mode = FALSE; /* `TRUE` for "[SOURCENOTES]", `FALSE` for "[SOURCE]" */
 int quoted_matter = FALSE; /* are we inside double-quoted matter in the source text? */
 int i6_matter = FALSE; /* are we inside verbatim I6 code in the source text? */
 int comment_nesting = 0; /* nesting level of comments in source text being read: 0 for not in a comment */
@@ -606,8 +607,8 @@ int next_footnote_number = 1; /* number to assign to the next footnote which com
 heading *latest_heading = NULL; /* a heading which is always behind the current position */
 table *latest_table = NULL; /* a table which is always behind the current position */
 
-@ So this is "[SOURCE]" (if |noting_mode| is |FALSE|) or "[SOURCENOTES]"
-(if |TRUE|).
+@ So this is "[SOURCE]" (if `noting_mode` is `FALSE`) or "[SOURCENOTES]"
+(if `TRUE`).
 
 =
 void Websites::expand_SOURCE_or_SOURCENOTES_variable(OUTPUT_STREAM, int SN) {
@@ -634,7 +635,7 @@ void Websites::expand_SOURCE_or_SOURCENOTES_variable(OUTPUT_STREAM, int SN) {
 	latest_table = FIRST_OBJECT(table);
 
 @ We expect any use of "[SOURCENOTES]" to come after the relevant
-"[SOURCE]", so that looking at |next_footnote_number| will tell us how many
+"[SOURCE]", so that looking at `next_footnote_number` will tell us how many
 notes there were.
 
 @<Typeset the little Notes subheading@> =
@@ -652,13 +653,13 @@ times and usually a little less); but we might reasonably expect that $H$
 is proportional to $N$, since there's typically a heading every 30 or so
 lines in the source text, so that H is about N/30. If we then did the simplest
 thing, of opening the source text file and sending every line to
-|Websites::write_source_line|, we would make $O(N^2)$ calls, and even though many of
+`Websites::write_source_line`, we would make $O(N^2)$ calls, and even though many of
 those would quickly return it would be an expensive algorithm.
 
 Instead, we start at the relevant position in the source text for the
-current HTML page, and we stop the moment that |Websites::write_source_line| reports
+current HTML page, and we stop the moment that `Websites::write_source_line` reports
 that it has gone past the material of interest. We thus make at most $N+H$
-calls to |Websites::write_source_line| (the extra $H$ calls being for one overspill line
+calls to `Websites::write_source_line` (the extra $H$ calls being for one overspill line
 per segment, where we realise that we've gone too far).
 
 @<Read the source text and feed it one line at a time to the line-writer@> =
@@ -687,7 +688,7 @@ void Websites::source_write_iterator(text_stream *line, text_file_position *tfp,
 count as the scanner observed before on pass 1, so we can validly compare
 our current line count against those stored for tables, headings and segments.
 
-When this routine returns |TRUE|, it signals that there is no further need for
+When this routine returns `TRUE`, it signals that there is no further need for
 the source text, and that saves reading in all of the remaining lines which
 won't be needed.
 
@@ -702,16 +703,16 @@ int Websites::write_source_line(text_stream *line, text_file_position *tfp) {
 }
 
 @ Recall that the source text is divided into an initial portion containing
-no headings -- the "preface" -- and then segments, each of which begins with
+no headings — the "preface" — and then segments, each of which begins with
 a heading.
 
 Here we are handling the case of typesetting the preface. We allow the line
 to appear as normal if it is before the first segment; once we reach the
-first segment -- if there's a first segment to reach -- we then typeset the
+first segment — if there's a first segment to reach — we then typeset the
 contents listing. (If there's no first segment, then there are no headings,
 and there's no need for a contents listing.) If we've output the contents
 listing then we are finished writing the preface and don't need to read the
-source text further, so we return |TRUE|.
+source text further, so we return `TRUE`.
 
 @<Filter out lines for the preface@> =
 	segment *first_segment = FIRST_OBJECT(segment);
@@ -725,7 +726,7 @@ source text further, so we return |TRUE|.
 
 @ The segment pages are easier: in this case we allow the line only if it
 lies inside the segment, and otherwise suppress it. Once we've gone beyond
-the segment, we don't need to read any further, so we return |TRUE|.
+the segment, we don't need to read any further, so we return `TRUE`.
 
 @<Filter out lines for the segments@> =
 	if (line_count < segment_being_written->begins_at) return FALSE;
@@ -822,21 +823,21 @@ must be colour, since that may change in the course of the line.
 
 @ The heading line of a source text Table is in bold; the column-headings
 line is underlined; and the material inside appears in an HTML table, with
-|tabulate| mode set.
+`tabulate` mode set.
 
-The |while| loop here needs a careful look, since on the face of it this
-could mean $O(N)$ iterations -- since the number of tables is probably
-proportional to $N$ -- made in the course of the current "[SOURCE]"
+The `while` loop here needs a careful look, since on the face of it this
+could mean $O(N)$ iterations — since the number of tables is probably
+proportional to $N$ — made in the course of the current "[SOURCE]"
 expansion. Since the number of "[SOURCE]" expansions needed to make the
-website is also $O(N)$ -- the number of HTML pages in the site is proportional
-to the number of headings, which is also proportional to $N$ -- there's a
-risk that this |while| loop makes the whole website algorithm $O(N^2)$.
-This is why, on each "[SOURCE]" expansion, |latest_table| is initialised
+website is also $O(N)$ — the number of HTML pages in the site is proportional
+to the number of headings, which is also proportional to $N$ — there's a
+risk that this `while` loop makes the whole website algorithm $O(N^2)$.
+This is why, on each "[SOURCE]" expansion, `latest_table` is initialised
 not to the first table but to the most recent one at the start position of
 the current HTML page. Moreover, the loop never goes past the current line
 count, which never goes outside the range of lines in the current HTML page.
 The result is that over the course of all the "[SOURCE]" expansions
-combined, the |while| loop here executes $O(N)$ iterations in total.
+combined, the `while` loop here executes $O(N)$ iterations in total.
 
 @<Decide any typographic embellishments due to the line falling inside a table@> =
 	while ((latest_table) && (latest_table->table_line_end < line_count))
@@ -861,7 +862,7 @@ combined, the |while| loop here executes $O(N)$ iterations in total.
 		((segment_being_written) && (line_count == segment_being_written->begins_at)))
 			embolden = TRUE;
 
-@ See the discussion of |latest_table| above for why the following |while|
+@ See the discussion of `latest_table` above for why the following `while`
 loop also doesn't make our algorithm $O(N^2)$.
 
 @<Any heading line is in bold@> =
@@ -878,7 +879,7 @@ loop also doesn't make our algorithm $O(N^2)$.
 	if (line_count == position_of_documentation_bar) Str::copy(line, I"Documentation");
 
 @ We need to do two things: ensure that the character is HTML-safe, which
-means escaping out |"|, |<|, |>| and |&| (but nothing else since the HTML
+means escaping out `"`, `<`, `>` and `&` (but nothing else since the HTML
 file will use a UTF-8 encoding, the same as that in the source text); and
 keep track of the opening and closing of comments and quoted matter.
 
@@ -919,7 +920,7 @@ keep track of the opening and closing of comments and quoted matter.
 	}
 
 @ Inside a source-text Table, a tab moves to the next column, so we need to typeset a
-cell boundary in our HTML |<table>|. Outside of that context, a tab is just white
+cell boundary in our HTML `<table>`. Outside of that context, a tab is just white
 space and we turn it into a single space.
 
 @<Typeset a tab@> =
@@ -933,7 +934,7 @@ space and we turn it into a single space.
 	}
 
 @ The following enters or exits quoted-matter mode, and is structured so that
-the quotation marks are not coloured -- only the material inside them.
+the quotation marks are not coloured — only the material inside them.
 
 Our code in handling quoted and comment matter is greatly simplified by the
 fact that a valid Inform text cannot contain mismatched square brackets;
@@ -987,7 +988,7 @@ as they begin.
 
 @ The "cue" of a footnote is the reference in the body of the text, which
 is conventionally printed as a superscript number. We leave that to the
-span |notecue| if we have CSS, and otherwise render in grey superscript.
+span `notecue` if we have CSS, and otherwise render in grey superscript.
 
 @<Typeset a footnote cue@> =
 	WRITE_TO(SPAGE, "<a name=\"note%dref\"></a>", next_footnote_number);
@@ -997,7 +998,7 @@ span |notecue| if we have CSS, and otherwise render in grey superscript.
 	Websites::close_style(SPAGE, "notecue");
 	next_footnote_number++;
 
-@ That just leaves the little contents listings -- one for the source, and
+@ That just leaves the little contents listings — one for the source, and
 another for the documentation (if any).
 
 =
@@ -1018,12 +1019,12 @@ void Websites::typeset_contents_listing(int source_contents) {
 	@<Open or close UL tags to move to the new heading level@>;
 }
 
-@ This is how we obtain our nested UL tags: |current_level| starts and ends at
+@ This is how we obtain our nested UL tags: `current_level` starts and ends at
 $b-1$, and can only change its value by executing the following loops. Since
 it never changes to a value lower than 0 except when returning to $b-1$ at
-the end, we are always inside at least the outermost |<ul>|, and since the
+the end, we are always inside at least the outermost `<ul>`, and since the
 net change over the whole process is 0, there must be as many steps upward
-as downward -- so every |<ul>| is closed by a matching |</ul>|.
+as downward — so every `<ul>` is closed by a matching `</ul>`.
 
 @<Open or close UL tags to move to the new heading level@> =
 	while (new_level > current_level) { WRITE_TO(SPAGE, "<ul>"); current_level++; }

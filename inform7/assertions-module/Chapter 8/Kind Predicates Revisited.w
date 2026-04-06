@@ -2,8 +2,8 @@
 
 To define how the kind predicates behave in the Inform language.
 
-@ Recall that for every kind |K| the //calculus// module makes a built-in
-unary predicate |kind=K(t)|, which is true if and only if |t| has kind |K|.
+@ Recall that for every kind `K` the //calculus// module makes a built-in
+unary predicate `kind=K(t)`, which is true if and only if `t` has kind `K`.
 See //calculus: Kind Predicates// for details.
 
 In this section, we give this family of UPs the necessary method calls to
@@ -16,14 +16,16 @@ void KindPredicatesRevisited::start(void) {
 	METHOD_ADD(kind_up_family, SCHEMA_UPF_MTID, KindPredicatesRevisited::get_schema);
 }
 
-@ We will reject any "kind" applied to a constant if it necessarily fails --
+@ We will reject any "kind" applied to a constant if it necessarily fails —
 even when the sense of the proposition is arguably correct. For example:
-= (text)
+
+``` None
 	1. 100 is not a text
 	<< NOT< text('100') NOT> >>
 	Failed: proposition would not type-check
 	Term '100' is number not text
-=
+```
+
 "100 is not a number" would pass, on the other hand. It is obviously false,
 but not meaningless.
 
@@ -74,7 +76,7 @@ the atom $K(v)$ can only exist where $v$ is of that kind of value, so that the
 atom is always true when tested. But if $K$ is a kind of object, then $K(O)$
 may occur in the proposition for any object $O$, where $O$ need not belong
 to $K$ at all: so there is something substantive to check, which we do using
-the I6 |ofclass| operator.
+the I6 `ofclass` operator.
 
 =
 int suppress_C14CantChangeKind = FALSE;

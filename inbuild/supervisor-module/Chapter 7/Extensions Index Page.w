@@ -545,13 +545,12 @@ There is just no need to do this efficiently in either running time or memory.
 @d LEGACY_AREA_SYMBOL "border=\"0\" src=\"inform:/doc_images/pspec_ext.png\""
 
 =
-typedef struct extensions_key_item {
+classdef extensions_key_item {
 	struct text_stream *image_URL;
 	struct text_stream *gloss;
 	int displayed;
 	struct text_stream *ideograph;
-	CLASS_DEFINITION
-} extensions_key_item;
+}
 
 void ExtensionIndex::add_to_key(linked_list *L, char *URL, text_stream *gloss) {
 	TEMPORARY_TEXT(as_text)
@@ -668,7 +667,7 @@ void ExtensionIndex::find_used_extensions_r(build_vertex *V, int scan_count,
 
 @h Sorting criteria.
 The following give some sorting criteria, and are functions fit to be
-handed to |qsort|.
+handed to `qsort`.
 
 =
 int ExtensionIndex::compare_res_by_title(const void *res1, const void *res2) {

@@ -11,38 +11,37 @@ in the main Inform documentation.
 
 We will need to parse the entire skein into a tree structure, in which each
 node (including leaves) is one of the following structures. We expect the
-Inform user to have annotated certain nodes with the text |***| (three
+Inform user to have annotated certain nodes with the text `***` (three
 asterisks); the solution file will ignore all paths in the skein which do
-not lead to one of these |***| nodes. The surviving nodes, those in lines
-which do lead to |***| endings, are called "relevant".
+not lead to one of these `***` nodes. The surviving nodes, those in lines
+which do lead to `***` endings, are called "relevant".
 
 Some knots have "branch descriptions", others do not. These are the
-options where choices have to be made. The |branch_parent| and |branch_count|
+options where choices have to be made. The `branch_parent` and `branch_count`
 fields are used to keep these labels: see below.
 
 =
-typedef struct skein_node {
+classdef skein_node {
 	struct text_stream *id; /* uniquely identifying ID used within the Skein file */
 	struct text_stream *command; /* text of the command at this node */
 	struct text_stream *annotation; /* text of any annotation added by the user */
 	int relevant; /* is this node within one of the "relevant" lines in the skein? */
 	struct skein_node *branch_parent; /* the trunk of the branch description, if any, is this way */
 	int branch_count; /* the leaf of the branch description, if any, is this number */
-	struct skein_node *parent; /* within the Skein tree: |NULL| for the root only */
-	struct skein_node *child; /* within the Skein tree: |NULL| if a leaf */
-	struct skein_node *sibling; /* within the Skein tree: |NULL| if the final option from its parent */
-	CLASS_DEFINITION
-} skein_node;
+	struct skein_node *parent; /* within the Skein tree: `NULL` for the root only */
+	struct skein_node *child; /* within the Skein tree: `NULL` if a leaf */
+	struct skein_node *sibling; /* within the Skein tree: `NULL` if the final option from its parent */
+}
 
 @ The root of the Skein, representing the start position before any command
 is typed, lives here:
 
 =
-skein_node *root_skn = NULL; /* only |NULL| when the tree is empty */
+skein_node *root_skn = NULL; /* only `NULL` when the tree is empty */
 
 @h Walking through.
 This section provides just one function to the rest of Inblorb: this one,
-which implements the Blurb |solution| command.
+which implements the Blurb `solution` command.
 
 Our method works in four steps. Steps 1 to 3 have a running time of O(K^2),
 where K is the number of knots in the Skein, and step 4 is O(K log K),
@@ -133,7 +132,7 @@ void Solution::read_skein_line(text_stream *line, int pass) {
 	current_skein_node->relevant = FALSE;
 	if (verbose_mode) PRINT("Creating knot with ID '%S'\n", node_id);
 
-@ We make |new_child| the youngest child of |current_skein_mode|:
+@ We make `new_child` the youngest child of `current_skein_mode`:
 
 @<Make the parent-child relationship@> =
 	new_child->parent = current_skein_node;
@@ -272,15 +271,15 @@ void Solution::identify_relevant_lines(void) {
 When the loop below concludes, the relevant nodes are exactly those in the
 component of the tree root, because:
 
-(a) No irrelevant node can be the child of a relevant one; and no
+- No irrelevant node can be the child of a relevant one; and no
 relevant node can be the child of an irrelevant one by definition. So the
 tree falls into components each of which is fully relevant or fully not.
-(b) Since we never break any relevant-parent-relevant-child relationships, the
+- Since we never break any relevant-parent-relevant-child relationships, the
 number of components containing at least one relevant node is unchanged.
-(c) Since the Skein is initially a tree and not a forest, we start with
+- Since the Skein is initially a tree and not a forest, we start with
 just one component, and it contains the tree root, which is known to be
 relevant (we would have given up with an error message if not).
-(d) And therefore at the end of the loop the "tree" consists of a single
+- And therefore at the end of the loop the "tree" consists of a single
 component headed by the tree root and containing all of the relevant nodes,
 together with any number of other components each of which contains only
 irrelevant ones.
@@ -319,8 +318,8 @@ void Solution::write_solution_file(filename *walkthrough_filename) {
 	STREAM_CLOSE(SOL);
 }
 
-@ The following prints commands to the solution file from the position |skn| --
-which means just after typing its command -- with the aim of reaching all
+@ The following prints commands to the solution file from the position `skn` —
+which means just after typing its command — with the aim of reaching all
 relevant endings we can get to from there.
 
 =
@@ -333,11 +332,11 @@ void Solution::recursively_solve(OUTPUT_STREAM, skein_node *skn, skein_node *las
 }
 
 @ If there's only a single option from here, we could print it and then
-call |Solution::recursively_solve| down from it. That would make the code shorter and
+call `Solution::recursively_solve` down from it. That would make the code shorter and
 clearer, perhaps, but it would clobber the C stack: our recursion depth
 might be into the tens of thousands on long solution files. So we tail-recurse
 instead of calling ourselves, so to speak, and just run down the thread
-until we reach a choice. (If we never do reach a choice, we can return --
+until we reach a choice. (If we never do reach a choice, we can return —
 there is nowhere else to reach.)
 
 @<Follow the skein down until we reach a divergence, if we do@> =
@@ -348,7 +347,7 @@ there is nowhere else to reach.)
 	if (skn->child == NULL) return;
 
 @ Thus we are here only when there are at least two alternative commands
-we might use from position |skn|.
+we might use from position `skn`.
 
 @<Print the various alternatives from this knot where the threads diverge@> =
 	WRITE("Choice:\n");

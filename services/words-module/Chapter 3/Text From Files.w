@@ -5,10 +5,10 @@ or from the main source text file, and fed into the lexer.
 
 @h Source files.
 Each separate file of text read into the lexer has its identity docketed
-in a |source_file| structure, as follows.
+in a `source_file` structure, as follows.
 
 =
-typedef struct source_file {
+classdef source_file {
 	struct filename *name;
 	int words_of_source; /* word count, omitting comments and verbatim matter */
 	struct wording text_read;
@@ -20,10 +20,9 @@ typedef struct source_file {
 	struct text_stream *torn_off_documentation;
 	struct text_stream *tangled;
 	int tangled_position;
-	CLASS_DEFINITION
-} source_file;
+}
 
-source_file *TextFromFiles::new_sf(filename *F, FILE *handle, ls_web *W, general_pointer ref, int mode) {
+source_file *TextFromFiles::new_sf(filename *F, FILE *handle, void *W_void, general_pointer ref, int mode) {
 	source_file *sf = CREATE(source_file);
 	sf->words_of_source = 0;
 	sf->words_of_quoted_text = 0;
@@ -35,7 +34,9 @@ source_file *TextFromFiles::new_sf(filename *F, FILE *handle, ls_web *W, general
 	sf->torn_off_documentation = Str::new();
 	sf->tangled = Str::new();
 	sf->tangled_position = -1;
-	if (W) {
+	#ifdef LITERATE_MODULE
+	if (W_void) {
+		ls_web *W = (ls_web *) W_void;
 		if (Str::len(Bibliographic::get_datum(W, I"Version")) > 0)
 			WRITE_TO(sf->tangled, "%S of %S by %S begins here.\n\n",
 				Bibliographic::get_datum(W, I"Version"),
@@ -53,6 +54,7 @@ source_file *TextFromFiles::new_sf(filename *F, FILE *handle, ls_web *W, general
 			Bibliographic::get_datum(W, I"Title"));
 		sf->tangled_position = 0;
 	}
+	#endif
 	return sf;
 }
 
@@ -72,8 +74,8 @@ other is in Lexical Writing Back.w: see Lexer.w for its obligations.
 
 We feed characters from an open file into the lexer, and continue until there
 is nothing left in it. Inform is used on operating systems which between them
-use all four of the sequences |0a|, |0d|, |0a0d| and |0d0a| to divide lines in
-text files, so each of these is converted to a single |'\n'|. Tabs are treated
+use all four of the sequences `0a`, `0d`, `0a0d` and `0d0a` to divide lines in
+text files, so each of these is converted to a single `'\n'`. Tabs are treated
 as if spaces in most contexts, but not when parsing formatted tables, for
 instance, so they are not similarly converted.
 
@@ -81,7 +83,7 @@ We also want to look out for the tear-off documentation line, if there is one.
 
 =
 source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
-	ls_web *W, text_stream *leaf, int documentation_only, general_pointer ref, int mode) {
+	void *W, text_stream *leaf, int documentation_only, general_pointer ref, int mode) {
 	source_file *sf = TextFromFiles::new_sf(F, handle, W, ref, mode);
 	inchar32_t cr, last_cr, next_cr, read_cr, newline_char = 0;
 	int torn_off = FALSE;
@@ -101,15 +103,15 @@ source_file *TextFromFiles::feed_open_file_into_lexer(filename *F, FILE *handle,
 			switch(cr) {
 				case '\x0a':
 					if (newline_char == '\x0d') {
-						newline_char = 0; continue; /* suppress |0x000A| when it follows |0x000D| */
+						newline_char = 0; continue; /* suppress `0x000A` when it follows `0x000D` */
 					}
-					newline_char = cr; cr = '\n'; /* and otherwise convert to |'\n'| */
+					newline_char = cr; cr = '\n'; /* and otherwise convert to `'\n'` */
 					break;
 				case '\x0d':
 					if (newline_char == '\x0a') {
-						newline_char = 0; continue; /* suppress |0x000D| when it follows |0x000A| */
+						newline_char = 0; continue; /* suppress `0x000D` when it follows `0x000A` */
 					}
-					newline_char = cr; cr = '\n'; /* and otherwise convert to |'\n'| */
+					newline_char = cr; cr = '\n'; /* and otherwise convert to `'\n'` */
 					break;
 				default:
 					newline_char = 0;
@@ -221,7 +223,7 @@ text_stream *TextFromFiles::torn_off_documentation(source_file *sf) {
 }
 
 @ Finally, we translate between the tiresomely many representations of
-files we seem to be stuck with. The method used by |TextFromFiles::filename_to_source_file|
+files we seem to be stuck with. The method used by `TextFromFiles::filename_to_source_file`
 looks vulnerable to case-insensitive filename issues, but isn't, because
 each filename is present in Inform in only one form.
 

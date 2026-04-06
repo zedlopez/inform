@@ -3,7 +3,7 @@
 Instances and kinds are both referred to by nouns, and here we create corresponding
 inames for use in compiled Inter code, and identifiers for use in the index.
 
-@ |noun| objects are created in the //linguistics// module; the following attaches
+@ `noun` objects are created in the //linguistics// module; the following attaches
 some compilation data to those.
 
 @d NOUN_COMPILATION_LINGUISTICS_CALLBACK NounIdentifiers::initialise_noun_compilation
@@ -47,8 +47,8 @@ inter_name *NounIdentifiers::iname(noun *t) {
 	return t->compilation_data.nt_iname;
 }
 
-@ If a noun is given an explicit Inter identifier -- for example, if the
-player's avatar is given the identifier |selfobj| rather than, say, |I_yourself| --
+@ If a noun is given an explicit Inter identifier — for example, if the
+player's avatar is given the identifier `selfobj` rather than, say, `I_yourself` —
 then we need to change the textual identifier, and also the translation of
 the iname. We also want it to be visible to the linker, and we know that the
 name will be unique in the global namespace, so we tell the linker not to

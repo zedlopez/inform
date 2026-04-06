@@ -3,8 +3,8 @@
 To parse two forms of noun: a noun phrase in a sentence, and a
 description of what text can be written in a given situation.
 
-@ Inform recognises many noun-like constructions, some of which -- out of a noun
-context -- look like adjectives, actions or other excerpts which aren't at all
+@ Inform recognises many noun-like constructions, some of which — out of a noun
+context — look like adjectives, actions or other excerpts which aren't at all
 evidently nouns. These many ways to describe nouns are gathered up into two
 central constructions. A "type expression" specifies what sort of excerpt
 should appear in a given place, whereas a "value" means anything which
@@ -12,7 +12,8 @@ can be a noun phrase for a verb. There is considerable overlap between the
 two, but they are not the same.
 
 The following example sentences all have expressions embedded in them:
-= (text as Inform 7)
+
+``` Inform7
                                      EXPRESSION:
 if the idea of the gizmo is          taking the fish             , ...
 if there are                         three women                 in the Nunnery, ...
@@ -26,6 +27,7 @@ To repeat until (C -                 condition                   ): ...
 The Zeppelin countdown is a          number that varies
 The little red car is a              vehicle
 The weight of the Space Shuttle is   68585 kg
+```
 
 @h Type expressions.
 A "type expression" specifies what sort of excerpt of text should appear
@@ -39,16 +41,16 @@ parameter in a phrase definition should be, though it has other uses elsewhere.
 That certainly includes cases which traditional programming languages would
 call types, so
 
->> To adjust (X - closed door) by (N - number): ...
+> To adjust (X - closed door) by (N - number): ...
 
 includes two type expressions, "closed door" and "number". But a type
 expression can also be a constant, which languages like C (for instance) would
 consider a value and not a type at all:
 
->> To adjust (X - closed door) by (N - 11): ...
+> To adjust (X - closed door) by (N - 11): ...
 
 gives a definition to be used only where the second parameter evaluates to
-11. In this way any constant value is regarded as being a type -- the narrow
+11. In this way any constant value is regarded as being a type — the narrow
 type representing only its own value.
 
 The final use of <s-object-instance> here catches hardly any cases, but is
@@ -73,12 +75,12 @@ otherwise as the 24th "Street".
 	<s-object-instance>                          ==> { pass 1 }
 
 @ Note that a list of adjectives with no noun does not qualify as a type
-expression. It looks as if it never should, on the face of it -- "opaque"
-does not make clear what kind of object is to be opaque -- but once again we
+expression. It looks as if it never should, on the face of it — "opaque"
+does not make clear what kind of object is to be opaque — but once again we
 are up against the problem that Inform needs to allow some slightly noun-like
 adjectives. For instance, this:
 
->> To adjust (X - scenery): ...
+> To adjust (X - scenery): ...
 
 is allowed even though "scenery" is an adjective in Inform.
 
@@ -95,7 +97,7 @@ To allow this, we have a minor variation:
 
 @ And now we parse descriptions of variables such as the one appearing in
 
->> To increment (V - existing number variable)
+> To increment (V - existing number variable)
 
 where <s-variable-scope> matches "existing number variable".
 
@@ -143,7 +145,7 @@ higher up in Inform. Ultimately, the text must match <k-kind> in each case.
 Two pieces of context. "Let" mode is in operation when we are in an equation
 written out in the phrase, such as here:
 
->> let V be given by V = fl;
+> let V be given by V = fl;
 
 =
 int let_equation_mode = FALSE;
@@ -188,34 +190,41 @@ but otherwise changes little.
 @h Values.
 The sequence here is important, in that it resolves ambiguities:
 
-(*) Variable names have highest priority, in order to allow temporary "let"
+- Variable names have highest priority, in order to allow temporary "let"
 names to mask existing meanings.
-(*) Constants come next: these include literals, but also named constants,
+
+- Constants come next: these include literals, but also named constants,
 such as names of rooms or things.
-(*) Equations are an oddball exceptional case, seldom arising.
-(*) Property names are not constants and, as values, they are usually read
+
+- Equations are an oddball exceptional case, seldom arising.
+
+- Property names are not constants and, as values, they are usually read
 as implicitly referring to a property value of something, not as a reference
 to the property itself: thus "description" means the actual description of
 some object clear from context, not the description property in the abstract.
-(*) Table column names present a particular ambiguity arising from tables
+
+- Table column names present a particular ambiguity arising from tables
 which are used to construct instances. In tables like that, the column names
 become names of properties owned by those instances; and then there are also
 ambiguities like those with property names, as between the column's identity
 and the actual contents of the current row.
-(*) Phrases to decide a value whose wording mimics a property cause trouble.
+
+- Phrases to decide a value whose wording mimics a property cause trouble.
 I sometimes think it would be better to penalise this sort of wording by
 treating it badly, but since the Standard Rules are as guilty as anyone else,
 Inform instead tries to cope. Here we parse any phrase whose wording doesn't
 look like a property lookup in the form "X of Y"; later we will pick up
 any phrase whose wording does.
-(*) Similarly we parse descriptions in two rounds: those referring to
+
+- Similarly we parse descriptions in two rounds: those referring to
 physical objects, and others later on. This is because English tends to give
 metaphorically physical names to abstract things: for example, the word
 "table" for an array of data. We want to make sure sentences like "The
 ball is on the table" are not misread through parsing "table" as the
 name of the kind. (Type expressions have the opposite convention: there,
 kind names always take priority over mere names of things. See above.)
-(*) The "member of..." productions are to make it possible to write
+
+- The "member of..." productions are to make it possible to write
 description comprehensions without ambiguity or grammatical oddness; for
 instance if a "let" name "D" holds a description, it enables us to
 write "members of D" instead of just "D", making the wording of some
@@ -427,15 +436,15 @@ vocabulary_entry *property_word_to_suppress = NULL;
 @h Table references.
 Table references come in five different forms:
 
-(a) For instance, "atomic number entry", meaning the entry in that column
+- For instance, "atomic number entry", meaning the entry in that column
 and implicitly in the table and row currently selected.
-(b) For instance, "atomic number in row 4 of the Table of Elements".
-(c) For instance, "an atomic number listed in the Table of Elements" in the
+- For instance, "atomic number in row 4 of the Table of Elements".
+- For instance, "an atomic number listed in the Table of Elements" in the
 sentence "if 101 is an atomic number listed in the Table of Elements". This
 is part of a condition, and can't evaluate.
-(d) For instance, "atomic weight corresponding to an atomic number of 57 in
+- For instance, "atomic weight corresponding to an atomic number of 57 in
 the Table of Elements".
-(e) For instance, "atomic weight of 20 in the Table of Elements" in the
+- For instance, "atomic weight of 20 in the Table of Elements" in the
 sentence "if there is an atomic weight of 20 in the Table of Elements".
 Again, this is part of a condition, and can't evaluate.
 

@@ -2,7 +2,7 @@
 
 To ensure that the built-in extensions share version numbers with the core compiler.
 
-@ This implements |-extension-versions|:
+@ This implements `-extension-versions`:
 
 =
 void ExtensionVersioning::show_versions(void) {
@@ -11,7 +11,7 @@ void ExtensionVersioning::show_versions(void) {
 	ExtensionVersioning::iterate(VersionNumbers::null());
 }
 
-@ And |-sync-extension-versions|:
+@ And `-sync-extension-versions`:
 
 =
 void ExtensionVersioning::sync_versions(void) {
@@ -21,12 +21,15 @@ void ExtensionVersioning::sync_versions(void) {
 }
 
 semantic_version_number ExtensionVersioning::simplified_core_version(void) {
-	ls_web *inform7_web =
-		WebStructure::get_without_modules(Pathnames::from_text(I"inform7"), NULL);
-	semantic_version_number V = inform7_web->version_number;
-	V.prerelease_segments = NULL;
-	V.build_metadata = NULL;
-	return V;
+	wcl_declaration *D = WCL::read_web(Pathnames::from_text(I"inform7"), NULL);
+	if (D) {
+		ls_web *inform7_web = WebStructure::from_declaration(D);
+		semantic_version_number V = inform7_web->version_number;
+		V.prerelease_segments = NULL;
+		V.build_metadata = NULL;
+		return V;
+	}
+	return VersionNumbers::null();
 }
 
 @ Both use the following to work through the built-in kits:
@@ -57,11 +60,11 @@ void ExtensionVersioning::show_version(pathname *P, text_stream *name,
 }
 
 @ The actual work, then, is done by this function, which returns the version
-number of the kit stored at the path |kit|; if |set_to| is other than null,
-the kit's version is changed to |set_to|, and this value returned. In both
+number of the kit stored at the path `kit`; if `set_to` is other than null,
+the kit's version is changed to `set_to`, and this value returned. In both
 cases, the kit's JSON metadata file is read in; in the second case, it is
 then written back out, modified to include the new version number. (Note
-that no file write occurs unless an actual change is needed: if |set_to|
+that no file write occurs unless an actual change is needed: if `set_to`
 is the same as the version it already has, there's no need to rewrite.)
 
 =
@@ -101,10 +104,10 @@ semantic_version_number ExtensionVersioning::read_version(pathname *X, text_stre
 	return V;
 }
 
-@ The following test used to be just |VersionNumbers::ne(set_to, V)|, but this,
+@ The following test used to be just `VersionNumbers::ne(set_to, V)`, but this,
 because it properly followed the semver standard, regarded them as equal if they
-differed only in the build code -- so |10.1.0-beta+6V20| would not be updated to
-|10.1.0-beta+6V44|, for example. We now force a sync if there is any textual
+differed only in the build code — so `10.1.0-beta+6V20` would not be updated to
+`10.1.0-beta+6V44`, for example. We now force a sync if there is any textual
 difference at all.
 
 @<If necessary impose the new version in metadata file@> =

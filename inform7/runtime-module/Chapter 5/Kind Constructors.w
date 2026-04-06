@@ -30,6 +30,7 @@ typedef struct kind_constructor_compilation_data {
 	struct inter_name *showme_fn_iname;
 
 	struct inter_name *GPR_iname;
+	int GPR_required;
 	struct inter_name *instance_GPR_iname;
 	struct inter_name *recognition_only_GPR_iname;
 	struct inter_name *distinguisher_function_iname;
@@ -65,6 +66,7 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 	kccd.showme_fn_iname = NULL;
 
 	kccd.GPR_iname = NULL;
+	kccd.GPR_required = FALSE;
 	kccd.instance_GPR_iname = NULL;
 	kccd.recognition_only_GPR_iname = NULL;
 	kccd.distinguisher_function_iname = NULL;
@@ -76,8 +78,8 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 }
 
 @h The package.
-The Inter package for a kind constructor -- either a base kind, like "door"
-or "number", or a derived kind like "list of ..." -- can appear more or less
+The Inter package for a kind constructor — either a base kind, like "door"
+or "number", or a derived kind like "list of ..." — can appear more or less
 anywhere in the Inter tree without making any real difference to the meaning
 of the program, but we try to be tidy about where to put it.
 
@@ -147,11 +149,11 @@ inter_name *RTKindConstructors::xref_iname(kind_constructor *kc) {
 
 @h Iname for the weak ID.
 The "weak ID" for a kind is a runtime value identifying only its constructor.
-This distinguishes base kinds -- for example, "number" and "text" have different
-weak IDs -- but not derived kinds -- for example, "list of numbers" and
+This distinguishes base kinds — for example, "number" and "text" have different
+weak IDs — but not derived kinds — for example, "list of numbers" and
 "list of texts" have the same weak ID. (For that, the "strong ID" is needed.)
 
-An identifier like |NUMBER_TY|, then, begins life in a definition inside an
+An identifier like `NUMBER_TY`, then, begins life in a definition inside an
 Neptune file; becomes attached to a constructor here; and finally winds up
 back in Inter code, because we define it as the constant for the weak kind ID
 of the kind which the constructor makes:
@@ -316,12 +318,12 @@ inter_name *RTKindConstructors::create_base_IK_iname(kind *K) {
 
 @ The "icount" is a genuine constant, currently defined for each enumeration
 and each kind of object. The naming system here is potentially problematic:
-"figure name" counts out as |ICOUNT_FIGURE_NAME|, "door" as |ICOUNT_DOOR|,
+"figure name" counts out as `ICOUNT_FIGURE_NAME`, "door" as `ICOUNT_DOOR`,
 and so on. This is potentially open to namespace clashes, given the truncation
 to 31 characters, but for kinds whose names fit into that length without
 truncation, there should never be any problem.
 
-All the same,icounts should probably be used only when necessary, and |WorldModelKit|
+All the same,icounts should probably be used only when necessary, and `WorldModelKit`
 no longer uses the icounts for any kinds of object, where clashes are more
 plausible.
 
@@ -361,7 +363,7 @@ inter_name *RTKindConstructors::instances_array_iname(kind *K) {
 }
 
 @ Sometimes we want to cache the constant list produced by "list of doors",
-say -- an Inform 7 list. This means that if there are multiple mentions of
+say — an Inform 7 list. This means that if there are multiple mentions of
 the "list of doors", we will only compile the constant once. It goes here:
 
 =
@@ -499,6 +501,11 @@ an instance of the kind. See //Kind GPRs// for more.
 
 When kits create kinds using Neptune files, they will often supply their own
 GPR functions, and if they do then we use those rather than construct our own.
+Even then, we only construct them if their inames are actually needed by
+the compiler: in effect, this means that for a kind which never appears in
+command grammar (or by virtue of `described by`), no GPRs will actually be
+compiled, because the relevant agents won't be queued. This saves unnecessarily
+stocking the story file dictionary.
 
 =
 int RTKindConstructors::GPR_provided_by_kit(kind *K) {
@@ -508,12 +515,30 @@ int RTKindConstructors::GPR_provided_by_kit(kind *K) {
 	return FALSE;
 }
 
-inter_name *RTKindConstructors::GPR_iname(kind *K) {
+inter_name *RTKindConstructors::GPR_iname(kind *K, int require_existence) {
 	if (K == NULL) return NULL;
 	kind_constructor *kc = Kinds::get_construct(K);
+	if (require_existence) RTKindConstructors::require_GPRs(K);
 	RETURN_INAME_IN(kc, GPR_iname, RTKindConstructors::create_GPR_iname(K))
 }
 
+void RTKindConstructors::require_GPRs(kind *K) {
+	if (K == NULL) return;
+	kind_constructor *kc = Kinds::get_construct(K);
+	if (kc->compilation_data.GPR_required == FALSE) {
+		if (Kinds::Behaviour::is_an_enumeration(K)) {
+				text_stream *desc = Str::new();
+				WRITE_TO(desc, "GPR for enumeration kind %u", K);
+				Sequence::queue(&KindGPRs::enumeration_agent, STORE_POINTER_kind(K), desc);
+		} else if (Kinds::Behaviour::is_quasinumerical(K)) {
+			text_stream *desc = Str::new();
+			WRITE_TO(desc, "GPR for quasinumerical kind %u", K);
+			Sequence::queue(&KindGPRs::quasinumerical_agent, STORE_POINTER_kind(K), desc);
+		}
+		kc->compilation_data.GPR_required = TRUE;
+	}
+}
+		
 inter_name *RTKindConstructors::create_GPR_iname(kind *K) {
 	if (RTKindConstructors::GPR_provided_by_kit(K))
 		return RTKindConstructors::iname_of_kit_function(K,
@@ -526,9 +551,10 @@ inter_name *RTKindConstructors::create_GPR_iname(kind *K) {
 following, for parsing non-standard names for instances:
 
 =
-inter_name *RTKindConstructors::instance_GPR_iname(kind *K) {
+inter_name *RTKindConstructors::instance_GPR_iname(kind *K, int require_existence) {
 	if (K == NULL) return NULL;
 	kind_constructor *kc = Kinds::get_construct(K);
+	if (require_existence) RTKindConstructors::require_GPRs(K);
 	RETURN_INAME_IN(kc, instance_GPR_iname,
 		Hierarchy::make_iname_in(INSTANCE_GPR_FN_HL, RTKindConstructors::package(kc)))
 }
@@ -644,7 +670,7 @@ void RTKindConstructors::make_enumeration_entries(kind *K) {
 
 @h Assigning declaration sequence numbers.
 These provide a sequencing useful to code-generators, with superkinds earlier
-in the sequence than subkinds -- which may not be true of source code ordering.
+in the sequence than subkinds — which may not be true of source code ordering.
 
 =
 inter_ti kind_sequence_counter = 0;
@@ -931,14 +957,6 @@ or can come from the Neptune file creating a kind.
 		@<Apply SHOWME function metadata@>;
 		@<Compile SHOWME function@>;
 	}
-	if ((RTKindConstructors::GPR_compilation_enabled()) &&
-		(RTKindConstructors::GPR_provided_by_kit(K) == FALSE)) {
-		if (Kinds::Behaviour::is_an_enumeration(K)) {
-			@<Compile enumeration GPR@>;
-		} else if (Kinds::Behaviour::is_quasinumerical(K)) {
-			@<Compile quasinumerical GPR@>;
-		}
-	}
 
 @<Make icount constant@> =
 	inter_name *iname = RTKindConstructors::icount_iname(K);
@@ -956,7 +974,7 @@ or can come from the Neptune file creating a kind.
 		ENUMERATION_ARRAY_MD_HL, array_iname);
 
 @ This improbable-looking constant is the size of storage to allocate for the
-route-finding algorithm in |WorldModelKit|. If the fast algorithm is used,
+route-finding algorithm in `WorldModelKit`. If the fast algorithm is used,
 more storage is needed than for the slow one, and the default choice is fast
 on 32-bit platforms, slow on 16-bit, where memory is scarcer. We're declaring
 the constant here because this is too tricky a bit of conditional compilation
@@ -989,15 +1007,15 @@ to be handled inside the kit itself.
 	Emit::numeric_constant(iname, (inter_ti) Instances::count(K));
 
 @ The suite of standard routines provided for enumerative types is a little
-like the one in Ada (|T'Succ|, |T'Pred|, and so on).
+like the one in Ada (`T'Succ`, `T'Pred`, and so on).
 
-If the type is called, say, |T1_colour|, then we have:
+If the type is called, say, `T1_colour`, then we have:
 
-(a) |A_T1_colour(v)| advances to the next valid value for the type,
+- `A_T1_colour(v)` advances to the next valid value for the type,
 wrapping around to the first from the last;
-(b) |B_T1_colour(v)| goes back to the previous valid value for the type,
+- `B_T1_colour(v)` goes back to the previous valid value for the type,
 wrapping around to the last from the first, so that it is the inverse function
-to |A_T1_colour(v)|.
+to `A_T1_colour(v)`.
 
 @<Compile the increment and decrement functions for an enumerated kind@> =
 	int instance_count = Instances::count(K);
@@ -1104,11 +1122,11 @@ first function ever implemented by emitting Inter code, on 12 November 2017.
 
 @ And here we add:
 
-(a) |R_T1_colour()| returns a uniformly random choice of the valid
+- `R_T1_colour()` returns a uniformly random choice of the valid
 values of the given type. (For a unit, this will be a uniformly random positive
 value, which will probably not be useful.)
-(b) |R_T1_colour(a, b)| returns a uniformly random choice in between |a|
-and |b| inclusive.
+- `R_T1_colour(a, b)` returns a uniformly random choice in between `a`
+and `b` inclusive.
 
 @<Compile random-value function for this kind@> =
 	inter_name *iname_r = RTKindConstructors::random_value_fn_iname(K);
@@ -1473,16 +1491,6 @@ but at present this can't happen.
 @<Compile SHOWME function@> =
 	inter_name *iname = RTKindConstructors::showme_fn_iname(K);
 	RTShowmeCommand::compile_kind_showme_fn(iname, K);
-
-@<Compile enumeration GPR@> =
-	text_stream *desc = Str::new();
-	WRITE_TO(desc, "GPR for enumeration kind %u", K);
-	Sequence::queue(&KindGPRs::enumeration_agent, STORE_POINTER_kind(K), desc);
-
-@<Compile quasinumerical GPR@> =
-	text_stream *desc = Str::new();
-	WRITE_TO(desc, "GPR for quasinumerical kind %u", K);
-	Sequence::queue(&KindGPRs::quasinumerical_agent, STORE_POINTER_kind(K), desc);
 
 @<Apply conformance metadata@> =
 	kind *K2;

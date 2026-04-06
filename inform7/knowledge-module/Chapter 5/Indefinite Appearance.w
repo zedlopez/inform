@@ -6,7 +6,7 @@ property.
 
 @ For instance:
 
->> The drapery is in the Crypt. "The drapery hangs, poignantly waiting to fall."
+> The drapery is in the Crypt. "The drapery hangs, poignantly waiting to fall."
 
 This text will probably become a property of the drapery, but which property
 depends on the drapery's kind. That means we can't decide until after the
@@ -48,9 +48,9 @@ ambiguously.
 about what property the indefinite appearance text should go into. This is
 called "reallocation", and as can be seen the method is:
 
-(a) See if any plugin wants to take action;
-(b) Otherwise reallocate to the "description" property, if available;
-(c) Otherwise give up and issue a problem message.
+- See if any plugin wants to take action;
+- Otherwise reallocate to the "description" property, if available;
+- Otherwise give up and issue a problem message.
 
 =
 void Properties::Appearance::reallocate(inference_subject *infs) {

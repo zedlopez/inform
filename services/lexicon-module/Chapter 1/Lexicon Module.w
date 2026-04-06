@@ -8,14 +8,7 @@ which use this module:
 
 @d LEXICON_MODULE TRUE
 
-@ This module defines the following classes:
-
-@e excerpt_meaning_CLASS
-
-=
-DECLARE_CLASS(excerpt_meaning)
-
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e EXCERPT_MEANINGS_DA
 @e EXCERPT_PARSING_DA
@@ -33,7 +26,7 @@ void LexiconModule::end(void) {
 @ This module uses //syntax//, and adds the following annotations to the
 syntax tree.
 
-@e meaning_ANNOT /* |excerpt_meaning|: for leaves */
+@e meaning_ANNOT /* `excerpt_meaning`: for leaves */
 
 =
 DECLARE_ANNOTATION_FUNCTIONS(meaning, excerpt_meaning)

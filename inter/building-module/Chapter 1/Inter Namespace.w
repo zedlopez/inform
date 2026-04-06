@@ -5,33 +5,33 @@ To manage references to Inter symbols which may or may not yet exist.
 @h Introduction.
 See //What This Module Does// for a fuller explanation, but briefly, an
 //inter_name// or "iname" represents a symbol which will eventually exist,
-but which may not exist at the moment -- indeed, may be placed inside a
+but which may not exist at the moment — indeed, may be placed inside a
 package which also does not yet exist.
 
 //inform7// and other code-generation tools can make many such inames, living
 in equally shadowy //package_request//s, before any actual Inter is made at all.
 Eventually, though, such tools usually make good on their promises and "incarnate"
-their inames into actual |inter_symbol|s within actual |inter_package|s.
+their inames into actual `inter_symbol`s within actual `inter_package`s.
 
 @h Generators.
 Each inter name comes from a "generator". Some are one-shot, and produce just
 one name before being discarded; others produce a numbered sequence of names
-in a given pattern, counting upwards from 1 (|example_1|, |example_2|, ...);
+in a given pattern, counting upwards from 1 (`example_1`, `example_2`, ...);
 and others still derive new names from existing ones (for example, turning
-|fish| and |rumour| into |fishmonger| and |rumourmonger|).
+`fish` and `rumour` into `fishmonger` and `rumourmonger`).
 
 @e UNIQUE_INGEN from 1
 @e MULTIPLE_INGEN
 @e DERIVED_INGEN
 
 =
-typedef struct inter_name_generator {
+classdef inter_name_generator in 1000s {
 	int ingen;
 	struct text_stream *name_stem;
-	int no_generated; /* relevant only for |MULTIPLE_INGEN| */
-	struct text_stream *derived_prefix; /* relevant only for |DERIVED_INGEN| */
-	struct text_stream *derived_suffix; /* relevant only for |DERIVED_INGEN| */
-} inter_name_generator;
+	int no_generated; /* relevant only for `MULTIPLE_INGEN` */
+	struct text_stream *derived_prefix; /* relevant only for `DERIVED_INGEN` */
+	struct text_stream *derived_suffix; /* relevant only for `DERIVED_INGEN` */
+}
 
 inter_name_generator *InterNames::single_use_generator(text_stream *name) {
 	inter_name_generator *F = CREATE(inter_name_generator);
@@ -60,16 +60,20 @@ required to generate that text. (The memo field, which in principle allows
 any text to be stored, is used only for a small proportion of inames.)
 
 =
-typedef struct inter_name {
+classdef inter_name in 1000s {
 	struct inter_name_generator *generated_by;
 	int unique_number;
 	struct inter_symbol *symbol;
 	struct package_request *location_in_hierarchy;
 	struct text_stream *memo;
 	struct inter_name *derived_from;
-} inter_name;
+}
 
-@ This implements the |%n| escape, which prints an iname:
+#ifdef CORE_MODULE
+MAKE_ANNOTATION_FUNCTIONS(explicit_iname, inter_name)
+#endif
+
+@ This implements the `%n` escape, which prints an iname:
 
 =
 void InterNames::writer(OUTPUT_STREAM, char *format_string, void *vI) {
@@ -105,9 +109,9 @@ void InterNames::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 @h Making new inames.
 We can now make a new iname, which is easy unless there's a memo to attach.
 For example, attaching the wording "printing the name of a dark room" to
-an iname which would otherwise just be |V12| produces |V12_printing_the_name_of_a_da|.
+an iname which would otherwise just be `V12` produces `V12_printing_the_name_of_a_da`.
 Memos exist largely to make the Inter code easier for human eyes to read,
-as in this case, but sometimes, as with kind names like |K2_thing|, they're
+as in this case, but sometimes, as with kind names like `K2_thing`, they're
 needed because template or explicit I6 inclusion code makes references to them.
 
 Although most inter names are eventually used to create symbols in the
@@ -223,7 +227,7 @@ inter_symbols_table *InterNames::scope(inter_name *iname) {
 }
 
 @h Incarnation of inames to symbols.
-Incarnation matches up an //inter_name// with its corresponding |inter_symbol|,
+Incarnation matches up an //inter_name// with its corresponding `inter_symbol`,
 and is performed on demand. This leaves it as late as possible, and means that
 inames which are never needed are never incarnated.
 

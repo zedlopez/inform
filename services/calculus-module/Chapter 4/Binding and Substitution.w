@@ -6,34 +6,35 @@ and to apply quantifiers to bind any unbound variables.
 @h Status of variables.
 In any proposition $\phi$, we say that a variable $v$ is "bound" if it
 appears as the variable governed by a quantifier: it is "free" if it
-does appear somewhere in $\phi$ -- either directly as a term or indirectly
-through a function application -- and is not bound. For instance, in
+does appear somewhere in $\phi$ — either directly as a term or indirectly
+through a function application — and is not bound. For instance, in
 $$ \forall x : K(x) \land B(x, f_C(y)) $$
 the variable $x$ is bound and the variable $y$ is free.
 
 In any given proposition, each of the 26 variables always satisfies exactly
 one of the following:
 
-(a) it is unused if it is never mentioned as, or in, any term, and is not the
+- it is unused if it is never mentioned as, or in, any term, and is not the
 variable of any quantifier;
-(b) it is bound if it appears as the variable of any |QUANTIFIER_ATOM|;
-(c) it is free if it is used but not bound.
+- it is bound if it appears as the variable of any `QUANTIFIER_ATOM`;
+- it is free if it is used but not bound.
 
 The following shows some examples of operations on variables:
-= (text from Figures/binding.txt as REPL)
+
+![text as REPL](Figures/binding.txt)
 
 It might seem logical to have a function which takes a proposition $\phi$
-and a variable $v$ and returns its status -- unused, free or bound. But this
+and a variable $v$ and returns its status — unused, free or bound. But this
 would be inefficient, since we want to work with all 26 at once, so instead
-we take a pointer to an array of |int| which needs to have (at least, but
+we take a pointer to an array of `int` which needs to have (at least, but
 probably exactly) 26 entries, and on exit each entry is set to one of the
 following.
 
 In the course of doing that, it's easy to test whether variables are used
-properly -- a bound variable should occur for the first time in its
+properly — a bound variable should occur for the first time in its
 quantification, and should not reoccur once the subexpression holding the
-quantifier has finished. We return |TRUE| if all is well, or |FALSE| if not,
-writing the reason why not to |err|.
+quantifier has finished. We return `TRUE` if all is well, or `FALSE` if not,
+writing the reason why not to `err`.
 
 @d UNUSED_VST 1
 @d FREE_VST 2
@@ -119,7 +120,7 @@ int Binding::find_unused(pcalc_prop *prop) {
 }
 
 @ Another "vector operation" on variables: to renumber them throughout a
-proposition according to a map array. If |renumber_map[j]| is $-1$, make
+proposition according to a map array. If `renumber_map[j]` is $-1$, make
 no change; otherwise each instance of variable $j$ should be changed to
 this new number.
 
@@ -128,7 +129,7 @@ already used in the same proposition: that way we could accidentally change
 "$v$ is greater than $w$" into "$w$ is greater than $w$", thus changing the
 meaning.
 
-Note that because |QUANTIFIER_ATOM|s store the variable being quantified
+Note that because `QUANTIFIER_ATOM`s store the variable being quantified
 as a term, the following changes quantification variables as well as
 predicate terms, which is as it should be.
 
@@ -157,7 +158,7 @@ void Binding::term_map(pcalc_term *pt, int *renumber_map) {
 
 @ The following takes any proposition and edits it so that the variables
 used are the lowest-numbered ones; moreover, variables are introduced
-in numerical order -- that is, the first mentioned will be $x$, then the
+in numerical order — that is, the first mentioned will be $x$, then the
 next introduced will be $y$, and so on.
 
 =
@@ -183,7 +184,7 @@ be combined in a single proposition if one of the $x$ variables is changed
 to, say, $y$.
 
 The surprising thing here is the asymmetry. Why do we only renumber to avoid
-clashes with bound variables in |prop| -- why not free ones as well? The
+clashes with bound variables in `prop` — why not free ones as well? The
 answer is that we use a form of conjunction in Inform which assumes that a
 free variable in $\phi$ has the same meaning as it does in $\psi$; thus in
 conjoining "open" with "lockable" we assume that the same thing is meant
@@ -192,7 +193,7 @@ variables, we would produce a proposition meaning that one unknown thing is
 open, and another one lockable: that would have two free variables and be
 much harder to interpret.
 
-If we pass a |query| parameter which is a valid variable number, the routine
+If we pass a `query` parameter which is a valid variable number, the routine
 returns its new identity when renumbered.
 
 =
@@ -228,13 +229,14 @@ Propositions with free variables are vague, and Inform tries to minimise its
 use of them. Whole verb phrases such as "the tree is in the Courtyard" can in
 general become propositions with no free variables, while descriptions such as
 "open containers which are in lighted rooms" will become propositions in which
-only variable 0, |x|, is free.
+only variable 0, `x`, is free.
 
 Here we see two ways to remove a free variable from a proposition:
-= (text from Figures/binding2.txt as REPL)
 
-@ The first way is "binding". Suppose |x| is free and we do not know its
-value. We can at least put |Exists x :| at the front of the proposition, thus
+![text as REPL](Figures/binding2.txt)
+
+@ The first way is "binding". Suppose `x` is free and we do not know its
+value. We can at least put `Exists x :` at the front of the proposition, thus
 saying only "well, it's something". This does the equivalent of turning "open
 containers which are in lighted rooms" into "an open container is in a lighted
 room", by applying the existential quantifier to anything free.
@@ -288,8 +290,8 @@ applied are less so.
 The difficulty depends on the term $T$ being substituted in for the variable
 $v$. In general every term is a chain of functions with, right at the end,
 either a constant or a variable. If a constant is underneath, there is no
-problem at all. But if there is a variable underneath $T$ -- a VUT, as we
-say below -- then it's possible that the substitution introduces circularities
+problem at all. But if there is a variable underneath $T$ — a VUT, as we
+say below — then it's possible that the substitution introduces circularities
 which would make it invalid. If that happens, we run into this:
 
 @d DISALLOW(msg) {
@@ -337,7 +339,7 @@ The general rule, then, is that $T$ can contain only constants or variables
 which are free within and after the scope of $v$. (If $w$ is bound
 outside the scope of $v$ but after it, this means $w$ didn't exist at the
 time that $v$ did, and the attempted substitution would produce a proposition
-which isn't well-formed -- $w$ would occur before its quantifier.) We can
+which isn't well-formed — $w$ would occur before its quantifier.) We can
 check this condition pretty easily, it turns out:
 
 @<Make sure the substitution would not fail because of a circularity@> =
@@ -361,12 +363,12 @@ check this condition pretty easily, it turns out:
 	}
 
 @h A footnote on variable 0.
-Because of the special status of $x$ (variable 0) -- the one allowed to be
-free in SN-propositions -- we sometimes need to know about it. The range
+Because of the special status of $x$ (variable 0) — the one allowed to be
+free in SN-propositions — we sometimes need to know about it. The range
 of a bound variable can be found by looking at its quantifier, but a free
 variable can remain ambiguous. The presence of a "kind" atom will explicitly
 solve the problem for us; if we don't find one, though, we will simply have
-to assume that the set of objects is the domain of $x$. (We return |NULL|
+to assume that the set of objects is the domain of $x$. (We return `NULL`
 here, but that's the assumption which the caller will have to make.)
 
 =

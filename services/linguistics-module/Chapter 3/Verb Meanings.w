@@ -7,7 +7,7 @@ Because this module is concerned with the structure of sentences and not
 their meanings, we don't really want to get into what verbs "mean". Instead,
 we assume that the tool using this module will assign meanings in some way
 that it understands and we do not: the data for the meaning of a verb will
-be a pointer to |VERB_MEANING_LINGUISTICS_TYPE|. (In Inform, this will be
+be a pointer to `VERB_MEANING_LINGUISTICS_TYPE`. (In Inform, this will be
 a binary predicate.)
 
 By default, there's no meaning at all:
@@ -16,7 +16,7 @@ By default, there's no meaning at all:
 
 @ The "reversal" of a verb is the meaning which exchanges its object and
 subject. So the reverse meaning to "A likes B" is "A is liked by B", or
-equivalent, "B likes A". We use the |VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK|
+equivalent, "B likes A". We use the `VERB_MEANING_REVERSAL_LINGUISTICS_CALLBACK`
 to ask for a reversal to be performed when needed.
 
 =
@@ -33,13 +33,13 @@ VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::reverse_VMT(VERB_MEANING_LINGUISTIC
 We can now define an object to wrap up this abstracted idea of verb meaning:
 
 =
-typedef struct verb_meaning {
-	int take_meaning_reversed; /* |TRUE| if this has been reversed */
+classdef verb_meaning in 100s {
+	int take_meaning_reversed; /* `TRUE` if this has been reversed */
 	VERB_MEANING_LINGUISTICS_TYPE *regular_meaning; /* in I7, this will be a binary predicate */
 	struct special_meaning_holder *special_meaning;
 	struct verb *take_meaning_from;
 	struct parse_node *where_assigned; /* at which sentence this is assigned to a form */
-} verb_meaning;
+}
 
 @ All VMs begin as meaningless, which indicates (e.g.) that no meaning
 has been specified.
@@ -79,11 +79,12 @@ verb_meaning VerbMeanings::special(special_meaning_holder *sm) {
 }
 
 @ You can, however, have neither one, if you instead choose to "indirect" the
-meaning -- this means saying "the same meaning as the regular sense of the base
+meaning — this means saying "the same meaning as the regular sense of the base
 form of a given verb", possibly reversed. Note that
-(a) An indirected VM must never be used as the meaning for the base form of a
+
+- An indirected VM must never be used as the meaning for the base form of a
 verb, and therefore
-(b) We can never have a situation where a VM indirects to a verb whose meaning
+- We can never have a situation where a VM indirects to a verb whose meaning
 then indirects to something else.
 
 This might be used, for example, to set the meaning of "liked by" to be the
@@ -125,7 +126,7 @@ void VerbMeanings::set_where_assigned(verb_meaning *vm, parse_node *pn) {
 }
 
 @h The regular meaning.
-This is not as simple as returning the |regular_meaning| field, because we
+This is not as simple as returning the `regular_meaning` field, because we
 have to follow any indirection, and reverse if necessary.
 
 =
@@ -145,7 +146,7 @@ VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::get_regular_meaning_of_form(verb_fo
 }
 
 @h The special meaning.
-This is also not as simple as returning the |regular_meaning| field, because
+This is also not as simple as returning the `regular_meaning` field, because
 again we have to follow any indirection. Since we have no good way to modify
 a special meaning function, we have to provide a function to tell the user
 whether to reverse what that function does.

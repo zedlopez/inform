@@ -4,28 +4,34 @@ Each enclosure contains the literal lists needed by its functions.
 
 @h Runtime representation.
 Literal lists arise from source text such as:
-= (text as Inform 7)
+
+``` Inform7
 	let Q be { 60, 168 };
-=
-The data to hold |{ 60, 168 }| has to be stored somehow. As with all
+```
+
+The data to hold `{ 60, 168 }` has to be stored somehow. As with all
 kinds for which values cannot be stored in a single word, we use a double
 pointer:
-= (text)
+
+``` None
 	                    small block:              large block:
 	Q ----------------> pointer ----------------> block value header
 	                    0                         strong kind ID for entries
 	                                              number of entries
 	                                              the entries
-=
+```
+
 So in this particular example, the result would be:
-= (text)
+
+``` None
 	                    small block:              large block:
 	Q ----------------> pointer ----------------> block value header
 	                    0                         NUMBER_TY
 	                                              2
 	                                              60
 	                                              168
-=
+```
+
 So the small block always occupies 2 words, the second being initially 0 and
 used at runtime; the large block can be any size we need. The runtime code has
 elaborate ways to extend or contract dynamic lists, but these of course are
@@ -62,7 +68,8 @@ inter_name *ListLiterals::small_block(inter_name *large_block) {
 @h Default values for list kinds.
 The default list is the empty list, but note from the above representation
 that the empty list of numbers (say) is different from the empty list of texts:
-= (text)
+
+``` None
 	      small block:              large block:
 	----> pointer ----------------> block value header
 	                                NUMBER_TY
@@ -72,7 +79,8 @@ that the empty list of numbers (say) is different from the empty list of texts:
 	----> pointer ----------------> block value header
 	                                TEXT_TY
 	                                0
-=
+```
+
 So each different kind K needs its own large block for making the default value
 of "list of K": see //RTKindIDs::compile_structures//. This block is easily made:
 
@@ -84,10 +92,12 @@ void ListLiterals::default_large_block(inter_name *iname, kind *list_kind) {
 
 @h Literals.
 To return to the example:
-= (text as Inform 7)
+
+``` Inform7
 	let Q be { 60, 168 };
-=
-Each list literal like |{ 60, 168 }| in imperative code results in a |literal_list|
+```
+
+Each list literal like `{ 60, 168 }` in imperative code results in a `literal_list`
 object, and here we return its value:
 
 =
@@ -133,8 +143,8 @@ void ListLiterals::compilation_agent(compilation_subtask *t) {
 @h The instance list for a kind.
 For kinds of object and enumerations, Inform sometimes chooses to compile its
 own literal list, even though this is not specified anywhere in the source text.
-Not all kinds have these: obviously, there can be no instance list for |K_real_number|.
-The following returns -1 if |K| is similarly unsuitable, or a non-negative value
+Not all kinds have these: obviously, there can be no instance list for `K_real_number`.
+The following returns -1 if `K` is similarly unsuitable, or a non-negative value
 for the number of instances it has:
 
 =
@@ -165,7 +175,7 @@ inter_name *ListLiterals::get_instance_list(kind *K) {
 }
 
 @ Note that the instances are given in the order preferred by //Instance Counting//,
-not in creation order, as a simple |LOOP_OVER_INSTANCES| would have done.
+not in creation order, as a simple `LOOP_OVER_INSTANCES` would have done.
 
 @<Compile entries for a kind of object@> =
 	instance *I = InstanceCounting::next_in_IK_sequence(NULL, K);

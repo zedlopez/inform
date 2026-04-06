@@ -15,7 +15,7 @@ int Rvalues::is_rvalue(parse_node *pn) {
 
 @h Named constants.
 Constant nodes can store references to many of the structures in this compiler:
-for example, each |table *| pointer in Inform corresponds to a constant node
+for example, each `table *` pointer in Inform corresponds to a constant node
 representing the name of that table.
 
 Dealing with these is very repetitive, and we use macros to define the
@@ -118,7 +118,7 @@ parse_node *Rvalues::from_instance(instance *I) {
 instance *Rvalues::to_instance(parse_node *spec) { 
 		CONV_TO(instance) }
 
-@ An instance of a subkind of |K_object| is called an "object":
+@ An instance of a subkind of `K_object` is called an "object":
 
 =
 int Rvalues::is_object(parse_node *spec) {
@@ -133,7 +133,7 @@ instance *Rvalues::to_object_instance(parse_node *spec) {
 	return NULL;
 }
 
-@ There are two pseudo-objects for which no pointers to |instance| can exist:
+@ There are two pseudo-objects for which no pointers to `instance` can exist:
 "self" and "nothing". These cause nothing but trouble and are marked out with
 special annotations.
 
@@ -206,7 +206,7 @@ int Rvalues::to_int(parse_node *spec) {
 
 @ Internally we represent parsed reals as unsigned integers holding their
 IEEE-754 representations; I don't sufficiently trust C's implementation
-of |float| to be consistent across all Inform's platforms to use that instead.
+of `float` to be consistent across all Inform's platforms to use that instead.
 
 =
 parse_node *Rvalues::from_IEEE_754(unsigned int n, wording W) {
@@ -411,7 +411,7 @@ int Rvalues::is_CONSTANT_of_kind(parse_node *spec, kind *K) {
 }
 
 @ Our most elaborate test is a finicky one, checking if two constant values
-are equal at compile time -- which is needed when seeing how to mesh table
+are equal at compile time — which is needed when seeing how to mesh table
 continuations together, and in rare cases to help the typechecker. This
 doesn't need to be especially rapid.
 
@@ -578,12 +578,12 @@ assertion traverse:
 
 @ This too is tricky. Some phrases to decide values are unambiguous. If
 they say they are "To decide a rule: ...", then clearly the return value
-will be a rule. But others are "polymorphic" -- Greek for many-shaped,
+will be a rule. But others are "polymorphic" — Greek for many-shaped,
 but in this context, it means that the return value's kind depends on the
 kinds of its arguments; addition is like this, for instance.
 
 Compounding the problem is that we don't actually know which phrase will be
-invoked -- we only have a list of possibilities. All of them return values,
+invoked — we only have a list of possibilities. All of them return values,
 but those may have different kinds, and some may be polymorphic.
 
 So what are we to do? First, we find the "deciding invocation": the first
@@ -593,10 +593,10 @@ phrase with an unambiguous kind, then that's of course the answer. If it is
 polymorphic, then we look to see if typechecking has already resolved the
 difficulty by showing the result, and if so, then that's the answer. The
 worst case, then, is when we have a polymorphic phrase and typechecking
-hasn't yet sorted matters out -- in that event we return simply "value"
+hasn't yet sorted matters out — in that event we return simply "value"
 as the kind, an extremely weak if certainly true answer.
 
-We resort to returning |NULL|, an unknown kind, only when the invocation list
+We resort to returning `NULL`, an unknown kind, only when the invocation list
 is empty. This should never happen except possibly after recovering from
 some problem message.
 

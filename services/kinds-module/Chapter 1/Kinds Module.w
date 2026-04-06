@@ -8,42 +8,7 @@ which use this module:
 
 @d KINDS_MODULE TRUE
 
-@ This module defines the following classes:
-
-@e dimensional_rule_CLASS
-@e kind_CLASS
-@e kind_variable_declaration_CLASS
-@e kind_constructor_CLASS
-@e kind_template_definition_CLASS
-@e kind_macro_definition_CLASS
-@e kind_constructor_comparison_schema_CLASS
-@e kind_constructor_casting_rule_CLASS
-@e kind_constructor_instance_CLASS
-@e kind_constructor_instance_rule_CLASS
-@e arithmetic_schema_CLASS
-@e unit_sequence_CLASS
-@e star_invention_CLASS
-@e additional_property_CLASS
-@e additional_property_set_CLASS
-
-=
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(dimensional_rule, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind, 1000)
-DECLARE_CLASS(kind_variable_declaration)
-DECLARE_CLASS(kind_constructor)
-DECLARE_CLASS(kind_macro_definition)
-DECLARE_CLASS(kind_template_definition)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_casting_rule, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_comparison_schema, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_instance, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(kind_constructor_instance_rule, 100)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(arithmetic_schema, 50)
-DECLARE_CLASS_ALLOCATED_IN_ARRAYS(unit_sequence, 50)
-DECLARE_CLASS(star_invention)
-DECLARE_CLASS(additional_property)
-DECLARE_CLASS(additional_property_set)
-
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e KIND_CHANGES_DA
 @e KIND_CHECKING_DA
@@ -84,7 +49,7 @@ void KindsModule::set_internal_NTIs(void) {
 
 @ Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem
-texts in HTML. So the client is allowed to define |PROBLEM_KINDS_CALLBACK|
+texts in HTML. So the client is allowed to define `PROBLEM_KINDS_CALLBACK`
 to some routine of her own, gazumping this one.
 
 @e DimensionRedundant_KINDERROR from 1

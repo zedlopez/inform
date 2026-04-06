@@ -4,7 +4,7 @@ To see which problem messages have test cases and which are linked
 to the documentation.
 
 @h Observation.
-Problem messages are identified by their code-names, e.g., |PM_MisplacedFrom|;
+Problem messages are identified by their code-names, e.g., `PM_MisplacedFrom`;
 those names should be unique, but any number of problems can instead be
 marked with one of three special names.
 
@@ -14,17 +14,16 @@ set of Inform test cases.
 @d CASE_EXISTS_PCON    0x00000001 /* mentioned in test cases */
 @d DOC_MENTIONS_PCON   0x00000002 /* mentioned in documentation */
 @d CODE_MENTIONS_PCON  0x00000004 /* mentioned in source code */
-@d IMPOSSIBLE_PCON     0x00000008 /* this is |BelievedImpossible| */
-@d UNTESTABLE_PCON     0x00000010 /* this is |Untestable| */
-@d NAMELESS_PCON       0x00000020 /* this is |...| */
+@d IMPOSSIBLE_PCON     0x00000008 /* this is `BelievedImpossible` */
+@d UNTESTABLE_PCON     0x00000010 /* this is `Untestable` */
+@d NAMELESS_PCON       0x00000020 /* this is `...` */
 
 =
-typedef struct known_problem {
+classdef known_problem {
 	struct text_stream *name;
 	int contexts_observed; /* bitmap of the above bits */
 	int contexts_observed_multiple_times; /* bitmap of the above bits */
-	CLASS_DEFINITION
-} known_problem;
+}
 
 @ When a problem is observed, we create a dictionary entry for it, if necessary,
 and augment its bitmap of known contexts:
@@ -53,7 +52,7 @@ void Coverage::observe_problem(text_stream *name, int context) {
 
 @h Problems which have test cases.
 Here we ask Intest to produce a roster of all known test cases, then parse
-this back to look for cases whose names have the |PM_...| format. Those are
+this back to look for cases whose names have the `PM_...` format. Those are
 the problem message test cases, so we observe them.
 
 =
@@ -106,14 +105,17 @@ Which is to say, actually existing problem messages.
 void Coverage::which_problems_exist(void) {
 	pathname *tools = Pathnames::up(path_to_inpolicy);
 	pathname *path_to_inform7 = Pathnames::down(tools, I"inform7");
-	ls_web *Wm = WebStructure::get_without_targets(path_to_inform7, NULL, NULL);
-	ls_chapter *Cm;
-	LOOP_OVER_LINKED_LIST(Cm, ls_chapter, Wm->chapters) {
-		ls_section *Sm;
-		LOOP_OVER_LINKED_LIST(Sm, ls_section, Cm->sections) {
-			filename *SF = Sm->source_file_for_section;
-			TextFiles::read(SF, FALSE, "unable to read section page from 'inform7'",
-				TRUE, &Coverage::existence_harvester, NULL, (void *) SF);
+	wcl_declaration *D = WCL::read_web(path_to_inform7, NULL);
+	if (D) {
+		ls_web *Wm = WebStructure::from_declaration(D);
+		ls_chapter *Cm;
+		LOOP_OVER_LINKED_LIST(Cm, ls_chapter, Wm->chapters) {
+			ls_section *Sm;
+			LOOP_OVER_LINKED_LIST(Sm, ls_section, Cm->sections) {
+				filename *SF = Sm->source_file_for_section;
+				TextFiles::read(SF, FALSE, "unable to read section page from 'inform7'",
+					TRUE, &Coverage::existence_harvester, NULL, (void *) SF);
+			}
 		}
 	}
 }

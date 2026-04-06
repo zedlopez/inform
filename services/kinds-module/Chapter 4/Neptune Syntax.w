@@ -8,15 +8,15 @@ Each different operation is defined with a block like so:
 =
 typedef struct kind_command_definition {
 	char *text_of_command;
-	int opcode_number; /* one of the |*_KCC| values below */
-	int operand_type; /* one of the |*_KCA| values below */
+	int opcode_number; /* one of the `*_KCC` values below */
+	int operand_type; /* one of the `*_KCA` values below */
 	char *warning_if_used;
 } kind_command_definition;
 
 @ The operands have different types, and the possibilities are given here:
 
 @e NO_KCA from 0   /* there's no operand */
-@e BOOLEAN_KCA     /* must be |yes| or |no| */
+@e BOOLEAN_KCA     /* must be `yes` or `no` */
 @e CCM_KCA         /* a constant compilation method */
 @e TEXT_KCA        /* any text (no quotation marks or other delimiters are used) */
 @e VOCABULARY_KCA  /* any single word */
@@ -198,18 +198,16 @@ Each command is read in as text, parsed and stored into a modest structure.
 kind_constructor *constructor_described = NULL;
 additional_property_set *additional_property_set_described = NULL;
 
-typedef struct additional_property_set {
+classdef additional_property_set {
 	struct text_stream *owner_name;
-	struct linked_list *properties; /* of |additional_property| */
-	CLASS_DEFINITION
-} additional_property_set;
+	struct linked_list *properties; /* of `additional_property` */
+}
 
-typedef struct additional_property {
+classdef additional_property {
 	int attr;
 	struct text_stream *property_name;
 	struct text_stream *value_text;
-	CLASS_DEFINITION
-} additional_property;
+}
 
 additional_property_set *NeptuneSyntax::new_additional_property_set(text_stream *owner_name) {
 	additional_property_set *set = CREATE(additional_property_set);
@@ -389,7 +387,7 @@ begin with those characters, but that doesn't matter for the things we need.
 @ The following is clearly inefficient, but is not worth optimising. It makes
 about 20 string comparisons per command, and there are about 600 commands in a
 typical run of Inform, so the total cost is about 12,000 comparisons with
-quite small strings as arguments -- which is negligible for our purposes,
+quite small strings as arguments — which is negligible for our purposes,
 so we neglect it.
 
 @<Identify the command being used@> =

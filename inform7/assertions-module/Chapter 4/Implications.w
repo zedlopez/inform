@@ -13,13 +13,12 @@ note that A is quite restricted in what it can be: it must be a simple-to-test
 description only, whereas B could be any subtree of an assertion.
 
 =
-typedef struct implication {
+classdef implication {
 	struct pcalc_prop *if_proposition; /* which objects are affected */
 	struct parse_node *then_pn; /* what assertion is implied about them */
 	struct parse_node *where_declared;
 	int implied_likelihood; /* with what certainty level */
-	CLASS_DEFINITION
-} implication;
+}
 
 @ We also need a little piece of storage attached to each property name:
 
@@ -117,8 +116,8 @@ already have definite knowledge that X is not wearable. We do this for each
 object X individually.
 
 We begin by checking implications associated with X and applying to X,
-but in fact because |Assertions::Implications::check_implications_of| recurses depth-first through
-the kinds, a typical object X -- a container, say -- will first have
+but in fact because `Assertions::Implications::check_implications_of` recurses depth-first through
+the kinds, a typical object X — a container, say — will first have
 implications associated with "thing" applied to it, then with
 those associated with "container", and only then its own implications.
 
@@ -188,7 +187,7 @@ of not being open, and vice versa.
 
 @ Lastly, then, the routine actually checking and applying implications.
 Our aim is to find and act upon the first implication which makes a difference,
-and return |TRUE|; but if no implication can be acted on, to return |FALSE|.
+and return `TRUE`; but if no implication can be acted on, to return `FALSE`.
 
 This cannot act twice on the same candidate with the same implication, since
 the act results in creating inferences about the property. An attempt at

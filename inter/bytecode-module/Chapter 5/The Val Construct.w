@@ -19,8 +19,8 @@ void ValInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |val| instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+In bytecode, the frame of a `val` instruction is laid out with the
+compulsory words — see //Inter Nodes// — followed by:
 
 @d TYPE_VAL_IFLD (DATA_IFLD + 0)
 @d VAL1_VAL_IFLD (DATA_IFLD + 1)
@@ -60,7 +60,7 @@ void ValInstruction::verify(inter_construct *IC, inter_tree_node *P,
 }
 
 @h Creating from textual Inter syntax.
-Note that a |val| can legally hold a typename as a value.
+Note that a `val` can legally hold a typename as a value.
 
 =
 void ValInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp,

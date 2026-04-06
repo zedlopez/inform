@@ -5,7 +5,7 @@ The kinds family of inference subjects.
 @ Every base kind gets its own inference subject, making it possible to draw
 inferences from sentences such as:
 
->> A scene has a number called the witness count. The witness count of a scene is usually 4.
+> A scene has a number called the witness count. The witness count of a scene is usually 4.
 
 =
 inference_subject_family *kinds_family = NULL;
@@ -28,14 +28,14 @@ inference_subject_family *KindSubjects::family(void) {
 }
 
 @ Although we speak as if each kind has its own associated subject, it is
-actually kind constructors which have subjects, not kinds -- but not all
+actually kind constructors which have subjects, not kinds — but not all
 kind constructors; only the ones corresponding to base kinds. Kind variables
 and intermediate results of calculations do not get a subject, since they
 cannot sensibly be given properties; likewise proper constructors such as
 "list of K".
 
 The //kinds: Kind Constructors// code kindly allows us to use one field
-of the |kind_constructor| structure to connect a base kind (i.e., a kind
+of the `kind_constructor` structure to connect a base kind (i.e., a kind
 constructor) with its subject. The following is called when a new constructor
 is created.
 
@@ -76,7 +76,7 @@ kind *KindSubjects::to_nonobject_kind(inference_subject *infs) {
 }
 
 @ This is used to overcome a timing problem. A few inference subjects need to
-be defined early in Inform's run to set up relations -- "thing", for example.
+be defined early in Inform's run to set up relations — "thing", for example.
 So when we do finally create "thing" as a kind of object, it needs to be
 matched up with the inference subject already existing.
 
@@ -93,7 +93,7 @@ void KindSubjects::renew(kind *K, kind *super, wording W) {
 }
 
 @ Even base kinds which do have subjects do not necessarily allow properties
-to be given to their values -- "number", for instance, where you cannot give
+to be given to their values — "number", for instance, where you cannot give
 a property to the number 6.
 
 In general a value can have properties if and only if its kind passes this test:
@@ -121,8 +121,8 @@ void KindSubjects::new_permission_granted(inference_subject_family *f,
 	RTPropertyPermissions::new_storage(pp);
 }
 
-@ When a property value comes along which might have an adjectival use -- say,
-"green" out of a range of possible colour nouns -- the following is called.
+@ When a property value comes along which might have an adjectival use — say,
+"green" out of a range of possible colour nouns — the following is called.
 We simply pass the request along to the appropriate code.
 
 =

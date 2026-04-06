@@ -4,11 +4,12 @@ To remove logical or arithmetic operations which neither do anything, nor
 have side-effects.
 
 @ This stage removes redundant operations, replacing each of the following
-with just |x|. This is useful mainly for the first of these cases, because
-//imperative: Compile Conditions// has a tendency to make redundant |OR_BIP|
+with just `x`. This is useful mainly for the first of these cases, because
+//imperative: Compile Conditions// has a tendency to make redundant `OR_BIP`
 operations. The other cases occur much more rarely, but we might as well
 handle them too.
-= (text)
+
+``` None
 	x || false
 	x && true
 	x + 0
@@ -17,14 +18,15 @@ handle them too.
 	x * 1
 	1 * x
 	x / 1
-=
-We could also perform constant-folding here (e.g., replacing |2+3| with |5|),
+```
+
+We could also perform constant-folding here (e.g., replacing `2+3` with `5`),
 but we would need to be careful about word size on the VM, and there's not much
 gain because the next compiler after us (e.g. Inform 6) will perform its own
 constant-folding anyway.
 
-We do not replace |x * 0| with |0|, nor |x && false| with |false|, because then
-any intended side-effects of evaluating |x| would be lost.
+We do not replace `x * 0` with `0`, nor `x && false` with `false`, because then
+any intended side-effects of evaluating `x` would be lost.
 
 =
 void EliminateRedundantOperationsStage::create_pipeline_stage(void) {
@@ -52,7 +54,7 @@ void EliminateRedundantOperationsStage::visitor(inter_tree *I, inter_tree_node *
 	}
 }
 
-@ |iden[0]| and |iden[1]| hold left and right identity elements for these binary
+@ `iden[0]` and `iden[1]` hold left and right identity elements for these binary
 operations:
 
 =

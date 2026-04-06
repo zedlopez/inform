@@ -7,7 +7,7 @@ of the box", say. Because of this, the word "of" is structurally significant
 when diagramming assertion sentences. Unfortunately "of" also occurs in many
 other situations:
 
->> Yett of Ptarmigan is a room.
+> Yett of Ptarmigan is a room.
 
 (It's a lookout point on the West Highland Way, not far from the village of
 Milton of Buchanan.) We therefore want to subdivide the parse tree at "of"
@@ -15,14 +15,16 @@ only when it is preceded by a property name, but this means we need to know
 the property names early in Inform's run.
 
 @ We therefore look for this configuration:
-= (text)
+
+``` None
 	SENTENCE_NT "A container has a number called volume"
 	    VERB_NT "has"
 	    UNPARSED_NOUN_NT "container"
 	    CALLED_NT "called"
 	        UNPARSED_NOUN_NT "number"
 	        UNPARSED_NOUN_NT "volume"
-=
+```
+
 ...and then extract the bottom-most, rightmost noun-phrase as the name of
 a new property. It's sufficient to create it with no other details; the
 sentence will be properly parsed later on.
@@ -58,7 +60,7 @@ void PropertySentences::look_for_property_creation(parse_node *pn) {
 @ A tricky point in detecting property declarations is that they share the
 syntax used for action, activity and rulebook variables. For instance:
 
->> The taking action has a number called the hazard level.
+> The taking action has a number called the hazard level.
 
 ...creates not a property name but an action variable. Fortunately, the names
 of such owners have a distinctive look to them:

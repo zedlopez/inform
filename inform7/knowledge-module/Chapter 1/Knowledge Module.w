@@ -8,7 +8,7 @@ which use this module:
 
 @d KNOWLEDGE_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 =
 COMPILE_WRITER(booking *, RuleBookings::log)
@@ -17,6 +17,9 @@ COMPILE_WRITER(inference_subject *, InferenceSubjects::log)
 COMPILE_WRITER(property *, Properties::log)
 COMPILE_WRITER(rulebook *, Rulebooks::log)
 COMPILE_WRITER(inference_family *, Inferences::log_family)
+
+@<Global knowledge variable definitions@> (webwide and tangled early) =
+	/* these are scattered throughout the module */
 
 @
 

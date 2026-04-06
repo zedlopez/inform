@@ -9,11 +9,10 @@ assimilating a binary for a kit is a skill.
 Each different skill is an instance of:
 
 =
-typedef struct build_skill {
+classdef build_skill {
 	struct text_stream *name;
 	struct method_set *methods;
-	CLASS_DEFINITION
-} build_skill;
+}
 
 build_skill *BuildSteps::new_skill(text_stream *name) {
 	build_skill *S = CREATE(build_skill);
@@ -41,18 +40,17 @@ INT_METHOD_TYPE(BUILD_SKILL_INTERNAL_MTID,
 These are essentially just skills, but with a docket of contextual data. The
 idea is that a function outside the //supervisor// module can carry out a skill
 for us using only the contextual information in this structure, without having
-to access any of |inbuild|'s variables directly.
+to access any of `inbuild`'s variables directly.
 
 =
-typedef struct build_step {
+classdef build_step {
 	struct build_skill *what_to_do;
 	struct build_vertex *vertex; /* what to do it to */
 	struct target_vm *for_vm;
 	struct inter_architecture *for_arch;
 	int for_release;
 	struct inbuild_copy *associated_copy; /* e.g., the Inform project causing this work */
-	CLASS_DEFINITION
-} build_step;
+}
 
 @ We build scripts for a vertex by attaching one step at a time to it:
 
@@ -72,9 +70,9 @@ build_step *BuildSteps::attach(build_vertex *vertex, build_skill *to_do,
 }
 
 @h Execution.
-Note that this prints a log of shell commands generated to |stdout| when
+Note that this prints a log of shell commands generated to `stdout` when
 we are running inside Inbuild at the command line, but not when we are running
-inside the |inform7| executable, where we are silent throughout.
+inside the `inform7` executable, where we are silent throughout.
 
 =
 int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *BM,
@@ -101,7 +99,7 @@ int BuildSteps::execute(build_vertex *V, build_step *S, build_methodology *BM,
 		if (returned != TRUE) rv = FALSE;
 	}
 
-@ This prints a shell command to |stdout| (except when inside |inform7|)
+@ This prints a shell command to `stdout` (except when inside `inform7`)
 and also executes it if the methodology allows, returning the result. Note
 that shell commands return 0 to indicate happiness.
 

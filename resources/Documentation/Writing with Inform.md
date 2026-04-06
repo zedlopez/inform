@@ -707,8 +707,9 @@ If we want to establish a route which cannot be retraced at all, we can specify 
 
 Finally, note that Inform's assumptions about two-way directions are only applied to simple sentences. When the source text seems to be saying something complicated, Inform takes it as a precise description of what's wanted. So, for example, in:
 
-	The Attic is above the Parlour.
-	The Attic is a dark room above the Parlour.
+	The Attic is above the Parlour. [1]
+	
+	The Parlour is a room. The Attic is a dark room above the Parlour. [2]
 
 Inform makes guesses about the first sentence, and makes a two-way connection; but it accepts the second sentence more precisely, with just a one-way connection.
 
@@ -3923,26 +3924,31 @@ Finally, going is an action which can also happen while the player is pushing so
 	After exiting from the Mini Cooper:
 		say "You painstakingly unpack your limbs from the tiny car."
 
-## Kinds of action {PM_NamedAPWithActor} {KACTIONS}
+## Named action patterns {PM_NamedAPWithActor} {NAPS}
 
-^^{kinds: of action} ^^{actions: new kinds of action} ^^{rules: creating new kinds of action to reduce redundancy} ^^{propriety}
+^^{kinds: of action} ^^{actions: new named action patterns} ^^{rules: creating named action patterns to reduce redundancy} ^^{propriety}
 
 Especially when people need to react to events going on around them, it is helpful to be able to categorise actions into whole areas of behaviour. For instance:
+
+	Mr Carr is in the Inn. Mr Carr is a person.
 
 	Kissing Mr Carr is unmaidenly behaviour.
 	Doing something to the painting is unmaidenly behaviour.
 	
 	Instead of unmaidenly behaviour in the Inn, say "How unmaidenly!"
 
-Here a new kind of action called `unmaidenly behaviour` has been created and then used in the description of an instead rule. The convenience of this approach is that when further actions suddenly occur to us as also being unmaidenly – say, attacking Mr Carr – we only need to add a single line:
+Here, `unmaidenly behaviour` is an example of a _named action pattern_. (In the past, this was sometimes called a "kind of action", but not any more.) The term _action pattern_ is Inform slang for a possibly vague description of an action: for example, `Kissing Mr Carr` and `Doing something to the painting` are both action patterns, even though one is more specific than the other. The effect of the two sentences
+
+	Kissing Mr Carr is unmaidenly behaviour.
+	Doing something to the painting is unmaidenly behaviour.
+
+is that `unmaidenly behaviour` is now also valid as an action pattern, so it can be used in `Instead of` and other such rules. This is convenient both as a shorthand and because, when further actions suddenly occur to us as also being unmaidenly, we only need to add a single line:
 
 	Attacking Mr Carr is unmaidenly behaviour.
 
-And this will automatically be reflected in any rules which concern the consequences of failing to be ladylike.
+And this will automatically be reflected in any rules which concern the consequences of failing to be ladylike, that is, which depend on the current action being `unmaidenly behaviour`.
 
-(Note that we were only allowed to say that `Kissing Mr Carr is unmaidenly behaviour.` because Inform already knew from earlier sentences – see the example below – that Mr Carr was a person, and therefore that `kissing Mr Carr` made sense as a description of an action.)
-
-Note that what appears on the left of these sentences is an action _pattern_, not an action _name_. This is actually a good thing, because it gives us great flexibility. But it means that this works:
+Note that an action _pattern_ is not the same thing as an action _name_. So this works:
 
 	Throwing something at something is unmaidenly behaviour.
 
@@ -3950,7 +3956,13 @@ But this does not:
 
 	Throwing it at is unmaidenly behaviour.
 
-See [New actions] for more on this distinction.
+While it's true that the text `throwing it at action` means something to Inform (it's an _action name_), `throwing it at` does not, and isn't valid as an action pattern because it doesn't say what the two objects involved are. So:
+
+	throwing something at something
+	throwing something at Mr Carr
+	throwing the ring at somebody
+
+are all valid action patterns (assuming Mr Carr and the ring exist), but `throwing it at` is not. See [New actions] for more on this distinction.
 
 ## Repeated actions
 
@@ -11497,9 +11509,12 @@ In other words, that cumbersome escaping needed to be done only when specifying 
 
 Similarly:
 
-	A monetary value is a kind of value. $<dollars><"."><cents> specifies a monetary value with parts dollars and cents (optional, preamble optional).
+	A monetary value is a kind of value. $<dollars>< "." ><cents> specifies a monetary value with parts dollars and cents (2 digits, optional, preamble optional).
 
-Putting the full stop in quotation marks here prevents Inform from thinking that one sentence has ended and another one has begun.
+Putting the full stop in quotation marks here prevents Inform from thinking that one sentence has ended and another one has begun; note the little spacing around this to ensure that Inform doesn't misread this. `showme $2.14` and `showme $31` then reply:
+
+	monetary value: $2.14
+	monetary value: $31
 
 We can also use the angle-bracket syntax to have two parts of a specification jammed directly next to each other, with nothing in between:
 
@@ -15752,7 +15767,7 @@ In the case of `going` actions, the first noun is a direction. The special const
 
 **Law III.3.3 – Action/What/Actor Performing Action**. A more specific constraint on the actor beats a less specific.
 
-**Law III.4.1 – Action/How/What Happens**. A more specific set of actions beats a less specific. For instance, `taking` beats `taking or dropping` beats `doing something other than looking` beats `doing something`. A named kind of action (such as `behaving badly`) is more specific than `doing something`, but considered less specific than any explicitly spelled out list of actions.
+**Law III.4.1 – Action/How/What Happens**. A more specific set of actions beats a less specific. For instance, `taking` beats `taking or dropping` beats `doing something other than looking` beats `doing something`. A named action pattern (such as `behaving badly`) is more specific than `doing something`, but considered less specific than any explicitly spelled out list of actions.
 
 **Law III.5.1 – Action/When/Duration**. An action with a constraint on its history (`for the fifth time`, say, or `for the fifth turn`) beats one without. If both rules place constraints on history, then the one occurring on the smaller number of possible turns wins (thus `for the third to seventh time` – 5 possible turns of applicability – beats `for less than the tenth turn` – 9 possible turns).
 

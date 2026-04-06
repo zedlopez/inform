@@ -27,7 +27,7 @@ int TheScore::production_line(int stage, int debugging, stopwatch_timer *sequenc
 in bug reports asking why it wouldn't change in play. "Score", of course, is
 more evidently variable.
 
-= (early code)
+@<Global IF variable definitions@> +=
 nonlocal_variable *score_VAR = NULL;
 nonlocal_variable *max_score_VAR = NULL;
 
@@ -72,7 +72,7 @@ right shape: two columns, number then text. If so, the maximum score is
 initialised to the number in the final row of the table, which is assumed to
 be the score corresponding to successful completion and the highest rank.
 
-The test case |Cooking|, an example from the documentation, tests this.
+The test case `Cooking`, an example from the documentation, tests this.
 
 =
 table *the_ranking_table = NULL;

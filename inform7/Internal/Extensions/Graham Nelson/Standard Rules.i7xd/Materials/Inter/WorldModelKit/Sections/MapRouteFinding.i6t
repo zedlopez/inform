@@ -6,9 +6,10 @@ Testing and changing the fundamental spatial relations.
 The general problem we have to solve here is: given $x, y\in R$, where $R$
 is the set of rooms and we write $x\sim y$ if there is a map connection from
 $x$ to $y$,
-(i) find the smallest $m$ such that there exist $x = r_1\sim r_2\sim ...\sim r_m = y\in R$,
+
+- find the smallest $m$ such that there exist $x = r_1\sim r_2\sim ...\sim r_m = y\in R$,
 or determine that no such $m$ exists, and
-(ii) find $d$, the first direction to take from $x$ to lead to $r_2$, or
+- find $d$, the first direction to take from $x$ to lead to $r_2$, or
 set $d=0$ if no such path exists or if $m=1$ so that $x=y$.
 
 Thus a typical outcome might be either "a shortest path from the Town Square
@@ -42,8 +43,8 @@ be fighting for the last few bytes in readable memory.
 The user is therefore offered the choice, by selecting the use options
 "Use fast route-finding" and "Use slow route-finding": and the defaults,
 if neither option is explicitly set, are fast on Glulx and slow on the
-Z-machine. If both use options are explicitly set -- which might happen
-due to a disagreement between extensions -- "fast" wins.
+Z-machine. If both use options are explicitly set — which might happen
+due to a disagreement between extensions — "fast" wins.
 
 =
 [ UseFastRouteFinding;
@@ -64,11 +65,11 @@ results from one usage to the next (though at present only the "fast"
 algorithm does this). The difficulty here is that the result of a route
 search depends on three things, any of which may change:
 
-(a) which subset of rooms we are route-finding through;
-(b) which subset of doors we are allowing ourselves to use; and
-(c) the current map connections between rooms.
+- (a) which subset of rooms we are route-finding through;
+- (b) which subset of doors we are allowing ourselves to use; and
+- (c) the current map connections between rooms.
 
-We keep track of (c) by watching for calls to |SignalMapChange()| from the
+We keep track of (c) by watching for calls to `SignalMapChange()` from the
 routines in "WorldModel.i6t" which alter the map. (a) and (b), however,
 require tracking from call to call what the current subset of rooms and
 doors is. (It is not sufficient to remember the criteria used last time
@@ -77,8 +78,8 @@ criteria produce a different outcome. For instance, searching through
 lighted rooms and using unlocked doors will produce a different result
 if a door has been locked or unlocked since last time, or if a room has
 become lighted or not.) We store the set of applicable rooms and doors
-by enumerating them in the property |room_index| and by the flags in the
-|DoorRoutingViable| array respectively.
+by enumerating them in the property `room_index` and by the flags in the
+`DoorRoutingViable` array respectively.
 
 =
 Array DoorRoutingViable -> NUM_DOORS+1;
@@ -127,17 +128,17 @@ Global last_filter; Global last_use_doors;
 	}
 ];
 
-@ When this code became part of |WorldModelKit|, and thus needed to be linked
+@ When this code became part of `WorldModelKit`, and thus needed to be linked
 at the Inter level rather than mixed in as raw I6 code as in the pre-2020 days,
 the mechanism for selecting the route-finding algorithm needed to change.
-Previously, if the constant |FAST_ROUTE_FINDING| was defined, the matrix
-|FW_Matrix| and its functions would be compiled, and otherwise the functions
-with names beginning |Slow...| would be compiled.
+Previously, if the constant `FAST_ROUTE_FINDING` was defined, the matrix
+`FW_Matrix` and its functions would be compiled, and otherwise the functions
+with names beginning `Slow...` would be compiled.
 
-To avoid having to make two different linkable binaries of |WorldModelKit|,
+To avoid having to make two different linkable binaries of `WorldModelKit`,
 one in which fast route finding is used and one in which it isn't, we now
 instead compile the functions either way (they are not large) and the Inform
-compiler defines the constant |FWMATRIX_SIZE| to be 2 for slow route-finding
+compiler defines the constant `FWMATRIX_SIZE` to be 2 for slow route-finding
 (wasting only a negligible number of words for an unused array) and $R^2$,
 where $R$ is the number of rooms, for fast route-finding.
 
@@ -166,7 +167,7 @@ Following Floyd and Warshall we test if each known shortest path $R_{x}$ to
 $R_{y}$ can be used to shorten the best known path from $R_{x}$ to anywhere
 else: that is, we look for cases where $a_{xy} + a_{yj} < a_{xj}$, since
 those show that going from $R_x$ to $R_j$ via $R_y$ takes fewer steps than
-going directly. See for instance Robert Sedgewick, {\it Algorithms} (1988),
+going directly. See for instance Robert Sedgewick, _Algorithms_ (1988),
 chapter 32.
 
 The trouble with the Floyd-Warshall algorithm is not so much that it takes
@@ -258,15 +259,15 @@ Array FWMatrix --> FWMATRIX_SIZE;
 
 @h Slow Route-Finding.
 The alternative algorithm, used when only $O(n)$ memory is available,
-computes only some of the shortest paths leading to $R_y$, and is not cached --
+computes only some of the shortest paths leading to $R_y$, and is not cached —
 both because the storage is likely to be reused often by other searches and
 because there is little gain from doing so, given that a subsequent search
 with different endpoints will not benefit from the results of this one. On
 the other hand, to call it "slow" is a little unfair. It is somewhat like
 Prim's algorithm for finding a minimum spanning tree, rooted at $R_y$, and
-grows the tree outward from $R_y$ until either $R_x$ is reached -- in which
-case we stop immediately -- or the (directed) component containing $R_y$
-has been exhausted -- in which case $R_x$, which must lie outside this, can
+grows the tree outward from $R_y$ until either $R_x$ is reached — in which
+case we stop immediately — or the (directed) component containing $R_y$
+has been exhausted — in which case $R_x$, which must lie outside this, can
 have no path to $R_y$. In principle, the running time is $O(dn^2)$, where
 $d\leq D$ is the maximum vertex degree and $n$ is the number of rooms in
 the component containing $R_y$: in practice the degree is often much less
@@ -277,30 +278,30 @@ where, because few routes need to be found and because of the shape of the
 map, the "slow" algorithm will outperform the "fast" one: this is why
 the user is allowed to control which algorithm is used.
 
-For each room $R_z$, the property |vector| stores the direction object of
+For each room $R_z$, the property `vector` stores the direction object of
 the way to go to its parent room in the tree rooted at $R_y$. Thus if the
 algorithm succeeds in finding a route from $R_x$ to $R_y$ then we generate
-the route by starting at $R_x$ and repeatedly going in the |vector| direction
+the route by starting at $R_x$ and repeatedly going in the `vector` direction
 from where we currently stand until we reach $R_y$. Since every room needs
-a |vector| value, this requires $n$ words of storage. (The |vector| values
+a `vector` value, this requires $n$ words of storage. (The `vector` values
 store only enough of the minimal spanning tree to go upwards through the
 tree, but that's the only way we need to traverse it.)
 
 The method can be summed up thus:
 
-(a) Begin with every vector blank except that of $R_y$, the destination.
-(b) Repeatedly: For every room in the domain set, try each direction: if this
-leads to a room whose vector was determined on the last round ({\it not} on
+- Begin with every vector blank except that of $R_y$, the destination.
+- Repeatedly: For every room in the domain set, try each direction: if this
+leads to a room whose vector was determined on the last round (_not_ on
 this one, as that may be a suboptimal route), set the vector to point to that
 room.
-(c) Stop as soon as the vector from the origin is set, or when a round happens
+- Stop as soon as the vector from the origin is set, or when a round happens
 in which no further vectors are found: in which case, we have completely
 explored the component of the map from which the destination can be reached,
 and the origin isn't in it, so we can return "no".
 
 To prove the correctness of this, we show inductively that after round $n$
-we have set the |vector| for every room having a shortest path to $R_y$ of
-length $n$, and that every |vector| points to a room having a |vector| in
+we have set the `vector` for every room having a shortest path to $R_y$ of
+length $n$, and that every `vector` points to a room having a `vector` in
 the direction of the shortest path from there to $R_y$.
 
 =

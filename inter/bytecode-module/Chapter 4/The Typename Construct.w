@@ -19,8 +19,8 @@ void TypenameInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |typename| instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by these. The eventual
+In bytecode, the frame of a `typename` instruction is laid out with the
+compulsory words — see //Inter Nodes// — followed by these. The eventual
 length is flexible: there can be any number of operands from 0 upwards.
 
 @d DEFN_TYPENAME_IFLD         (DATA_IFLD + 0)

@@ -5,8 +5,8 @@ _variable packages.
 
 @h NVEs.
 While a nonlocal variable, or NLV, looks like a simple storage location from
-the perspective of Inform 7 source text -- the author assumes there's some
-memory cell somewhere with this name -- it can actually be data expressed in
+the perspective of Inform 7 source text — the author assumes there's some
+memory cell somewhere with this name — it can actually be data expressed in
 a range of different ways in Inter code. It might indeed be a global variable,
 but then again it might be an array entry, or even a temporary location on
 a stack; it might even be a constant.
@@ -25,7 +25,7 @@ typedef struct nonlocal_variable_emission {
 	/* access as this Inter constant or global variable */
 	struct inter_name *iname_form;
 
-	/* access as the Inter |nothing| constant */
+	/* access as the Inter `nothing` constant */
 	int nothing_form;
 
 	/* access as this shared variable on the M-stack */
@@ -93,7 +93,7 @@ void RTVariables::set_NVE(nonlocal_variable *nlv, nonlocal_variable_emission nve
 	nlv->compilation_data.rvalue_nve = nve;
 }
 
-@ This is a particularly useful case, where |iname| can be the iname of a
+@ This is a particularly useful case, where `iname` can be the iname of a
 constant or a global variable in Inter:
 
 =
@@ -181,17 +181,20 @@ void RTVariables::compile_NVE_as_val(nonlocal_variable *nlv, nonlocal_variable_e
 
 @h Writing without NVEs.
 NVEs are a very flexible way to describe a storage location, but they do assume
-that a write can be performed by a |STORE_BIP| instruction applied to a reference
-to that location -- in other words, by some form of assignment like so:
-= (text)
+that a write can be performed by a `STORE_BIP` instruction applied to a reference
+to that location — in other words, by some form of assignment like so:
+
+``` None
 	Something = value;
 	(Somewhere-->20) = value;
-=
+```
+
 And here the term on the left is compiled by wrapping the code produced by
-//RTVariables::compile_NVE_as_val// in a |REF_IST| to make a reference.
+//RTVariables::compile_NVE_as_val// in a `REF_IST` to make a reference.
 This is all well and good. But suppose the assignment has to be made by
 some function instead?
-= (text)
+
+``` None
 	ChangePlayer(value);
 	...
 	ChangePlayer (val) {
@@ -199,11 +202,12 @@ some function instead?
 		player = val;
 		...
 	}
-=
+```
+
 An NVE cannot express the need to compile an assignment entirely differently.
 So for such cases we provide the ability to set an explicit I6 scheme for
-writing. In such a schema, |*1| means the variable, |*2| the value; so, for
-example, |ChangePlayer(*2)| could be used in the above example.
+writing. In such a schema, `*1` means the variable, `*2` the value; so, for
+example, `ChangePlayer(*2)` could be used in the above example.
 
 =
 void RTVariables::set_write_schema(nonlocal_variable *nlv, text_stream *sch) {
@@ -216,7 +220,7 @@ text_stream *RTVariables::get_write_schema(nonlocal_variable *nlv) {
 }
 
 @h Compilation data.
-Each |nonlocal_variable| object contains this data.
+Each `nonlocal_variable` object contains this data.
 
 =
 typedef struct variable_compilation_data {
@@ -226,7 +230,7 @@ typedef struct variable_compilation_data {
 	int nlv_name_translated; /* has this been given storage as an I6 variable? */
 	struct nonlocal_variable_emission rvalue_nve;
 	struct nonlocal_variable_emission lvalue_nve;
-	struct text_stream *nlv_write_schema; /* |NULL| for almost all variables */
+	struct text_stream *nlv_write_schema; /* `NULL` for almost all variables */
 	int var_is_initialisable_anyway; /* meaningful only if not stored in own iname */
 } variable_compilation_data;
 
@@ -407,7 +411,7 @@ If the variable has no known initial value, it is given the initial
 value for its kind where possible: but note that this may not be possible
 if the source text says something like
 
->> Thickness is a kind of value. The carpet nap is a thickness that varies.
+> Thickness is a kind of value. The carpet nap is a thickness that varies.
 
 without specifying any thicknesses. If that's so, the set of legal thickness
 values is empty, so the "carpet nap" variable cannot be created in a way

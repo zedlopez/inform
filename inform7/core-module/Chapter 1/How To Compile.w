@@ -62,7 +62,7 @@ int Sequence::carry_out(int debugging) {
 }
 
 @ This macro carries out a step at what we think of as "benches" in the
-production line: hence the name |BENCH|. Continuing the analogy, there is an
+production line: hence the name `BENCH`. Continuing the analogy, there is an
 ongoing time and motion study: any step which takes more than 1 centisecond of
 CPU time is reported to the debugging log. That isn't necessarily a sign of
 something wrong: a few of these steps are always going to take serious
@@ -103,8 +103,8 @@ further steps; see //Task::advance_stage_to//.
 Before anything else can be done, we must create an empty Inter hierarchy
 into which we will "emit" an Inter program. No actual code will be emitted for
 some time yet, but identifier names and type declarations need somewhere to go.
-We then break the source into "compilation units" -- basically, one for the
-main source text and one for each extension -- because the Inter hierarchy
+We then break the source into "compilation units" — basically, one for the
+main source text and one for each extension — because the Inter hierarchy
 will divide according to these units.
 
 @<Divide into compilation units@> =
@@ -184,7 +184,7 @@ so on. Those absolute basics are made here.
 	BENCH(Tables::traverse_to_stock)
 	BENCH(RTRulebooks::RulebookOutcomePrintingRule)
 
-@ See //Internal Test Cases// for an explanation of the alarming-looking |exit|
+@ See //Internal Test Cases// for an explanation of the alarming-looking `exit`
 here, which only happens when special runs are made for compiler testing.
 
 @<Run any internal tests@> =
@@ -290,7 +290,8 @@ The issue here is that each time an imperative definition is compiled to a
 function, that can require other resources to be compiled in turn. The
 code compiled into the function body can involve calls to functions derived
 from other imperative definitions, or even the same one reinterpreted:
-= (text as Inform 7)
+
+``` Inform7
 To expose (X - a value):
 	say "You admire [X]."
 
@@ -301,7 +302,8 @@ To advertise (T - text):
 
 Every turn:
     advertise "a valuable antique silver coffee pot".
-=
+```
+
 Phrases are compiled on demand, but rules are always demanded, so the "every
 turn" rule here is compiled; that requires "advertise" to be compiled; which
 in turn requires a form of "expose X" to be compiled for X a text. But
@@ -313,19 +315,24 @@ function compilation in order to provide a context for execution of the phrase
 @ The only way to be sure of handling all needs here is to keep on compiling
 until the process exhausts itself, and this we do with a queue of tasks to
 perform.[1] Suppose we have this queue:
-= (text)
+
+``` None
 	T1 -> T2 -> T3 -> T4 -> ...
-=
+```
+
 and we are working on T2. That uncovers the need for three further tasks
-X1, X2, X3: those are added immediately after T2 --
-= (text)
+X1, X2, X3: those are added immediately after T2 —
+
+``` None
 	T1 -> T2 -> X1 -> X2 -> X3 -> T3 -> T4 -> ...
-=
+```
+
 Thus we never reach T3 until T2 has been completely exhausted, including its
 secondary tasks. To get a sense of how this works in practice, try:
-= (text)
+
+``` None
 Include task queue in the debugging log.
-=
+```
 
 [1] Until 2021 this process is structured as a set of coroutines rather than a
 queue. C does not strictly speaking support coroutines, though that hasn't stopped
@@ -338,15 +345,14 @@ quite came to that here, but it was sometimes difficult to reason about.
 a pointer to the relevant data.
 
 =
-typedef struct compilation_subtask {
+classdef compilation_subtask {
 	struct compilation_subtask *caused_by;
 	struct compilation_subtask *next_task;
 	void (*agent)(struct compilation_subtask *);
 	struct general_pointer data;
 	struct parse_node *current_sentence_when_queued;
 	struct text_stream *description;
-	CLASS_DEFINITION
-} compilation_subtask;
+}
 
 compilation_subtask *Sequence::new_subtask(void (*agent)(struct compilation_subtask *),
 	general_pointer gp, text_stream *desc) {
@@ -363,14 +369,14 @@ compilation_subtask *Sequence::new_subtask(void (*agent)(struct compilation_subt
 @ Each call to //Sequence::undertake_queued_tasks// works methodically through
 the queue until everything is done.
 
-The queue is a linked list of |compilation_subtask| objects in between |first_task|
-and |last_task|. (The queue is empty if and only if both are |NULL|.) The queue
+The queue is a linked list of `compilation_subtask` objects in between `first_task`
+and `last_task`. (The queue is empty if and only if both are `NULL`.) The queue
 only grows, and never has items removed.
 
-A marker called |last_task_undetaken| shows how much progress we have made in
-completing the tasks queued: so, when this is equal to |last_task|, there is
-nothing to do. Another marker called |current_task| is set only when a task
-is under way, and is |NULL| at all other times.
+A marker called `last_task_undetaken` shows how much progress we have made in
+completing the tasks queued: so, when this is equal to `last_task`, there is
+nothing to do. Another marker called `current_task` is set only when a task
+is under way, and is `NULL` at all other times.
 
 =
 compilation_subtask *first_task = NULL, *last_task = NULL, *last_task_undetaken = NULL;
@@ -395,12 +401,13 @@ void Sequence::queue_at(void (*agent)(struct compilation_subtask *),
 }
 
 @ New entries are inserted in the queue at two write positions:
-(*) after the |last_task|, i.e., at the back, if no task is currently going on; or
-(*) after the |current_horizon| marker, i.e., after the current task finishes.
+
+* after the `last_task`, i.e., at the back, if no task is currently going on; or
+* after the `current_horizon` marker, i.e., after the current task finishes.
 
 In the case where we are currently in the middle of what was the last task
 when it started, these two positions will be the same, so we sometimes need
-to advance |last_task| even when |current_horizon| is set.
+to advance `last_task` even when `current_horizon` is set.
 
 @<Queue the task@> =
 	t->caused_by = current_task;
@@ -433,7 +440,7 @@ void Sequence::allow_no_further_queued_tasks(void) {
 	task_queue_is_closed = TRUE;
 }
 
-@ So here is where the work is done, and the |last_task_undetaken| advances:
+@ So here is where the work is done, and the `last_task_undetaken` advances:
 
 =
 void Sequence::undertake_queued_tasks(void) {

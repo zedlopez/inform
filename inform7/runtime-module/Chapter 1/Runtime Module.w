@@ -8,7 +8,7 @@ which use this module:
 
 @d RUNTIME_MODULE TRUE
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 @e EMIT_ARRAY_MREASON
 @e PARTITION_MREASON
@@ -27,14 +27,3 @@ void RuntimeModule::start(void) {
 }
 void RuntimeModule::end(void) {
 }
-
-@
-
-@e contents_entry_CLASS
-@e digit_manager_CLASS
-@e mapping_hint_CLASS
-
-=
-DECLARE_CLASS(contents_entry)
-DECLARE_CLASS(digit_manager)
-DECLARE_CLASS(mapping_hint)

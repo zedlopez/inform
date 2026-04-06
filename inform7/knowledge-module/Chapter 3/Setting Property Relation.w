@@ -26,7 +26,7 @@ int SettingPropertyRelations::bp_sets_a_property(binary_predicate *bp) {
 }
 
 @h Initial stock.
-The case of |n| being 2 is when all properties have been created, making it
+The case of `n` being 2 is when all properties have been created, making it
 the perfect opportunity to go over all of the property-setting BPs:
 
 =
@@ -47,15 +47,14 @@ void SettingPropertyRelations::stock(bp_family *self, int n) {
 Relations like this lead to a timing problem, because we have to create the
 relation early enough that we can make sense of the sentences in the source
 text; but at that early time, the properties haven't been created yet. We
-therefore store the text (say, "weight") in |property_pending_text| and come
+therefore store the text (say, "weight") in `property_pending_text` and come
 back to it later.
 
 =
-typedef struct property_setting_bp_data {
+classdef property_setting_bp_data {
 	struct wording property_pending_text; /* temp. version used until props created */
 	struct property *set_property; /* asserting $B(x, v)$ sets this prop. of $x$ to $v$ */
-	CLASS_DEFINITION
-} property_setting_bp_data;
+}
 
 binary_predicate *SettingPropertyRelations::make_set_property_BP(wording W) {
 	binary_predicate *bp = BinaryPredicates::make_pair(property_setting_bp_family,
@@ -113,7 +112,7 @@ void SettingPropertyRelations::fix_property_bp(binary_predicate *bp) {
 
 @ When properties are named as part of relation definitions, for instance, like so:
 
->> The verb to weigh (it weighs, they weigh, it is weighing) implies the weight property.
+> The verb to weigh (it weighs, they weigh, it is weighing) implies the weight property.
 
 ...then its name (in this case "weight") is required to pass:
 
@@ -202,7 +201,7 @@ int SettingPropertyRelations::typecheck(bp_family *self, binary_predicate *bp,
 superficially attractive to reject them here, but (a) that would result in
 less specific problem messages which can be issued later on, notably for
 the "opposite" property of directions; and (b) we must be careful because
-in assertion traverse 2 not every object yet has its final kind -- for
+in assertion traverse 2 not every object yet has its final kind — for
 many implicitly created objects, they have yet to be declared as room,
 container and supporter.
 

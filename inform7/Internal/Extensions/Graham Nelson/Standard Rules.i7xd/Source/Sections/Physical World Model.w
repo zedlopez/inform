@@ -48,8 +48,8 @@ The verb to carry means the carrying relation.
 The verb to hold means the holding relation.
 The verb to wear means the wearing relation.
 
-@ One living being is special to our language -- the protagonist character,
-that is, the "player" -- and so these three verbs all have adjectival forms
+@ One living being is special to our language — the protagonist character,
+that is, the "player" — and so these three verbs all have adjectival forms
 which imply the player as the missing term.
 
 =
@@ -58,7 +58,7 @@ Definition: a thing is carried if the player is carrying it.
 Definition: a thing is held if the player is holding it.
 
 @ Animate beings also have the ability to see and touch their surroundings,
-but note that we only model the ability to do these things -- we do not attempt
+but note that we only model the ability to do these things — we do not attempt
 to track what they actually do see or touch at any given moment, so there are
 no built-in verbs "to see" or "to touch".
 
@@ -77,9 +77,9 @@ Definition: Something is touchable rather than untouchable if the player can tou
 
 @ While many of the world-modelling assumptions in I7 are carried over from
 those tried and tested by I6, the idea of concealment is an exception. The
-old I6 attribute |concealed| simply marked some objects (which we would
+old I6 attribute `concealed` simply marked some objects (which we would
 call "things") as being hidden from view in some way, but was never very
-satisfactory. What does hidden mean, exactly -- to whose eyes, and in what
+satisfactory. What does hidden mean, exactly — to whose eyes, and in what
 way? Should you be able to take something which is hidden, if you happen to
 know it's there? And so on. It was the muddiest of all the attributes, and
 widely disused as a result. In I7, we instead took the view that
@@ -189,7 +189,8 @@ A region can be privately-named or publicly-named. A region is usually publicly-
 A concept can be privately-named or publicly-named. A concept is usually publicly-named.
 
 @ At this point, then, the hierarchy looks like so:
-= (text)
+
+``` None
 	object
 	    room
 	    thing
@@ -202,12 +203,13 @@ A concept can be privately-named or publicly-named. A concept is usually publicl
 	    region
 	    abstract object
 	    	concept
-=
+```
+
 This framework is the minimum kit needed in order for Inform to be able to
 manage the spatial relationships arising from its basic verbs. Room and thing
 are needed to distinguish places and objects; door and backdrop because they
 need to violate the basic rule that an object can only be in one place at once
--- a door is "in" both of the rooms it faces onto -- and this requires special
+— a door is "in" both of the rooms it faces onto — and this requires special
 handling by Inform; region because it violates the rule that rooms are not
 themselves subject to being contained in other objects, and again this
 requires special handling. That leaves "direction", "container", "supporter"
@@ -248,8 +250,8 @@ A room has a text called description.
 @ Note that the "map region" property here is created with the type
 "object", not "region", even though we think of it as always being a
 region. This is because of I7's type-checking rule: the type "object" can
-legally hold 0, meaning "nothing", but more specific object types -- in
-this case "region" -- cannot. That would make them illegal to use in a
+legally hold 0, meaning "nothing", but more specific object types — in
+this case "region" — cannot. That would make them illegal to use in a
 situation where no regions were created, because variables or properties of
 this kind couldn't be initialised. This is why the Standard Rules almost
 always declare object properties as "object" rather than anything more
@@ -300,7 +302,7 @@ rare (edible lit pushable between rooms scenery is not met with often)
 this flexibility is helpful in mitigating the rigidity of the kinds
 structure, given that we have single inheritance of kinds. Note that,
 except for "lit", these are all really to do with whether and how people
-can move things around -- even edibility, which is the ability to be removed
+can move things around — even edibility, which is the ability to be removed
 from the world model entirely.
 
 =
@@ -333,7 +335,7 @@ A thing can be marked for listing or unmarked for listing. A thing is usually
 unmarked for listing.
 A thing can be mentioned or unmentioned. A thing is usually unmentioned.
 
-@ We now have a mixed bag of value properties, all descriptive -- it's an
+@ We now have a mixed bag of value properties, all descriptive — it's an
 interesting reflection on how qualitative English text usually is that the
 world model so seldom needs quantitative properties (sizes, weights, distances,
 and so on).
@@ -344,7 +346,7 @@ A thing has a text called an initial appearance.
 
 @ Lastly on things: an implication about scenery. The following sentence looks
 like an assertion much like others above ("A thing is usually inedible", for
-instance) -- but in fact it is an "implication": it says that an object having
+instance) — but in fact it is an "implication": it says that an object having
 one property also probably has another. The Standard Rules make only very
 sparing use of implications. They can trip up the user (who may quite
 reasonably say that it is up to them what properties something has): but they
@@ -386,7 +388,7 @@ usually unmarked for listing.
 A direction can be scenery. A direction is always scenery.
 
 @ The following value property expresses that all directions in I7 come in
-matched, diametrically opposing pairs -- north/south, up/down and so on.
+matched, diametrically opposing pairs — north/south, up/down and so on.
 This is a concept we need to provide so that I7 can apply its assumption
 that if room X is north of room Y, then probably room Y is also south of
 room X, and so on. (Geometrically, this is the operation of negation in
@@ -400,7 +402,7 @@ A direction has a direction called an opposite.
 twelve of them: the standard set of directions, which come in six pairs
 of opposites.
 
-The following set -- N/S, NE/SW, E/W, SE/NW, U/D, IN/OUT -- is rooted in IF
+The following set — N/S, NE/SW, E/W, SE/NW, U/D, IN/OUT — is rooted in IF
 tradition. It seems unlikely that people would make IN/OUT a pair of
 directions today if starting from a clean slate: this is really a residue
 of the traditional implementation, in 70s and 80s IF, of commands which
@@ -428,7 +430,7 @@ awkward point that a NE move is root 2 times the length of a N move),
 but in practice the world model doesn't care much about distances, another
 example of its qualitative nature. A further point is that, in a
 three-dimensional cubic lattice, we ought to have another eight pairs
-of directions for "up and northeast", "down and west" and so on --
+of directions for "up and northeast", "down and west" and so on —
 instead of which U/D are the only ways out of the horizontal plane.
 But natural language doesn't work that way: it overwhelmingly provides
 words for horizontal travel, because that's the plane in which our eyes
@@ -562,15 +564,15 @@ The carrying capacity of a container is usually 100.
 
 @ The most interesting thing to note here (and we will see it again in the
 definition of "people") is that "transparent" the I7 property is not
-a direct match onto |transparent| the I6 attribute. In I7, the term is
+a direct match onto `transparent` the I6 attribute. In I7, the term is
 applicable only to containers (a reform made in January 2008, but clarifying
-what was already de facto the case). In I6, the |transparent| attribute
+what was already de facto the case). In I6, the `transparent` attribute
 means that child-objects in the object tree are in scope whenever the parent
 object is: in the I7 world model that's always true for supporters, so we
-oblige all supporters to have the attribute |transparent| in their I6
+oblige all supporters to have the attribute `transparent` in their I6
 compiled forms. The same will be true for people. That doesn't in practice
 mean that I7 never has high shelves or people with daggers concealed
-beneath cloaks -- just that we no longer use I6's mechanism for hiding
+beneath cloaks — just that we no longer use I6's mechanism for hiding
 these things, and expect the user to write activity rules instead.
 
 =
@@ -599,7 +601,7 @@ But then again, what does D conceptually represent? Surely we aren't saying
 there's a natural concept of "basketball player/skyscraper"?
 
 There are various responses, of which the most widely used now is probably
-that of |C++|'s notion of templates. We would define our top-ten business
+that of `C++`'s notion of templates. We would define our top-ten business
 by writing a function applying to a list of objects of any class $T$ such
 that $T$ provided a height: there would then be no need for "basketball
 player/skyscraper" to be a class in its own right. Instead, we would
@@ -607,9 +609,9 @@ define the behaviour as being available to anything for which it makes
 sense.
 
 This is broadly what Inform 7 does, too, though not so formally. We use the
-term "pattern" for this, and have actually seen two patterns already --
+term "pattern" for this, and have actually seen two patterns already —
 the way that containers and supporters share the "carrying capacity"
-limit, and also the notion of transparency -- and it's by providing two
+limit, and also the notion of transparency — and it's by providing two
 patterns that we are able to deal with the likeness and also unlikeness of
 doors and containers. Their unlikeness is obvious; but their likeness is
 that they both grant or withhold access to some extent of space bordering
@@ -643,8 +645,8 @@ And similarly for lockability, because a principle of the world model is
 that any spatial barrier can be given a lock if the designer so chooses. To
 satisfy this pattern, a thing must
 
-(i) satisfy the openability pattern, and
-(ii) provide both the either/or properties "lockable" and "locked",
+- satisfy the openability pattern, and
+- provide both the either/or properties "lockable" and "locked",
 and also the value property "matching key".
 
 Both doors and containers make some implications so that the words "lockable"
@@ -705,7 +707,7 @@ all obvious that any single model will be sensible for what different
 authors want to do with their characters.
 
 On gender, see also the "man" and "woman" kinds below. Note that we have
-three gender choices available -- male, female and neuter -- but these are,
+three gender choices available — male, female and neuter — but these are,
 for historical reasons to do with how gender is handled by the I6 library,
 managed using either/or properties rather than a single three-way value
 property. This doesn't in practice cause trouble. (Specifying something as
@@ -717,10 +719,10 @@ than HER or IT). There has to be some convention here, and in a case where
 we don't know our linguistic ground, opting for the least surprising
 behaviour seems wisest.
 
-The Inform compiler automatically applies the either-or property |animate|
-and the valued property |before| to a person, giving that value as just
-|NULL|. This allows any person to become the protagonist during play
-(using I6's |ChangePlayer| routine).
+The Inform compiler automatically applies the either-or property `animate`
+and the valued property `before` to a person, giving that value as just
+`NULL`. This allows any person to become the protagonist during play
+(using I6's `ChangePlayer` routine).
 
 =
 Section 11 - People
@@ -739,19 +741,19 @@ A person can be transparent. A person is always transparent.
 
 @ One among the people is special: the enigmatic default protagonist, whose
 name is not "player" but "yourself". (The I6 library requires this object to
-be created as |selfobj|, but that's not a name that is ever printed or parsed:
+be created as `selfobj`, but that's not a name that is ever printed or parsed:
 it's a constant value used only in I6 source code.)
 
-The |yourself| object has to be proper-named to prevent the I6 library
+The `yourself` object has to be proper-named to prevent the I6 library
 from talking about "the yourself", as it otherwise might. "Undescribed"
 in this context means that "yourself" is not described as being present
 in room descriptions: this would be redundant and annoying.
 
-The I6 property |saved_short_name| property is an implementation convenience
+The I6 property `saved_short_name` property is an implementation convenience
 for use if there is ever a change of player, in which case the printed name
 of the object will cease to be "yourself" and become "your former self"
-instead. When this happens, the previous printed name (or |short_name| in
-I6 terms) is stored in |saved_short_name| so that it can recovered later.
+instead. When this happens, the previous printed name (or `short_name` in
+I6 terms) is stored in `saved_short_name` so that it can recovered later.
 (We can't assume it was necessarily "yourself" because the source text
 might have overridden this with a sentence like "The printed name of the
 player is "your dreary self".") The Inform compiler automatically generates
@@ -860,15 +862,15 @@ giant Venus fly-trap might qualify, but not a patch of lichen."
 
 @h Devices.
 The justification for providing a "device" kind is much thinner. It's done
-largely for traditional reasons -- such a concept existed in the I6 library,
+largely for traditional reasons — such a concept existed in the I6 library,
 which in turn followed Infocom conventions dating from the early 1980s.
 The inclusion is defensible as representing a common linguistic category
 found in everyday situations, where an inanimate object nevertheless does
 something while under direct or indirect human control: we can also imagine
 relations for which it could be a domain ("X is able to work D" meaning
 that person X understands how to use the controls of device D, say). It
-could equally be attacked as having a rather flimsy world model -- it's just
-an on/off switch -- and representing a pretty inchoate mass of concepts,
+could equally be attacked as having a rather flimsy world model — it's just
+an on/off switch — and representing a pretty inchoate mass of concepts,
 from a mousetrap to a nuclear reactor.
 
 =
@@ -897,9 +899,9 @@ the built-in set, and whenever it was used the result would be that
 the going action would rely on a pretty complicated interlacing of rules
 as between this extension and the Standard Rules.
 
-Turning to implementation, I6 -- surprisingly, perhaps -- doesn't have
-a |vehicle| attribute: a vehicle is an object which is |enterable| and
-whose |before| rule for the I6 |##Go| action returns the magic value 1.
+Turning to implementation, I6 — surprisingly, perhaps — doesn't have
+a `vehicle` attribute: a vehicle is an object which is `enterable` and
+whose `before` rule for the I6 `##Go` action returns the magic value 1.
 A troublesome point here is that I6 makes no distinction between vehicles
 which contain and vehicles which support. But we do, because once we have
 decided to make "vehicle" a kind, it has to be either a kind of container
@@ -966,31 +968,33 @@ A player's holdall is usually openable.
 All of the kinds, objects and properties which make up the standard kit
 provided to every source text are now complete. We conclude Section SR1 by
 giving the Inform compiler a dictionary to tell it how I7's names for
-properties -- some value properties, some either/or -- mesh with those
+properties — some value properties, some either/or — mesh with those
 in the I6 library.
 
 Ordinarily, a new value property such as "astral significance" would
 be compiled by Inform into an I6 property called something like
-= (text)
+
+``` None
 	P73_astral_significance
-=
+```
+
 whereas a new either/or property might become either an I6 attribute or an
-I6 property holding only |true| or |false|, at the compiler's discretion.
+I6 property holding only `true` or `false`, at the compiler's discretion.
 (It needs to use this discretion because I6 has a hard limit on the number
 of attributes, whereas there are no limits on the number of properties used
 in I7.) And if "astral significance" is a concept handled only by I7
 source text, that's fine.
 
 But we want our "printed name" property, for instance, to be the text
-which the I6 library prints out whenever it uses the |short_name| of an
-object: so we want the Inform compiler to use the I6 identifier |short_name|
+which the I6 library prints out whenever it uses the `short_name` of an
+object: so we want the Inform compiler to use the I6 identifier `short_name`
 for "printed name", not to invent a new one. Inform therefore maintains a
 dictionary of equivalents, and here it is. (Any I7 property not named is
 handled purely by I7 source text in the remainder of the Standard Rules.)
 
 @ First, equivalents where I7 either/or properties map directly onto
 I6 attributes. Note the way "lit" (for things) and "lighted" (for rooms)
-both map onto the same I6 attribute, |light|. Attributes were in scarce
+both map onto the same I6 attribute, `light`. Attributes were in scarce
 supply in I6 (with a limit of 32 in the early days, later raised to 48) and
 this sort of reuse seemed sensible in the early 1990s, especially as the
 meanings were basically similar.
@@ -1023,7 +1027,7 @@ The marked for listing property is defined by Inter as "workflag".
 The list grouping key property is defined by Inter as "list_together".
 
 @ Second, the I7 value properties mapping onto I6 properties. Again,
-|map_region| is a new I6 property of our own, while the rest are I6 staples.
+`map_region` is a new I6 property of our own, while the rest are I6 staples.
 And see also "other side", which is translated above for timing reasons.
 
 =

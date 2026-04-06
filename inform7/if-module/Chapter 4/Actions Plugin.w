@@ -3,27 +3,27 @@
 A feature for actions, by which animate characters change the world model.
 
 @ Support for actions is contained in the "actions" feature, which occupies this
-entire chapter. The test group |:actions| may be helpful in trouble-shooting here.
+entire chapter. The test group `:actions` may be helpful in trouble-shooting here.
 
 It may be helpful to distinguish these ideas right from the outset:
 
-(*) An "action" (or "explicit action", for the sake of clarity) is a specific
+- An "action" (or "explicit action", for the sake of clarity) is a specific
 impulse by a person in the model world to effect some change within it: for
 example, "Henry taking the brick". Here Henry is the "actor", and the brick is
 "the noun". Actions can be "stored" so that they are values in their own
 right; thus, a variable could be set to the value "Henry taking the brick",
-and this would have kind |K_stored_action|. Inside the compiler they are
+and this would have kind `K_stored_action`. Inside the compiler they are
 represented by //explicit_action// objects.
-(*) An "action name" -- not an ideal thing to call it, but traditional -- is the
+- An "action name" — not an ideal thing to call it, but traditional — is the
 type of action involved, taken in isolation: for example, "taking". These can
-also be values at run-time, they have kind |K_action_name|, and they are
+also be values at run-time, they have kind `K_action_name`, and they are
 represented in the compiler by //action_name// objections.
-(*) An "action pattern" is a textual description which matches some actions but
+- An "action pattern" is a textual description which matches some actions but
 not others, and can be vague or specific: for example, "wearing or examining
-something". Action patterns become values of the kind |K_description_of_action|.
+something". Action patterns become values of the kind `K_description_of_action`.
 They can also be aggregated into "named action patterns", which characterise
 behaviour; see //action_pattern// and //named_action_pattern//.
-(*) A "past action pattern", which can never in any way be a value, is a
+- A "past action pattern", which can never in any way be a value, is a
 description of an action which may have happened in the past: for example,
 "dropped the hat". These are just a special case of action patterns.
 
@@ -64,15 +64,15 @@ int ActionsPlugin::production_line(int stage, int debugging, stopwatch_timer *se
 	return FALSE;
 }
 
-@ Though |K_action_name| is very like an enumeration kind, its possible values,
+@ Though `K_action_name` is very like an enumeration kind, its possible values,
 which correspond to //action_name// objects, are not strictly speaking instances
 in the Inform world model. (Because they do not have properties: see //Action Variables//
 for what they have instead.)
 
 The "waiting" action is sacred, because it is the default value for
-|K_action_name| values: waiting is the zero of actions.
+`K_action_name` values: waiting is the zero of actions.
 
-= (early code)
+@<Global IF variable definitions@> +=
 action_name *waiting_action = NULL;
 
 @ This is recognised by its English name when defined by the Standard Rules.
@@ -99,7 +99,7 @@ action_name *ActionsPlugin::default_action_name(void) {
 	return waiting_action;
 }
 
-@ And because |K_action_name| values have no properties, they cannot store
+@ And because `K_action_name` values have no properties, they cannot store
 a "specification" text as one, and have to make their own arrangements:
 
 =
@@ -147,8 +147,9 @@ int ActionsPlugin::complete_model(int stage) {
 with the special meaning "X is an action...", which creates new action names.
 These can be quite complicated:
 
->> Inserting it into is an action applying to two things.
->> Verifying the story file is an action out of world and applying to nothing.
+> Inserting it into is an action applying to two things.
+
+> Verifying the story file is an action out of world and applying to nothing.
 
 =
 int ActionsPlugin::make_special_meanings(void) {
@@ -217,7 +218,7 @@ new action, and the OP can include a wide range of details about it.
 			<action-sentence-object>(Node::get_text(V->next->next));
 		}
 
-@ The subject noun phrase needs little further parsing -- it's the name of the
+@ The subject noun phrase needs little further parsing — it's the name of the
 action-to-be. A successful match here causes the new //action_name// structure
 to be created.
 
@@ -242,7 +243,7 @@ to be created.
 which are allowed but not required to be delimited as a list, and which can
 inconveniently contain the word "and"; not only that, but note that in
 
->> applying to one thing and one number
+> applying to one thing and one number
 
 the initial text "applying to one thing" would be valid as it stands.
 
@@ -326,12 +327,8 @@ the initial text "applying to one thing" would be valid as it stands.
 @<Issue PM_ActionMisapplied problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(),
 		_p_(PM_ActionMisapplied),
-		"an action cannot apply to specific kinds of object such as 'room' or 'vehicle'",
-		"and if it is going to apply to objects at all then it should talk about them "
-		"as 'things'. For example, 'Driving is an action applying to one touchable thing' "
-		"might be the way to set up an action for driving, even if it makes sense only "
-		"for a 'vehicle'. A rule like 'Check driving: if the noun is not a vehicle, ...' "
-		"would then be a good idea.");
+		"an action cannot apply to that",
+		"and should apply instead to a kind such as 'thing' or 'number'.");
 	==> { REQUIRES_ACCESS, K_thing };
 
 @<Check action kind@> =
@@ -341,12 +338,32 @@ the initial text "applying to one thing" would be valid as it stands.
 		==> { A, K_object };
 	} else if ((Kinds::Behaviour::is_subkind_of_object(K)) &&
 		 (Latticework::super(K) != K_object)) {
-		@<Issue PM_ActionMisapplied problem@>;
+		@<Issue PM_ActionAppliedToSubkind problem@>;
 	} else if (A != UNRESTRICTED_ACCESS) {
-		@<Issue PM_ActionMisapplied problem@>;
+		@<Issue PM_ActionAppliedAccessToNonThing problem@>;
 	} else {
 		==> { A, K };
 	}
+
+@<Issue PM_ActionAppliedToSubkind problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(),
+		_p_(PM_ActionAppliedToSubkind),
+		"an action cannot apply to specific kinds of 'thing' such as 'person' or 'vehicle'",
+		"and if it is going to apply to objects at all then it should talk about them "
+		"as 'things'. For example, 'Driving is an action applying to one touchable thing' "
+		"might be the way to set up an action for driving, even if it makes sense only "
+		"for a 'vehicle'. A rule like 'Check driving: if the noun is not a vehicle, ...' "
+		"would then be a good idea.");
+	==> { REQUIRES_ACCESS, K_thing };
+
+@<Issue PM_ActionAppliedAccessToNonThing problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(),
+		_p_(PM_ActionAppliedAccessToNonThing),
+		"an action cannot apply to objects which are 'visible', 'touchable' or 'carried' "
+		"unless they are 'things'",
+		"so for example, 'Exploring is an action applying to one touchable room' "
+		"is not allowed because rooms are not things.");
+	==> { REQUIRES_ACCESS, K_thing };
 
 @ For years this was not erroneous, but you now can't write, say, "X is an
 action applying to nothing, applying to nothing, requiring light and applying

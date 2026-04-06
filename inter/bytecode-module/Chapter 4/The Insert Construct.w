@@ -19,8 +19,8 @@ void InsertInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |insert| instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+In bytecode, the frame of an `insert` instruction is laid out with the
+compulsory words — see //Inter Nodes// — followed by:
 
 @d TEXT_INSERT_IFLD (DATA_IFLD + 0)
 @d REPLACING_INSERT_IFLD (DATA_IFLD + 1)

@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "directs" : Directives (# commands)                                     */
 /*                                                                           */
-/*   Part of Inform 6.43                                                     */
+/*   Part of Inform 6.45                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2025                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -55,8 +55,9 @@ extern int parse_given_directive(int internal_flag)
 
         Returns: FALSE if program continues, TRUE if end of file reached.    */
 
-    int *trace_level = NULL; int32 i, j, k, n, flag;
+    int *trace_level = NULL; int32 i, j, k, n, flag, prevvalue;
     const char *constant_name;
+    assembly_operand AO;
     debug_location_beginning beginning_debug_location;
 
     if (internal_flag)
@@ -155,6 +156,7 @@ extern int parse_given_directive(int internal_flag)
             return ebf_symbol_error_recover("new constant name", typename(symbols[i].type), symbols[i].line);
         }
 
+        prevvalue = symbols[i].value;
         assign_symbol(i, 0, CONSTANT_T);
         constant_name = token_text;
 
@@ -185,39 +187,32 @@ extern int parse_given_directive(int internal_flag)
         if (!((token_type == SEP_TT) && (token_value == SETEQUALS_SEP)))
             put_token_back();
 
-        {   assembly_operand AO = parse_expression(CONSTANT_CONTEXT);
-            if (AO.marker != 0)
-            {   assign_marked_symbol(i, AO.marker, AO.value,
-                    CONSTANT_T);
-                symbols[i].flags |= CHANGE_SFLAG;
-            }
-            else
-            {   assign_symbol(i, AO.value, CONSTANT_T);
-            }
+        AO = parse_expression(CONSTANT_CONTEXT);
             
-            if (i == grammar_version_symbol) {
-                /* Special case for changing Grammar__Version. We check
-                   conditions carefully before applying the change. */
-                if (AO.marker != 0) {
-                    error("Grammar__Version must be given an explicit constant value");
-                }
-                else if (grammar_version_number == AO.value) {
-                    /* no change needed */
-                }
-                else if (no_fake_actions > 0) {
-                    error("Once a fake action has been defined \
-it is too late to change the grammar version.");
-                }
-                else if (no_grammar_lines > 0) {
-                    error("Once an action has been defined \
-it is too late to change the grammar version.");
-                }
-                else {
-                    set_grammar_version(AO.value);
-                }
+        if (i == grammar_version_symbol || i == grammar_meta_value_symbol) {
+            /* Special case for changing Grammar__Version or
+               Grammar_Meta__Value. We check conditions carefully before
+               applying the change. */
+            optionindex_e optnum = (i == grammar_version_symbol ? OPT_GRAMMAR_VERSION : OPT_GRAMMAR_META_FLAG);
+            int ok = set_grammar_option_constant(optnum, AO);
+            if (!ok) {
+                /* Revert to the previous value. This is a bit hacky,
+                   in that we've lost the symbol marker and type --
+                   but these constants should always be CONSTANT
+                   to begin with. */
+                INITAOTV(&AO, CONSTANT_T, prevvalue);
             }
         }
 
+        if (AO.marker != 0)
+        {   assign_marked_symbol(i, AO.marker, AO.value,
+                CONSTANT_T);
+            symbols[i].flags |= CHANGE_SFLAG;
+        }
+        else
+        {   assign_symbol(i, AO.value, CONSTANT_T);
+        }
+    
         if (debugfile_switch && !(symbols[i].flags & REDEFINABLE_SFLAG))
         {   debug_file_printf("<constant>");
             debug_file_printf("<identifier>%s</identifier>", constant_name);
@@ -1196,15 +1191,21 @@ it is too late to change the grammar version.");
 
         switch(token_type)
         {   case DQ_TT:
-                new_alphabet(token_text, 0);
+                flag = set_current_option_precedence(OPT_ZALPHABET, 0);
+                /* The 0 is a dummy value. We just want to know if the
+                   option has been set already. */
+                if (flag)
+                    new_alphabet(token_text, 0);
                 get_next_token();
                 if (token_type != DQ_TT)
                     return ebf_error_recover("double-quoted alphabet string");
-                new_alphabet(token_text, 1);
+                if (flag)
+                    new_alphabet(token_text, 1);
                 get_next_token();
                 if (token_type != DQ_TT)
                     return ebf_error_recover("double-quoted alphabet string");
-                new_alphabet(token_text, 2);
+                if (flag)
+                    new_alphabet(token_text, 2);
             break;
 
             case SQ_TT:
@@ -1217,6 +1218,9 @@ it is too late to change the grammar version.");
             switch(token_value)
             {   case TABLE_DK:
                 {   int plus_flag = FALSE;
+                    flag = set_current_option_precedence(OPT_ZCHAR_TABLE, 0);
+                    /* The 0 is a dummy value. We just want to know if the
+                       option has been set already. */
                     get_next_token();
                     if ((token_type == SEP_TT) && (token_value == PLUS_SEP))
                     {   plus_flag = TRUE;
@@ -1225,11 +1229,14 @@ it is too late to change the grammar version.");
                     while ((token_type!=SEP_TT) || (token_value!=SEMICOLON_SEP))
                     {   switch(token_type)
                         {   case NUMBER_TT:
-                                new_zscii_character(token_value, plus_flag);
-                                plus_flag = TRUE; break;
+                                if (flag)
+                                    new_zscii_character(token_value, plus_flag);
+                                plus_flag = TRUE;
+                                break;
                             case SQ_TT:
-                                new_zscii_character(text_to_unicode(token_text),
-                                    plus_flag);
+                                j = text_to_unicode(token_text);
+                                if (flag)
+                                    new_zscii_character(j, plus_flag);
                                 if (token_text[textual_form_length] != 0)
                                     return ebf_error_recover("single character value");
                                 plus_flag = TRUE;
@@ -1239,7 +1246,7 @@ it is too late to change the grammar version.");
                         }
                         get_next_token();
                     }
-                    if (plus_flag) new_zscii_finished();
+                    if (flag && plus_flag) new_zscii_finished();
                     put_token_back();
                 }
                     break;

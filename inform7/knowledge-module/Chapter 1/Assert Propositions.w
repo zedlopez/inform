@@ -5,7 +5,7 @@ state of the world when play begins.
 
 @h Defensive moat.
 To enforce the doctrine that calls to //Assert::true// or //Assert::true_about//
-are the only way to change the model, we define a macro |PROTECTED_MODEL_PROCEDURE|
+are the only way to change the model, we define a macro `PROTECTED_MODEL_PROCEDURE`
 which can be used to guard a function so that it can only be called as a
 consequence of these. For example, //Instances::new// is defended this way.
 
@@ -13,8 +13,8 @@ consequence of these. For example, //Instances::new// is defended this way.
 	if (assert_recursion_depth == 0)
 		internal_error("protected model-affecting procedure used outside proposition assert");
 
-= (early code)
-int assert_recursion_depth = 0; /* depth of recursion of |Assert::inner_slated| */
+@<Global knowledge variable definitions@> +=
+int assert_recursion_depth = 0; /* depth of recursion of `Assert::inner_slated` */
 
 @h Entrance.
 //Assert::true// takes a proposition with no free variables and converts it
@@ -46,12 +46,12 @@ parse_node **current_interpretation_as_spec = NULL;
 or uncertainty about the information implied by it, and this is stored in the
 following global variable:
 
-= (early code)
+@<Global knowledge variable definitions@> +=
 int prevailing_mood = UNKNOWN_CE;
 
 @ The true entrance, then, keeps track of the recursion depth but also ensures
 that the identification slate is always correct, stacking them so that an
-inner |Assert::inner_slated| has an independent slate from an outer one.
+inner `Assert::inner_slated` has an independent slate from an outer one.
 
 =
 void Assert::inner(pcalc_prop *prop, inference_subject *subject, int certainty) {
@@ -217,7 +217,6 @@ so the new value has to be added to the identification slate.
 	wording NW = EMPTY_WORDING;
 	int is_a_var = FALSE, is_a_const = FALSE, is_a_kind = FALSE;
 	kind *K = NULL;
-
 	@<Scan subsequent atoms to find the name, nature and kind of what is to be created@>;
 	@<Create the object and add to the identification slate@>;
 	@<Record the new creation in the debugging log@>;
@@ -296,7 +295,7 @@ where X is.
 Another difference is that $R(x, y)$ can give you definite information about
 the kinds of $x$ and $y$, where they are objects, because binary predicates
 have single definitions. (Knowing $locked(x)$, by contrast, doesn't
-tell you whether $x$ is a door or a container -- adjectives can have multiple
+tell you whether $x$ is a door or a container — adjectives can have multiple
 domains in which they have differing definitions.) In the case of a
 proposition produced by sentence conversion, that information is redundant
 since appropriate kind atoms were added to the proposition anyway. But we
@@ -361,7 +360,7 @@ these kind atoms.
 			"into two or more sentences?");
 
 @ The "is" predicate is not usually assertable, but $is(x, f_R(y))$
-can be asserted since it is equivalent to $R(x, y)$ -- this is where we
+can be asserted since it is equivalent to $R(x, y)$ — this is where we
 unravel that. We reject compound uses of functions in this way, but in
 practice they hardly ever arise, and could only do so with quite complex
 sentences where it seems reasonable to tell the user to write something
@@ -396,7 +395,7 @@ inferences which might wrongly be drawn about "in": this is a different
 kind of containment from the three-dimensional spatial one suggested by
 containers and rooms. It also complicates things that a backdrop can be
 "in" a region. So we play very safe and make no guesses about regions or
-the first term of |R_regional_containment|.
+the first term of `R_regional_containment`.
 
 We also never deduce "thing" as the kind by this mechanism. This is
 because instances of "object" with no apparent declared kind are made into
@@ -419,13 +418,13 @@ In asserting a proposition, we are in effect acting as an interpreter rather
 than a compiler. Given any term, we need to produce either an object $O$ or a
 more general value $V$. Recall that a term can be
 
-(a) a constant $C$,
-(b) a variable $v$, or
-(c) a function $f_R(t)$ for another term $t$.
+- a constant $C$,
+- a variable $v$, or
+- a function $f_R(t)$ for another term $t$.
 
 We are unable, at compile-time, to evaluate $f_R(t)$ for any relation $R$,
 and won't even try. We can evaluate a variable using the interpretation
-slate -- that was its whole purpose. So the only case left is a constant:
+slate — that was its whole purpose. So the only case left is a constant:
 
 =
 parse_node *Assert::spec_of_term(pcalc_term pt) {
@@ -436,14 +435,14 @@ parse_node *Assert::spec_of_term(pcalc_term pt) {
 
 @ The analogous routine to extract an instance, which normally takes
 precedence, is more convoluted. First, we could be looking at the name of a
-kind -- in "A door is usually closed", "door" will appear here as a
+kind — in "A door is usually closed", "door" will appear here as a
 description node, and we need to extract the instance of the kind as our
 return value. Second, we want to divert all assertions about "the player" so
 that they refer to the player object, not to the global variable "the player".
 
 Users tend to expect that they can talk about properties of things as
 values, when setting up the world, and since a property value might be
-an object, we are going to be careful to reject a |PROPERTY_VALUE_NT|
+an object, we are going to be careful to reject a `PROPERTY_VALUE_NT`
 type with a problem message. In practice the A-parser gets there first,
 but just in case.
 

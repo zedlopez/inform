@@ -6,7 +6,7 @@ To create sets of relations for different purposes.
 belong to. Some families are small (the equality family contains just the
 equality relation), others larger (the map connections family in an IF compilation
 has one for each map direction). What unites the members of a family is that
-they share an implementation of typechecking, asserting and compilation --
+they share an implementation of typechecking, asserting and compilation —
 in other words, if two predicates are implemented roughly the same way, then
 they should be in the same family, and otherwise not. Inform currently has
 a little over 10 different families.
@@ -15,10 +15,9 @@ A //bp_family// object is simply a receiver for the method calls providing
 the predicate's implementation.
 
 =
-typedef struct bp_family {
+classdef bp_family {
 	struct method_set *methods;
-	CLASS_DEFINITION
-} bp_family;
+}
 
 bp_family *BinaryPredicateFamilies::new(void) {
 	bp_family *f = CREATE(bp_family);
@@ -26,7 +25,7 @@ bp_family *BinaryPredicateFamilies::new(void) {
 	return f;
 }
 
-@ |STOCK_BPF_MTID| is for stocking up on relations. Stage 1 happens very early
+@ `STOCK_BPF_MTID` is for stocking up on relations. Stage 1 happens very early
 in Inform's run, and allows built-in essentials such as equality to be created.
 Stage 2 is later on, when the world model is complete but before code is compiled,
 and gives an opportunity to make, say, one relation for every value property.
@@ -89,7 +88,7 @@ int BinaryPredicateFamilies::assert(binary_predicate *bp,
 relation true from now on, or make it false.
 
 Some constants here enumerate the three cases of what we are to do. This
-looks asymmetrical -- shouldn't we also test to see whether an atom is false,
+looks asymmetrical — shouldn't we also test to see whether an atom is false,
 a fourth case?
 
 The answer is that there's no need, since "test false" can be done by
@@ -116,7 +115,7 @@ i6_schema *BinaryPredicateFamilies::get_schema(int task, binary_predicate *bp,
 	return asch->schema;
 }
 
-@ This allows BPs to print a name for themselves other than their |relation_name|
+@ This allows BPs to print a name for themselves other than their `relation_name`
 fields, when they are mentioned in problem messages.
 
 @e DESCRIBE_FOR_PROBLEMS_BPF_MTID

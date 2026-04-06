@@ -83,13 +83,13 @@ mean the direction or, say, "east garden". And what if the source
 mentions many chairs, and now refers simply to "the chair"? This problem
 is not so acute for nouns referring to abstractions, where we can simply
 forbid duplicate definitions and require an exact wording when talking
-about them. But for names of IF objects -- which represent the solid and often
-repetitive items and places of a simulated world -- it cannot be ducked.
+about them. But for names of IF objects — which represent the solid and often
+repetitive items and places of a simulated world — it cannot be ducked.
 We can hardly tell an Inform author to create at most one item whose
 name contains the word "jar", for instance.
 
 All programming languages face similar problems. In C, for instance, a local
-variable named |east| will be recognised in preference to a global one of the
+variable named `east` will be recognised in preference to a global one of the
 same name (to some extent external linking provides a third level again).
 The way this is done is usually explained in terms of the "scope" of a
 definition, the part of the source for which it is valid: the winner, in
@@ -97,7 +97,8 @@ cases of ambiguity, being the definition of narrowest scope which is valid
 at the position in question. In our terms, a stand-alone C program has a
 heading tree like so, with two semantically meaningful heading levels,
 File (0) and Routine (1), and then sublevels provided by braced blocks:
-= (text)
+
+``` None
 	File
 	    main()
 	    routine1()
@@ -105,7 +106,8 @@ File (0) and Routine (1), and then sublevels provided by braced blocks:
 	        ...
 	    routine2()
 	    ...
-=
+```
+
 The resolution of a name at a given position P is unambiguous: find the
 heading H to which P belongs; if the name is defined there, accept that;
 if not move H upwards and try again; if it is not defined even at File (0)
@@ -244,14 +246,14 @@ the graph is connected, and therefore every heading must eventually be
 visited. No heading can be visited twice, because that would mean that a
 cycle of nodes $H_1, H_2, ..., H_i, H_1$ must exist: since we have a tree
 structure, there are no loops, and so $H_i = H_2$, $H_{i-1} = H_3$, and so
-on -- we must be walking a path and then retracing our steps in reverse.
+on — we must be walking a path and then retracing our steps in reverse.
 That being so, there is a point where we turned back: we went from $H_j$ to
 $H_{j+1}$ to $H_j$ again. And this violates the principle that at each node
 we move outwards in every direction except the way we came, a
 contradiction.
 
-The routine looks as if it may have a large recursion depth -- maybe as
-deep as the number of headings -- but because we go downwards and then
+The routine looks as if it may have a large recursion depth — maybe as
+deep as the number of headings — but because we go downwards and then
 upwards, the maximum recursion depth of the routine is less than $2L+1$, where
 $L$ is the number of levels in the tree other than the pseudo-heading. This
 provides an upper bound of about 21, regardless of the size of the source
@@ -290,7 +292,7 @@ void NameResolution::build_search_list_from(heading *within, heading *way_we_cam
 	nt_search_finish = nt;
 
 @ The search list is used for finding best matches in a particular order, the
-order being used to break tie-breaks. Note that we return |NULL| if no noun
+order being used to break tie-breaks. Note that we return `NULL` if no noun
 in the search list has a positive score.
 
 =

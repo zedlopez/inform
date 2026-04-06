@@ -7,7 +7,7 @@ can be held by which objects.
 duration") generate propositions which assert that a subject, here "scene",
 provides a property, here "expected duration". The relation needed is:
 
-= (early code)
+@<Global knowledge variable definitions@> +=
 binary_predicate *R_provision = NULL;
 
 @h Family.
@@ -62,8 +62,8 @@ int ProvisionRelation::typecheck(bp_family *self, binary_predicate *bp,
 
 @h Assertion.
 If we assert that, say, vehicles provide "colour", then we are implicitly
-enabling adjectives formed from its enumerated instances -- say, "green" or
-"blue" -- can apply to vehicles, so we must make sure any such meanings are
+enabling adjectives formed from its enumerated instances — say, "green" or
+"blue" — can apply to vehicles, so we must make sure any such meanings are
 defined.
 
 =

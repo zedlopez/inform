@@ -84,9 +84,9 @@ int ConfigureIndexMap::type_of_parameter(int index_of_parameter) {
 	return initial_global_map_scope.values[index_of_parameter].parameter_data_type;
 }
 
-@ A little dynamic initialisation is needed here, because |I"whatever"| constants
-are not in fact legal in constant context in C. So those |L"whatever"| values,
-which are legal, are converted to to |I"whatever"| values here:
+@ A little dynamic initialisation is needed here, because `I"whatever"` constants
+are not in fact legal in constant context in C. So those `L"whatever"` values,
+which are legal, are converted to to `I"whatever"` values here:
 
 =
 map_parameter_scope ConfigureIndexMap::global_settings(void) {
@@ -148,14 +148,15 @@ int ConfigureIndexMap::get_map_variable_index_forgivingly(text_stream *name,
 }
 
 @ The following sets a parameter to a given value (the string value if that's
-non-|NULL|, the number value otherwise), for a particular scope: this is
-slightly wastefully specified either as a |map_parameter_scope| object,
+non-`NULL`, the number value otherwise), for a particular scope: this is
+slightly wastefully specified either as a `map_parameter_scope` object,
 or as a single room, or as a single region, or as a kind of room or region.
 If all are null, then the global scope is used.
 
 =
 void ConfigureIndexMap::put_mp(text_stream *name, map_parameter_scope *scope,
-	faux_instance *scope_I, text_stream *put_string, int put_integer, index_session *session) {
+	faux_instance *scope_I, text_stream *put_string, int put_integer, int is_int,
+	index_session *session) {
 	if (scope == NULL) {
 		if (scope_I == NULL) scope = Indexing::get_global_map_scope(session);
 		else scope = FauxInstances::get_parameters(scope_I);
@@ -167,8 +168,8 @@ void ConfigureIndexMap::put_mp(text_stream *name, map_parameter_scope *scope,
 	}
 	if (Str::cmp(name, I"room-name-colour") == 0)
 		if (scope_I) scope_I->fimd.text_colour = put_string;
-	if (put_string) ConfigureIndexMap::put_text_mp(name, scope, put_string, session);
-	else ConfigureIndexMap::put_int_mp(name, scope, put_integer, session);
+	if (is_int) ConfigureIndexMap::put_int_mp(name, scope, put_integer, session);
+	else ConfigureIndexMap::put_text_mp(name, scope, put_string, session);
 }
 
 @ Text parameters.
@@ -222,22 +223,21 @@ A "rubric" is a freestanding piece of text written on the map. Typically
 it will be a title, or "Here Be Monsters", or something like that.
 
 =
-typedef struct rubric_holder {
+classdef rubric_holder {
 	struct text_stream *annotation;
 	int point_size;
 	struct text_stream *font;
 	struct text_stream *colour;
 	int at_offset;
 	struct faux_instance *offset_from;
-	CLASS_DEFINITION
-} rubric_holder;
+}
 
 @h EPS definitions.
 Each horizontal level of the EPS map needs its own storage, not least to
 hold the applicable mapping parameters.
 
 =
-typedef struct EPS_map_level {
+classdef EPS_map_level {
 	int width;
 	int actual_height;
 	int height;
@@ -250,8 +250,7 @@ typedef struct EPS_map_level {
 	int contains_titling;
 	int eps_origin;
 	struct map_parameter_scope map_parameters;
-	CLASS_DEFINITION
-} EPS_map_level;
+}
 
 @ The following are the directions at which arrows for UP, DOWN, IN and OUT
 are drawn on EPS maps.

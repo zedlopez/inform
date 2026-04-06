@@ -14,15 +14,14 @@ world model, where the "scope" was the set of things which the player could
 interact with at any given point.
 
 =
-typedef struct loop_over_scope {
+classdef loop_over_scope {
 	struct parse_node *what_to_find;
 	struct inter_name *los_iname;
-	CLASS_DEFINITION
-} loop_over_scope;
+}
 
 @ Because the test is performed by a separate function, we need to make sure
 that any called variables are created in the calling function, and not in
-that external one: so we remove calling details from |what_to_find|.
+that external one: so we remove calling details from `what_to_find`.
 
 =
 loop_over_scope *LoopingOverScope::new(parse_node *what) {

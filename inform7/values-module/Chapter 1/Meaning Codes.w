@@ -8,21 +8,21 @@ of that module is supposed to provide bitmap-friendly codes which categorise
 the various meanings likely to be given. Several modules do this, but this
 is where the Inform compiler-specific codes appear.
 
-@d VOID_PHRASE_MC			0x00000010 /* e.g., |award # points| */
-@d VALUE_PHRASE_MC			0x00000020 /* e.g., |number of rows in #| */
-@d COND_PHRASE_MC			0x00000040 /* e.g., |# has not ended| */
-@d PROPERTY_MC				0x00000080 /* e.g., |carrying capacity| */
-@d NAMED_CONSTANT_MC		0x00000100 /* e.g., |green| */
-@d TABLE_MC					0x00000200 /* e.g., |table of rankings| */
-@d TABLE_COLUMN_MC			0x00000400 /* e.g., |rank| */
-@d RULE_MC					0x00000800 /* e.g., |update chronological records rule| */
-@d RULEBOOK_MC				0x00001000 /* e.g., |instead| */
-@d ACTIVITY_MC				0x00002000 /* e.g., |reading a command| */
-@d EQUATION_MC				0x00004000 /* e.g., |Newton's Second Law| */
-@d VARIABLE_MC				0x00008000 /* e.g., |left hand status line| */
-@d NAMED_AP_MC				0x00010000 /* e.g., |bad behaviour| */
-@d SAY_PHRASE_MC			0x00020000 /* e.g., |say # in words| */
-@d PHRASE_CONSTANT_MC		0x00040000 /* e.g., |doubling function| */
+@d VOID_PHRASE_MC			0x00000010 /* e.g., `award # points` */
+@d VALUE_PHRASE_MC			0x00000020 /* e.g., `number of rows in #` */
+@d COND_PHRASE_MC			0x00000040 /* e.g., `# has not ended` */
+@d PROPERTY_MC				0x00000080 /* e.g., `carrying capacity` */
+@d NAMED_CONSTANT_MC		0x00000100 /* e.g., `green` */
+@d TABLE_MC					0x00000200 /* e.g., `table of rankings` */
+@d TABLE_COLUMN_MC			0x00000400 /* e.g., `rank` */
+@d RULE_MC					0x00000800 /* e.g., `update chronological records rule` */
+@d RULEBOOK_MC				0x00001000 /* e.g., `instead` */
+@d ACTIVITY_MC				0x00002000 /* e.g., `reading a command` */
+@d EQUATION_MC				0x00004000 /* e.g., `Newton's Second Law` */
+@d VARIABLE_MC				0x00008000 /* e.g., `left hand status line` */
+@d NAMED_AP_MC				0x00010000 /* e.g., `bad behaviour` */
+@d SAY_PHRASE_MC			0x00020000 /* e.g., `say # in words` */
+@d PHRASE_CONSTANT_MC		0x00040000 /* e.g., `doubling function` */
 
 @ This one is used only by the //if// module, but let's define it here anyway:
 
@@ -57,7 +57,7 @@ int MeaningCodes::ignore_definite_article(unsigned int mc) {
 	(MISCELLANEOUS_MC + PROPERTY_MC + ADJECTIVE_MC +
 	NAMED_CONSTANT_MC + VARIABLE_MC + KIND_SLOW_MC + RULE_MC + RULEBOOK_MC +
 	TABLE_MC + TABLE_COLUMN_MC + NAMED_AP_MC + ACTIVITY_MC + EQUATION_MC +
-	PHRASE_CONSTANT_MC)
+	PHRASE_CONSTANT_MC + EXACT_NOUN_MC)
 @d SUBSET_PARSING_BITMAP
 	(NOUN_MC)
 @d PARAMETRISED_PARSING_BITMAP
@@ -104,6 +104,7 @@ void MeaningCodes::log_meaning_code(OUTPUT_STREAM, unsigned int mc) {
 				case NAMED_AP_MC: WRITE("NAMED_AP_MC"); break;
 				case NAMED_CONSTANT_MC: WRITE("NAMED_CONSTANT_MC"); break;
 				case NOUN_MC: WRITE("NOUN_MC"); break;
+				case EXACT_NOUN_MC: WRITE("EXACT_NOUN_MC"); break;
 				case NUMBER_MC: WRITE("NUMBER_MC"); break;
 				case ORDINAL_MC: WRITE("ORDINAL_MC"); break;
 				case PHRASE_CONSTANT_MC: WRITE("PHRASE_CONSTANT_MC"); break;

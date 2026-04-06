@@ -7,7 +7,7 @@ produced in multiple languages. At present this is used only for the index,
 but it could conceivably have other uses, so we won't assume that.
 
 The idea here is that the user of these functions creates a "localisation
-dictionary" by calling |Localisation::new|, and then stocks this from one
+dictionary" by calling `Localisation::new`, and then stocks this from one
 or more text files. In general, it's best to stock first with the English
 language default, and then stock second with the target language: this
 is because the English version is complete, in that it supplies text for
@@ -15,18 +15,17 @@ every need, whereas the Hungarian translation (say) may not be. The net
 result is that English will be used for any texts where no translation
 is available.
 
-It would be elegant to handle this using |inform_language| objects, but
+It would be elegant to handle this using `inform_language` objects, but
 those exist only in the //supervisor// module, which is a part of //inform7//
 but not of //inter//: and this code has to work in both.
 
-For now, a |localisation_dictionary| object is just a wrapper for a simple
-|dictionary| of key-value pairs, but it may become more elaborate later.
+For now, a `localisation_dictionary` object is just a wrapper for a simple
+`dictionary` of key-value pairs, but it may become more elaborate later.
 
 =
-typedef struct localisation_dictionary {
+classdef localisation_dictionary {
 	struct dictionary *texts;
-	CLASS_DEFINITION
-} localisation_dictionary;
+}
 
 localisation_dictionary *Localisation::new(void) {
 	localisation_dictionary *D = CREATE(localisation_dictionary);
@@ -35,7 +34,7 @@ localisation_dictionary *Localisation::new(void) {
 }
 
 @ We think of the dictionary as structured into a hierarchy: for example,
-a typical entry might be |Index.Pages.Kinds.Caption|. At present, we do not
+a typical entry might be `Index.Pages.Kinds.Caption`. At present, we do not
 take advantage of this to make a more efficient search (one could imagine
 a tree structure of dictionaries): we just use these path-like identifiers
 as keys to a single dictionary. If we ever need really large localisation
@@ -55,23 +54,25 @@ void Localisation::define(localisation_dictionary *D,
 
 @ As noted above, the user is more likely to stock a dictionary by calling the
 following to read it in from a UTF-8-encoded Unicode text file. Lines are assumed
-to be terminated with either |0x0a| or |0x0d|.
+to be terminated with either `0x0a` or `0x0d`.
 
 The format is simple:
-(*) If the first non-whitespace character on a line is a |#|, then the line is
+
+- If the first non-whitespace character on a line is a `#`, then the line is
 a comment and is ignored.
-(*) If the first non-whitespace character on a line is a |%|, then the line is
-expected to take the form |%KEY = ...|, where |...| is the text value for this
+- If the first non-whitespace character on a line is a `%`, then the line is
+expected to take the form `%KEY = ...`, where `...` is the text value for this
 key. This text continues on what may be multiple lines until the next key;
 and any white space at the start or end is ignored.
 
 So, for example:
-= (text)
+
+``` None
 # This is a comment line
 	%Index.Elements.Cm.Title = Commands
 	%Index.Elements.Cm.Heading =
 		Commands which the player can type
-=
+```
 
 And the following function reads such a file into an existing dictionary. Note
 that it can be used to read several files in turn into the same dictionary;
@@ -164,25 +165,31 @@ void Localisation::error(filename *F, int line, int col, text_stream *err) {
 @h Writers.
 These functions can then be used for generating text (or HTML) which expands one
 of the keys, substituting textual values in for placeholders. For example, given:
-= (text)
+
+``` None
 %Index.Elements.RS.Unlist = The *1 is not listed in the *2.
-=
-Calling //Localisation::roman_tt// on the key |"Index.Elements.RS.Unlist"| with
+```
+
+Calling //Localisation::roman_tt// on the key `"Index.Elements.RS.Unlist"` with
 the values "imports rule" and "customs rulebook" would then produce:
-= (text)
+
+``` None
 The imports rule is not listed in the customs rulebook.
-=
-If an actual asterisk is needed, |**| will produce one.
+```
+
+If an actual asterisk is needed, `**` will produce one.
 
 Two further syntaxes can be used if the text is HTML rather than plain. The
-notation |<REF>| expands to a blue help icon linking to the Inform documentation
-at reference point |REF|; and a vertical stroke becomes a forced line break,
+notation `<REF>` expands to a blue help icon linking to the Inform documentation
+at reference point `REF`; and a vertical stroke becomes a forced line break,
 with everything under the first line being italicised. For example:
-= (text)
+
+``` None
 %Index.Elements.Cd.Heading =
 	How this project might be filed in a library
 	catalogue.|About the Library Card<LCARDS>; About IFIDs<IFIDS>
-=
+```
+
 Note that a valid documentation reference must begin with an upper-case letter.
 
 =
@@ -312,9 +319,9 @@ void Localisation::write_iti(OUTPUT_STREAM, localisation_dictionary *D, text_str
 @<Vacate the vals@> =
 	for (int i=0; i<10; i++) vals[i] = NULL;
 
-@ Note that if a non-existing documentation reference is tried, say |<BOGUS>|,
+@ Note that if a non-existing documentation reference is tried, say `<BOGUS>`,
 then it is passed through into the output as it stands, angle brackets and all.
-This is actually useful, since it means small HTML tags such as |<i>| can be
+This is actually useful, since it means small HTML tags such as `<i>` can be
 included in localisation texts.
 
 =

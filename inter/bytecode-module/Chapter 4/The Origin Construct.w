@@ -19,8 +19,8 @@ void OriginInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |primitive| instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by two words:
+In bytecode, the frame of a `primitive` instruction is laid out with the
+compulsory words — see //Inter Nodes// — followed by two words:
 
 @d DEFN_ORIGIN_IFLD (DATA_IFLD + 0)
 @d FILENAME_ORIGIN_IFLD (DATA_IFLD + 1)

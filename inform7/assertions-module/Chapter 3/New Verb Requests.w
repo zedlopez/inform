@@ -85,7 +85,7 @@ int NewVerbRequests::verb_means_SMF(int task, parse_node *V, wording *NPs) {
 	return FALSE;
 }
 
-@ And the above share the following. |usage| will be one of these:
+@ And the above share the following. `usage` will be one of these:
 
 @d NEW_IMPERATIVE_VERB 1
 @d NEW_SVO_VERB 2
@@ -106,11 +106,11 @@ void NewVerbRequests::parse_new(int usage, parse_node *V) {
 prepositions: "less than", for instance, is combined with "to be", giving us
 "A is less than B" and similar forms. These wordy forms are therefore defined
 as prepositional usages and created as such in Basic Inform. But we also
-permit the use of the familiar mathematical symbols |<|, |>|, |<=| and |>=|.
+permit the use of the familiar mathematical symbols `<`, `>`, `<=` and `>=`.
 Inform treats these as "operator verbs" without tense, so registers them as
 verb usages, but without the full conjugation given to a conventional verb;
 and they are also excluded from the lexicon in the Phrasebook index, being
-notation rather than words. (This is why the variable |current_main_verb| is
+notation rather than words. (This is why the variable `current_main_verb` is
 cleared.)
 
 =
@@ -199,9 +199,9 @@ cleared.)
 
 @ And now for the definition grammar.
 
-The handling of |PROP_VERBM| perhaps looks odd. What happens if the user typed
+The handling of `PROP_VERBM` perhaps looks odd. What happens if the user typed
 
->> The verb to be mystified by implies the arfle barfle gloop property.
+> The verb to be mystified by implies the arfle barfle gloop property.
 
 when there is no property of that name? The answer is that we can't check this
 at the time we're parsing this sentence, because verb definitions are read long
@@ -293,12 +293,12 @@ which exist only when certain features are active.
 	meaning_given = TRUE;
 
 @ Casing problems are acutely problematic with prepositions, because so many
-locations have names which begin with them -- "Under Milkwood", "Inside the
+locations have names which begin with them — "Under Milkwood", "Inside the
 Machine", "On Top of Old Smoky". Our best way to avoid confusion is to read
 prepositions as such only when they do not unexpectedly jump into upper case,
 i.e., to distinguish between the meanings of
 
->> X is in Bahrain. Y is In Bahrain.
+> X is in Bahrain. Y is In Bahrain.
 
 according to the unexpected capital I in the second "In". But just occasionally
 people do want to define prepositions which genuinely involve an unexpected
@@ -336,8 +336,8 @@ they could never be parsed successfully.
 	overrides[PAST_PARTICIPLE_FORM_TYPE] = past_participle;
 	overrides[PRESENT_PARTICIPLE_FORM_TYPE] = participle;
 	overrides[ADJOINT_INFINITIVE_FORM_TYPE] = WordAssemblages::lit_0();
-	overrides[5] = present_singular;
-	overrides[6] = past;
+	overrides[ENGLISH_PRESENT_SINGULAR_FORM_TYPE] = present_singular;
+	overrides[ENGLISH_PAST_FORM_TYPE] = past;
 
 	verb_conjugation *nvc = Conjugation::conjugate_with_overrides(infinitive,
 		overrides, no_overrides, nl);
@@ -364,7 +364,7 @@ We read the parts of speech as a comma-separated list of individual parts
 (but we don't allow "and" or "or" to divide this list: only commas).
 
 At the end, if no present plural is supplied, we may as well use the
-infinitive for that -- the two are the same in most regular English verbs
+infinitive for that — the two are the same in most regular English verbs
 ("to sleep", "they sleep") even if not irregular ones ("to be", "they are").
 
 @<Parse the parts of speech supplied for the verb@> =
@@ -382,8 +382,7 @@ infinitive for that -- the two are the same in most regular English verbs
 		}
 		@<Parse the part of speech in this clause@>;
 	}
-	if (WordAssemblages::nonempty(present_plural) == FALSE)
-		present_plural = infinitive;
+	if (WordAssemblages::empty(present_plural)) present_plural = infinitive;
 
 @ These two nonterminals are needed:
 
@@ -396,9 +395,9 @@ infinitive for that -- the two are the same in most regular English verbs
 	<probable-participle> *** |
 	*** <probable-participle>
 
-@ A single English verb, such as "to contain", produces numerous |verb_usage|
+@ A single English verb, such as "to contain", produces numerous `verb_usage`
 objects, since we have one for each combination of tense, number and negation
--- "contains", "had not contained", etc. These have upper limits on their
+— "contains", "had not contained", etc. These have upper limits on their
 sizes, not so much from the language definition as from limitations on our
 implementation of it. But in practice they should never be reached.
 
@@ -467,7 +466,7 @@ implementation of it. But in practice they should never be reached.
 @ This funny little problem message is the price we pay for blurring grammar
 in the syntax provided for users. Prepositions do not inflect in English
 when used in different tenses or when negated, so there's no conjugation
-involved, and we need to reject any attempt -- even though it would be
+involved, and we need to reject any attempt — even though it would be
 perfectly valid if a verb were being defined.
 
 @<Reject with a problem message if preposition is conjugated@> =
@@ -501,6 +500,7 @@ in the case of ambiguity, with lower numbers preferred. See //linguistics//.
 	if (bp == a_has_b_predicate) p = 1;
 	if (bp == R_equality) p = 2;
 	if ((nl) && (nl != DefaultLanguage::get(NULL))) p = 5;
+	vc->infinitive = infinitive;
 	vi = Verbs::new_verb(vc, FALSE);
 	vc->vc_conjugates = vi;
 	if (priority >= 1) p = priority;

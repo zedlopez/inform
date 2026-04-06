@@ -1,4 +1,4 @@
-Inform 6.43 for MacOS (6th August 2025)
+Inform 6.45 for MacOS (in development)
 line 6: Warning:  The third dictionary field will be ignored because ZCODE_LESS_DICT_DATA is set
 > Dictionary 'foo' 1 2
 Compiled with 1 warning

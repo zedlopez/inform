@@ -93,7 +93,7 @@ int C_symbols_header_segments[] = {
 @d C_GEN_DATA(x) ((C_generation_data *) (gen->generator_private_data))->x
 
 =
-typedef struct C_generation_data {
+classdef C_generation_data {
 	int compile_main;
 	int compile_symbols;
 	struct dictionary *symbols_header_identifiers;
@@ -103,8 +103,7 @@ typedef struct C_generation_data {
 	struct C_generation_object_model_data objdata;
 	struct C_generation_literals_model_data litdata;
 	struct C_generation_variables_data vardata;
-	CLASS_DEFINITION
-} C_generation_data;
+}
 
 void CTarget::initialise_data(code_generation *gen) {
 	C_GEN_DATA(compile_main) = TRUE;
@@ -120,7 +119,7 @@ void CTarget::initialise_data(code_generation *gen) {
 }
 
 @h Begin and end.
-We return |FALSE| here to signal that we want the Vanilla algorithm to
+We return `FALSE` here to signal that we want the Vanilla algorithm to
 manage the process.
 
 =
@@ -297,17 +296,17 @@ text_stream *CTarget::symbols_header_identifier(code_generation *gen,
 @h Static supporting code.
 The C code generated here would not compile as a stand-alone file. It needs
 to use variables and functions from a small unchanging library called 
-|inform7_clib.c|, which has an associated header file |inform7_clib.h| of
-declarations so that code can be linked to it. (See the test makes |Eg1-C|,
-|Eg2-C| and so on for demonstrations of this.)
+`inform7_clib.c`, which has an associated header file `inform7_clib.h` of
+declarations so that code can be linked to it. (See the test makes `Eg1-C`,
+`Eg2-C` and so on for demonstrations of this.)
 
 Those two files are presented throughout this chapter, because the implementation
 of the I7 C library is so closely tied to the code we compile: they can only
 really be understood jointly.
 
-Here is the beginning of the header file |inform7_clib.h|:
+Here is the beginning of the header file `inform7_clib.h`:
 
-= (text to inform7_clib.h)
+@<C library header@> (webwide and tangled to inform7_clib.h) =
 /* This is a header file for using a library of C code to support Inter code
    compiled to ANSI C. It was generated mechanically from the Inter source code,
    so to change this material, edit that and not this file. */
@@ -323,67 +322,64 @@ Here is the beginning of the header file |inform7_clib.h|:
 #include <ctype.h>
 #include <stdint.h>
 #include <setjmp.h>
-=
 
-And similarly for |inform7_clib.c|:
+@ And similarly for `inform7_clib.c`:
 
-= (text to inform7_clib.c)
+@<C library code@> (webwide and tangled to inform7_clib.c) =
 /* This is a library of C code to support Inter code compiled to ANSI C. It was
    generated mechanically from the Inter source code, so to change this material,
    edit that and not this file. */
 
 #ifndef I7_CLIB_C_INCLUDED
 #define I7_CLIB_C_INCLUDED 1
-=
 
-@ Now we need four fundamental types. |i7word_t| is a type which can hold any
+@ Now we need four fundamental types. `i7word_t` is a type which can hold any
 Inter word value: since we do not support C for 16-bit Inter code, we can
-safely make this a 32-bit integer. |unsigned_i7word_t| will be used very little,
-but is an unsigned version of the same. (It must be the case that an |i7word_t|
-can survive being cast to |unsigned_i7word_t| and back again intact.)
+safely make this a 32-bit integer. `unsigned_i7word_t` will be used very little,
+but is an unsigned version of the same. (It must be the case that an `i7word_t`
+can survive being cast to `unsigned_i7word_t` and back again intact.)
 
-|i7byte_t| holds an Inter byte value, and must be unsigned.
+`i7byte_t` holds an Inter byte value, and must be unsigned.
 
-It must unfortunately be the case that |i7float_t| values can be stored in
-|i7word_t| containers at runtime, which is why they are only |float| and not
-|double| precision.
+It must unfortunately be the case that `i7float_t` values can be stored in
+`i7word_t` containers at runtime, which is why they are only `float` and not
+`double` precision.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 typedef int32_t i7word_t;
 typedef uint32_t unsigned_i7word_t;
 typedef unsigned char i7byte_t;
 typedef float i7float_t;
-=
 
-Our library is going to be able to manage multiple independently-running
-"processes", storage for each of which is a single |i7process_t| structure.
-Within that, the current execution state is an |i7state_t|, which we now define.
+@ Our library is going to be able to manage multiple independently-running
+"processes", storage for each of which is a single `i7process_t` structure.
+Within that, the current execution state is an `i7state_t`, which we now define.
 
-The most important thing here is |memory|: the byte-addressable space
+The most important thing here is `memory`: the byte-addressable space
 holding arrays and property values. (Note that, unlike the memory architecture
 for the Z-machine or Glulx VMs, this memory space contains no program code. If
 the same Inter code is compiled once to C, and then also to Glulx via Inform 6,
-there will be some similarities between the C |memory| contents and the RAM-like
+there will be some similarities between the C `memory` contents and the RAM-like
 parts of the Glulx VM's memory, but only some. Addresses will be quite different
 between the two.)
 
-The valid range of memory addresses is between 0 and |himem| minus 1.
+The valid range of memory addresses is between 0 and `himem` minus 1.
 
 There is also a stack, but only a small one. Note that this does not contain
 return addresses, in the way a traditional stack might: it simply holds values
-which have explicitly been pushed by the Inter opcode |@push| and not yet pulled.
+which have explicitly been pushed by the Inter opcode `@push` and not yet pulled.
 It doesn't live in memory, and cannot otherwise be read or written by the Inter
-program; it is empty when |stack_pointer| is zero.
+program; it is empty when `stack_pointer` is zero.
 
 The object containment tree is also stored outside of memory; that's a choice
 on our part, and makes it slightly faster to access. The same applies to the
-array of global |variables|. (Again, this is a point of difference with the
+array of global `variables`. (Again, this is a point of difference with the
 traditional IF virtual machines, which put all of this in memory.)
 
-The temporary value |tmp| holds data only fleetingly, during the execution of
+The temporary value `tmp` holds data only fleetingly, during the execution of
 a single Inter primitive or assembly opcode.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 #define I7_ASM_STACK_CAPACITY 128
 #define I7_TMP_STORAGE_CAPACITY 128
 
@@ -406,24 +402,24 @@ typedef struct i7state_t {
 	i7word_t current_output_stream_ID;
 	struct i7rngseed_t seed;
 } i7state_t;
-=
 
-A "snapshot" is basically a saved state. At present, in fact, it is only that:
-at one time this included a |jmp_buf| to preserve C stack state too, but that
+@ A "snapshot" is basically a saved state. At present, in fact, it is only that:
+at one time this included a `jmp_buf` to preserve C stack state too, but that
 turned out to be troublesome and unnecessary.
-= (text to inform7_clib.h)
+
+@<C library header@> +=
 typedef struct i7snapshot_t {
 	int valid;
 	struct i7state_t then;
 } i7snapshot_t;
-=
 
-Okay then: a "process". This contains not only the current state but snapshots
+@ Okay then: a "process". This contains not only the current state but snapshots
 of 10 recent states, in order to facilitate the UNDO operation. Snapshots are
 stored in a form of ring buffer, to avoid ever copying them in memory: this
-is because there is no remotely safe way to copy a |jmp_buf|, which (see above)
+is because there is no remotely safe way to copy a `jmp_buf`, which (see above)
 was at one time part of a snapshot.
-= (text to inform7_clib.h)
+
+@<C library header@> +=
 #define I7_MAX_SNAPSHOTS 10
 typedef struct i7process_t {
 	i7state_t state;
@@ -440,19 +436,18 @@ typedef struct i7process_t {
 	struct miniglk_data *miniglk;
 	int use_UTF8;
 } i7process_t;
-=
 
 @ Creator functions for each of the above:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 i7state_t i7_new_state(void);
 i7snapshot_t i7_new_snapshot(void);
 i7process_t i7_new_process(void);
-=
 
-Note that an |i7state_t| begins with its potentially large arrays unallocated,
+@ Note that an `i7state_t` begins with its potentially large arrays unallocated,
 so it initially consumes very little memory.
-= (text to inform7_clib.c)
+
+@<C library code@> +=
 i7state_t i7_new_state(void) {
 	i7state_t S;
 	S.memory = NULL;
@@ -485,17 +480,15 @@ i7process_t i7_new_process(void) {
 	i7_initialise_miniglk_data(&proc);
 	return proc;
 }
-=
 
-@ The |i7_new_process| function refers to two default functions attached to
+@ The `i7_new_process` function refers to two default functions attached to
 a new process, so we must define those:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 char *i7_default_sender(int count);
 void i7_default_receiver(int id, wchar_t c, char *style);
-=
 
-The receiver and sender functions allow our textual I/O to be managed by external
+@ The receiver and sender functions allow our textual I/O to be managed by external
 C code: see //inform7: Calling Inform from C//.
 
 The receiver is sent every character printed out; by default, it prints every
@@ -503,9 +496,9 @@ character sent to the body text window, while suppressing all others (for exampl
 those printed to the "status line" used by IF games).
 
 The sender supplies us with textual commands. By default, it takes a typed (or
-of course piped) single line of text from the C |stdin| stream.
+of course piped) single line of text from the C `stdin` stream.
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_default_receiver(int id, wchar_t c, char *style) {
 	if (id == I7_BODY_TEXT_ID) fputc(c, stdout);
 }
@@ -521,18 +514,16 @@ char *i7_default_sender(int count) {
 	i7_default_sender_buffer[pos++] = 0;
 	return i7_default_sender_buffer;
 }
-=
 
-@ The C generator can produce either a stand-alone C program, including a |main|,
+@ The C generator can produce either a stand-alone C program, including a `main`,
 or else a file of C code intended to be linked into something larger. If it does
-provide a |main|, then that function simply calls the following; it it does not,
+provide a `main`, then that function simply calls the following; it it does not,
 then the following is never used.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 int i7_default_main(int argc, char **argv);
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 int i7_default_main(int argc, char **argv) {
 	i7process_t proc = i7_new_process();
 	i7_run_process(&proc);
@@ -542,19 +533,17 @@ int i7_default_main(int argc, char **argv) {
 	}
 	return proc.termination_code;
 }
-=
 
-If external code is managing the process, and |i7_default_main| is not used,
-then that external code will still call |i7_new_process| and then |i7_run_process|,
+@ If external code is managing the process, and `i7_default_main` is not used,
+then that external code will still call `i7_new_process` and then `i7_run_process`,
 but may in between the two supply its own receiver or sender:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_set_process_receiver(i7process_t *proc,
 	void (*receiver)(int id, wchar_t c, char *style), int UTF8);
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count));
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_set_process_receiver(i7process_t *proc,
 	void (*receiver)(int id, wchar_t c, char *style), int UTF8) {
 	proc->receiver = receiver;
@@ -563,20 +552,18 @@ void i7_set_process_receiver(i7process_t *proc,
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count)) {
 	proc->sender = sender;
 }
-=
 
-Similarly, ambitious projects which want their own complete I/O systems can
+@ Similarly, ambitious projects which want their own complete I/O systems can
 set the following:
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 void i7_set_process_stylist(i7process_t *proc,
 	void (*stylist)(struct i7process_t *proc, i7word_t which, i7word_t what));
 void i7_set_process_glk_implementation(i7process_t *proc,
 	void (*glk_implementation)(struct i7process_t *proc, i7word_t glk_api_selector,
 		i7word_t varargc, i7word_t *z));
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 void i7_set_process_stylist(i7process_t *proc,
 	void (*stylist)(struct i7process_t *proc, i7word_t which, i7word_t what)) {
 	proc->stylist = stylist;
@@ -586,31 +573,29 @@ void i7_set_process_glk_implementation(i7process_t *proc,
 		i7word_t varargc, i7word_t *z)) {
 	proc->glk_implementation = glk_implementation;
 }
-=
 
-In all cases, execution is kicked off when |i7_run_process| is called on a process.
+@ In all cases, execution is kicked off when `i7_run_process` is called on a process.
 Ordinarily, that will execute the entire Inform 7 program and then come back to us;
 but we need to cope with a sudden halt during execution, either through a fatal
-error or through a use of the |@quit| opcode.
+error or through a use of the `@quit` opcode.
 
-We do that with the |setjmp| and |longjmp| mechanism of C. This is a very limited
+We do that with the `setjmp` and `longjmp` mechanism of C. This is a very limited
 sort of exception-handling will a well deserved reputation for crankiness, and we
-will use it with due caution. It is essential that the underlying |jmp_buf| data
+will use it with due caution. It is essential that the underlying `jmp_buf` data
 not move in memory for any reason between the setting and the jumping. (This is
-why there is no mechanism to copy or fork an |i7_process_t|.)
+why there is no mechanism to copy or fork an `i7_process_t`.)
 
-Note that the |i7_initialiser| function is compiled and is not pre-written
+Note that the `i7_initialiser` function is compiled and is not pre-written
 like these other functions: see //C Object Model// for what it does.
 
-= (text to inform7_clib.h)
+@<C library header@> +=
 int i7_run_process(i7process_t *proc);
 void i7_benign_exit(i7process_t *proc);
 void i7_fatal_exit(i7process_t *proc);
 void i7_initialiser(i7process_t *proc); /* part of the compiled story, not inform_clib.c */
 void i7_initialise_object_tree(i7process_t *proc); /* ditto */
-=
 
-= (text to inform7_clib.c)
+@<C library code@> +=
 i7word_t i7_fn_Main(i7process_t *proc);
 int i7_run_process(i7process_t *proc) {
 	int tc = setjmp(proc->execution_env);
@@ -639,4 +624,3 @@ void i7_fatal_exit(i7process_t *proc) {
 void i7_benign_exit(i7process_t *proc) {
 	longjmp(proc->execution_env, 2);
 }
-=

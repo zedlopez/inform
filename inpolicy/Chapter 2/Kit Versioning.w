@@ -2,26 +2,30 @@
 
 To ensure that the built-in kits share version numbers with the core compiler.
 
-@ This implements |-kit-versions|:
+@ This implements `-kit-versions`:
 
 =
 void KitVersioning::show_versions(void) {
-	ls_web *inform7_web =
-		WebStructure::get_without_modules(Pathnames::from_text(I"inform7"), NULL);
-	semantic_version_number core_V = inform7_web->version_number;
-	PRINT("Core version is %v\n", &core_V);
-	KitVersioning::iterate(VersionNumbers::null());
+	wcl_declaration *D = WCL::read_web(Pathnames::from_text(I"inform7"), NULL);
+	if (D) {
+		ls_web *inform7_web = WebStructure::from_declaration(D);
+		semantic_version_number core_V = inform7_web->version_number;
+		PRINT("Core version is %v\n", &core_V);
+		KitVersioning::iterate(VersionNumbers::null());
+	}
 }
 
-@ And |-sync-kit-versions|:
+@ And `-sync-kit-versions`:
 
 =
 void KitVersioning::sync_versions(void) {
-	ls_web *inform7_web =
-		WebStructure::get_without_modules(Pathnames::from_text(I"inform7"), NULL);
-	semantic_version_number core_V = inform7_web->version_number;
-	PRINT("inform7 web has version %v\n", &core_V);
-	KitVersioning::iterate(core_V);
+	wcl_declaration *D = WCL::read_web(Pathnames::from_text(I"inform7"), NULL);
+	if (D) {
+		ls_web *inform7_web = WebStructure::from_declaration(D);
+		semantic_version_number core_V = inform7_web->version_number;
+		PRINT("inform7 web has version %v\n", &core_V);
+		KitVersioning::iterate(core_V);
+	}
 }
 
 @ Both use the following to work through the built-in kits:
@@ -60,11 +64,11 @@ void KitVersioning::show_version(pathname *P, text_stream *name, semantic_versio
 }
 
 @ The actual work, then, is done by this function, which returns the version
-number of the kit stored at the path |kit|; if |set_to| is other than null,
-the kit's version is changed to |set_to|, and this value returned. In both
+number of the kit stored at the path `kit`; if `set_to` is other than null,
+the kit's version is changed to `set_to`, and this value returned. In both
 cases, the kit's JSON metadata file is read in; in the second case, it is
 then written back out, modified to include the new version number. (Note
-that no file write occurs unless an actual change is needed: if |set_to|
+that no file write occurs unless an actual change is needed: if `set_to`
 is the same as the version it already has, there's no need to rewrite.)
 
 =
@@ -100,10 +104,10 @@ semantic_version_number KitVersioning::read_version(pathname *kit, semantic_vers
 	return V;
 }
 
-@ The following test used to be just |VersionNumbers::ne(set_to, V)|, but this,
+@ The following test used to be just `VersionNumbers::ne(set_to, V)`, but this,
 because it properly followed the semver standard, regarded them as equal if they
-differed only in the build code -- so |10.1.0-beta+6V20| would not be updated to
-|10.1.0-beta+6V44|, for example. We now force a sync if there is any textual
+differed only in the build code — so `10.1.0-beta+6V20` would not be updated to
+`10.1.0-beta+6V44`, for example. We now force a sync if there is any textual
 difference at all.
 
 @<Decide whether to impose the new version@> =

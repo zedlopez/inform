@@ -23,9 +23,9 @@ void Scenes::start(void) {
 
 @ This feature needs one extra syntax tree annotation:
 
-@e constant_scene_ANNOT /* |scene|: for constant values */
+@e constant_scene_ANNOT /* `scene`: for constant values */
 
-= (early code)
+@<Predeclarations of IF node annotation functions@> (webwide and tangled early) =
 DECLARE_ANNOTATION_FUNCTIONS(constant_scene, scene)
 
 @ =
@@ -42,9 +42,9 @@ void Scenes::write_constant_scene_ANNOT(text_stream *OUT, parse_node *p) {
 
 @ Scenes are the instances of a built-in enumeration kind, created by a
 Neptune file belonging to //WorldModelKit//, and this is recognised by its
-Inter identifier |SCENE_TY|.
+Inter identifier `SCENE_TY`.
 
-= (early code)
+@<Global IF variable definitions@> +=
 kind *K_scene = NULL;
 
 @ =
@@ -84,7 +84,7 @@ int Scenes::new_named_instance_notify(instance *I) {
 
 @ The following either/or property needs some compiler support:
 
-= (early code)
+@<Global IF variable definitions@> +=
 property *P_recurring = NULL;
 
 @ This is a property name to do with scenes which Inform provides special
@@ -112,10 +112,10 @@ are called "ends" in the code below, and are numbered end 0 (the beginning),
 end 1 (the usual end), and then any named ends ("ends badly" or "ends
 triumphantly", for instance, might be ends 2 and 3). Each end has a condition
 which can cause it, or can be "anchored" to any number of ends of other
-scenes -- to express which, the //scene_connector// structure is used.
+scenes — to express which, the //scene_connector// structure is used.
 
 =
-typedef struct scene {
+classdef scene {
 	struct instance *as_instance; /* the constant for the name of the scene */
 	int once_only; /* cannot repeat during play */
 	int start_of_play; /* if begins when play begins */
@@ -123,25 +123,23 @@ typedef struct scene {
 	int no_ends; /* how many ends the scene has */
 	struct scene_end ends[MAX_SCENE_ENDS];
 	int indexed; /* temporary storage during Scenes index creation */
-	CLASS_DEFINITION
-} scene;
+}
 
-typedef struct scene_end {
+classdef scene_end {
 	struct wording end_names; /* for ends 2, 3, ...: e.g. "badly" */
 	struct rulebook *end_rulebook; /* rules to apply then */
 	struct dialogue_beat *as_beat; /* only for those scenes equated to beats */
 	struct parse_node *anchor_condition;
 	struct scene_connector *anchor_connectors; /* linked list */
 	struct parse_node *anchor_condition_set; /* where set */
-	CLASS_DEFINITION
-} scene_end;
+}
 
-typedef struct scene_connector {
+classdef scene_connector in 1000s {
 	struct scene *connect_to; /* scene connected to */
 	int end; /* end number: see above */
 	struct scene_connector *next; /* next in list of connectors for a scene end */
 	struct parse_node *where_said; /* where this linkage was specified in source */
-} scene_connector;
+}
 
 scene *SC_entire_game = NULL;
 
@@ -153,8 +151,8 @@ instance *Scenes::get_instance(scene *sc) {
 	return sc->as_instance;
 }
 
-@ A feature called |xyzzy| generally has a hunk of subject data called |xyzzy_data|,
-so we would normally have a structure called |scenes_data|, but in fact that
+@ A feature called `xyzzy` generally has a hunk of subject data called `xyzzy_data`,
+so we would normally have a structure called `scenes_data`, but in fact that
 structure is just going to be //scene//. So:
 
 @d scenes_data scene
@@ -399,8 +397,9 @@ scene *scene_end_of_which_parsed = NULL;
 
 @ Sentences giving scene boundaries have a simple form:
 
->> The Ballroom Dance begins when the Hallway Greeting ends.
->> The Ballroom Dance ends dramatically when we have dropped the glass slipper.
+> The Ballroom Dance begins when the Hallway Greeting ends.
+
+> The Ballroom Dance ends dramatically when we have dropped the glass slipper.
 
 The sentence has a subject noun phrase (here "Ballroom Dance") and an
 object NP: "the Hallway Greeting ends" or "we have dropped the glass
@@ -505,7 +504,7 @@ never fails.
 
 @ In a sentence like
 
->> The Ballroom Dance begins when the Hallway Greeting ends.
+> The Ballroom Dance begins when the Hallway Greeting ends.
 
 we will call "the Ballroom Dance begins" this end, and "the Hallway Greeting
 ends" the other end.
@@ -623,10 +622,9 @@ description. This is stored in the following scenes-feature corner of the
 //assertions: Runtime Context Data// for the rule:
 
 =
-typedef struct scenes_rcd_data {
+classdef scenes_rcd_data {
 	struct parse_node *during_scene; /* ...happens only during a scene matching this? */
-	CLASS_DEFINITION
-} scenes_rcd_data;
+}
 
 scenes_rcd_data *Scenes::new_rcd_data(id_runtime_context_data *idrcd) {
 	scenes_rcd_data *srd = CREATE(scenes_rcd_data);

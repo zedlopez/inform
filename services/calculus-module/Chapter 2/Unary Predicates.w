@@ -4,18 +4,18 @@ A lightweight structure to represent a unary predicate, which is either true
 or false when applied to a single term.
 
 @ UPs are relatively small and quick to make, and are parametrised in various
-ways. For example, there is no single |kind=K| unary predicate; there is one
-for every possible kind |K|.
+ways. For example, there is no single `kind=K` unary predicate; there is one
+for every possible kind `K`.
 
 =
-typedef struct unary_predicate {
+classdef unary_predicate in 1000s {
 	struct up_family *family;
 	struct kind *assert_kind;
 	int composited; /* for kind UPs only: arises from a composite determiner/noun like "somewhere" */
 	int unarticled; /* for kind UPs only: arises from an unarticled usage like "vehicle", not "a vehicle" */
 	struct wording calling_name; /* for calling UPs only */
 	lcon_ti lcon; /* for adjectival UPs only */
-} unary_predicate;
+}
 
 @ =
 unary_predicate *UnaryPredicates::new(up_family *f) {

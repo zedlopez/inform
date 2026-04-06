@@ -14,7 +14,7 @@ A "zbyte" is a byte from a Z-machine story file.
 @d zbyte unsigned char
 
 =
-typedef struct release_instructions {
+classdef release_instructions {
 	int release_website; /* Release along with a website? */
 	inchar32_t *website_template_leafname; /* If so, the template name for it */
 	int release_interpreter; /* Release along with an interpreter? */
@@ -30,14 +30,12 @@ typedef struct release_instructions {
 	int solution_public; /* If released, will this be linked on a website? */
 	int source_public; /* If released, will this be linked on a website? */
 	int card_public; /* If released, will this be linked on a website? */
-	struct linked_list *aux_files; /* of |auxiliary_file| */
-	int cover_picture_number; /* ID for the cover art (usually 1) */
+	struct linked_list *aux_files; /* of `auxiliary_file` */
 	char *cover_art_format; /* such as "jpg" */
 	unsigned int width; /* in pixels */
 	unsigned int height; /* in pixels */
 	zbyte existing_story_header[LENGTH_OF_STORY_FILE_HEADER]; /* a byte array, not a C string */
-	CLASS_DEFINITION
-} release_instructions;
+}
 
 @ =
 release_instructions *ReleaseInstructions::new_set(void) {
@@ -58,7 +56,6 @@ release_instructions *ReleaseInstructions::new_set(void) {
 	set->source_public = TRUE;
 	set->card_public = FALSE;
 	set->aux_files = NEW_LINKED_LIST(auxiliary_file);
-	set->cover_picture_number = 0;
 	set->cover_art_format = NULL;
 	set->width = 0; set->height = 0;
 	for (int i=0; i<LENGTH_OF_STORY_FILE_HEADER; i++) set->existing_story_header[i] = 0;
@@ -82,13 +79,12 @@ file. (Because they are treated only as names and are never opened, the
 following structure contains no file handles.)
 
 =
-typedef struct auxiliary_file {
+classdef auxiliary_file {
 	struct filename *name_of_original_file; /* e.g., "Collegio.pdf" */
 	struct pathname *folder_to_release_to; /* e.g., "Sounds" */
 	struct text_stream *brief_description; /* e.g., "Collegio Magazine" */
 	int from_payload;
-	CLASS_DEFINITION
-} auxiliary_file;
+}
 
 @ =
 void ReleaseInstructions::add_aux_file(release_instructions *rel,
@@ -105,7 +101,7 @@ void ReleaseInstructions::add_aux_file(release_instructions *rel,
 @h Release with sentences.
 A sentence like the following allows for a shopping list of release ingredients:
 
->> Release along with a public source text and a website.
+> Release along with a public source text and a website.
 
 The object noun phrase is an articled list, and each entry must match this.
 Most of the things in this list are "payloads", that is, individual items to
@@ -179,7 +175,7 @@ optionally be marked "public" (they appear on any website about it) or
 	library card
 
 @ And here is the special meaning function which uses the grammar above. Note
-that we accept almost any sentence here -- but that this is because the meaning
+that we accept almost any sentence here — but that this is because the meaning
 is only given for sentences beginning "Release with...".
 
 =
@@ -339,7 +335,7 @@ void ReleaseInstructions::handle_release_declaration_inner(parse_node *p) {
 
 @h Writing out files.
 So much for taking down instructions; now we must act on them. In this
-routine we combine writing the iFiction record and the release instructions --
+routine we combine writing the iFiction record and the release instructions —
 done together since they have so much in common, being essentially two ways
 of writing the same thing.
 
@@ -403,7 +399,6 @@ to Treaty of Babel requirements.
 
 =
 int ReleaseInstructions::check_cover_art(release_instructions *rel) {
-	rel->cover_picture_number = (rel->release_cover)?1:0;
 	if (rel->release_cover) {
 		current_sentence = rel->cover_filename_sentence;
 		rel->cover_art_format = "";

@@ -51,7 +51,7 @@ The proper-named property is defined by Inter as "proper".
 @h Variables.
 Most of the built-in kinds and kind constructors, such as "number" and
 "list of K", are defined in special low-level files read in by Inform early
-in its run -- not here. "Natural language" is an exception.
+in its run — not here. "Natural language" is an exception.
 
 "Language of play" should no longer be taken to imply play; it's really the
 natural language of our output text, if any. It affects how verbs conjugate,
@@ -91,29 +91,29 @@ do very low-level things, and it is not guaranteed that I7 phrases will behave
 to specification if executed before these early rules have finished. So it
 is hazardous to obstruct or alter them.
 
-(a) The "virtual machine startup rule" carries out necessary steps to
+- The "virtual machine startup rule" carries out necessary steps to
 begin execution on the virtual machine in use: this entails relatively little
 on the Z-machine versions 5 or 8, but can involve extensive work to get the
 screen display working on Glulx or Z6.
 
-(b) The platform specific startup rule contains code which Inform injects for
+- The platform specific startup rule contains code which Inform injects for
 the specific compilation platform. Note that this is not the same as an
 architecture: both Glulx and C use the 32 bit architecture, but are different
 platforms, and so might inject different code into this rule.
 
-(c) The "initialise memory rule" starts up the memory allocation heap,
+- The "initialise memory rule" starts up the memory allocation heap,
 if there is one, and sets some essential I6 variables. If there is any rule
 not to meddle with, this is it.
 
-(d) The "seed random number generator rule" seeds the RNG to a fixed value
-if Inform has requested this (which it does in response to the |-rng| command
-line switch, which is in turn used by the |intest| testing utility: it's a
+- The "seed random number generator rule" seeds the RNG to a fixed value
+if Inform has requested this (which it does in response to the `-rng` command
+line switch, which is in turn used by the `intest` testing utility: it's a
 way to make deterministic tests of programs which use random values).
 
-(e) The "recover Glk objects rule" runs the object recovery process in order to
+- The "recover Glk objects rule" runs the object recovery process in order to
 identify and pre-existing Glk objects after a restart.
 
-(f) The "open built in windows rule" opens the Glk windows; only after this
+- The "open built in windows rule" opens the Glk windows; only after this
 point is it safe to print anything.
 
 =

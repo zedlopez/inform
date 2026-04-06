@@ -15,8 +15,8 @@ The following annotations used by the syntax module.
 @e suppress_heading_dependencies_ANNOT /* int: ignore extension dependencies on this heading node */
 @e implied_heading_ANNOT /* int: set only for the heading of implied inclusions */
 @e dialogue_level_ANNOT /* int: for DIALOGUE_CUE and DIALOGUE_LINE nodes, indendation level */
-@e dialogue_during_text_w1_ANNOT /* |int|: first word of during scene wording */
-@e dialogue_during_text_w2_ANNOT /* |int|: first word of during scene wording */
+@e dialogue_during_text_w1_ANNOT /* `int`: first word of during scene wording */
+@e dialogue_during_text_w2_ANNOT /* `int`: first word of during scene wording */
 
 @d MAX_ANNOT_NUMBER (NO_DEFINED_ANNOT_VALUES+1)
 
@@ -78,10 +78,9 @@ void Annotations::do_not_write_dialogue_during_text_ANNOT(text_stream *OUT, pars
 these must be declared before use.
 
 =
-typedef struct parse_node_annotation_type {
+classdef parse_node_annotation_type {
 	void (*writer_function)(text_stream *, parse_node *p);
-	CLASS_DEFINITION
-} parse_node_annotation_type;
+}
 
 int known_annotation_types_started = FALSE;
 parse_node_annotation_type *known_annotation_types[MAX_ANNOT_NUMBER];
@@ -113,12 +112,12 @@ void Annotations::write_annotations(text_stream *OUT, parse_node *PN) {
 @h Annotations.
 
 =
-typedef struct parse_node_annotation {
-	int annotation_id; /* one of the |*_ANNOT| values */
+classdef parse_node_annotation in 500s {
+	int annotation_id; /* one of the `*_ANNOT` values */
 	int annotation_integer; /* if this is an integer annotation, or ... */
 	general_pointer annotation_pointer; /* ... if it holds an object */
 	struct parse_node_annotation *next_annotation;
-} parse_node_annotation;
+}
 
 @ A new annotation is like a blank luggage ticket, waiting to be filled out
 and attached to some suitcase. All is has is its ID:
@@ -137,8 +136,8 @@ parse_node_annotation *Annotations::new(int id) {
 
 @ Each node has a linked list of //parse_node_annotation// objects, but for
 speed and to reduce memory usage we implement this by hand rather than using
-the linked list class from //foundation//. A node |N| has a list |N->annotations|,
-which points to its first //parse_node_annotation//, or is |NULL| if the node
+the linked list class from //foundation//. A node `N` has a list `N->annotations`,
+which points to its first //parse_node_annotation//, or is `NULL` if the node
 is unannotated.
 
 =
@@ -227,7 +226,7 @@ void Annotations::write_object(parse_node *PN, int id, general_pointer data) {
 
 @h Setters and getters.
 It's a nuisance to use //Annotations::read_object// and //Annotations::write_object//
-directly because of the need to wrap and unwrap the objects into |general_pointers|s,
+directly because of the need to wrap and unwrap the objects into `general_pointers`s,
 so we use macros to make convenient get and set functions.
 
 @d MAKE_ANNOTATION_FUNCTIONS(annotation_name, pointer_type)
@@ -277,8 +276,8 @@ void Annotations::copy(parse_node *to, parse_node *from) {
 @h Annotation permissions.
 As a piece of defensive coding, //syntax// will not allow arbitrary annotations
 to be made: only annotations appropriate to the type of the node in question.
-For example, attempting to give an |heading_level_ANNOT| to a |SENTENCE_NT|
-node will throw an internal error -- it must mean a bug in Inform.
+For example, attempting to give an `heading_level_ANNOT` to a `SENTENCE_NT`
+node will throw an internal error — it must mean a bug in Inform.
 
 =
 void Annotations::make_annotation_allowed_table(void) {
@@ -305,7 +304,7 @@ void Annotations::make_annotation_allowed_table(void) {
 	#endif
 }
 
-@ The |ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK| function, if it exists, is
+@ The `ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK` function, if it exists, is
 expected also to call the following:
 
 =
@@ -320,7 +319,7 @@ void Annotations::allow_for_category(int cat, int annot) {
 			Annotations::allow(t, annot);
 }
 
-@ And this allows the following. Note that nodes with the temporary |*_MC|
+@ And this allows the following. Note that nodes with the temporary `*_MC`
 types (i.e., those of an unenumerated node type) cannot be annotated.
 
 =

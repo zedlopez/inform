@@ -5,13 +5,14 @@ An overview of the supervisor module's role and abilities.
 @h Prerequisites.
 The supervisor module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
-(a) It helps to have some experience of reading webs: see //inweb// for more.
-(b) The module is written in C, in fact ANSI C99, but this is disguised by the
+
+- It helps to have some experience of reading webs: see //inweb// for more.
+- The module is written in C, in fact ANSI C99, but this is disguised by the
 fact that it uses some extension syntaxes provided by the //inweb// literate
 programming tool, making it a dialect of C called InC. See //inweb// for
 full details, but essentially: it's C without predeclarations or header files,
-and where functions have names like |Tags::add_by_name| rather than just |add_by_name|.
-(c) This module uses other modules drawn from the compiler (see //structure//), and also
+and where functions have names like `Tags::add_by_name` rather than just `add_by_name`.
+- This module uses other modules drawn from the compiler (see //structure//), and also
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
 
@@ -34,22 +35,24 @@ is using //supervisor//, and might be either //inform7// or //inbuild//.
 fro: it's not as simple as single one-time call from the parent to //supervisor//
 saying "now build this".
 
-(1) //supervisor// has to be started and stopped at each end of the parent's
+- //supervisor// has to be started and stopped at each end of the parent's
 run, by calling //SupervisorModule::start// and //SupervisorModule::end//.
 The former calls //Supervisor::start// in turn, and that activates a number of
 subsystems with further calls. But all modules do something like this.
-(2) More unusually, when the parent is creating its command-line options, it
+
+- More unusually, when the parent is creating its command-line options, it
 should call //Supervisor::declare_options// to add more. This allows all tools
 containing the Supervisor to offer a unified set of command-line options to
 configure it.[1] When the parent is given a switch that it doesn't recognise,
 it should call //Supervisor::option//; and when it has fully processed the
 command line, it should call //Supervisor::optioneering_complete//.
-(3) The parent can now, if it chooses, make calls into //supervisor// to set
+
+- The parent can now, if it chooses, make calls into //supervisor// to set
 up additional dependencies. But eventually it will call //Supervisor::go_operational//.
 The Supervisor is now ready for use!
 
 There is no single "go" button: instead, the Supervisor provides a suite
-of functions to call, each acting on a "copy" -- an instance of some software
+of functions to call, each acting on a "copy" — an instance of some software
 at a given filing system location. When //inform7// is the parent, it follows
 the call to //Supervisor::go_operational// with a single call to //Copies::build//
 on the copy representing the current Inform 7 project. But when //inbuild//
@@ -79,15 +82,15 @@ Such objects carry with them a note of which virtual machine architectures
 they work with: see //arch: Compatibility// for more on this.
 
 A "copy" is an instance of an edition actually present somewhere in the file
-system -- note that we might have several copies of the same edition in
+system — note that we might have several copies of the same edition in
 different places. Each copy known to the Supervisor is an //inbuild_copy// object.
 
-When copies are claimed, they are typically scanned -- exactly how depends
-on the genre -- and this can reveal damage: if so, a //copy_error// object is
+When copies are claimed, they are typically scanned — exactly how depends
+on the genre — and this can reveal damage: if so, a //copy_error// object is
 attached to the copy for each different defect turned up. These errors are not
 necessarily reported at once, or at all: if they are reported, the function
 //CopyErrors::write// is used to write a suitable command-line error, but it's
-also possible for the parent to issue its own errors instead. |inform7|
+also possible for the parent to issue its own errors instead. `inform7`
 does this to convert copy errors into Inform problem messages: see
 //core: Problems With Source Text//.[1]
 
@@ -104,16 +107,18 @@ go poking around without being asked.[1] Instead, the user will give the
 parent tool some locations at the command line: and those command-line
 instructions will be processed by //supervisor//. For example, if the user
 typed:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ inform7 -internal inform7/Internal -external ~/mystuff -project Tadpoles.inform
-=
+```
+
 then all three command-line switches here would actually be parsed by
 //Supervisor::option//, rather than by anything in the //core// module.
 They would set the "internal" and "external" nest (see //inbuild: Manual//),
 creating an //inbuild_nest// object for each. The Inform 7 project for the
-run would also be set. This would become whose genre is |project_bundle_genre|.
+run would also be set. This would become whose genre is `project_bundle_genre`.
 
-Other copies would swiftly be needed -- the definition of the English language
+Other copies would swiftly be needed — the definition of the English language
 (found inside the Internal nest), the Standard Rules extension, and several more.
 These are not explicitly named on the command line: instead, they are found by
 searching through the nests. //supervisor// does this by creating an
@@ -140,7 +145,7 @@ Best is defined by //Nests::better_result// and makes careful use of both
 semantic versioning and the user's intentions to ensure a happy outcome.
 For example, if an Inform project says
 
->> Include Upturned Faces by Raphael.
+> Include Upturned Faces by Raphael.
 
 then //Nests::search_for_best// will be used to seek which copy of this
 extension to use.
@@ -158,7 +163,7 @@ for different reasons. But in general, a function like //KitManager::new_copy//
 will "claim" the copy.
 
 For most genres, we want each copy to be claimed only once. We might run
-into the copy of version 1.2 of |WorldModelKit| at |inform7/Internal/Inter|
+into the copy of version 1.2 of `WorldModelKit` at `inform7/Internal/Inter`
 for multiple reasons, as a result of several different searches: we want to
 return the same //inbuild_copy// object each time we do, rather than create
 duplicates. This is done with a dictionary of pathnames: i.e., the Kit
@@ -168,31 +173,31 @@ claimed. Most other managers do the same.
 But if a new //inbuild_copy// is made, then we also give it a rich set of
 genre-specific metadata by attaching "content". In this case, that will be
 an //inform_kit// object, and code in //Kit Services// will provide
-special functionality by working on this //inform_kit//. If |C| is a copy
-which is a kit, then |KitManager::from_copy(C)| produces its //inform_kit//
-object |K|; conversely, |K->as_copy| produces |C| again. They correspond in
+special functionality by working on this //inform_kit//. If `C` is a copy
+which is a kit, then `KitManager::from_copy(C)` produces its //inform_kit//
+object `K`; conversely, `K->as_copy` produces `C` again. They correspond in
 a one-to-one fashion.
 
 This table summarises the genres, where they managed, what type of metadata
 object is attached to each copy of that genre, and where such metadata is
-handled. Note that the two Inform project genres -- one for single files,
-one for whole bundles -- share a metadata format: a project is a project,
+handled. Note that the two Inform project genres — one for single files,
+one for whole bundles — share a metadata format: a project is a project,
 however it is managed on disc.
-= (hyperlinked text)
-	GENRE INSTANCE        WHOSE METHODS ARE AT     COPIES GET AN     WHICH IS HANDLED BY
-    extension_genre       //Extension Manager//        inform_extension  //Extension Services//        
-    kit_genre             //Kit Manager//              inform_kit        //Kit Services//
-    language_genre        //Language Manager//         inform_language   //Language Services//
-    pipeline_genre        //Pipeline Manager//         inform_pipeline   //Pipeline Services//
-    project_bundle_genre  //Project Bundle Manager//   inform_project    //Project Services//
-    project_file_genre    //Project File Manager//     inform_project    //Project Services//
-    template_genre        //Template Manager//         inform_template   //Template Services//
-=
+
+Genre instance       | whose methods are at       | copies get an    | which is handled by
+-------------------- | -------------------------- | ---------------- | --------------------
+extension_genre      | //Extension Manager//      | inform_extension | //Extension Services//        
+kit_genre            | //Kit Manager//            | inform_kit       | //Kit Services//
+language_genre       | //Language Manager//       | inform_language  | //Language Services//
+pipeline_genre       | //Pipeline Manager//       | inform_pipeline  | //Pipeline Services//
+project_bundle_genre | //Project Bundle Manager// | inform_project   | //Project Services//
+project_file_genre   | //Project File Manager//   | inform_project   | //Project Services//
+template_genre       | //Template Manager//       | inform_template  | //Template Services//
 
 @h Build graph.
 See //Build Graphs// for the infrastructure of how a dependency graph is stored.
 Basically these consist of //build_vertex// objects joined together by edges,
-represented by lists of other vertices -- each vertex has two lists, one of
+represented by lists of other vertices — each vertex has two lists, one of
 "use edges", the other of "build edges". See the manual at //inbuild: Using Inbuild//
 for an explanation and examples.
 
@@ -237,7 +242,7 @@ without throwing copy errors. So we read only what we will use.
 
 @h Reading source text.
 For any copy, //Copies::get_source_text// will instruct the Supervisor to
-read in the Inform source text associated with it -- if any: this does nothing
+read in the Inform source text associated with it — if any: this does nothing
 for languages, pipelines, website templates or kits. Text for a copy is read
 at most once, and is cached so that a second read produces the same result
 as the first.
@@ -249,12 +254,14 @@ such is read by a call to //SourceText::read_file//, which then sends out
 to the //words// module to break the text file into a stream of words:
 see //words: Text From Files//. But it is //SourceText::read_file// which
 prints console messages like these:
-= (text as ConsoleText)
+
+``` ConsoleText
 	I've now read your source text, which is 70 words long.
 	I've also read Basic Inform by Graham Nelson, which is 7645 words long.
 	I've also read English Language by Graham Nelson, which is 2328 words long.
 	I've also read Standard Rules by Graham Nelson, which is 32123 words long.
-=
+```
+
 Any lexical errors arising in //words// are converted by us into copy errors
 and attached to the //inbuild_copy// object for the extension or project.
 
@@ -278,34 +285,35 @@ to type into code.)
 For reasons which will become clear shortly, the sentences we care most about
 are extension inclusions and headings. Headings are sentences such as:
 
->> Chapter the First - The Voyage
+> Chapter the First - The Voyage
 
 These are detected for us by the sentence-breaker in //syntax//, which
 calls out to our function //Headings::place// when it finds one. Each is
 given a //heading// object. We will do three things with headings:
-(1) Form them into a tree structure, to be able to determine quickly
+
+- Form them into a tree structure, to be able to determine quickly
 which is a subheading of which;
-(2) Parse their bracketed caveats, such as "for use with ... only",
-which we will soon need -- this is done by another Preform grammar; and
-(3) Move content around to satisfy annotations such as "in place of...",
-though this stage is performed only later -- see below.
+- Parse their bracketed caveats, such as "for use with ... only",
+which we will soon need — this is done by another Preform grammar; and
+- Move content around to satisfy annotations such as "in place of...",
+though this stage is performed only later — see below.
 
 @ What happens next involves is carefully timed. What we want is to look
 through for sentences like this one:
 
->> Include Holy Bat Artefacts by Bruce Wayne.
+> Include Holy Bat Artefacts by Bruce Wayne.
 
 ...so that we can see what extensions the project/extension we are reading
 will further need. And this is performed by the //Inclusions::traverse//
 function, which crawls over the syntax tree looking for such. However, if
 an extension inclusion occurs under a heading in the source text like this one:
 
->> Chapter 9 - External Files (not for Z-machine)
+> Chapter 9 - External Files (not for Z-machine)
 
 and the current virtual machine doesn't meet stipulation, then we must ignore
 the inclusion and there's no dependency; and similarly:
 
->> Section 1 - Figures (for figures language element only)
+> Section 1 - Figures (for figures language element only)
 
 Because of this, we make sure to call //Projects::activate_elements// before
 looking for inclusion sentences, in order to know whether or not, e.g., the
@@ -314,7 +322,7 @@ figures language element is present.
 Worst of all is the case of an extension inclusion coming underneath a
 heading like this:
 
->> Section 15 - Bolts (for use with Locksmith by Emily Short)
+> Section 15 - Bolts (for use with Locksmith by Emily Short)
 
 We can only base the decision on whether we have so far included Locksmith.
 Otherwise, it would be easy to set up flip-flop like paradoxes where if X
@@ -323,8 +331,8 @@ which of those states actually happens.
 
 @ At any rate, when //Inclusions::traverse// finds an Include sentence which
 it decides is valid, it calls //Inclusions::fulfill_request_to_include_extension//.
-This performs a search for the best compatible copy of the extension named --
-see above -- and, once such a copy is found, calls //Inclusions::load// to
+This performs a search for the best compatible copy of the extension named —
+see above — and, once such a copy is found, calls //Inclusions::load// to
 merge its text into the current syntax tree. (Note: it doesn't form an
 isolated syntax tree of its own.) This is why Inform reads the text of an
 extension as if it appeared at the same position as the Include sentence.
@@ -332,8 +340,8 @@ extension as if it appeared at the same position as the Include sentence.
 When a valid Include is found, //Inclusions::fulfill_request_to_include_extension//
 also puts a dependency edge in between the vertex for our copy and the vertex
 for the new extension's copy. That will be a use edge if our copy is also an
-extension -- i.e., you can't use Existing Extension unless you also have
-New Extension -- but a build edge if our copy is a project -- i.e., you can't
+extension — i.e., you can't use Existing Extension unless you also have
+New Extension — but a build edge if our copy is a project — i.e., you can't
 build Existing Project unless you also have New Extension.
 
 By the end of the process, therefore, all dependencies on or between extensions
@@ -342,7 +350,7 @@ will have been added to the build graph.
 @ Finally comes the complicated business of rearranging the syntax tree due
 to headings like:
 
->> Chapter 7a (in place of Chapter 7 in Applied Pathology by Attila Hun)
+> Chapter 7a (in place of Chapter 7 in Applied Pathology by Attila Hun)
 
 This is performed by //Headings::satisfy_individual_heading_dependency//,
 and it has to be done after all the extension inclusions have been made. It's
@@ -371,17 +379,17 @@ and so forth: and also on the files it draws its source text from. See
 So, then, at this point we can determine the complete build graph for any copy.
 The parent can do several things:
 
-(a) Call //Copies::show_graph//, or //Copies::show_needs//, or //Copies::show_missing//,
+- Call //Copies::show_graph//, or //Copies::show_needs//, or //Copies::show_missing//,
 to print out the graph, show what a project needs in order to be built, or
 show what it needs but doesn't currently have;
-(b) Call //Copies::archive// to make archived copies of all dependent resources;
-(c) Or, the big one, call //Copies::build// or //Copies::rebuild// to perform
+- Call //Copies::archive// to make archived copies of all dependent resources;
+- Or, the big one, call //Copies::build// or //Copies::rebuild// to perform
 a build.
 
 A "build" is incremental, and uses time-stamps of files to avoid unnecessary
 duplication of previous compilation work; a "rebuild" is not. They are otherwise
 the same, both calling //IncrementalBuild::build//. This works rather like the
-traditional Unix tool |make|: if it wants to build the resource which a vertex
+traditional Unix tool `make`: if it wants to build the resource which a vertex
 represents, it first has to build the resources which that vertex depends on,
 i.e., has edges out to.
 
@@ -390,7 +398,7 @@ given a //build_script//, one follows this script. The script is only a list
 of //build_step// objects, and each step is an application of a //build_skill//.
 There are only a few skills known to the Supervisor, created by //Supervisor::start//.
 For example, assimilating a kit is a skill; but the need to apply this skill to
-a particular copy of |WorldModelKit| is a build step.
+a particular copy of `WorldModelKit` is a build step.
 
 Some build steps can be carried out in two different ways: externally, by
 issuing a command to the shell; or internally, by calling a function in some

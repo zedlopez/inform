@@ -8,12 +8,12 @@ properties, and can have inferences drawn about them: see //Instance Subjects//.
 
 Most instances are created by assertions in the source text. For example:
 
->> Colour is a kind of value. The colours are red, blue and green.
+> Colour is a kind of value. The colours are red, blue and green.
 
 creates three instances: "red", "blue" and "green", which enumerate the
 possible range of "colour". Objects are instances too:
 
->> Peter carries a blue ball.
+> Peter carries a blue ball.
 
 "Peter" and "blue ball" are initially created as instances of the kind "object",
 but will later be deduced to be of kind "person" and "thing" respectively.
@@ -26,12 +26,12 @@ changed to a subkind of its current kind) after creation: see //Instances::set_k
 but these are hard-wired into Inform and are not instances, because "truth state"
 is not an enumeration.
 
-@ Note that the kind is not explicitly stored in the |instance| structure: it
+@ Note that the kind is not explicitly stored in the `instance` structure: it
 has to be deduced from the position of the instance's subject in the subjects
 hierarchy. See //Instances::to_kind//.
 
 =
-typedef struct instance {
+classdef instance {
 	struct noun *as_noun; /* the name of the instance */
 	struct adjective *as_adjective; /* if this is a noun used adjectivally, like "red" */
 	struct inference_subject *as_subject; /* from which the kind can be deduced */
@@ -42,8 +42,7 @@ typedef struct instance {
 	int enumeration_index; /* within each non-object kind, instances are counted from 1 */
 
 	struct instance_compilation_data compilation_data; /* see //runtime: Instances// */
-	CLASS_DEFINITION
-} instance;
+}
 
 @ We record the one most recently made:
 
@@ -81,7 +80,10 @@ more specific than "object", we nevertheless make it just "object" for now.
 
 @<Simplify the initial kind of the instance@> =
 	if (K == NULL) K = K_object;
-	K = Kinds::weaken(K, K_object);
+	if ((K_abstract_object) && (Kinds::conforms_to(K, K_abstract_object)))
+		K = K_abstract_object;
+	else
+		K = Kinds::weaken(K, K_object);
 
 @<Initialise the instance@> =
 	I->creating_sentence = current_sentence;
@@ -99,8 +101,8 @@ those numbers, and also where we give corresponding adjectival meanings
 in the kind in question is also a property.
 
 There are two reasons why we don't do the same for objects: firstly, because
-"object" has a whole hierarchy of subkinds, there's no unique numbering --
-the same object may be thing number 17 but vehicle number 3 -- and secondly,
+"object" has a whole hierarchy of subkinds, there's no unique numbering —
+the same object may be thing number 17 but vehicle number 3 — and secondly,
 because we won't know the exact kind of objects until much later on; for now
 the only thing we are sure of is that they are indeed objects. Enumeration
 for objects within kinds is certainly useful, but it's harder to do and will
@@ -177,7 +179,7 @@ source_file *Instances::get_creating_file(instance *I) {
 @h Coincidence with property names.
 Suppose, as always, we have:
 
->> Colour is a kind of value. The colours are red, white and blue. A door has a colour.
+> Colour is a kind of value. The colours are red, white and blue. A door has a colour.
 
 The third sentence causes the following to be called, for the kind "colour"
 and the property "colour", whose names coincide:
@@ -195,7 +197,7 @@ are covered by suitable adjectives. For instance, "red" must be registered
 as an adjectival constant to cover doors. We will call this again if a further
 use of colour turns up subsequently, e.g., in response to:
 
->> A vehicle has a colour.
+> A vehicle has a colour.
 
 =
 void Instances::update_adjectival_forms(property *P) {
@@ -212,7 +214,7 @@ void Instances::update_adjectival_forms(property *P) {
 specifying colour. And we will also call this if a further instance of colour
 turns up subsequently, e.g., in response to
 
->> Mauve is a colour.
+> Mauve is a colour.
 
 =
 void Instances::register_as_adjectival_constant(instance *I, property *P) {
@@ -227,7 +229,7 @@ void Instances::register_as_adjectival_constant(instance *I, property *P) {
 By this of course we mean the most specific kind to which an instance
 belongs: if we write
 
->> Kathy is a woman.
+> Kathy is a woman.
 
 then the Kathy instance is also a person, a thing, an object and a value,
 but when we talk about the kind of Kathy, we mean "woman".
@@ -406,7 +408,7 @@ void Instances::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 	instance *I = (instance *) vI;
 	if (I == NULL) WRITE("nothing");
 	else switch (format_string[0]) {
-		case 'I': /* bare |%I| means the same as |%+I|, so fall through to... */
+		case 'I': /* bare `%I` means the same as `%+I`, so fall through to... */
 		case '+': @<Write the instance raw@>; break;
 		case '-': @<Write the instance with normalised casing@>; break;
 		case '~': {

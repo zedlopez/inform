@@ -7,10 +7,12 @@ This family handles definitions of rules which give explicit Inform 7
 source text to show what they do. (It's also possible to create rules which
 are implemented by Inter-level functions only, and those do not fall under
 this section, because they have no //imperative_defn//.) For example:
-= (text as Inform 7)
+
+``` Inform7
 Every turn:
 	say "The grandfather clock ticks reprovingly."
-=
+```
+
 Some rules have names, some do not; some indicate explicitly what rulebook
 they belong to, and others are placed in rulebooks with separate sentences.
 So there's quite a lot to do.
@@ -31,7 +33,8 @@ void RuleFamily::create_family(void) {
 @ Each family member gets one of the following. In splitting up preambles,
 the "usage preamble" is the part indicating when the rule should happen, and
 this is divided up into smaller excerpts of text, as in the following examples:
-= (text)
+
+``` None
 rule instead    of          taking or dropping when Miss Bianca is in the Embassy:
 <---------------------------- usage_preamble ----------------------------------->
      <- stem ---->          <------------------ applicability ------------------>
@@ -41,10 +44,10 @@ after examining    an open door during the Hurricane (this is the exit hunting r
 <----------------- usage preamble ----------------->              <- const name -->
 <---- stem ----->  <-- appl -->        <- during -->
 <- pruned stem ->  <-- pw ---->
-=
+```
 
 =
-typedef struct rule_family_data {
+classdef rule_family_data {
 	struct wording usage_preamble;
 	struct wording pruned_stem;
 	struct wording constant_name;
@@ -60,8 +63,7 @@ typedef struct rule_family_data {
 	int permit_all_outcomes; /* waive the usual restrictions on rule outcomes */
 
 	void *feature_rfd[MAX_COMPILER_FEATURES]; /* storage for features to attach, if they want to */
-	CLASS_DEFINITION
-} rule_family_data;
+}
 
 rule_family_data *RuleFamily::new_data(void) {
 	rule_family_data *rfd = CREATE(rule_family_data);
@@ -91,7 +93,7 @@ rule_family_data *RuleFamily::new_data(void) {
 
 @h Identification.
 We are going to claim as our own any definition whose name matches the
-following nonterminal -- and because of the last production, this will always
+following nonterminal — and because of the last production, this will always
 happen. (That's why it is important that we are the last family to claim.)
 
 =
@@ -186,8 +188,39 @@ Now we take a closer look at the rule preamble.
 	rule                                                 ==> { FALSE, - }
 
 <unrecognised-rule-stem-diagnosis> ::=
+	the final *** |                                      ==> @<Issue PM_BadRulePreambleFinal@>
+	final *** |                                          ==> @<Issue PM_BadRulePreambleFinal@>
+	when *** starts |                                    ==> @<Issue PM_BadRulePreambleWhenStarts@>
+	when *** finishes |                                  ==> @<Issue PM_BadRulePreambleWhenStarts@>
 	when *** |                                           ==> @<Issue PM_BadRulePreambleWhen@>
 	...                                                  ==> @<Issue PM_BadRulePreamble@>
+
+@<Issue PM_BadRulePreambleFinal@> =
+	Problems::quote_source(1, current_sentence);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadRulePreambleFinal));
+	Problems::issue_problem_segment(
+		"The punctuation makes me think %1 should be a definition of a phrase or a rule, "
+		"but it doesn't begin as it should, with either 'To' (e.g. 'To flood the riverplain:'), "
+		"'Definition:', a name for a rule (e.g. 'This is the devilishly cunning rule:'), "
+		"'At' plus a time (e.g. 'At 11:12 PM:' or 'At the time when the clock chimes:') or "
+		"the name of a rulebook. %P"
+		"I notice you began with the word 'Final'. Possibly you meant to use the word 'Last'? "
+		"Inform allows rules to be placed at the end of rulebooks with wording like "
+		"'Last every turn rule'.");
+	Problems::issue_problem_end();
+
+@<Issue PM_BadRulePreambleWhenStarts@> =
+	Problems::quote_source(1, current_sentence);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadRulePreambleWhenStarts));
+	Problems::issue_problem_segment(
+		"The punctuation makes me think %1 should be a definition of a phrase or a rule, "
+		"but it doesn't begin as it should, with either 'To' (e.g. 'To flood the riverplain:'), "
+		"'Definition:', a name for a rule (e.g. 'This is the devilishly cunning rule:'), "
+		"'At' plus a time (e.g. 'At 11:12 PM:' or 'At the time when the clock chimes:') or "
+		"the name of a rulebook. %P"
+		"I wonder if you were trying to talk about a scene here? If S is a scene name, then "
+		"'When S begins' or 'When S ends' are legal, but not 'When S starts' or 'When S finishes'.");
+	Problems::issue_problem_end();
 
 @<Issue PM_BadRulePreambleWhen@> =
 	Problems::quote_source(1, current_sentence);
@@ -216,7 +249,7 @@ Now we take a closer look at the rule preamble.
 
 @ The crucial nonterminal in the above grammar is <rulebook-stem>, which tries
 to make the longest match it can of a rulebook name; if it matches successfully,
-then calling |Rulebooks::match| produces a detailed rundown of its findings,
+then calling `Rulebooks::match` produces a detailed rundown of its findings,
 which are too elaborate to pass back in a simple pointer.
 
 =
@@ -307,15 +340,19 @@ so we have to be very careful:
 	}
 
 @ This unobvious manoeuvre puts the when/while text back again, so that:
-= (text)
+
+``` None
 rule instead of taking or dropping when Miss Bianca is in the Embassy:
                 <----- appl -----> <---------- whenwhile ----------->
-=
+```
+
 becomes:
-= (text)
+
+``` None
 rule instead of taking or dropping when Miss Bianca is in the Embassy:
                 <----- appl ---------------------------------------->
-=
+```
+
 This is done only where we now know that the stem specified a rulebook based
 on actions, and the reason it's done is that action applicabilities are parsed
 with a grammar much more sensitive to ambiguities, and in which "when..."
@@ -333,15 +370,15 @@ clauses are therefore better recognised.
 		rfd->whenwhile = EMPTY_WORDING;
 	}
 
-@ Every rule corresponds to a |rule| structure. If the rule is an anonymous
+@ Every rule corresponds to a `rule` structure. If the rule is an anonymous
 one, such as:
 
->> Instead of jumping: say "Don't."
+> Instead of jumping: say "Don't."
 
-then we need to call |Rules::obtain| to create a nameless |rule| structure
+then we need to call `Rules::obtain` to create a nameless `rule` structure
 to be connected to it. But if the phrase has an explicit name:
 
->> Instead of swimming (this is the avoid water rule): say "Don't."
+> Instead of swimming (this is the avoid water rule): say "Don't."
 
 then we have a predeclared rule called "avoid water rule" already, so we
 connect this existing one to the phrase.
@@ -410,7 +447,7 @@ int RuleFamily::outcome_restrictions_waived(void) {
 }
 
 @ At the end of the assessment process, we can finally put the rules into their
-rulebooks. We make "automatic placements" first -- i.e., those where the usage
+rulebooks. We make "automatic placements" first — i.e., those where the usage
 preamble specified which rulebook the rule belonged to; and then we make manual
 placements, which may move or remove rules already place. See //Rule Placement Requests//
 for how sentences specifying this are parsed.
@@ -489,10 +526,10 @@ whichever way works.
 
 @ All that's left is to issue a "good" problem message, but this is quite a
 large undertaking, because the situation as we currently know it is just that
-something's wrong with the rule preamble -- which covers an enormous range of
+something's wrong with the rule preamble — which covers an enormous range of
 different faults.
 
-The |pap_failure_reason| is a sort of error code set by the action pattern
+The `pap_failure_reason` is a sort of error code set by the action pattern
 parser, recording how it most recently failed.
 
 @<Issue a problem message for a bad action@> =

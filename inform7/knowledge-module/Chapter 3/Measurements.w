@@ -7,23 +7,23 @@ comparative and superlative forms.
 @h Measurements, regions and shapes.
 A typical example would be:
 
->> Definition: A container is roomy if its carrying capacity is 10 or more.
+> Definition: A container is roomy if its carrying capacity is 10 or more.
 
 Here the domain of the definition is "container", and we must assign an adjective
 meaning for "roomy" which involves the comparison of a property (here "carrying
 capacity") against a threshold value $t$ (here, $t=10$). "roomy" is said to
 be the headword; the comparative form would be roomier, and the superlative
-form roomiest. The comparative will make a relation -- see //Comparative Relations// --
+form roomiest. The comparative will make a relation — see //Comparative Relations// —
 while and the must be a phrase. It can't be an adjective, since its domain
 would be too ambiguous in text such as:
 
->> if the canvas bag is roomiest, ...
+> if the canvas bag is roomiest, ...
 
 which begs the question: roomiest out of what? All containers, or implicitly
 some subcollection of them? So we avoid the problem by allowing superlatives
 only when explicitly followed by a domain:
 
->> roomiest container in Heathrow Terminal 5
+> roomiest container in Heathrow Terminal 5
 
 @ Each such definition allows the property value to belong to a "region", which
 takes one of these three "shapes":
@@ -64,14 +64,14 @@ timing during Inform's run: the names of kinds, properties and values become
 available at different times; whereas we need the name of the adjective
 itself to become available very early on. This is why the structure below
 appears to record a lot of extraneous clutter apparently needed only
-temporarily during parsing -- because parsing does not happen all at once,
+temporarily during parsing — because parsing does not happen all at once,
 and partial results have to be parked in the structure after one stage to
 be picked up at the next.
 
 At any rate, here goes:
 
 =
-typedef struct measurement_definition {
+classdef measurement_definition {
 	struct parse_node *measurement_node; /* where the actual definition is */
 
 	struct wording headword; /* adjective being defined (must be single word) */
@@ -81,15 +81,14 @@ typedef struct measurement_definition {
 	struct property *prop; /* the property being compared, if any */
 	struct wording name_of_property_to_compare; /* and its name */
 
-	int region_shape; /* one of the |MEASURE_T_*| constants */
+	int region_shape; /* one of the `MEASURE_T_*` constants */
 	int region_threshold; /* numerical value of threshold (if any) */
 	struct kind *region_kind; /* of this value */
 	int region_threshold_evaluated; /* have we evaluated this one yet? */
 	struct wording region_threshold_text; /* text of threshold value */
 
 	struct measurement_compilation_data compilation_data;
-	CLASS_DEFINITION
-} measurement_definition;
+}
 
 @ =
 measurement_definition *Measurements::new(parse_node *q, wording AW, wording THRESW,
@@ -154,7 +153,7 @@ void Measurements::validate(measurement_definition *mdef) {
 		@<Fill in the missing threshold value, t@>;
 }
 
-@ Here we either make $P$ valid, or leave it |NULL| and issue a problem.
+@ Here we either make $P$ valid, or leave it `NULL` and issue a problem.
 
 @<Fill in the missing property name, P@> =
 	if (<property-name>(mdef->name_of_property_to_compare)) mdef->prop = <<rp>>;
@@ -171,7 +170,7 @@ void Measurements::validate(measurement_definition *mdef) {
 		return;
 	}
 
-@ Here we either make $t$ valid, or leave |mdef->region_threshold_evaluated| clear
+@ Here we either make $t$ valid, or leave `mdef->region_threshold_evaluated` clear
 and issue a problem.
 
 @<Fill in the missing threshold value, t@> =

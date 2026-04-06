@@ -50,9 +50,9 @@ possessions.' is produced (provided Mr X is visible)."
 @ There used to be a rule, documented here, to do with pronouns, and
 this was explained in terms of Missee Lee, a black and white cat
 living in North Oxford; named for a Cambridge-educated pirate queen in
-the South China seas who is the heroine -- or villainess -- of the
-tenth in Arthur Ransome's Swallows and Amazons series of children's
-books, "Missee Lee" (1941). The rule was then removed, but it
+the South China seas who is the heroine — or villainess — of the
+tenth in Arthur Ransome's _Swallows and Amazons_ series of children's
+books, _Missee Lee_ (1941). The rule was then removed, but it
 seemed sad to delete the only mention of Missee, and all the more so
 since she died (at a grand old age and in mid-spring) in 2008.
 
@@ -65,7 +65,7 @@ Carry out taking inventory (this is the print empty inventory rule):
 
 Carry out taking inventory (this is the print standard inventory rule):
 	say "[We] [are] carrying:[line break]" (A);
-	now all things enclosed by the player are unmarked for listing;
+	now all things are unmarked for listing;
 	now all things held by the player are marked for listing;
 	list the contents of the player, with newlines, indented, giving inventory information, with extra indentation, listing marked items only, not listing concealed items, including contents.
 
@@ -920,7 +920,7 @@ Check an actor exiting (this is the can't exit when not inside anything rule):
 Check an actor exiting (this is the can't exit closed containers rule):
 	if the actor is in a closed container (called the cage):
 		if the player is the actor:
-			say "You can't get out of the closed [cage]." (A);
+			say "[We] [can't] get out of the closed [cage]." (A);
 		stop the action.
 
 Check an actor exiting (this is the convert exit into get off rule):
@@ -1793,7 +1793,7 @@ Report an actor wearing (this is the standard report wearing rule):
 Taking off is an action applying to one thing.
 The taking off action is accessible to Inter as "Disrobe".
 
-Does the player mean taking off something worn: it is very likely.
+Does the player mean taking off something worn (this is the very likely to mean taking off a worn thing rule): it is very likely.
 
 The specification of the taking off action is "The Standard Rules give Inform
 only a simple model of clothing. A thing can be worn only if it has the
@@ -2084,7 +2084,7 @@ Check an actor kissing (this is the kissing yourself rule):
 
 Check an actor kissing (this is the block kissing rule):
 	if the actor is the player:
-		say "[The noun] [might not] like that." (A);
+		say "[The noun] [might not like] that." (A);
 	stop the action.
 
 @h Answering it that.
@@ -3086,9 +3086,8 @@ The switch the story transcript off rule is defined by Inter as "SWITCH_TRANSCRI
     "[line break]End of transcript." (B),
     "Attempt to end transcript failed." (C).
 
-
-@ The VERSION command is not quite so close to the metal -- it is implemented
-in I6, at the end of the day -- but it does involve reading the bytes of the
+@ The VERSION command is not quite so close to the metal — it is implemented
+in I6, at the end of the day — but it does involve reading the bytes of the
 story file header, so it needs to take quite different forms for the
 different formats being compiled to.
 

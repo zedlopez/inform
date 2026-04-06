@@ -2,15 +2,15 @@
 
 Conjugating verbs into the many different forms they can take.
 
-@ We will need to turn a base form of a verb -- in English, this is always the
-infinitive -- into up to 123 variants; we manage this with quite an extensive
+@ We will need to turn a base form of a verb — in English, this is always the
+infinitive — into up to 123 variants; we manage this with quite an extensive
 data structure. There will typically only be a few dozen fully conjugated
 verbs in any source text, though, so the memory cost isn't too extreme. For
 English it looks wasteful, since so many forms are the same, but for French
 (say) they are almost all different.
 
 =
-typedef struct verb_conjugation {
+classdef verb_conjugation {
 	struct word_assemblage infinitive; /* not counting the "to", in English */
 	struct word_assemblage past_participle;
 	struct word_assemblage present_participle;
@@ -24,8 +24,7 @@ typedef struct verb_conjugation {
 	#endif
 	int auxiliary_only; /* used only as an auxiliary, e.g. the "have" in "I have gone" */
 	int instance_of_verb; /* defines an instance of kind "verb" at run-time */
-	CLASS_DEFINITION
-} verb_conjugation;
+}
 
 typedef struct verb_tabulation {
 	struct word_assemblage to_be_auxiliary; /* use this if non-empty */
@@ -129,7 +128,7 @@ The crucial early step here is //Conjugation::follow_instructions//, which has
 two tasks to perform: it works out the numbered verb forms, and it chooses
 which tabulation will be used. Verb form number 0 is always the base text,
 and subsequent numbers include some which are universal across all verbs
-(these have |*_FORM_TYPE| constants), and others which vary from one
+(these have `*_FORM_TYPE` constants), and others which vary from one
 conjugation to another.
 
 =
@@ -164,9 +163,9 @@ usual grammatical rules, which enables us to create new irregular verbs.
 For example, Inform will by default make the past participle "blended" out
 of the verb "to blend", but a definition like
 
->> To blend (I blend, he blends, it is blent) ...
+> To blend (I blend, he blends, it is blent) ...
 
-will cause "blent" to override "blended" in the |PAST_PARTICIPLE_FORM_TYPE|.
+will cause "blent" to override "blended" in the `PAST_PARTICIPLE_FORM_TYPE`.
 (Philip Larkin's poem "Church Going" uses "blent", but I've never seen
 anybody else try this one on.)
 
@@ -213,10 +212,12 @@ Note that verb form 0 can't be overridden: that was the base text.
 @ A tabulation is a sort of program laying out what to put in which slots,
 active or passive. Each production is a step in this program, and it consists
 of a "selector" followed by a "line". For example, the production:
-= (text as Preform)
+
+``` Preform
 	a3 ( t1 avoir ) 3+*
-=
-contains six tokens; the selector is |a3|, and the line is made up from the
+```
+
+contains six tokens; the selector is `a3`, and the line is made up from the
 rest. (The selector is always just a single token.)
 
 @<Work through the supplied tabulation, filling in slots as directed@> =
@@ -265,7 +266,7 @@ rest. (The selector is always just a single token.)
 			&(vc->tabulations[PASSIVE_VOICE].modal_auxiliary_usage[tense][sense][p][n]));
 
 @ The selector tells us which tense(s), sense(s) and voice(s) to apply the
-line to; |a3|, for example, means active voice, tense 3, in both positive
+line to; `a3`, for example, means active voice, tense 3, in both positive
 and negative senses.
 
 @<Parse the slot selector@> =
@@ -291,16 +292,16 @@ and negative senses.
 
 @h Follow instructions.
 That completes the top level of the routine, but it depended on two major
-sub-steps: a preliminary pass called |Conjugation::follow_instructions| and
-a routine to deal with the final results called |Conjugation::merge|.
+sub-steps: a preliminary pass called `Conjugation::follow_instructions` and
+a routine to deal with the final results called `Conjugation::merge`.
 
 Here's the first of these. Note that the routine indirects through three main
-nonterminals; it always starts with |<verb-conjugation-instructions>| and
+nonterminals; it always starts with `<verb-conjugation-instructions>` and
 uses this to choose a "conjugation" nonterminal. It then chugs through
 the conjugation, which ends by choosing a "tabulation". For example, in
-English, the base text "do" passes through |<verb-conjugation-instructions>|,
-which chooses the conjugation |<to-do-conjugation>|, which in turn sets some
-participles and then chooses the tabulation |<to-do-tabulation>|.
+English, the base text "do" passes through `<verb-conjugation-instructions>`,
+which chooses the conjugation `<to-do-conjugation>`, which in turn sets some
+participles and then chooses the tabulation `<to-do-tabulation>`.
 
 =
 nonterminal *Conjugation::follow_instructions(word_assemblage *verb_forms,
@@ -336,20 +337,24 @@ nonterminal *Conjugation::follow_instructions(word_assemblage *verb_forms,
 		}
 	}
 
-@ Each production in this language's |<verb-conjugation-instructions>| grammar
+@ Each production in this language's `<verb-conjugation-instructions>` grammar
 consists of a (possibly empty) pattern to match, followed by the name of a
 nonterminal to use as the conjugation if it matches. For example, in
-= (text as Preform)
+
+``` Preform
 	-querir <fr-querir-conjugation>
-=
-the pattern part is a single token, |-querir|, which matches if the base text
+```
+
+the pattern part is a single token, `-querir`, which matches if the base text
 is a single word whose last six characters are "querir". A more complicated
 case is:
-= (text as Preform)
+
+``` Preform
 	be able to ... <to-be-able-to-auxiliary>
-=
-Here the wildcard |...| matches one or more words, and the "auxiliary
-infinitive" form is set to the part matched by |...|: for example,
+```
+
+Here the wildcard `...` matches one or more words, and the "auxiliary
+infinitive" form is set to the part matched by `...`: for example,
 "be able to see" matches with auxiliary infinitive "see".
 
 @<Try to match the base text against this production@> =
@@ -433,9 +438,9 @@ tokens.
 verb form to set, and the token which follows it provides the content. For
 example:
 
-|2 having| set to the literal text "having"
-|3 1+ed| set to verb form 1 with "ed" suffixed
-|3 <en-trie-past-participle>| run this trie on the base text and take the result
+`2 having` set to the literal text "having"
+`3 1+ed` set to verb form 1 with "ed" suffixed
+`3 <en-trie-past-participle>` run this trie on the base text and take the result
 
 @<Set a verb form from the conjugation line@> =
 	ptoken *number_token = pr->first_pt;
@@ -456,19 +461,23 @@ example:
 	} else malformed = TRUE;
 
 @h Merge verb material.
-Now the final main step. |row| points to a list of ptokens containing text,
+Now the final main step. `row` points to a list of ptokens containing text,
 and we have to copy that text into a word assemblage and return it.
 
 In theory that's a one-line routine, but it's made complicated by the number
-of special syntaxes which can go into the row of text. For example, if |row|
+of special syntaxes which can go into the row of text. For example, if `row`
 is only
-= (text as Preform)
+
+``` Preform
 	will not do
-=
+```
+
 then the word assemblage comes out to just "will not do"; but if it is
-= (text as Preform)
+
+``` Preform
 	( t1 auxiliary-have ) done
-=
+```
+
 then we consult tense 1 (present) of the verb "auxiliary-have", extract
 the relevant slot, then append "done". (This might produce "have done"
 or "has done" or "haven't done" or "hasn't done", depending on the
@@ -496,9 +505,9 @@ word_assemblage Conjugation::merge(ptoken *row,
 	return Conjugation::shorten_with_contractions(wa);
 }
 
-@ To take the easiest case first. If we read a word like |trailing|, we simply
-add it. But note that |Conjugation::expand_with_endings| has other tricks up its sleeve,
-and might expand |3+ed| to "trailed".
+@ To take the easiest case first. If we read a word like `trailing`, we simply
+add it. But note that `Conjugation::expand_with_endings` has other tricks up its sleeve,
+and might expand `3+ed` to "trailed".
 
 @<A fixed word is simply added to the result@> =
 	if (chunk->ptoken_category == FIXED_WORD_PTC) {
@@ -507,11 +516,11 @@ and might expand |3+ed| to "trailed".
 		continue;
 	}
 
-@ If we read a nonterminal name, such as |<fr-vivre-present>|, then this must
+@ If we read a nonterminal name, such as `<fr-vivre-present>`, then this must
 be a grammar with six productions, giving the text to use for the six different
-persons. We consult |person| and extract the relevant text. For example, if
-|person| is 3, we extract "vivons". Note that this material is itself read
-in by a recursive use of |Conjugation::merge()|, because this enables it to
+persons. We consult `person` and extract the relevant text. For example, if
+`person` is 3, we extract "vivons". Note that this material is itself read
+in by a recursive use of `Conjugation::merge()`, because this enables it to
 make use of the same fancy features we're allowing here.
 
 @<A nonterminal is a table of persons@> =
@@ -532,10 +541,12 @@ make use of the same fancy features we're allowing here.
 	}
 
 @ A number followed by a verb in brackets, like so:
-= (text as Preform)
+
+``` Preform
 	3 ( avoir )
-=
-expands to verb form 3 of this verb -- the past participle of "avoir", which
+```
+
+expands to verb form 3 of this verb — the past participle of "avoir", which
 is "eu", as it happens. This is a special kind of lift. It isn't actually
 performed now; we make a note and carry it out when we reach the brackets,
 on the next iteration.
@@ -547,18 +558,20 @@ on the next iteration.
 		continue;
 	}
 
-@ And now the lift takes place. We might at this point have |verb_form_to_lift|
+@ And now the lift takes place. We might at this point have `verb_form_to_lift`
 set, in which case we should lift a verb form, or we might not, in which case
 we should lift an ordinary usage, such as third-person singular in a particular
 tense. A lift can optionally change tense or sense: for example,
-= (text as Preform)
+
+``` Preform
 	( t1 have )
-=
+```
+
 lifts from the present tense of "to have". If there's no tense indicator,
 the tense remains the current one. (It's also possible to change the sense from
 positive to negative or vice versa with this, though I can't think of a
 language where this would be useful.) Note that, once again, the text of the
-infinitive passes through |Conjugation::expand_with_endings|, so that it can
+infinitive passes through `Conjugation::expand_with_endings`, so that it can
 make use of the numbered verb forms if we want it to.
 
 @<A bracketed verb becomes a lift@> =
@@ -609,7 +622,7 @@ make use of the numbered verb forms if we want it to.
 like "fish" will pass through unchanged; a number like "7" will convert
 to verb form 7 in the current verb (for example, 2 becomes the present
 participle); a plus sign joins two pieces together; and a tilde is a tie,
-joining but with a space. Thus |fish~to~fry| becomes three words.
+joining but with a space. Thus `fish~to~fry` becomes three words.
 
 =
 word_assemblage Conjugation::expand_with_endings(vocabulary_entry *ve,
@@ -644,24 +657,32 @@ word_assemblage Conjugation::expand_with_endings(vocabulary_entry *ve,
 @ The final step in merging verb material is to pass the result through the
 following, which attends to contractions. (Most of the time it does nothing.)
 For example, suppose we have:
-= (text as Preform)
+
+``` Preform
 	ne-' ai pas
-=
-The |-'| marker tells us that the word it attaches to should contract if a
+```
+
+The `-'` marker tells us that the word it attaches to should contract if a
 vowel follows it. In this case that's what happens, so we convert to:
-= (text as Preform)
+
+``` Preform
 	n'ai pas
-=
+```
+
 On the other hand,
-= (text as Preform)
+
+``` Preform
 	ne-' jette pas
-=
+```
+
 would convert to
-= (text as Preform)
+
+``` Preform
 	ne jette pas
-=
+```
+
 with no contraction. Either way, though, we have to take some action when
-we see a |-'| marker.
+we see a `-'` marker.
 
 =
 word_assemblage Conjugation::shorten_with_contractions(word_assemblage wa) {
@@ -727,7 +748,7 @@ int Conjugation::ve_to_verb_form_number(vocabulary_entry *ve) {
 }
 
 @h Parsing tense and sense indicators.
-These are a little harder: for example, |t2+| or |t3|.
+These are a little harder: for example, `t2+` or `t3`.
 
 =
 int Conjugation::ptoken_to_tense_indicator(ptoken *pt, int *set_sense) {
@@ -768,8 +789,8 @@ int Conjugation::ptoken_as_bracket(ptoken *pt) {
 	return 0;
 }
 
-@ In the following, for example, "breveter" as |ve| would match "-veter"
-as |pattern|.
+@ In the following, for example, "breveter" as `ve` would match "-veter"
+as `pattern`.
 
 =
 int Conjugation::compare_ve_with_tails(vocabulary_entry *ve, vocabulary_entry *pattern) {
@@ -799,7 +820,7 @@ void Conjugation::error(word_assemblage base_text, nonterminal *nt,
 Similarly, the following helps translators by giving them unit tests for their
 conjugations:
 
->> Test verb (internal) with appuyer.
+> Test verb (internal) with appuyer.
 
 =
 void Conjugation::test(OUTPUT_STREAM, wording W, NATURAL_LANGUAGE_WORDS_TYPE *nl) {

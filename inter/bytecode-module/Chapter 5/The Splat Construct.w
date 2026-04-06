@@ -21,8 +21,8 @@ void SplatInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |splat| instruction is laid out with the
-compulsory words -- see //Inter Nodes// -- followed by:
+In bytecode, the frame of a `splat` instruction is laid out with the
+compulsory words — see //Inter Nodes// — followed by:
 
 @d MATTER_SPLAT_IFLD         (DATA_IFLD + 0)
 @d PLM_SPLAT_IFLD            (DATA_IFLD + 1)
@@ -166,13 +166,13 @@ text_provenance SplatInstruction::provenance(inter_tree_node *P) {
 }
 
 @h PLMs.
-At some point PLM stood for something, but what it was is now forgotten --
-perhaps "parse linked matter"? -- so it is now a nonsense-word pronounced
+At some point PLM stood for something, but what it was is now forgotten —
+perhaps "parse linked matter"? — so it is now a nonsense-word pronounced
 "plum". This is a marker attached to a splat which can indicate which Inform
 6-syntax directive the splat contains (if any).
 
-|WHITESPACE_PLM| should be used only if the splat contains nothing but white
-space. |MYSTERY_PLM| should be used if its contents are of an unknown syntax.
+`WHITESPACE_PLM` should be used only if the splat contains nothing but white
+space. `MYSTERY_PLM` should be used if its contents are of an unknown syntax.
 The other names here are taken from their corresponding I6 directives.
 
 @e IFDEF_PLM from 1
@@ -201,7 +201,7 @@ int SplatInstruction::plm_valid(inter_ti plm) {
 	return TRUE;
 }
 
-@ Converted to and from text thus. Note that |MYSTERY_PLM| is used in the
+@ Converted to and from text thus. Note that `MYSTERY_PLM` is used in the
 case where no PLM is given; so it has the empty textual form, and is not
 written.
 

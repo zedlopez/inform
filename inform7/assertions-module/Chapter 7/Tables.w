@@ -10,7 +10,7 @@ column ID numbers: see //runtime: Tables//.
 @d MAX_COLUMNS_PER_TABLE 99
 
 =
-typedef struct table {
+classdef table {
 	struct wording table_no_text; /* the table number (if any) */
 	struct wording table_name_text; /* the table name (if any) */
 	struct table_contribution *table_created_at; /* where created in source */
@@ -33,20 +33,19 @@ typedef struct table {
 	struct table_column_usage columns[MAX_COLUMNS_PER_TABLE];
 
 	struct table_compilation_data compilation_data;
-	CLASS_DEFINITION
-} table;
+}
 
 @ For indexing purposes only:
 
 =
-typedef struct table_contribution {
+classdef table_contribution in 100s {
 	struct parse_node *source_table;
 	struct table_contribution *next;
-} table_contribution;
+}
 
 @ These are convenient during parsing.
 
-= (early code)
+@<Global assertions variable definitions@> +=
 parse_node *table_cell_node = NULL;
 int table_cell_row = -1;
 int table_cell_col = -1;
@@ -225,14 +224,14 @@ already-existing ones with the same name:
 @d TABLE_HAS_NUMBER_AND_NAME 3
 
 @ The source text declaration of tables is not easy to parse. Tabs are
-significantly different from spaces or new-lines, for instance -- so the
+significantly different from spaces or new-lines, for instance — so the
 ordinary rules about white space are suspended. Tabs divide entries in a row;
 new-lines divide rows in a paragraph; and the table is terminated by a
 paragraph break.
 
 If a table is declared as
 
->> Table 12 - Chemical Elements
+> Table 12 - Chemical Elements
 
 then it can be referred to elsewhere in the source either as "Table 12"
 or as "Table of Chemical Elements", so both excerpts are registered
@@ -271,7 +270,7 @@ and as Table of Chemical Elements.
 	table of ...
 
 @ Optionally, tables can have a footer line specifying additional entirely
-blank rows. In (b), the |...| is eventually required to be a kind, but this
+blank rows. In (b), the `...` is eventually required to be a kind, but this
 happens later on, since the bare bones of tables are parsed very early in
 Inform's run, when kinds haven't yet been created.
 
@@ -381,14 +380,14 @@ void Tables::create_table(parse_node *PN) {
 	}
 
 @ It's not as simple as it seems to decide when a new table headline refers
-back to a table which already exists -- there are several ways we could play
+back to a table which already exists — there are several ways we could play
 this. What we say is that if the new headline gives both name and number,
 then both must match; if it gives name only, that must match; if it gives
 number only, that must. Suppose that "Table 2 - Trees" already exists. Then:
 
-(a) if "Table 2 - Shrubs" or "Table 3 - Trees" comes along, there's no match;
-(b) if "Table of Trees" comes along, that does match;
-(c) if "Table 2" comes along, so does that.
+- if "Table 2 - Shrubs" or "Table 3 - Trees" comes along, there's no match;
+- if "Table of Trees" comes along, that does match;
+- if "Table 2" comes along, so does that.
 
 @d TABLE_NAMES_MATCH(t1, t2)
 	((t1 != t2) && (Wordings::nonempty(t1->table_name_text)) &&
@@ -585,14 +584,15 @@ a node in the parse tree representing the column's use within this table.
 
 @ We assume that columns in the new and old tables will be partial permutations
 of each other: for example the old might have columns "fish", "mammals", "birds"
-(index |j| running from 0 to 2) and the new "mammals", "reptiles", "fish",
-"fungi" (index |i| running from 0 to 3). We're going to store both the permutation
-and its inverse, with the index |-1| meaning that the column doesn't appear in
+(index `j` running from 0 to 2) and the new "mammals", "reptiles", "fish",
+"fungi" (index `i` running from 0 to 3). We're going to store both the permutation
+and its inverse, with the index `-1` meaning that the column doesn't appear in
 the other table at all. The result will be:
-= (text)
+
+``` None
 	old_to_new: 2, 0, -1
 	new_to_old: 1, -1, 0, -1
-=
+```
 
 @<Build the column correspondence tables@> =
 	int i, j;
@@ -813,7 +813,7 @@ parse_node *Tables::empty_cell_node(void) {
 See also the corresponding code in "Table Sections".
 
 Note that the first column plays a special role in tables used to define new
-constants, because it holds the names of things which don't exist yet -- the
+constants, because it holds the names of things which don't exist yet — the
 things to be defined. So we exempt it from the checking below.
 
 =
@@ -845,7 +845,7 @@ void Tables::stock_table(table *t, int phase) {
 	}
 }
 
-@ All of that is delegated to "Table Columns" except for the |Tables::stock_table_cell|
+@ All of that is delegated to "Table Columns" except for the `Tables::stock_table_cell`
 routine, which comes next. It will parse the text of the entry in a cell
 and act accordingly; the grammar returns one of the following:
 
@@ -924,7 +924,7 @@ us issue more contextual problem messages.
 
 @ The message PM_TablePlayerEntry is so called because by far the commonest
 case of this is people writing "player" as a constant value in a column of
-people -- it needs to be "yourself" instead, since "player" is a variable.
+people — it needs to be "yourself" instead, since "player" is a variable.
 
 @<Issue PM_TablePlayerEntry or C20TableVariableEntry problem@> =
 	nonlocal_variable *q = Lvalues::get_nonlocal_variable_if_any(RP[1]);
@@ -1143,19 +1143,21 @@ void Tables::amend_table(table *main_table, table *amendments) {
 @ The following is not so obvious. The amendment row is intended to replace a
 row in the main table, and we need to decide which one. Suppose the amendment
 reads:
-= (text)
+
+``` None
 	62   "lampstand"   10:30 AM
-=
+```
+
 If the main table has exactly one row with 62 in the first column, we choose
 that; if it contains more than one, we look for rows which begin with
-|62| and then |"lampstand"|; and so on. (Recall that amendment tables have
+`62` and then `"lampstand"`; and so on. (Recall that amendment tables have
 exactly the same columns as their originals, and in the same order.)
 
-In the following, |col| is the rightmost column used in the initial string
-being tried: so when it's 0, we're just trying to match |62|, when it's 1
-we're trying to match |62| and |"lampstand"|; and so on. But of course each
+In the following, `col` is the rightmost column used in the initial string
+being tried: so when it's 0, we're just trying to match `62`, when it's 1
+we're trying to match `62` and `"lampstand"`; and so on. But of course each
 such search is narrower than the one before, so we only need to look at the
-rows which passed last time, and test their values in column |col|.
+rows which passed last time, and test their values in column `col`.
 
 In fact, we do this in reverse: we start with every row in the main table
 marked as a possible match, and then exclude rows as they fail to match.
@@ -1203,7 +1205,7 @@ column, we're stuck. But if there are two or more, we allow the loop to move
 us along to the next column, hoping that the key value there will find a
 unique match. If we're in the last column and there are still multiple
 possibilities, the amendment row must be identical to more than one row
-of the main table -- in this case the amendment will have no effect, but
+of the main table — in this case the amendment will have no effect, but
 put another way, it can do no harm.
 
 @<Use the key value in the amend-cell to make an amendment@> =
