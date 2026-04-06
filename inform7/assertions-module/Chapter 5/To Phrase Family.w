@@ -467,6 +467,7 @@ classdef constant_phrase {
 	struct kind *cphr_kind; /* ditto */
 	struct inter_name *cphr_iname;
 	struct wording associated_preamble_text;
+	struct text_stream *Inter_alias;
 }
 
 @ Here we create a new named phrase ("doubling", say):
@@ -480,6 +481,7 @@ constant_phrase *ToPhraseFamily::create_constant(wording NW, wording RW) {
 	cphr->name = Nouns::new_proper_noun(NW, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
 		PHRASE_CONSTANT_MC, Rvalues::from_constant_phrase(cphr), Task::language_of_syntax());
 	cphr->cphr_iname = NULL;
+	cphr->Inter_alias = NULL;
 	return cphr;
 }
 
@@ -496,6 +498,24 @@ constant_phrase *ToPhraseFamily::parse_constant(wording NW) {
 		}
 	}
 	return NULL;
+}
+
+@ The author can demand with an "accessible to" sentence that a given
+phrase should have an identifier given to it which is accessible to Inter:
+
+=
+void ToPhraseFamily::translates(wording W, parse_node *p2) {
+	constant_phrase *cphr = ToPhraseFamily::parse_constant(W);
+	if (cphr) {
+		cphr->Inter_alias = Str::new();
+		WRITE_TO(cphr->Inter_alias, "%N", Wordings::first_wn(Node::get_text(p2)));
+	} else {
+		LOG("Tried %W\n", W);
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TranslatesNonPhrase),
+			"this is not the name of a phrase",
+			"so cannot be translated.");
+	}
 }
 
 @ As often happens with Inform constants, the kind of a constant phrase can't

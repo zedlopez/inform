@@ -283,9 +283,13 @@ int Translations::accessible_to_Inter_as_SMF(int task, parse_node *V, wording *N
 @d GRAMMAR_TOKEN_I6TR 7 /* "The grammar token "[whatever]" translates into I6 as "WHATEVER". */
 @d TABLE_I6TR 8
 @d TABLE_COLUMN_I6TR 9
+@d PHRASE_I6TR 10
+@d VALUE_I6TR 11
 
 =
 <translates-into-i6-sentence-subject> ::=
+	... phrase |            ==> { PHRASE_I6TR, - }
+	... value |             ==> { VALUE_I6TR, - }
 	... property |          ==> { PROPERTY_I6TR, - }
 	... object/kind |       ==> { NOUN_I6TR, - }
 	{... rule} |            ==> { RULE_I6TR, - }
@@ -388,6 +392,14 @@ will be required to pass `<extra-response>`.
 		case RULEBOOK_I6TR:
 			@<Require the accessible-to form@>;
 			if (global_pass_state.pass == 2) Rulebooks::translates(W, p2);
+			break;
+		case PHRASE_I6TR:
+			@<Require the accessible-to form@>;
+			if (global_pass_state.pass == 2) ToPhraseFamily::translates(W, p2);
+			break;
+		case VALUE_I6TR:
+			@<Require the accessible-to form@>;
+			if (global_pass_state.pass == 2) Instances::translates(W, p2);
 			break;
 		case ACTIVITY_I6TR:
 			@<Require the accessible-to form@>;
@@ -528,8 +540,9 @@ void Translations::plus_responses(parse_node *p, rule *R) {
 	WRITE_TO(i6r, "%N", Wordings::first_wn(OP));
 	if (Str::get_first_char(i6r) == '"') Str::delete_first_character(i6r);
 	if (Str::get_last_char(i6r) == '"') Str::delete_last_character(i6r);
+	RTKindConstructors::set_accessibility_name(K, i6r);
 	inter_name *iname = RTKindDeclarations::iname(K);
-	if (iname) {
+	if ((iname) && (Kinds::Behaviour::is_subkind_of_object(K))) {
 		InterNames::set_translation(iname, i6r);
 		InterNames::clear_flag(iname, MAKE_NAME_UNIQUE_ISYMF);
 		Hierarchy::make_available(iname);

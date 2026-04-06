@@ -102,6 +102,17 @@ for the underlying function's compilation.
 
 	EmitArrays::end(save);
 
+	if (Str::len(cphr->Inter_alias) > 0)
+		@<Compile an alias constant for this function@>;
+
+@<Compile an alias constant for this function@> =
+	package_request *P = InterNames::location(iname);
+	inter_name *con_iname = Hierarchy::make_iname_in(PHRASE_ALIAS_HL, P);
+	InterNames::set_translation(con_iname, cphr->Inter_alias);
+	Emit::iname_constant(con_iname, NULL, RS);
+	InterNames::clear_flag(con_iname, MAKE_NAME_UNIQUE_ISYMF);
+	Hierarchy::make_available(con_iname);
+
 @ Now we come to something trickier. We want default values for kinds of phrases,
 because otherwise we can't have variables holding phrases unless they are
 always initialised explicitly, and so on. Clearly the default value for a

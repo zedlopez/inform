@@ -14,6 +14,7 @@ typedef struct instance_compilation_data {
 	int declaration_sequence_number;
 	int has_explicit_runtime_value;
 	inter_ti explicit_runtime_value;
+	struct text_stream *accessibility_name;
 } instance_compilation_data;
 
 instance_compilation_data RTInstances::new_compilation_data(instance *I) {
@@ -26,6 +27,7 @@ instance_compilation_data RTInstances::new_compilation_data(instance *I) {
 	icd.has_explicit_runtime_value = FALSE;
 	icd.explicit_runtime_value = 0;
 	icd.usages = NEW_LINKED_LIST(parse_node);
+	icd.accessibility_name = NULL;
 	NounIdentifiers::set_iname(I->as_noun, icd.instance_iname);
 	Hierarchy::make_available_one_per_name_only(icd.instance_iname);
 	return icd;
@@ -53,6 +55,11 @@ void RTInstances::note_usage(instance *I, parse_node *NB) {
 				return;
 		ADD_TO_LINKED_LIST(NB, parse_node, I->compilation_data.usages);
 	}
+}
+
+@ =
+void RTInstances::set_accessibility_name(instance *I, text_stream *name) {
+	I->compilation_data.accessibility_name = Str::duplicate(name);
 }
 
 @h Compilation.
@@ -287,6 +294,15 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 		RTShowmeCommand::compile_instance_showme_fn(iname, I);
 		Hierarchy::apply_metadata_from_iname(RTInstances::package(I),
 			INST_SHOWME_MD_HL, iname);
+	}
+
+	if (Str::len(I->compilation_data.accessibility_name) > 0) {
+		inter_name *con_iname = Hierarchy::make_iname_in(INSTANCE_ALIAS_HL,
+			RTInstances::package(I));
+		InterNames::set_translation(con_iname, I->compilation_data.accessibility_name);
+		Emit::iname_constant(con_iname, NULL, RTInstances::value_iname(I));
+		InterNames::clear_flag(con_iname, MAKE_NAME_UNIQUE_ISYMF);
+		Hierarchy::make_available(con_iname);
 	}
 	
 	inter_ti val = (inter_ti) I->enumeration_index;

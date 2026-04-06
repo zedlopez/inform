@@ -972,6 +972,7 @@ void Hierarchy::establish(void) {
 @e INST_SHOWME_MD_HL
 @e INST_SHOWME_FN_HL
 @e INSTANCE_HL
+@e INSTANCE_ALIAS_HL
 @e SCENE_STATUS_FN_HL
 @e SCENE_CHANGE_FN_HL
 @e BACKDROP_FOUND_IN_FN_HL
@@ -1093,6 +1094,7 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_BRIEF_INFERENCES_MD_HL,          I"^brief_inferences")
 			H_C_U(INSTANCE_SPECIFIC_INFERENCES_MD_HL,       I"^specific_inferences")
 			H_C_U(INSTANCE_HL,                              I"I")
+			H_C_U(INSTANCE_ALIAS_HL,                        I"instance_alias")
 			H_F_U(SCENE_STATUS_FN_HL,                       I"scene_status_fn")
 			H_F_U(SCENE_CHANGE_FN_HL,                       I"scene_change_fn")
 			H_F_U(BACKDROP_FOUND_IN_FN_HL,                  I"backdrop_found_in_fn")
@@ -1240,6 +1242,7 @@ void Hierarchy::establish(void) {
 @e KIND_INFERENCES_MD_HL
 @e KIND_BRIEF_INFERENCES_MD_HL
 @e WEAK_ID_HL
+@e WEAK_ID_ALIAS_HL
 @e ICOUNT_HL
 @e FWMATRIX_SIZE_HL
 @e NUM_DOORS_HL
@@ -1365,6 +1368,7 @@ void Hierarchy::establish(void) {
 			H_C_U(KIND_BRIEF_INFERENCES_MD_HL, I"^brief_inferences")
 			H_C_U(KIND_INFERENCES_MD_HL,      I"^inferences")
 			H_C_I(WEAK_ID_HL)
+			H_C_I(WEAK_ID_ALIAS_HL)
 			H_C_I(ICOUNT_HL)
 			H_C_U(ENUMERATION_ARRAY_MD_HL,    I"^enumeration_array")
 			H_C_U(FWMATRIX_SIZE_HL,           I"FWMATRIX_SIZE")
@@ -1494,6 +1498,7 @@ void Hierarchy::establish(void) {
 @e PHRASES_HAP
 @e REQUESTS_HAP
 @e PHRASE_SYNTAX_MD_HL
+@e PHRASE_ALIAS_HL
 @e PHRASE_FN_HL
 @e LABEL_STORAGES_HAP
 @e LABEL_ASSOCIATED_STORAGE_HL
@@ -1511,6 +1516,7 @@ void Hierarchy::establish(void) {
 		H_BEGIN_AP(PHRASES_HAP,               I"phrase", I"_to_phrase")
 			H_BEGIN_AP(CLOSURES_HAP,          I"closure", I"_closure")
 				H_C_U(CLOSURE_DATA_HL,        I"closure_data")
+				H_C_U(PHRASE_ALIAS_HL,     I"phrase_alias")
 			H_END
 			H_BEGIN_AP(REQUESTS_HAP,          I"request", I"_request")
 				H_C_U(PHRASE_SYNTAX_MD_HL,    I"^phrase_syntax")
