@@ -947,7 +947,11 @@ A specific action-processing rule (this is the carry out stage rule):
 A specific action-processing rule (this is the after stage rule):
 	if action in world is true:
 		follow the after rules;
+<<<<<<< Updated upstream
 		rule succeeds;
+=======
+		if rule failed or rule succeeded, rule succeeds;
+>>>>>>> Stashed changes
 
 A specific action-processing rule
 	(this is the investigate player's awareness after action rule):
