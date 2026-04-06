@@ -441,6 +441,21 @@ the <code>prior_named_noun</code>.</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">LW_Response</span><span class="plain-syntax"> </span><span class="identifier-syntax">X</span><span class="plain-syntax"> </span><span class="identifier-syntax">o</span><span class="plain-syntax">; </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" and "</span><span class="plain-syntax">; ];</span>
+
+<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">CaptureListOfMarkedObjectsText</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; [ </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain-syntax">; </span><span class="identifier-syntax">CaptureListOfMarkedObjects</span><span class="plain-syntax">; ];</span>
+<span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">CaptureListOfDefMarkedObjectsText</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; [ </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain-syntax">; </span><span class="identifier-syntax">CaptureListOfDefMarkedObjects</span><span class="plain-syntax">; ];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">CaptureListOfMarkedObjects</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ParaContent</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WriteListOfMarkedObjects</span><span class="plain-syntax">(</span><span class="identifier-syntax">ENGLISH_BIT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">CaptureListOfDefMarkedObjects</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">say__p</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ParaContent</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WriteListOfMarkedObjects</span><span class="plain-syntax">(</span><span class="identifier-syntax">ENGLISH_BIT</span><span class="plain-syntax"> + </span><span class="identifier-syntax">DEFART_BIT</span><span class="plain-syntax"> + </span><span class="identifier-syntax">CFIRSTART_BIT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  These two functions are not really to do with printing, but are also stubs

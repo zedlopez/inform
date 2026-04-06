@@ -391,6 +391,21 @@ the `prior_named_noun`.
 ];
 [ LW_Response X o; print " and "; ];
 
+Array CaptureListOfMarkedObjectsText --> [ CONSTANT_PACKED_TEXT_STORAGE; CaptureListOfMarkedObjects; ];
+Array CaptureListOfDefMarkedObjectsText --> [ CONSTANT_PACKED_TEXT_STORAGE; CaptureListOfDefMarkedObjects; ];
+
+[ CaptureListOfMarkedObjects;
+	say__p = 1;
+	ParaContent();
+	WriteListOfMarkedObjects(ENGLISH_BIT);
+];
+
+[ CaptureListOfDefMarkedObjects;
+	say__p = 1;
+	ParaContent();
+	WriteListOfMarkedObjects(ENGLISH_BIT + DEFART_BIT + CFIRSTART_BIT);
+];
+
 @ These two functions are not really to do with printing, but are also stubs
 provided for Basic Inform only.
 
