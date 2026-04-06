@@ -8893,6 +8893,8 @@
           constraint CS = {7} extremes [1, 1]
         {<quoted-text-without-subs>} interpreter 
           constraint DS = {7} extremes [2, 2]
+        separated resources 
+          constraint CS = {7} extremes [2, 2]
 
 <privacy-indicator> nti 30 constraint CS = {30} extremes [1, 1]
     English:

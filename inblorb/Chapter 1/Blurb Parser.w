@@ -17,6 +17,8 @@ indexes into the syntaxes table below.
 @e author_COMMAND from 0
 @e auxiliary_COMMAND
 @e base64_COMMAND
+@e copy_pictures_COMMAND
+@e copy_sounds_COMMAND
 @e copyright_COMMAND
 @e cover_COMMAND
 @e css_COMMAND
@@ -45,6 +47,7 @@ indexes into the syntaxes table below.
 @e resolution_min_max_COMMAND
 @e resolution_min_COMMAND
 @e resolution_COMMAND
+@e resource_map_COMMAND
 @e solution_COMMAND
 @e solution_public_COMMAND
 @e sound_music_COMMAND
@@ -109,6 +112,10 @@ blurb_command syntaxes[] = {
 			U"auxiliary \"(%q*)\" \"(%q*)\" \"(%q*)\"", TTT_OPS, FALSE },
 	{ "base64 \"filename\" to \"filename\"",
 			U"base64 \"(%q*)\" to \"(%q*)\"", TT_OPS, FALSE },
+	{ "copy pictures to \"pathname\"",
+			U"copy pictures to \"(%q*)\"", T_OPS, FALSE },
+	{ "copy sounds to \"pathname\"",
+			U"copy sounds to \"(%q*)\"", T_OPS, FALSE },
 	{ "copyright \"message\"", U"copyright \"(%q*)\"", T_OPS, FALSE },
 	{ "cover \"filename\"", U"cover \"(%q*)\"", T_OPS, FALSE },
 	{ "css", U"css", VOID_OPS, FALSE },
@@ -141,6 +148,8 @@ blurb_command syntaxes[] = {
 	{ "resolution NxN min NxN max NxN", U"resolution (%d+) min (%d+) max (%d+)", NNN_OPS, TRUE },
 	{ "resolution NxN min NxN", U"resolution (%d+) min (%d+)", NN_OPS, TRUE },
 	{ "resolution NxN", U"resolution (%d+)", N_OPS, TRUE },
+	{ "resource map to \"filename\"",
+			U"resource map to \"(%q*)\"", T_OPS, FALSE },
 	{ "solution", U"solution", VOID_OPS, FALSE },
 	{ "solution public", U"solution public", VOID_OPS, FALSE },
 	{ "sound ID \"filename\" music", U"sound (%i+) \"(%q*)\" music", TT_OPS, TRUE },
@@ -267,6 +276,10 @@ copied in `text1`, `num1`, ..., accordingly.
 		case auxiliary_COMMAND: Links::create_auxiliary_file(text1, text2, text3); break;
 		case base64_COMMAND:
 			Requests::request_2(BASE64_REQ, text1, text2, FALSE); break;
+		case copy_pictures_COMMAND:
+			Requests::request_1(PICTURES_XFER_REQ, text1, FALSE); break;
+		case copy_sounds_COMMAND:
+			Requests::request_1(SOUNDS_XFER_REQ, text1, FALSE); break;
 		case copyright_COMMAND: Writer::copyright_chunk(text1); break;
 		case cover_COMMAND: @<Declare which file is the cover art@>; break;
 		case css_COMMAND: use_css_code_styles = TRUE; break;
@@ -305,6 +318,8 @@ copied in `text1`, `num1`, ..., accordingly.
 			break;
 		case release_source_COMMAND:
 			Requests::request_3(RELEASE_SOURCE_REQ, text1, text2, text3, FALSE); break;
+		case resource_map_COMMAND:
+			Requests::request_1(RESOURCE_MAP_REQ, text1, FALSE); break;
 		case solution_COMMAND: Requests::request_1(SOLUTION_REQ, I"", TRUE); break;
 		case solution_public_COMMAND: Requests::request_1(SOLUTION_REQ, I"", FALSE); break;
 		case sound_COMMAND: Writer::sound_chunk(num1, Filenames::from_text(text1), I""); break;

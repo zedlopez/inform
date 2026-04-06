@@ -18,6 +18,9 @@ and then sees that they are carried out. The requests divide as follows:
 @e INTERPRETER_REQ /* an in-browser interpreter */
 @e BASE64_REQ /* a base64-encoded copy of a binary file */
 @e INSTRUCTION_REQ /* a release instruction copied to inblorb for reporting only */
+@e PICTURES_XFER_REQ /* where to copy the images, if housed outside a blorb */
+@e SOUNDS_XFER_REQ /* where to copy the sounds, if housed outside a blorb */
+@e RESOURCE_MAP_REQ /* a JSON file about the images */
 @e ALTERNATIVE_REQ /* an unused release instruction copied to inblorb for reporting only */
 
 =
@@ -129,6 +132,9 @@ void Requests::create_requested_material(void) {
 			case SOLUTION_REQ: @<Create a Solution::walkthrough file@>; break;
 			case SOURCE_REQ: @<Create a plain text source file@>; break;
 			case WEBSITE_REQ: @<Create a website@>; break;
+			case RESOURCE_MAP_REQ: @<Create a resource map@>; break;
+			case PICTURES_XFER_REQ: @<Transfer the pictures@>; break;
+			case SOUNDS_XFER_REQ: @<Transfer the sounds@>; break;
 		}
 	}
 }
@@ -235,6 +241,18 @@ including a manifest called "(extras).txt":
 	if (from) { /* i.e., if the "(extras).txt" file exists */
 		TextFiles::read(from, FALSE, "can't open (extras) file", FALSE, Requests::read_requested_file, 0, NULL);
 	}
+
+@<Create a resource map@> =
+	filename *map_filename = Filenames::from_text(req->details1);
+	ResourceMap::write(map_filename);
+
+@<Transfer the pictures@> =
+	pathname *destination = Pathnames::from_text(req->details1);
+	ResourceMap::transfer_pictures(destination);
+
+@<Transfer the sounds@> =
+	pathname *destination = Pathnames::from_text(req->details1);
+	ResourceMap::transfer_sounds(destination);
 
 @h The Extras file for a website template.
 When parsing "(extras).txt", `Requests::read_requested_file` is called for each line.

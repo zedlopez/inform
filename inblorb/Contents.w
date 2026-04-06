@@ -26,6 +26,7 @@ Chapter 2: Blorbs
 Chapter 3: Other Material
 "Although non-blorb release material is a side-show, it's a divertingly varied one."
 	Releaser
+	Resource Map
 	Solution Deviser
 	Links and Auxiliary Files
 	Placeholders
