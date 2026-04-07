@@ -800,10 +800,10 @@ value they return, rather than the side-effects of what they did.</p>
 the return value matches the kind of value expected. This certainly rejects
 the phrase if it's used in a definition which isn't meant to be deciding
 a value at all, so an &quot;in... only&quot; clause is not needed.</p>
-<p>The IF-form of Inform allows the antique syntaxes &quot;yes&quot; and &quot;no&quot; as
-synonyms for &quot;decide yes&quot; and &quot;decide no&quot;; these are not present in Basic
-Inform, and are defined in the Standard Rules (and only to keep old source
-text working).</p>
+<p>At one time <code>yes</code> and <code>no</code> as aliases for <code>decide yes</code> and <code>decide no</code> were
+semi-deprecated, but their use in IF examples is just too widespread, and it
+makes no real sense to keep them in the Standard Rules rather than here, so
+as of April 2026 they are in Basic Inform.</p>
 <p>See test case <code>BIP-Decide</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -811,10 +811,10 @@ text working).</p>
 
 <span class="plain-syntax">Section 1 - Deciding Outcomes</span>
 
-<span class="plain-syntax">To decide yes</span>
+<span class="plain-syntax">To decide/-- yes</span>
 <span class="plain-syntax">    (documented at ph_yes):</span>
 <span class="plain-syntax">    (- rtrue; -) - in to decide if only.</span>
-<span class="plain-syntax">To decide no</span>
+<span class="plain-syntax">To decide/-- no</span>
 <span class="plain-syntax">    (documented at ph_no):</span>
 <span class="plain-syntax">    (- rfalse; -) - in to decide if only.</span>
 

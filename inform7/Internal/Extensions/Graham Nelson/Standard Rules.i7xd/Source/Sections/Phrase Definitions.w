@@ -866,25 +866,11 @@ Section 7 - Command parsing - Unindexed
 To decide whether the I6 parser is running multiple actions:
 	(- (multiflag==1) -).
 
-@ The antique forms "yes" and "no" are now somewhat to be regretted, with
-"decide yes" and "decide no" being clearer ways to write the same thing.
-But we seem to be stuck with them.
-
-=
-Section 8 - Deprecated Inform - unindexed
-
-To yes
-	(documented at ph_yes):
-	(- rtrue; -) - in to decide if only.
-To no
-	(documented at ph_no):
-	(- rfalse; -) - in to decide if only.
-
 @ This is convenient for debugging Inform, but for no other purpose. It
 toggles verbose logging of the type-checker.
 
 =
-Section 9 - Debugging Inform - Unindexed
+Section 8 - Debugging Inform - Unindexed
 
 To ***:
 	(- {-primitive-definition:verbose-checking} -).

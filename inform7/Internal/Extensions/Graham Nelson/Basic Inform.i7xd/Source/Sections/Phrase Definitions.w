@@ -764,10 +764,10 @@ the return value matches the kind of value expected. This certainly rejects
 the phrase if it's used in a definition which isn't meant to be deciding
 a value at all, so an "in... only" clause is not needed.
 
-The IF-form of Inform allows the antique syntaxes "yes" and "no" as
-synonyms for "decide yes" and "decide no"; these are not present in Basic
-Inform, and are defined in the Standard Rules (and only to keep old source
-text working).
+At one time `yes` and `no` as aliases for `decide yes` and `decide no` were
+semi-deprecated, but their use in IF examples is just too widespread, and it
+makes no real sense to keep them in the Standard Rules rather than here, so
+as of April 2026 they are in Basic Inform.
 
 See test case `BIP-Decide`.
 
@@ -776,10 +776,10 @@ Chapter 3 - Control
 
 Section 1 - Deciding Outcomes
 
-To decide yes
+To decide/-- yes
 	(documented at ph_yes):
 	(- rtrue; -) - in to decide if only.
-To decide no
+To decide/-- no
 	(documented at ph_no):
 	(- rfalse; -) - in to decide if only.
 
