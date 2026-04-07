@@ -129,9 +129,10 @@ constant value.</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">RTInstances::compile_all</span><span class="plain-syntax">(</span><span class="identifier-syntax">inference_subject_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">family</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">ignored</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ins.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Number instances in declaration order</span></span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-ins.html#SP4_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Number instances in declaration order</span></span><span class="named-paragraph-number">4.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-ins.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make a last check for missing enumerations in this instance's kind</span></span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">desc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">desc</span><span class="plain-syntax">, </span><span class="string-syntax">"instance "</span><span class="plain-syntax">); </span><span class="identifier-syntax">Instances::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">desc</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Sequence::queue</span><span class="plain-syntax">(&amp;</span><a href="5-ins.html#SP5" class="function-link"><span class="function-syntax">RTInstances::compilation_agent</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">STORE_POINTER_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">desc</span><span class="plain-syntax">);</span>
@@ -140,7 +141,39 @@ constant value.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1. </b>  The code here assigns each instance <code>I</code> a sequence number in such a way that
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1. </b>  This is relevant only in the case where a kind was created by a kit, which
+imposed specific values on some of its instances, but where further instances
+were then created by Inform source text; those further ones won't have any
+value attached to them, and we need to make sure that the values they get
+do not overlap with any already given. The safest approach seems to be to use
+the next free value above all specific values in the enumeration.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make a last check for missing enumerations in this instance's kind</span><span class="named-paragraph-number">4.1</span></span> =</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-kc.html#SP28" class="function-link"><span class="function-syntax">RTKindConstructors::is_nonstandard_enumeration</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">kind_constructor</span><span class="plain-syntax"> *</span><span class="identifier-syntax">kc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Kinds::get_construct</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">kc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">enumeration_checked</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">kc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">enumeration_checked</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">max_val</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I2</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">I2</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Instances::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I2</span><span class="plain-syntax">), </span><span class="identifier-syntax">K</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">max_val</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">I2</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">explicit_runtime_value</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">max_val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I2</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">explicit_runtime_value</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">I2</span><span class="plain-syntax">, </span><span class="identifier-syntax">instance</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Instances::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I2</span><span class="plain-syntax">), </span><span class="identifier-syntax">K</span><span class="plain-syntax">)) &amp;&amp;</span>
+<span class="plain-syntax">                    (</span><span class="identifier-syntax">I2</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">has_explicit_runtime_value</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">I2</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">explicit_runtime_value</span><span class="plain-syntax"> = ++</span><span class="identifier-syntax">max_val</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">I2</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">has_explicit_runtime_value</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                }</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-ins.html#SP4">&#167;4</a>.</li></ul>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2. </b>  The code here assigns each instance <code>I</code> a sequence number in such a way that
 the object instances come out in a well-founded order spatially — that is,
 so that each object X is followed immediately by its children (i.e., the
 objects inside or on top of it).</p>
@@ -148,7 +181,7 @@ objects inside or on top of it).</p>
 can be recovered in code-generation, when it would otherwise be lost as
 the various instances scatter all over the tree.</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Number instances in declaration order</span><span class="named-paragraph-number">4.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Number instances in declaration order</span><span class="named-paragraph-number">4.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>

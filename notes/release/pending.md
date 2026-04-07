@@ -114,6 +114,8 @@ external developers, which are periodically updated. In this release:
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2676](https://inform7.atlassian.net/browse/I7-2676)
+	"Extended kit-defined enumerated kinds assigns the same value twice"
 - Fix for Jira bug [I7-2673](https://inform7.atlassian.net/browse/I7-2673)
 	"External files owned by other projects headers rewritten by current UUID"
 - Fix for Jira bug [I7-2665](https://inform7.atlassian.net/browse/I7-2665)

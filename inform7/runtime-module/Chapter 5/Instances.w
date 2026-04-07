@@ -69,12 +69,41 @@ int RTInstances::compile_all(inference_subject_family *family, int ignored) {
 	@<Number instances in declaration order@>;
 	instance *I;
 	LOOP_OVER(I, instance) {
+		@<Make a last check for missing enumerations in this instance's kind@>;
 		text_stream *desc = Str::new();
 		WRITE_TO(desc, "instance "); Instances::write(desc, I);
 		Sequence::queue(&RTInstances::compilation_agent, STORE_POINTER_instance(I), desc);
 	}
 	return TRUE;
 }
+
+@ This is relevant only in the case where a kind was created by a kit, which
+imposed specific values on some of its instances, but where further instances
+were then created by Inform source text; those further ones won't have any
+value attached to them, and we need to make sure that the values they get
+do not overlap with any already given. The safest approach seems to be to use
+the next free value above all specific values in the enumeration.
+
+@<Make a last check for missing enumerations in this instance's kind@> =
+	kind *K = Instances::to_kind(I);
+	if (RTKindConstructors::is_nonstandard_enumeration(K)) {
+		kind_constructor *kc = Kinds::get_construct(K);
+		if (kc->compilation_data.enumeration_checked == FALSE) {
+			kc->compilation_data.enumeration_checked = TRUE;
+			inter_ti max_val = 0;
+			instance *I2;
+			LOOP_OVER(I2, instance)
+				if (Kinds::eq(Instances::to_kind(I2), K))
+					if (max_val < I2->compilation_data.explicit_runtime_value)
+						max_val = I2->compilation_data.explicit_runtime_value;
+			LOOP_OVER(I2, instance)
+				if ((Kinds::eq(Instances::to_kind(I2), K)) &&
+					(I2->compilation_data.has_explicit_runtime_value == FALSE)) {
+					I2->compilation_data.explicit_runtime_value = ++max_val;
+					I2->compilation_data.has_explicit_runtime_value = TRUE;
+				}
+		}
+	}
 
 @ The code here assigns each instance `I` a sequence number in such a way that
 the object instances come out in a well-founded order spatially — that is,

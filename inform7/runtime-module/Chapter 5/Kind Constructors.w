@@ -37,6 +37,7 @@ typedef struct kind_constructor_compilation_data {
 
 	int declaration_sequence_number;
 	int nonstandard_enumeration;
+	int enumeration_checked;
 	int permissions_emitted;
 	struct text_stream *accessibility_name;
 } kind_constructor_compilation_data;
@@ -74,6 +75,7 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 
 	kccd.declaration_sequence_number = -1;
 	kccd.nonstandard_enumeration = FALSE;
+	kccd.enumeration_checked = FALSE;
 	kccd.permissions_emitted = FALSE;
 	
 	kccd.accessibility_name = NULL;
