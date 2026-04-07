@@ -322,10 +322,12 @@ void ReleaseInstructions::handle_release_declaration_inner(parse_node *p) {
 			break;
 		}
 		case SEPARATE_FIGURES_PAYLOAD:
-			Figures::write_copy_commands(my_instructions);
+			@<Issue a deprecation notice for these old uses of separate@>;
+			// Figures::write_copy_commands(my_instructions);
 			break;
 		case SEPARATE_SOUNDS_PAYLOAD:
-			Sounds::write_copy_commands(my_instructions);
+			@<Issue a deprecation notice for these old uses of separate@>;
+			// Sounds::write_copy_commands(my_instructions);
 			break;
 	}
 
@@ -338,6 +340,18 @@ void ReleaseInstructions::handle_release_declaration_inner(parse_node *p) {
 		"'the solution', 'the library card', 'the introductory booklet', "
 		"'the source text', 'an existing story file' or '...a file of "
 		"\"Something Useful\" called \"Something.pdf\"'.");
+	Problems::issue_problem_end();
+
+@<Issue a deprecation notice for these old uses of separate@> =
+	Problems::quote_source(1, p);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_SeparateDeprecated));
+	Problems::issue_problem_segment(
+		"You asked to release along with %1. "
+		"The old instruction 'Release along with separate figures', and similarly "
+		"'sounds', has now been withdrawn. The new way to do this is to "
+		"'Release along with separated resources', which does both figures and "
+		"sounds, and also provides some conveniences to interpreter tools making "
+		"use of the released data.");
 	Problems::issue_problem_end();
 
 @h Writing out files.

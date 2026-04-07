@@ -1,0 +1,7 @@
+Problem: PM_SeparateDeprecated
+
+Release along with separate figures.
+
+Release along with separate sounds.
+
+Release along with separated resources.

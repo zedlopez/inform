@@ -415,10 +415,12 @@ is only given for sentences beginning &quot;Release with...&quot;.</p>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SEPARATE_FIGURES_PAYLOAD:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Figures::write_copy_commands</span><span class="plain-syntax">(</span><span class="identifier-syntax">my_instructions</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-ri.html#SP8_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a deprecation notice for these old uses of separate</span></span><span class="named-paragraph-number">8.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">// Figures::write_copy_commands(my_instructions);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SEPARATE_SOUNDS_PAYLOAD:</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Sounds::write_copy_commands</span><span class="plain-syntax">(</span><span class="identifier-syntax">my_instructions</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-ri.html#SP8_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Issue a deprecation notice for these old uses of separate</span></span><span class="named-paragraph-number">8.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="comment-syntax">// Sounds::write_copy_commands(my_instructions);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
@@ -437,6 +439,21 @@ is only given for sentences beginning &quot;Release with...&quot;.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-ri.html#SP8">&#167;8</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP8_1_1" class="paragraph-anchor"></a><b>&#167;8.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue a deprecation notice for these old uses of separate</span><span class="named-paragraph-number">8.1.1</span></span> =</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_SeparateDeprecated</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"You asked to release along with %1. "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"The old instruction 'Release along with separate figures', and similarly "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"'sounds', has now been withdrawn. The new way to do this is to "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"'Release along with separated resources', which does both figures and "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"sounds, and also provides some conveniences to interpreter tools making "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"use of the released data."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-ri.html#SP8_1">&#167;8.1</a> (twice).</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Writing out files.</b>  So much for taking down instructions; now we must act on them. In this
 routine we combine writing the iFiction record and the release instructions —
