@@ -135,8 +135,8 @@ void ResourceMap::write(filename *map_filename) {
 			}
 			JSON::add_to_object(je, I"format", JSON::new_string(real_format));
 			if (Str::eq(real_format, I"MIDI")) {
-				JSON::add_to_object(je, I"MIDIversion", JSON::new_number((int) midi_version));
-				JSON::add_to_object(je, I"MIDItracks", JSON::new_number((int) no_tracks));
+				JSON::add_to_object(je, I"version", JSON::new_number((int) midi_version));
+				JSON::add_to_object(je, I"tracks", JSON::new_number((int) no_tracks));
 			} else {
 				JSON::add_to_object(je, I"duration", JSON::new_number((int) duration));
 				JSON::add_to_object(je, I"bps", JSON::new_number((int) pBitsPerSecond));
