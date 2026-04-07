@@ -310,6 +310,8 @@ void Writer::picture_chunk(int n, filename *fn, text_stream *alt) {
     	Str::copy_to_ISO_string(alt_Cs, alt, L);
     	Writer::add_rdes_record(1, n, alt_Cs);
 	}
+
+	ResourceMap::register_picture(n, fn, alt);
 	no_pictures_included++;
 }
 
@@ -359,6 +361,7 @@ void Writer::sound_chunk(int n, filename *fn, text_stream *alt) {
     	Str::copy_to_ISO_string(alt_Cs, alt, L);
     	Writer::add_rdes_record(2, n, alt_Cs);
 	}
+	ResourceMap::register_sound(n, fn, alt);
 	no_sounds_included++;
 }
 

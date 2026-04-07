@@ -151,9 +151,16 @@ void RTKindDeclarations::declare_base_kind(kind *K) {
 	}
 	Emit::kind(RTKindDeclarations::iname(K), S?RTKindDeclarations::iname(S):NULL,
 		dt, 0, NULL);
-	if (K == K_object) {
-		InterNames::set_translation(RTKindDeclarations::iname(K), I"K0_kind");
-		Hierarchy::make_available(RTKindDeclarations::iname(K));
+	
+	if (RTKindDeclarations::base_represented_in_Inter(K)) {
+		text_stream *trans = NULL;
+		if (K == K_object) trans = I"K0_kind";
+		if (Str::len(trans) > 0) {
+			inter_name *iname = RTKindDeclarations::iname(K);
+			InterNames::set_translation(iname, trans);
+			InterNames::clear_flag(iname, MAKE_NAME_UNIQUE_ISYMF);
+			Hierarchy::make_available(iname);
+		}
 	}
 }
 

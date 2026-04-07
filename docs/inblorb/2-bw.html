@@ -412,6 +412,8 @@ be PNG or JPEG. There can be any number of these chunks.</p>
 <span class="plain-syntax">        </span><a href="../foundation/4-sm.html#SP6" class="function-link"><span class="function-syntax">Str::copy_to_ISO_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">alt_Cs</span><span class="plain-syntax">, </span><span class="identifier-syntax">alt</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="2-bw.html#SP23" class="function-link"><span class="function-syntax">Writer::add_rdes_record</span></a><span class="plain-syntax">(1, </span><span class="identifier-syntax">n</span><span class="plain-syntax">, </span><span class="identifier-syntax">alt_Cs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
+
+<span class="plain-syntax">    </span><a href="3-rm.html#SP1" class="function-link"><span class="function-syntax">ResourceMap::register_picture</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">n</span><span class="plain-syntax">, </span><span class="identifier-syntax">fn</span><span class="plain-syntax">, </span><span class="identifier-syntax">alt</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">no_pictures_included</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -462,6 +464,7 @@ adding MOD (&quot;SoundTracker&quot;) or MIDI files, so both are supported here.
 <span class="plain-syntax">        </span><a href="../foundation/4-sm.html#SP6" class="function-link"><span class="function-syntax">Str::copy_to_ISO_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">alt_Cs</span><span class="plain-syntax">, </span><span class="identifier-syntax">alt</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="2-bw.html#SP23" class="function-link"><span class="function-syntax">Writer::add_rdes_record</span></a><span class="plain-syntax">(2, </span><span class="identifier-syntax">n</span><span class="plain-syntax">, </span><span class="identifier-syntax">alt_Cs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><a href="3-rm.html#SP1" class="function-link"><span class="function-syntax">ResourceMap::register_sound</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">n</span><span class="plain-syntax">, </span><span class="identifier-syntax">fn</span><span class="plain-syntax">, </span><span class="identifier-syntax">alt</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">no_sounds_included</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">}</span>
 </pre>

@@ -197,9 +197,14 @@ See //runtime: Use Options// for what happens to these.
 
 @<Set the option given in this word range@> =
 	parsed_use_option_setting *puos = UseOptions::parse_setting(S);
-	if (global_pass_state.pass > 1) {
-		if (puos->resolved_option) NewUseOptions::set(puos);
-		else {
+	if ((puos->resolved_option) && (puos->resolved_option->urgent)) {
+		if (global_pass_state.pass == 1) {
+			NewUseOptions::set(puos);
+		}
+	} else if (global_pass_state.pass > 1) {
+		if (puos->resolved_option) {
+			NewUseOptions::set(puos);
+		} else {
 			LOG("Used: %W\n", S);
 			StandardProblems::sentence_problem(Task::syntax_tree(),
 				_p_(PM_UnknownUseOption),

@@ -236,13 +236,24 @@ file online.
 	WRITE("interpreter \"%S\" \"%c\"\n", rel->interpreter_template_leafname,
 		Str::get_first_char(ext));
 
-	filename *SF = BlurbFile::storyfile_original();
+	filename *SF = 
+		(rel->external_resources)?
+		(BlurbFile::storyfile_original()):
+		(Filenames::in(Task::release_path(), TEMP));
 	if (SF) {
 		WRITE("base64 \"%f\" to \"%p%c", SF, Task::released_interpreter_path(),
 			FOLDER_SEPARATOR);
 	}
 	STREAM_COPY(OUT, TEMP);
 	WRITE(".js\"\n");
+	if (rel->external_resources) {
+		WRITE("copy pictures to \"%p%c\"\n", Task::released_figures_path(),
+			FOLDER_SEPARATOR);
+		WRITE("copy sounds to \"%p%c\"\n", Task::released_sounds_path(),
+			FOLDER_SEPARATOR);
+		WRITE("resource map to \"%p%cresourcemap.json\"\n", Task::released_interpreter_path(),
+			FOLDER_SEPARATOR);
+	}
 
 @<Give instructions to construct a website around the release@> =
 	WRITE("\n! Website instructions\n\n");

@@ -1,0 +1,15 @@
+   West Dining Hall
+  "X" = thing: yourself
+  "X" = thing: Hall
+  "X" = thing: Binky Henderson
+  "X" = thing: Binky
+  "X" = room: West Dining Hall
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  West Dining Hall
+  
+> >   West Dining Hall
+> Are you sure you want to quit? 

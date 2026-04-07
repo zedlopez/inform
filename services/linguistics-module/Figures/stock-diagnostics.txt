@@ -1,12 +1,12 @@
 adjective: 148 items
 article: 2 items
-noun: 2583 items
+noun: 2584 items
 pronoun: 8 items
 preposition: 278 items
 determiner: 22 items
 verb: 109 items
 verb_form: 392 items
-total in all categories: 3542
+total in all categories: 3543
 
 adjective: 'supported'
 adjective: 'unsupported'
@@ -258,6 +258,7 @@ noun: proper: 'system clock feature'
 noun: proper: 'extended sounds feature'
 noun: proper: 'resource streams feature'
 noun: proper: 'graphics window character input feature'
+noun: proper: 'extended graphics feature'
 noun: proper: 'text formatting feature'
 noun: proper: 'buffer window graphics feature'
 noun: proper: 'graphics window graphics feature'

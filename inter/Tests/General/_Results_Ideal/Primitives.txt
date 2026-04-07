@@ -5,6 +5,7 @@
 !% $DICT_TRUNCATE_FLAG=1
 !% $OMIT_UNUSED_ROUTINES=1
 !% $DICT_CHAR_SIZE=4
+!% $NUM_ATTR_BYTES=7
 #ifndef VN_1642;
 #message fatalerror "Inform 7 generates code requiring Inform 6.42 or later";
 #endif;
@@ -12,7 +13,7 @@ Constant Grammar__Version 2;
 Global debug_flag;
 Global or_tmp_var;
 #Ifdef TARGET_ZCODE;
-#OrigSource "inter/final-module/Chapter 4/Final Inform 6.w" 169;
+#OrigSource "inter/final-module/Chapter 4/Final Inform 6.w" 171;
 Global max_z_object;
 #Ifdef Z__Region;
 [ OC__Cl obj cla j a n objflag;

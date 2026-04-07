@@ -1,0 +1,32 @@
+Test: Accessibility
+For: Z-Machine
+
+The SS Bernice is a room. 
+
+To decide what number is double (N - a number) (this is doubling):
+	decide on N plus N.
+
+The doubling phrase is accessible to Inter as "DOUBLING_FN".
+
+To double up (N - a number):
+	(- print "Twice ", {N}, " is ", DOUBLING_FN({N}), "^"; -).
+
+A hyperlink tag is a kind of value.
+Bogus hyperlink is a hyperlink tag.
+Rule hyperlink is a hyperlink tag.
+
+The hyperlink tag kind is accessible to inter as "HYPERLINK_TAG_TY".
+
+The rule hyperlink value is accessible to inter as "HLINK".
+
+A dragster is a kind of vehicle.
+
+The dragster kind is accessible to inter as "K_dragster".
+
+To investigate (H - hyperlink tag):
+	(- print "I see ", {H}, " is ", HLINK, " in the kind ", HYPERLINK_TAG_TY, " not ", (name) K_dragster, "^"; -).
+
+When play begins:
+	showme doubling;
+	double up 71;
+	investigate rule hyperlink.

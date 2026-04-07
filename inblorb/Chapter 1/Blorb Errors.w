@@ -87,6 +87,14 @@ void BlorbErrors::error_1f(char *erm, filename *F) {
 	DISCARD_TEXT(ERM)
 }
 
+void BlorbErrors::error_1p(char *erm, pathname *P) {
+	TEMPORARY_TEXT(ERM)
+ 	BlorbErrors::describe_file_position(ERM);
+	WRITE_TO(ERM, "Error: %s: '%p'\n", erm, P);
+	BlorbErrors::spool_error(ERM);
+	DISCARD_TEXT(ERM)
+}
+
 void BlorbErrors::errorf_1S(char *erm, text_stream *s1) {
 	TEMPORARY_TEXT(ERM)
  	WRITE_TO(ERM, erm, s1);

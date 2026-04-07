@@ -18,6 +18,7 @@ classdef release_instructions {
 	int release_website; /* Release along with a website? */
 	inchar32_t *website_template_leafname; /* If so, the template name for it */
 	int release_interpreter; /* Release along with an interpreter? */
+	int external_resources; /* Release along with external resources? */
 	struct text_stream *interpreter_template_leafname; /* If so, the template name for it */
 	int release_booklet; /* Release along with introductory booklet? */
 	int release_postcard; /* Release along with Zarf's IF card? */
@@ -43,6 +44,7 @@ release_instructions *ReleaseInstructions::new_set(void) {
 	set->release_website = FALSE;
 	set->website_template_leafname = U"Standard";
 	set->release_interpreter = FALSE;
+	set->external_resources = FALSE;
 	set->interpreter_template_leafname = NULL;
 	set->release_booklet = FALSE;
 	set->release_postcard = FALSE;
@@ -126,6 +128,7 @@ release as part of the complete collection, and these are numbered thus:
 @d CSS_PAYLOAD 16
 @d JAVASCRIPT_PAYLOAD 17
 @d NAMED_EXISTING_STORY_FILE_PAYLOAD 18
+@d EXTERNAL_RESOURCES_PAYLOAD 19
 
 =
 <release-sentence-object> ::=
@@ -148,7 +151,8 @@ release as part of the complete collection, and these are numbered thus:
 	separate sounds |                          ==> { SEPARATE_SOUNDS_PAYLOAD, - }
 	{<quoted-text-without-subs>} website |     ==> { THEMED_WEBSITE_PAYLOAD, - }
 	interpreter |                              ==> { INTERPRETER_PAYLOAD, - }
-	{<quoted-text-without-subs>} interpreter   ==> { THEMED_INTERPRETER_PAYLOAD, - }
+	{<quoted-text-without-subs>} interpreter | ==> { THEMED_INTERPRETER_PAYLOAD, - }
+	separated resources                        ==> { EXTERNAL_RESOURCES_PAYLOAD, - }
 
 @<Issue PM_NoSuchPublicRelease problem@> =
 	Problems::quote_wording_as_source(1, W);
@@ -305,6 +309,9 @@ void ReleaseInstructions::handle_release_declaration_inner(parse_node *p) {
 		}
 		case INTERPRETER_PAYLOAD:
 			my_instructions->release_interpreter = TRUE; my_instructions->release_website = TRUE;
+			break;
+		case EXTERNAL_RESOURCES_PAYLOAD:
+			my_instructions->external_resources = TRUE;
 			break;
 		case THEMED_INTERPRETER_PAYLOAD: {
 			wording TW = GET_RW(<release-sentence-object>, 1);

@@ -1551,6 +1551,12 @@ And this would produce a run-time problem:
 	After rubbing the lamp:
 		now the paranormal is in the Cave.
 
+Another point of difference has to do with abbreviated names as used in sentences. Consider:
+
+	The West Dining Hall is a room. Binky Henderson is in the Hall. Binky is a woman.
+
+Here the `West Dining Hall` is called just the `Hall` in the second sentence, and `Binky Henderson` is called just `Binky` in the third. This is not allowed for abstract objects: their names must be given in full at all times. This is a useful convention since abstract objects are sometimes used for large sets of values with complicated names; if these could also be abbreviated, many ambiguities would arise.
+
 Why do we need abstract objects? It's all very well to write something like:
 
 	An emotion is a kind of abstract object.
@@ -2299,7 +2305,7 @@ We can avoid this using the special substitution:
 
 > phrase: {phs_s} say "[s]"
 >
-> This text substitution prints a letter ``s`` unless the last number printed was 1. Example:
+> This text substitution prints a letter ``s`` unless the last number printed (or referred to with `[regarding ...]`) was 1. Example:
 >
 >     "You've been wandering around for [turn count in words] turn[s] now."
 >
@@ -2320,6 +2326,8 @@ Sometimes it's good to pad numbers out so that they occupy a fixed number of dig
 ### See Also
 
 - [Numbers, ranges, overflows, and number bases] for how to deal with writing numbers in binary or hexadecimal, and a little more on unsigned numbers.
+
+- [Adapting text about the player] for how `[regarding ...]` can be used with `[s]`.
 
 ## Text with lists
 
@@ -9976,6 +9984,12 @@ do the obvious thing using the current story tense.
 Finally, we occasionally want to agree with a number:
 
 	"Honestly, [dud count][regarding the dud count] of these [are] broken."
+
+As a convenience, `[regarding...]` also affects `[s]`, the text substitution which adds an "s" if the last thing(s) discussed are plural:
+
+	"the [regarding the number of animals in the crate]animal[s] in the crate"
+
+Which prints "animals" if the number is 0 or at least 2, and "animal" if there's just one in the crate.
 
 ## Adapting demonstratives and possessives
 

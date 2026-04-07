@@ -156,8 +156,22 @@ for the underlying function's compilation.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">name</span><span class="plain-syntax">)</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">EmitArrays::end</span><span class="plain-syntax">(</span><span class="identifier-syntax">save</span><span class="plain-syntax">);</span>
+
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">cphr</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">Inter_alias</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-cls.html#SP3_1_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compile an alias constant for this function</span></span><span class="named-paragraph-number">3.1.1</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cls.html#SP3">&#167;3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compile an alias constant for this function</span><span class="named-paragraph-number">3.1.1</span></span> =</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">package_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterNames::location</span><span class="plain-syntax">(</span><span class="identifier-syntax">iname</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_name</span><span class="plain-syntax"> *</span><span class="identifier-syntax">con_iname</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Hierarchy::make_iname_in</span><span class="plain-syntax">(</span><span class="identifier-syntax">PHRASE_ALIAS_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">InterNames::set_translation</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">cphr</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">Inter_alias</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Emit::iname_constant</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">RS</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">InterNames::clear_flag</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_iname</span><span class="plain-syntax">, </span><span class="identifier-syntax">MAKE_NAME_UNIQUE_ISYMF</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Hierarchy::make_available</span><span class="plain-syntax">(</span><span class="identifier-syntax">con_iname</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-cls.html#SP3_1">&#167;3.1</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  Now we come to something trickier. We want default values for kinds of phrases,
 because otherwise we can't have variables holding phrases unless they are

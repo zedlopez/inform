@@ -87,6 +87,12 @@ and then sees that they are carried out. The requests divide as follows:</p>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">INSTRUCTION_REQ</span> <span class="comment-syntax">/* a release instruction copied to inblorb for reporting only */</span><span class="plain-syntax"> </span>
 </pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">PICTURES_XFER_REQ</span> <span class="comment-syntax">/* where to copy the images, if housed outside a blorb */</span><span class="plain-syntax"> </span>
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">SOUNDS_XFER_REQ</span> <span class="comment-syntax">/* where to copy the sounds, if housed outside a blorb */</span><span class="plain-syntax"> </span>
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">RESOURCE_MAP_REQ</span> <span class="comment-syntax">/* a JSON file about the images */</span><span class="plain-syntax"> </span>
+</pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">ALTERNATIVE_REQ</span> <span class="comment-syntax">/* an unused release instruction copied to inblorb for reporting only */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
@@ -201,6 +207,9 @@ further requests as consequences:</p>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SOLUTION_REQ:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-rls.html#SP6_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create a Solution::walkthrough file</span></span><span class="named-paragraph-number">6.1</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SOURCE_REQ:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-rls.html#SP6_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create a plain text source file</span></span><span class="named-paragraph-number">6.2</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">WEBSITE_REQ:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-rls.html#SP6_9" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create a website</span></span><span class="named-paragraph-number">6.9</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">RESOURCE_MAP_REQ:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-rls.html#SP6_10" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Create a resource map</span></span><span class="named-paragraph-number">6.10</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">PICTURES_XFER_REQ:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-rls.html#SP6_11" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Transfer the pictures</span></span><span class="named-paragraph-number">6.11</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SOUNDS_XFER_REQ:</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-rls.html#SP6_12" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Transfer the sounds</span></span><span class="named-paragraph-number">6.12</span></a></span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
@@ -341,6 +350,27 @@ including a manifest called &quot;(extras).txt&quot;:</p>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-rls.html#SP6_9">&#167;6.9</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP6_10" class="paragraph-anchor"></a><b>&#167;6.10. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Create a resource map</span><span class="named-paragraph-number">6.10</span></span> =</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">map_filename</span><span class="plain-syntax"> = </span><a href="../foundation/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">details1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-rm.html#SP2" class="function-link"><span class="function-syntax">ResourceMap::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">map_filename</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-rls.html#SP6">&#167;6</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP6_11" class="paragraph-anchor"></a><b>&#167;6.11. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Transfer the pictures</span><span class="named-paragraph-number">6.11</span></span> =</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="type-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">destination</span><span class="plain-syntax"> = </span><a href="../foundation/3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">details1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-rm.html#SP1" class="function-link"><span class="function-syntax">ResourceMap::transfer_pictures</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">destination</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-rls.html#SP6">&#167;6</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP6_12" class="paragraph-anchor"></a><b>&#167;6.12. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Transfer the sounds</span><span class="named-paragraph-number">6.12</span></span> =</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="type-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">destination</span><span class="plain-syntax"> = </span><a href="../foundation/3-pth.html#SP5" class="function-link"><span class="function-syntax">Pathnames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">details1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-rm.html#SP1" class="function-link"><span class="function-syntax">ResourceMap::transfer_sounds</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">destination</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-rls.html#SP6">&#167;6</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. The Extras file for a website template.</b>  When parsing &quot;(extras).txt&quot;, <code>Requests::read_requested_file</code> is called for each line.
 We trim white space and expect the result to be a filename of something
@@ -770,7 +800,7 @@ requests.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-bw.html">&#10094;</a></li><li class="progresschapter"><a href="M-ui.html">M</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progresschapter"><a href="2-bw.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresscurrent">rls</li><li class="progresssection"><a href="3-sd.html">sd</a></li><li class="progresssection"><a href="3-laaf.html">laaf</a></li><li class="progresssection"><a href="3-plc.html">plc</a></li><li class="progresssection"><a href="3-tmp.html">tmp</a></li><li class="progresssection"><a href="3-wm.html">wm</a></li><li class="progresssection"><a href="3-bs6.html">bs6</a></li><li class="progressnext"><a href="3-sd.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-bw.html">&#10094;</a></li><li class="progresschapter"><a href="M-ui.html">M</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progresschapter"><a href="2-bw.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresscurrent">rls</li><li class="progresssection"><a href="3-rm.html">rm</a></li><li class="progresssection"><a href="3-sd.html">sd</a></li><li class="progresssection"><a href="3-laaf.html">laaf</a></li><li class="progresssection"><a href="3-plc.html">plc</a></li><li class="progresssection"><a href="3-tmp.html">tmp</a></li><li class="progresssection"><a href="3-wm.html">wm</a></li><li class="progresssection"><a href="3-bs6.html">bs6</a></li><li class="progressnext"><a href="3-rm.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

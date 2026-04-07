@@ -10,6 +10,7 @@ typedef struct literal_pattern_compilation_data {
 	struct package_request *lp_package;
 	struct inter_name *print_fn_iname;
 	struct inter_name *parse_fn_iname;
+	int parse_fn_required;
 	struct parse_node *where_created;
 } literal_pattern_compilation_data;
 
@@ -18,6 +19,7 @@ literal_pattern_compilation_data RTLiteralPatterns::new_compilation_data(literal
 	lpcd.lp_package = NULL;
 	lpcd.print_fn_iname = NULL;
 	lpcd.parse_fn_iname = NULL;
+	lpcd.parse_fn_required = FALSE;
 	lpcd.where_created = current_sentence;
 	return lpcd;
 }
@@ -43,11 +45,18 @@ inter_name *RTLiteralPatterns::print_fn_iname(literal_pattern *lp) {
 	return lp->compilation_data.print_fn_iname;
 }
 
-inter_name *RTLiteralPatterns::parse_fn_iname(literal_pattern *lp) {
+inter_name *RTLiteralPatterns::parse_fn_iname(literal_pattern *lp, int require) {
 	if (lp->compilation_data.parse_fn_iname == NULL)
 		lp->compilation_data.parse_fn_iname =
 			Hierarchy::make_iname_in(LP_PARSE_FN_HL,
 				RTLiteralPatterns::package(lp));
+	if ((require) && (lp->compilation_data.parse_fn_required == FALSE)) {
+		lp->compilation_data.parse_fn_required = TRUE;
+		text_stream *desc = Str::new();
+		WRITE_TO(desc, "literal pattern '%W' parser", lp->prototype_text);
+		Sequence::queue(&RTLiteralPatterns::parser_compilation_agent,
+			STORE_POINTER_literal_pattern(lp), desc);
+	}
 	return lp->compilation_data.parse_fn_iname;
 }
 
@@ -75,7 +84,6 @@ void RTLiteralPatterns::compile(void) {
 void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 	literal_pattern *lp = RETRIEVE_POINTER_literal_pattern(t->data);
 	@<Compile the print function@>;
-	if (literal_pattern_parsing_enabled) @<Compile the parse function@>;
 }
 
 @<Compile the print function@> =
@@ -329,8 +337,14 @@ notation: roughly speaking, it tries to match words at the current word position
 `wn`, and returns either `GPR_FAIL` or `GPR_NUMBER`. In the latter case, it
 sets the `parsed_number` global to the value matched.
 
+=
+void RTLiteralPatterns::parser_compilation_agent(compilation_subtask *t) {
+	literal_pattern *lp = RETRIEVE_POINTER_literal_pattern(t->data);
+	if (literal_pattern_parsing_enabled) @<Compile the parse function@>;
+}
+
 @<Compile the parse function@> =
-	inter_name *iname = RTLiteralPatterns::parse_fn_iname(lp);
+	inter_name *iname = RTLiteralPatterns::parse_fn_iname(lp, FALSE);
 	packaging_state save = Functions::begin(iname);
 	gpr_kit gprk = GPRs::new_kit();
 	GPRs::add_original_var(&gprk);

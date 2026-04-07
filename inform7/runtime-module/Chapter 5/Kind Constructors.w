@@ -38,6 +38,7 @@ typedef struct kind_constructor_compilation_data {
 	int declaration_sequence_number;
 	int nonstandard_enumeration;
 	int permissions_emitted;
+	struct text_stream *accessibility_name;
 } kind_constructor_compilation_data;
 
 kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_constructor *kc) {
@@ -74,7 +75,14 @@ kind_constructor_compilation_data RTKindConstructors::new_compilation_data(kind_
 	kccd.declaration_sequence_number = -1;
 	kccd.nonstandard_enumeration = FALSE;
 	kccd.permissions_emitted = FALSE;
+	
+	kccd.accessibility_name = NULL;
 	return kccd;
+}
+
+@ =
+void RTKindConstructors::set_accessibility_name(kind *K, text_stream *name) {
+	K->construct->compilation_data.accessibility_name = Str::duplicate(name);
 }
 
 @h The package.
@@ -751,6 +759,15 @@ void RTKindConstructors::compile(void) {
 @<Make weak ID constant@> =
 	Emit::numeric_constant(RTKindConstructors::weak_ID_iname(kc), 0);
 	Hierarchy::make_available(RTKindConstructors::weak_ID_iname(kc));
+	text_stream *trans = kc->compilation_data.accessibility_name;
+	if ((Str::len(trans) > 0) &&
+		(RTKindConstructors::is_subkind_of_object(kc) == FALSE)) {
+		inter_name *con_iname = Hierarchy::make_iname_with_specific_translation(WEAK_ID_ALIAS_HL, trans, pack);
+		inter_name *iname = RTKindConstructors::weak_ID_iname(kc);
+		Emit::iname_constant(con_iname, NULL, iname);
+		InterNames::clear_flag(con_iname, MAKE_NAME_UNIQUE_ISYMF);
+		Hierarchy::make_available(con_iname);
+	}
 
 @ See above: the value of this constant can be anything at all, since only
 its position in the Inter hierarchy matters. But 561 is the smallest Carmichael

@@ -67,6 +67,7 @@ void RTMultimedia::compilation_agent(compilation_subtask *t) {
 	packaging_state save =
 		EmitArrays::begin_byte(IFID_array_iname, K_value);
 	TEMPORARY_TEXT(II)
+	EmitArrays::numeric_entry((inter_ti) Str::len(exf->IFID_of_owner) + 4);
 	WRITE_TO(II, "//%S//", exf->IFID_of_owner);
 	LOOP_THROUGH_TEXT(pos, II)
 		EmitArrays::numeric_entry((inter_ti) Str::get(pos));

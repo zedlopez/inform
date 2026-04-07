@@ -27,6 +27,17 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	very likely to mean taking off what's currently worn rule
 	```
 
+- In past builds it caused some surprise that `[regarding...]` did not affect
+	`[s]`, the text substitution which adds an "s" if the last thing(s) discussed
+	are plurally named. This was reported as [I7-2605](https://inform7.atlassian.net/browse/I7-2605).
+	That behaviour was correct as documented, but rather than dismiss the bug report
+	it seemed more helpful to implement this implied feature request. So:
+	```
+	"the [regarding the number of animals in the crate]animal[s] in the crate"
+	```
+	now prints "animals", plural, if the number is 0 or at least 2, and "animal", singular,
+	if there's just one in the crate.
+
 - When releasing a story with a website, and a cover image which has alt-text
 	provided, that text is now used on the thumbnail cover images in the website.
 	(See Jira bug [I7-2615](https://inform7.atlassian.net/browse/I7-2615): the
@@ -72,14 +83,50 @@ has been renamed:
 
 	player aware of their own actions rule
 
+## Language kit changes to article-handling
+
+A low-level change to Inform's system for printing in natural languages at
+runtime will affect anybody translating Inform to write stories in languages
+other than English, so we're flagging it up here. It was always an anomaly
+that the `LanguageArticles` array (defined in `EnglishLanguageKit`, but other
+language kits would have to define it too) had slots for the capitalised
+definite, uncapitalised definite, and uncapitalised indefinite articles —
+but not the capitalised indefinite, which Inform instead attempted to
+synthesize by printing to an array and then capitalising the first word. That
+worked most of the time, but caused problems with rules written for the
+`printing the name of` activity, which was being called twice over. This has
+long been a nuisance, as the existence of extensions like `Indefinite Article Substitution Fix`
+by Matt Weiner and `Print Stage Detection` by Taryn Michelle go to show.
+
+`LanguageArticles` now has a slot for capitalised indefinite articles, and
+this is all more consistent. See Jira bug [I7-2138](https://inform7.atlassian.net/browse/I7-2138)
+for more on why we've done this, and see [PR#190](https://github.com/ganelson/inform/pull/190)
+for more on how.
+
+## Version updates
+
+The Inform repository (and thus its released app) includes a few resources by
+external developers, which are periodically updated. In this release:
+
+- The Quixe web-based interpreter has been updated to version 2.2.6.
+- The embedded copy of Inform 6 has been updated to an unstable version 6.45,
+	and we expect this to be replaced by release 6.45 when the latter is ready.
+
 ## Bug fixes
 
+- Fix for Jira bug [I7-2673](https://inform7.atlassian.net/browse/I7-2673)
+	"External files owned by other projects headers rewritten by current UUID"
 - Fix for Jira bug [I7-2665](https://inform7.atlassian.net/browse/I7-2665)
 	"Compilation error when an `Index map with` assertions refers to `level`"
+- Fix for Jira bug [I7-2625](https://inform7.atlassian.net/browse/I7-2625)
+	"`use unabbreviated object names` isn't working"
 - Fix for Jira bug [I7-2619](https://inform7.atlassian.net/browse/I7-2619)
 	"Upon `resume the story` in a Final Question rule, `when play ends` rules are followed again before resumption"
 - Fix for Jira bug [I7-2608](https://inform7.atlassian.net/browse/I7-2608)
 	"Equations `given by x =` in Basic Inform breaks the use of x as an identifier in other contexts"
+- Fix for Jira bug [I7-2603](https://inform7.atlassian.net/browse/I7-2603)
+	"`window` in object names conflicting with `glk window`", and its duplicate
+	[I7-2649](https://inform7.atlassian.net/browse/I7-2649)
 - Fix for Jira bug [I7-2568](https://inform7.atlassian.net/browse/I7-2568)
 	"Setting numeric EPS map parameters causes parts of the EPS map to vanish"
 - Fix for Jira bug [I7-2589](https://inform7.atlassian.net/browse/I7-2589)
@@ -299,6 +346,8 @@ has been renamed:
 - Fix for Jira bug [I7-2139](https://inform7.atlassian.net/browse/I7-2139)
 	"Articles become part of relation name"
 	([commit 85110a9](https://github.com/ganelson/inform/commit/85110a981a3d2419b3778eb383408de122c301a8))
+- Fix for Jira bug [I7-2138](https://inform7.atlassian.net/browse/I7-2138)
+	to do with capitalised indefinite articles: see notes above.
 - Fix for Jira bug [I7-2129](https://inform7.atlassian.net/browse/I7-2129)
 	"Quiet supporters from The Eye of the Idol no longer work"
 	([PR#114](https://github.com/ganelson/inform/pull/114))

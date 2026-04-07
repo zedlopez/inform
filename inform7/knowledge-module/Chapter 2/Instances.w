@@ -383,6 +383,26 @@ void Instances::make_instances_from_Neptune(void) {
 	}
 }
 
+@h Inter.
+The author can demand with an "accessible to" sentence that a given
+phrase should have an identifier given to it which is accessible to Inter:
+
+=
+void Instances::translates(wording W, parse_node *p2) {
+	if (<instance-of-non-object>(W)) {
+		instance *I = (instance *) <<rp>>;
+		TEMPORARY_TEXT(N);
+		WRITE_TO(N, "%N", Wordings::first_wn(Node::get_text(p2)));
+		RTInstances::set_accessibility_name(I, N);
+	} else {
+		LOG("Tried %W\n", W);
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TranslatesNonInstance),
+			"this is not the name of an instance of a kind of value",
+			"so cannot be translated.");
+	}
+}
+
 @h Logging.
 
 =

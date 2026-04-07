@@ -42,7 +42,6 @@ void I6TargetCode::declare_function(code_generator *gtr, code_generation *gen,
 	if (Str::eq(fn_name, I"DebugAttribute"))       @<Inject code at the top of DebugAttribute@>;
 	if (Str::eq(fn_name, I"DebugProperty"))        @<Inject code at the top of DebugProperty@>;
 	if (Str::eq(fn_name, I"PLATFORM_SPECIFIC_STARTUP_R")) @<Inject code at the top of PLATFORM_SPECIFIC_STARTUP_R@>;
-
 	Vanilla::node(gen, vf->function_body); /* This compiles the body of the function */
 
 	@<Close the function@>;

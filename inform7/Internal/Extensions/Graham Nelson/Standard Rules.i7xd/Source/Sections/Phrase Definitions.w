@@ -123,7 +123,7 @@ To say A list of (OS - description of objects)
 				give {-my:1} workflag2;
 			else
 				give {-my:1} ~workflag2;
-		TEXT_TY_Say_Capitalised((+ "[list-writer list of marked objects]" +));
+		TEXT_TY_Say_Capitalised(CaptureListOfMarkedObjectsText);
 	-).
 
 To say list of (OS - description of objects)
@@ -152,7 +152,7 @@ To say The list of (OS - description of objects)
 				give {-my:1} workflag2;
 			else
 				give {-my:1} ~workflag2;
-		TEXT_TY_Say_Capitalised((+ "[list-writer articled list of marked objects]" +));
+		TEXT_TY_Say_Capitalised(CaptureListOfDefMarkedObjectsText);
 	-).
 To say is-are a list of (OS - description of objects)
 	(documented at phs_isalistof): (-

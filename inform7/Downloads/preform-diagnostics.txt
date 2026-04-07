@@ -4743,7 +4743,7 @@
         <article> {...} 
           constraint (none) extremes [2, infinity)
 
-<article> internal hits 16357/114538 nti r2 constraint (none) extremes [1, 1]
+<article> internal hits 16357/114542 nti r2 constraint (none) extremes [1, 1]
 
 <definite-article> internal hits 19897/252254 nti r2 constraint (none) extremes [1, 1]
 
@@ -4896,7 +4896,7 @@
 
 <copular-verb> internal hits 16/128 nti 7 constraint FS = {7} extremes [1, infinity)
 
-<negated-noncopular-verb-present> internal hits 1/12910 nti 8 constraint FS = {8} extremes [1, infinity)
+<negated-noncopular-verb-present> internal hits 1/12958 nti 8 constraint FS = {8} extremes [1, infinity)
 
 <universal-verb> internal hits 0/2750 nti 9 constraint FS = {9} extremes [1, infinity)
 
@@ -5222,7 +5222,7 @@
 <rc-marker> hits 837/30392 nti 6 constraint CS = {6} extremes [1, 1]
     English:
         which/who/that 
-          (hits 837/9327) (matched: 'which') constraint CS = {6} extremes [1, 1]
+          (hits 837/9355) (matched: 'which') constraint CS = {6} extremes [1, 1]
 
 <pre-verb-rc-marker> hits 3/3116 nti 16 constraint DS = {6} extremes [2, infinity)
     English:
@@ -5997,6 +5997,10 @@
 
 <translates-into-i6-sentence-subject> hits 638/1276 nti 6 constraint (none) extremes [1, infinity)
     English:
+        {...} phrase 
+          (hits 0/638) constraint DS = {6} extremes [2, infinity)
+        {...} value 
+          (hits 0/638) constraint DS = {6} extremes [2, infinity)
         {...} property 
           (hits 82/638) (matched: 'printed plural name property') constraint DS = {6} extremes [2, infinity)
         {...} object/kind 
@@ -8733,14 +8737,14 @@
 
 <name-local-to-inline-stack-frame> internal hits 1807/3614 nti 30 constraint (none) extremes [1, infinity)
 
-<map-name-abbreviation-omission-words> hits 30/824 nti 20 constraint (none) extremes [1, 1]
+<map-name-abbreviation-omission-words> hits 30/828 nti 20 constraint (none) extremes [1, 1]
     English:
         in 
           (hits 6/70) (matched: 'in') constraint CS = {20} extremes [1, 1]
         of 
           (hits 8/64) (matched: 'of') constraint CS = {20} extremes [1, 1]
         <article> 
-          (hits 16/398) (matched: 'a') constraint (none) extremes [1, 1]
+          (hits 16/400) (matched: 'a') constraint (none) extremes [1, 1]
 
 <silently-modifier> nti 21 constraint DS = {21} extremes [2, infinity)
     English:
@@ -8889,6 +8893,8 @@
           constraint CS = {7} extremes [1, 1]
         {<quoted-text-without-subs>} interpreter 
           constraint DS = {7} extremes [2, 2]
+        separated resources 
+          constraint CS = {7} extremes [2, 2]
 
 <privacy-indicator> nti 30 constraint CS = {30} extremes [1, 1]
     English:
@@ -8970,7 +8976,7 @@
         time of day 
           (hits 1/1) (matched: 'time of day') constraint CS = {13} extremes [3, 3]
 
-<notable-player-instances> hits 1/454 nti 14 constraint CS = {14} extremes [1, 1]
+<notable-player-instances> hits 1/456 nti 14 constraint CS = {14} extremes [1, 1]
     English:
         yourself 
           (hits 1/13) (matched: 'yourself') constraint CS = {14} extremes [1, 1]
