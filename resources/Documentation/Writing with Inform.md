@@ -19320,7 +19320,7 @@ If Inform is not also generating a website, this produces a plain text file call
 
 However, if a website is also being released, the source is also converted to a suite of web pages which are linked to and from the home page. (Each heading with substantive content is placed on its own web page, with the opening page containing a contents list.)
 
-Comments in the source are rendered in grey. As a special feature, any comment which begins with an asterisk is considered a footnote and is printed below the source text, with a link. Thus comments thus:
+Comments in the source are tinted to distinguish them. As a special feature, any comment which begins with an asterisk is considered a footnote and is printed below the source text, with a link. Thus comments thus:
 
 	Hercules is a demigod.[* We're using Greek spellings so he ought to be Heracles, but players are so much more familiar with Hercules.]
 
