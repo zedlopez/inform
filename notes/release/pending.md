@@ -38,6 +38,19 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	now prints "animals", plural, if the number is 0 or at least 2, and "animal", singular,
 	if there's just one in the crate.
 
+- Three previously unindexed phrases used by the Standard Rules but not documented
+    have now been brought out into the open: `yes` and `no` as aliases for
+    `decide yes` and `decide no` in the body of phrases to decide if some
+    condition holds; and `if substituting text for comparison purposes`, which
+    was previously called `if expanding text for comparison purposes`, but has
+    been renamed for consistency with the existing `substituted form of` phrase,
+    to which it's related. This condition is true when text is being printed
+    (so that various activities to do with, say, printing names will fire), but
+    only internally in order to make a comparison between texts, and not on
+    screen. That can be useful to avoid side-effects happening when they
+    shouldn't: see for example the `make named things mentioned rule` in the
+    Standard Rules, which is the only place it uses this phrase.
+
 - When releasing a story with a website, and a cover image which has alt-text
 	provided, that text is now used on the thumbnail cover images in the website.
 	(See Jira bug [I7-2615](https://inform7.atlassian.net/browse/I7-2615): the

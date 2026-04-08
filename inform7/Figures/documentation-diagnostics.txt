@@ -342,6 +342,7 @@ USAGE: ph_refirstindex 0 0 0
 USAGE: ph_relastindex 0 0 0
 USAGE: ph_relength 0 0 0
 USAGE: ph_subform 0 0 0
+USAGE: ph_issubstituting 0 0 0
 USAGE: ph_replacechar 0 0 0
 USAGE: ph_replaceword 0 0 0
 USAGE: ph_replacepword 0 0 0

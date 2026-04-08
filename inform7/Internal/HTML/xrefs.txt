@@ -230,7 +230,7 @@ ph_charnum ph_numchars ph_wordnum ph_numwords ph_pwordnum ph_numpwords ph_upword
 ph_inlower ph_inupper ph_lowercase ph_uppercase ph_titlecase ph_sentencecase _ WI_22_3 "22.3" "22.3. Upper and lower case letters"
 ph_matches ph_exactlymatches ph_textfirstindex ph_textlastindex ph_textlength ph_nummatches _ WI_22_4 "22.4" "22.4. Matching and exactly matching"
 ph_matchesre ph_exactlymatchesre ph_nummatchesre ph_matchtext ph_subexpressiontext ph_refirstindex ph_relastindex ph_relength _ WI_22_5 "22.5" "22.5. Regular expression matching"
-ph_subform _ WI_22_6 "22.6" "22.6. Making new text with text substitutions"
+ph_subform ph_issubstituting _ WI_22_6 "22.6" "22.6. Making new text with text substitutions"
 ph_replacechar ph_replaceword ph_replacepword ph_replaceupword ph_replaceline ph_replacepara ph_replace ph_replacewordin ph_replacepwordin ph_replacere _ WI_22_7 "22.7" "22.7. Replacements"
 kind_listof _ WI_23_1 "23.1" "23.1. Lists and entries"
 PM_IncompatibleConstantListEntry PM_NonconstantConstantListEntry PM_BadConstantListEntry PM_CantLetEmptyList _ WI_23_2 "23.2" "23.2. Constant lists"

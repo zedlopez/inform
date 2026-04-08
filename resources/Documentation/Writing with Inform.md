@@ -16512,6 +16512,10 @@ This is making use of:
 
 Note that there's no analogous phrase for `unsubstituted form of...`, because once text has substituted, there's no way to go back.
 
+> phrase: {ph_issubstituting} if substituting text for comparison purposes:
+>
+> This condition is true if a text is being expanded into its substituted form only temporarily, not in order for it to be printed on screen, but in order to make a comparison between two text values. This can be useful to know in situations where story side-effects are triggered by printing: we wouldn't want that trigger to be pulled just for an internal text comparison. For example, a rule called the `make named things mentioned rule` in the Standard Rules uses this phrase to prevent the `mentioned` property being given to any objects whose names are printed during such a comparison, since they have not been printed where a player would see them.
+
 ## Replacements
 
 ^^{text: replacing parts of a text} ^^{punctuation: in counting words} ^^{characters (letters): replacing in text} ^^{regular expressions} ^^{text: regular expressions}

@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Extensions</a></li><li><a href="index.html">Basic Inform</a></li><li><b>Phrase Definitions</b></li></ul></div>
 <p class="purpose">The phrases making up the basic Inform language, and in terms of which all other phrases and rules are defined.</p>
 
-<ul class="toc"><li><a href="phdf.html#SP4">&#167;4. Say phrases</a></li><li><a href="phdf.html#SP13">&#167;13. Variables</a></li><li><a href="phdf.html#SP16">&#167;16. Arithmetic</a></li><li><a href="phdf.html#SP22">&#167;22. Control structures</a></li><li><a href="phdf.html#SP31">&#167;31. Values</a></li><li><a href="phdf.html#SP34">&#167;34. Text</a></li><li><a href="phdf.html#SP39">&#167;39. Adaptive text</a></li><li><a href="phdf.html#SP40">&#167;40. Data Structures</a></li><li><a href="phdf.html#SP43">&#167;43. Lists</a></li><li><a href="phdf.html#SP49">&#167;49. Functional Programming</a></li><li><a href="phdf.html#SP51">&#167;51. Rulebooks and Activities</a></li><li><a href="phdf.html#SP55">&#167;55. Basic IO</a></li><li><a href="phdf.html#SP63">&#167;63. External Files</a></li><li><a href="phdf.html#SP66">&#167;66. Use Options</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="phdf.html#SP4">&#167;4. Say phrases</a></li><li><a href="phdf.html#SP13">&#167;13. Variables</a></li><li><a href="phdf.html#SP16">&#167;16. Arithmetic</a></li><li><a href="phdf.html#SP22">&#167;22. Control structures</a></li><li><a href="phdf.html#SP31">&#167;31. Values</a></li><li><a href="phdf.html#SP34">&#167;34. Text</a></li><li><a href="phdf.html#SP40">&#167;40. Adaptive text</a></li><li><a href="phdf.html#SP41">&#167;41. Data Structures</a></li><li><a href="phdf.html#SP44">&#167;44. Lists</a></li><li><a href="phdf.html#SP50">&#167;50. Functional Programming</a></li><li><a href="phdf.html#SP52">&#167;52. Rulebooks and Activities</a></li><li><a href="phdf.html#SP56">&#167;56. Basic IO</a></li><li><a href="phdf.html#SP64">&#167;64. External Files</a></li><li><a href="phdf.html#SP67">&#167;67. Use Options</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  All phrases of the Inform language itself are defined here. The Standard
@@ -1122,7 +1122,17 @@ think about; as a one-off phrase, it may as well go here.</p>
 <span class="plain-syntax">    (- TEXT_TY_SubstitutedForm({-new:text}, {-by-reference:T}) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b>  A common matching engine is used for matching plain text...</p>
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b>  This condition holds when text is being expanded into its substituted form
+in order to test whether two strings are currently equal. Very occasionally
+this is useful to know, to prevent side-effects.</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">To decide if substituting text for comparison purposes</span>
+<span class="plain-syntax">    (documented at ph_issubstituting):</span>
+<span class="plain-syntax">    (- say__comp -).</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. </b>  A common matching engine is used for matching plain text...</p>
 <p>See test case <code>BIP-TextReplacement</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1188,7 +1198,7 @@ think about; as a one-off phrase, it may as well go here.</p>
 <span class="plain-syntax">    (- (match0_idx2 - match0_idx) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. </b>  ...and for regular expressions, though here we also have access to the
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. </b>  ...and for regular expressions, though here we also have access to the
 exact text which matched (not interesting in the plain text case since it's
 the same as the search text, up to case at least), and the values of matched
 subexpressions (which the plain text case doesn't have).</p>
@@ -1231,7 +1241,7 @@ subexpressions (which the plain text case doesn't have).</p>
 <span class="plain-syntax">        {-by-reference:replace}, {phrase options}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. </b>  Casing of text.</p>
+<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39. </b>  Casing of text.</p>
 <p>See test case <code>BIP-TextCasing</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1257,7 +1267,7 @@ subexpressions (which the plain text case doesn't have).</p>
 <span class="plain-syntax">    (- TEXT_TY_CharactersOfCase({-by-reference:T}, 1) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39. Adaptive text.</b>  See test case <code>BIP-AdaptiveText</code>.</p>
+<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40. Adaptive text.</b>  See test case <code>BIP-AdaptiveText</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 5 - Adaptive Text</span>
@@ -1300,7 +1310,7 @@ subexpressions (which the plain text case doesn't have).</p>
 <span class="plain-syntax">To decide which relation of objects is meaning of (V - a verb): (- {V}(CV_MEANING) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40. Data Structures.</b>  Inform provides three main data structures: tables, lists, and relations,
+<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41. Data Structures.</b>  Inform provides three main data structures: tables, lists, and relations,
 which we will take in that order.</p>
 <p>Tables mimic tables of data as seen in books or scientific papers. Note that
 changing a table entry is not something defined here as a phrase: the
@@ -1355,7 +1365,7 @@ or &quot;blanking&quot; it — requires specialist phrases.</p>
 <span class="plain-syntax">    (- TableBlankOutAll({T}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41. </b>  These four are for debugging purposes only, and are used in the same test
+<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42. </b>  These four are for debugging purposes only, and are used in the same test
 case. &quot;Showme the contents of ...&quot; is not a text substitution, for efficiency
 reasons: for a large table it could produce a gargantuan output, and in a
 story file with memory constraints, one might not want to store that in a
@@ -1376,7 +1386,7 @@ text variable.</p>
 <span class="plain-syntax">    (- TableColumnDebug({T}, {TC}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42. </b>  Sorting.</p>
+<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43. </b>  Sorting.</p>
 <p>See test case <code>BIP-TableSort</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1396,7 +1406,7 @@ text variable.</p>
 <span class="plain-syntax">    (- TableSort({T}, 0, SORT_ASCENDING, 0, {cf}--&gt;1); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43. Lists.</b>  The following are all for adding and removing values to dynamic lists.</p>
+<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44. Lists.</b>  The following are all for adding and removing values to dynamic lists.</p>
 <p>See test case <code>BIP-Lists</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1435,7 +1445,7 @@ text variable.</p>
 <span class="plain-syntax">    (- LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N2}, {phrase options}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44. </b>  Searching a list is implemented in a somewhat crude way at present, and the
+<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45. </b>  Searching a list is implemented in a somewhat crude way at present, and the
 following syntax may later be replaced with a suitable verb &quot;to be listed
 in&quot;, so that there's no need to imitate.</p>
 </div>
@@ -1449,7 +1459,7 @@ in&quot;, so that there's no need to imitate.</p>
 <span class="plain-syntax">    (- (LIST_OF_TY_FindItem({-by-reference:L}, {N}) == false) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45. </b>  A description is a representation of a set of objects by means of a
+<p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46. </b>  A description is a representation of a set of objects by means of a
 predicate (e.g., &quot;open unlocked doors&quot;), and it converts into a list of
 current members (in creation order), but there's no reverse process.</p>
 </div>
@@ -1459,7 +1469,7 @@ current members (in creation order), but there's no reverse process.</p>
 <span class="plain-syntax">    (- {-new-list-of:list of K} -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46. </b>  Determining and setting the length:</p>
+<p class="commentary firstcommentary"><a id="SP47" class="paragraph-anchor"></a><b>&#167;47. </b>  Determining and setting the length:</p>
 <p>See test case <code>BIP-ListLength</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1485,7 +1495,7 @@ current members (in creation order), but there's no reverse process.</p>
 <span class="plain-syntax">    (- LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, 0); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP47" class="paragraph-anchor"></a><b>&#167;47. </b>  Easy but useful list operations. Sorting ultimately uses a common sorting
+<p class="commentary firstcommentary"><a id="SP48" class="paragraph-anchor"></a><b>&#167;48. </b>  Easy but useful list operations. Sorting ultimately uses a common sorting
 mechanism, in &quot;Sort.i6t&quot;, which handles both lists and tables.</p>
 <p>See test case <code>BIP-ListOperations</code>.</p>
 </div>
@@ -1521,7 +1531,7 @@ mechanism, in &quot;Sort.i6t&quot;, which handles both lists and tables.</p>
 <span class="plain-syntax">    (- LIST_OF_TY_Sort({-lvalue-by-reference:L}, SORT_DESCENDING, {P}, {-property-holds-block-value:P}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP48" class="paragraph-anchor"></a><b>&#167;48. </b>  Relations are the final data structure given here. In some ways they are
+<p class="commentary firstcommentary"><a id="SP49" class="paragraph-anchor"></a><b>&#167;49. </b>  Relations are the final data structure given here. In some ways they are
 the most fundamental of all, but they're not either set or tested by
 procedural phrases — they lie in the linguistic structure of conditions.
 So all we have here are the route-finding phrases:</p>
@@ -1599,7 +1609,7 @@ So all we have here are the route-finding phrases:</p>
 <span class="plain-syntax">    (- {-match-right-relation-domain:L:R}RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_GET_Y) -). [2]</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP49" class="paragraph-anchor"></a><b>&#167;49. Functional Programming.</b>  Here we have the ability to use the name of a function as a value, and to
+<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50. Functional Programming.</b>  Here we have the ability to use the name of a function as a value, and to
 apply such a function.</p>
 <p>See test case <code>BIP-Apply</code>.</p>
 </div>
@@ -1651,7 +1661,7 @@ apply such a function.</p>
 <span class="plain-syntax">    (- {-primitive-definition:function-application}; -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50. </b>  The standard map, reduce and filter operations found in most functional
+<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51. </b>  The standard map, reduce and filter operations found in most functional
 programming languages also have Inform analogues.</p>
 <p>See test case <code>BIP-Map</code>.</p>
 </div>
@@ -1686,7 +1696,7 @@ programming languages also have Inform analogues.</p>
 <span class="plain-syntax">    decide on the filtered list.</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51. Rulebooks and Activities.</b>  Firing off activities:</p>
+<p class="commentary firstcommentary"><a id="SP52" class="paragraph-anchor"></a><b>&#167;52. Rulebooks and Activities.</b>  Firing off activities:</p>
 <p>See test case <code>BIP-Activities</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1705,7 +1715,7 @@ programming languages also have Inform analogues.</p>
 <span class="plain-syntax">    (- rfalse; -) - in to only.</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP52" class="paragraph-anchor"></a><b>&#167;52. </b>  Advanced activity phrases: for setting up one's own activities structured
+<p class="commentary firstcommentary"><a id="SP53" class="paragraph-anchor"></a><b>&#167;53. </b>  Advanced activity phrases: for setting up one's own activities structured
 around I7 source text. People tend not to use this much, and perhaps that's
 a good thing, but it does open up possibilities, and it's good for
 retro-fitting onto extensions to make them more customisable.</p>
@@ -1741,7 +1751,7 @@ See the documentation example <code>AntSensitiveSunglasses</code>.</p>
 <span class="plain-syntax">    (- AbandonActivity({A}, {val}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP53" class="paragraph-anchor"></a><b>&#167;53. </b>  Here are four different ways to invoke a rule or rulebook:</p>
+<p class="commentary firstcommentary"><a id="SP54" class="paragraph-anchor"></a><b>&#167;54. </b>  Here are four different ways to invoke a rule or rulebook:</p>
 <p>See test case <code>BIP-Rules</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1777,7 +1787,7 @@ See the documentation example <code>AntSensitiveSunglasses</code>.</p>
 <span class="plain-syntax">    (- if (FollowRulebook({RL})) rtrue; -) - in to only.</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP54" class="paragraph-anchor"></a><b>&#167;54. </b>  Rules return <code>true</code> to indicate a decision, which could be either a success
+<p class="commentary firstcommentary"><a id="SP55" class="paragraph-anchor"></a><b>&#167;55. </b>  Rules return <code>true</code> to indicate a decision, which could be either a success
 or a failure, and optionally may also return a value. If they return <code>false</code>,
 there's no decision.</p>
 <p>See test case <code>BIP-Rules</code> once again.</p>
@@ -1807,13 +1817,13 @@ there's no decision.</p>
 <span class="plain-syntax">    (- (ResultOfRule()) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP55" class="paragraph-anchor"></a><b>&#167;55. Basic IO.</b>  Basic input/output phrases, that mostly used to be in the Basic Screen Effects extension.</p>
+<p class="commentary firstcommentary"><a id="SP56" class="paragraph-anchor"></a><b>&#167;56. Basic IO.</b>  Basic input/output phrases, that mostly used to be in the Basic Screen Effects extension.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Chapter 9 - Basic Input/Output</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP56" class="paragraph-anchor"></a><b>&#167;56. </b>  Some basic visual effects, which may or may not be rendered the way the user
+<p class="commentary firstcommentary"><a id="SP57" class="paragraph-anchor"></a><b>&#167;57. </b>  Some basic visual effects, which may or may not be rendered the way the user
 hopes: that's partly up to the virtual machine, unfortunately.</p>
 <p>See test case <code>BIP-SayFonts</code>, though since <code>intest</code> runs on plain text only,
 you may need to run this in the Inform application to be convinced.</p>
@@ -1843,7 +1853,7 @@ you may need to run this in the Inform application to be convinced.</p>
 <span class="plain-syntax">    (- VM_SetReverseMode(0); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP57" class="paragraph-anchor"></a><b>&#167;57. </b>  Basic colours are supported in both architectures, but RGB colours are only
+<p class="commentary firstcommentary"><a id="SP58" class="paragraph-anchor"></a><b>&#167;58. </b>  Basic colours are supported in both architectures, but RGB colours are only
 supported in Glulx.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1885,7 +1895,7 @@ supported in Glulx.</p>
 <span class="plain-syntax">    (- {C} -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP58" class="paragraph-anchor"></a><b>&#167;58. </b>  Some basic window phrases, which are supported by both the Z-Machine and Glulx.
+<p class="commentary firstcommentary"><a id="SP59" class="paragraph-anchor"></a><b>&#167;59. </b>  Some basic window phrases, which are supported by both the Z-Machine and Glulx.
 (See the Glk Foundations for Glk-specific phrases.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1907,7 +1917,7 @@ supported in Glulx.</p>
 <span class="plain-syntax">    (- VM_ScreenWidth() -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP59" class="paragraph-anchor"></a><b>&#167;59. </b>  Pausing the game.</p>
+<p class="commentary firstcommentary"><a id="SP60" class="paragraph-anchor"></a><b>&#167;60. </b>  Pausing the game.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 5 - Pausing the game</span>
@@ -1952,7 +1962,7 @@ supported in Glulx.</p>
 <span class="plain-syntax">    (- ClearBoxedText(); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP60" class="paragraph-anchor"></a><b>&#167;60. </b>  Keyboard input phrases.</p>
+<p class="commentary firstcommentary"><a id="SP61" class="paragraph-anchor"></a><b>&#167;61. </b>  Keyboard input phrases.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 6 - Keyboard Input</span>
@@ -1968,7 +1978,7 @@ supported in Glulx.</p>
 
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP61" class="paragraph-anchor"></a><b>&#167;61. </b>  Function keys.
+<p class="commentary firstcommentary"><a id="SP62" class="paragraph-anchor"></a><b>&#167;62. </b>  Function keys.
 Keyboard function keys are defined as unicode character constants. A mix of
 actual control codes, unicode characters which kind of represent the keys, and
 private use area codes.</p>
@@ -2002,7 +2012,7 @@ private use area codes.</p>
 <span class="plain-syntax">The up key is always unicode U+2191.</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP62" class="paragraph-anchor"></a><b>&#167;62. </b>  Customising the status line.</p>
+<p class="commentary firstcommentary"><a id="SP63" class="paragraph-anchor"></a><b>&#167;63. </b>  Customising the status line.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 7 - The Status Window</span>
@@ -2027,7 +2037,7 @@ private use area codes.</p>
 <span class="plain-syntax">    (- VM_StatusLineHeight({rows}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP63" class="paragraph-anchor"></a><b>&#167;63. External Files.</b>  Inform has a quirky level of support for file-handling, which comes out of what
+<p class="commentary firstcommentary"><a id="SP64" class="paragraph-anchor"></a><b>&#167;64. External Files.</b>  Inform has a quirky level of support for file-handling, which comes out of what
 the Glulx virtual machine will support.</p>
 <p>See test case <code>BIP-Files-G</code>, which has no Z-machine counterpart.</p>
 </div>
@@ -2047,7 +2057,7 @@ the Glulx virtual machine will support.</p>
 <span class="plain-syntax">    (- FileIO_PrintContents({FN}); say__p = 1; -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP64" class="paragraph-anchor"></a><b>&#167;64. </b>  See test case <code>BIP-FilesOfTables-G</code>, which has no Z-machine counterpart.</p>
+<p class="commentary firstcommentary"><a id="SP65" class="paragraph-anchor"></a><b>&#167;65. </b>  See test case <code>BIP-FilesOfTables-G</code>, which has no Z-machine counterpart.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 2 - Files of Data</span>
@@ -2060,7 +2070,7 @@ the Glulx virtual machine will support.</p>
 <span class="plain-syntax">    (- FileIO_PutTable({filename}, {T}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP65" class="paragraph-anchor"></a><b>&#167;65. </b>  These are hardly used phrases which are difficult to test convincingly
+<p class="commentary firstcommentary"><a id="SP66" class="paragraph-anchor"></a><b>&#167;66. </b>  These are hardly used phrases which are difficult to test convincingly
 in our framework, since they defend against independent Inform programs
 simultaneously trying to access the same file.</p>
 </div>
@@ -2080,7 +2090,7 @@ simultaneously trying to access the same file.</p>
 <span class="plain-syntax">    (documented at ph_markfilenotready):</span>
 <span class="plain-syntax">    (- FileIO_MarkReady({filename}, false); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP66" class="paragraph-anchor"></a><b>&#167;66. Use Options.</b> </p>
+<p class="commentary firstcommentary"><a id="SP67" class="paragraph-anchor"></a><b>&#167;67. Use Options.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Chapter 11 - Use Options</span>

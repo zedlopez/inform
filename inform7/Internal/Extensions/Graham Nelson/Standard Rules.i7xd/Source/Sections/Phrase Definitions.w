@@ -847,21 +847,12 @@ To say list-writer articled list of marked objects: (-
 	 	WriteListOfMarkedObjects(ENGLISH_BIT+DEFART_BIT+CFIRSTART_BIT);
 	-).
 
-@ This avoids "mentioned" being given to items printed only internally for
-the sake of a string comparison, and not shown on screen.
-
-=
-Section 6 - Printing names - Unindexed
-
-To decide if expanding text for comparison purposes:
-	(- say__comp -).
-
 @ This is a bit trickier than it looks, because it isn't always set when
 one thinks it is. (And since first typing that sentence, I've forgotten
 when that would be.)
 
 =
-Section 7 - Command parsing - Unindexed
+Section 6 - Command parsing - Unindexed
 
 To decide whether the I6 parser is running multiple actions:
 	(- (multiflag==1) -).
@@ -870,7 +861,7 @@ To decide whether the I6 parser is running multiple actions:
 toggles verbose logging of the type-checker.
 
 =
-Section 8 - Debugging Inform - Unindexed
+Section 7 - Debugging Inform - Unindexed
 
 To ***:
 	(- {-primitive-definition:verbose-checking} -).

@@ -1085,6 +1085,15 @@ To decide what text is the substituted form of (T - text)
 	(documented at ph_subform):
 	(- TEXT_TY_SubstitutedForm({-new:text}, {-by-reference:T}) -).
 
+@ This condition holds when text is being expanded into its substituted form
+in order to test whether two strings are currently equal. Very occasionally
+this is useful to know, to prevent side-effects.
+
+=
+To decide if substituting text for comparison purposes
+	(documented at ph_issubstituting):
+	(- say__comp -).
+
 @ A common matching engine is used for matching plain text...
 
 See test case `BIP-TextReplacement`.

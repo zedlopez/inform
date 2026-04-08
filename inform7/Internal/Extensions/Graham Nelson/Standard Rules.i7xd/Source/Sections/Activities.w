@@ -46,7 +46,7 @@ Section 2 - Naming and Listing
 
 Before printing the name of a thing (called the item being printed)
 	(this is the make named things mentioned rule):
-	if expanding text for comparison purposes, continue the activity;
+	if substituting text for comparison purposes, continue the activity;
 	now the item being printed is mentioned.
 
 Printing a number of something (documented at act_pan) is an activity.
