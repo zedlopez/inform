@@ -141,9 +141,9 @@ To decide what glk event is a/-- mouse event for/of/with row (y - number) and/--
 To decide what glk event is a/-- mouse event for/of/with row (y - number) and/-- column/col (x - a number) in (win - glk window):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, {win}, {x}, {y}) -).
 
-To decide what glk event is a/-- hyperlink event for/of/with (val - number):
+To decide what glk event is a/-- hyperlink event for/of/with (val - tagged hyperlink):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_Hyperlink, 0, {val}) -).
-To decide what glk event is a/-- hyperlink event for/of/with (val - number) in (win - glk window):
+To decide what glk event is a/-- hyperlink event for/of/with (val - tagged hyperlink) in (win - glk window):
 	(- GLK_EVENT_TY_New({-new: glk event}, evtype_Hyperlink, {win}, {val}) -).
 
 To decide what glk event type is type of (ev - glk event)
@@ -167,7 +167,7 @@ To decide what number is the row of (ev - glk event):
 To decide what number is the column/col of (ev - glk event):
 	(- GLK_EVENT_TY_Value1({ev}, evtype_MouseInput) -).
 
-To decide what number is the hyperlink value of (ev - glk event):
+To decide what tagged hyperlink is the hyperlink value of (ev - glk event):
 	(- GLK_EVENT_TY_Value1({ev}, evtype_Hyperlink) -).
 
 To decide what text is the text of (ev - glk event)
@@ -195,6 +195,86 @@ To replace current event with (ev - glk event):
 Glk event handling rule for a screen resize event (this is the redraw the status line rule):
 	redraw the status window;
 
+@h Hyperlinks.
+A simple framework for handling hyperlinks in an interoperable manner.
+
+Hyperlink tags represent each kind of hyperlink that we might want to use.
+
+Tagged hyperlinks then combine a hyperlink tag with a value.
+
+=
+Chapter - Hyperlinks
+
+A hyperlink tag is a kind of value.
+The hyperlink tag kind is accessible to inter as "HYPERLINK_TAG_TY".
+
+To decide what tagged hyperlink is tagged/-- hyperlink of (T - hyperlink tag) for/of/with (V - value of kind K):
+	(- TAGGED_HYPERLINK_TY_New({T}, {-by-reference:V}, {-strong-kind:K}); -).
+
+To decide what tagged hyperlink is tagged/-- hyperlink of (T - hyperlink tag):
+	(- TAGGED_HYPERLINK_TY_New({T}, 0, NUMBER_TY); -).
+
+To decide what hyperlink tag is the tag of (tag - tagged hyperlink):
+	(- TAGGED_HYPERLINK_TY_Tag({tag}) -).
+
+To decide what K is the value of (tag - tagged hyperlink) as a/an (name of kind of value K):
+	(- TAGGED_HYPERLINK_TY_Value({tag}) -).
+
+To say link (T - tagged hyperlink):
+	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink({T}); } -).
+
+To say link (T - hyperlink tag):
+	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink({T}); } -).
+
+To say link (T - hyperlink tag) for/of/with (V - value of kind K):
+	(- TAGGED_HYPERLINK_TY_New({T}, {-by-reference:V}, {-strong-kind:K}, 1); -).
+
+To say end link:
+	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink(0); } -).
+
+@ The hyperlink handling rules are how hyperlinks will generally be handled.
+The tagged hyperlink will be automatically processed for the author.
+
+=
+The hyperlink handling rules is a hyperlink tag based rulebook.
+The hyperlink handling rules is accessible to Inter as "HYPERLINK_HANDLING_RB".
+
+The handle hyperlinks rule is listed in the glk event handling rules.
+The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".
+
+To decide what K is hyperlink value as a/an (name of kind of value K):
+	(- (hyperlink_value) -).
+
+@ And some built-in hyperlink tags:
+
+- A number hyperlink stores a number but doesn't do anything when clicked. It's
+  basically just here to give a tagged hyperlink a sensible default value.
+- A rule hyperlink runs a rule when clicked; that in turn allows you to run any
+  other code you like.
+- A keypress hyperlink converts a hyperlink event into a character event, for
+  the specified unicode character.
+
+=
+Number hyperlink is a hyperlink tag.
+
+Rule hyperlink is a hyperlink tag.
+The rule hyperlink value is accessible to Inter as "rule_hyperlink".
+
+To say link (R - rule):
+	(- TAGGED_HYPERLINK_TY_New(rule_hyperlink, {-by-reference:R}, RULE_TY, 1); -).
+
+Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):
+	follow hyperlink value as a rule;
+
+Keypress hyperlink is a hyperlink tag.
+The keypress hyperlink value is accessible to Inter as "keypress_hyperlink".
+
+To say link (C - unicode character):
+	(- TAGGED_HYPERLINK_TY_New(keypress_hyperlink, {-by-reference:C}, UNICODE_CHARACTER_TY, 1); -).
+
+Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):
+	replace current event with a character event with (hyperlink value as a unicode character);
+
 @h Suspending input.
 These properties and phrases allow the author to suspend and resume input requests.
 
@@ -203,8 +283,6 @@ Chapter - Suspending and resuming input
 
 A glk window has a text input status.
 The text input status property translates into Inter as "text_input_status".
-A glk window can be requesting hyperlink input.
-The requesting hyperlink input property translates into Inter as "requesting_hyperlink".
 A glk window can be requesting mouse input.
 The requesting mouse input property translates into Inter as "requesting_mouse".
 
