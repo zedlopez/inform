@@ -242,11 +242,6 @@ void Main::print_report(void) {
 	if (status_template) Websites::web_copy(status_template, status_file);
 }
 
-void Main::read_css_line(text_stream *line, text_file_position *tfp, void *X) {
-	text_stream *str = (text_stream *) X;
-	WRITE_TO(str, "%S\n", line);
-}
-
 @ If it isn't apparent what these placeholders do, take a look at
 the template file called `CblorbModel.html` in the Inform application —
 that's where they're used.
@@ -305,18 +300,35 @@ that's where they're used.
 		PRINT("! Completed: no blorb output requested\n");
 	}
 	if (status_template) {
-		filename *css_filename = NULL;
-		pathname *css_path = Filenames::up(status_template);
-		TEMPORARY_TEXT(platform_variation)
-		WRITE_TO(platform_variation, "%s-platform.css", PLATFORM_STRING);
-		css_filename = Filenames::in(css_path, platform_variation);
-		if (TextFiles::exists(css_filename) == FALSE) {
-			css_filename = Filenames::in(css_path, I"platform.css");
-		}
-		if (TextFiles::exists(css_filename)) {
-			TEMPORARY_TEXT(css)
-			TextFiles::read(css_filename, FALSE, "can't open css file",
-				TRUE, Main::read_css_line, NULL, css);
-			Placeholders::set_to(I"PLATFORMCSS", css, 0);
-		}
+		Placeholders::set_to(I"PLATFORMCSS", I"", 0);
+		Main::apply_css(Filenames::up(status_template), I"platform");
+		Main::apply_css(Filenames::up(status_template), I"main");
+		PRINT("Hey, R%S\n", Placeholders::read(I"PLATFORMCSS"));
 	}
+
+@ This is all imitating a more complex system in Inform itself: we only
+need to access a couple of CSS files.
+
+=
+void Main::apply_css(pathname *css_path, text_stream *leaf) {
+	filename *css_filename = NULL;
+	TEMPORARY_TEXT(platform_variation)
+	WRITE_TO(platform_variation, "%s-%S.css", PLATFORM_STRING, leaf);
+	css_filename = Filenames::in(css_path, platform_variation);
+	if (TextFiles::exists(css_filename) == FALSE) {
+		Str::clear(platform_variation);
+		WRITE_TO(platform_variation, "%S.css", leaf);
+		css_filename = Filenames::in(css_path, platform_variation);
+	}
+	if (TextFiles::exists(css_filename)) {
+		TEMPORARY_TEXT(css)
+		TextFiles::read(css_filename, FALSE, "can't open css file",
+			TRUE, Main::read_css_line, NULL, css);
+		Placeholders::append_to(I"PLATFORMCSS", css);
+	}
+}
+
+void Main::read_css_line(text_stream *line, text_file_position *tfp, void *X) {
+	text_stream *str = (text_stream *) X;
+	WRITE_TO(str, "%S\n", line);
+}
