@@ -21,6 +21,7 @@ and then sees that they are carried out. The requests divide as follows:
 @e PICTURES_XFER_REQ /* where to copy the images, if housed outside a blorb */
 @e SOUNDS_XFER_REQ /* where to copy the sounds, if housed outside a blorb */
 @e RESOURCE_MAP_REQ /* a JSON file about the images */
+@e JS_RESOURCE_MAP_REQ /* the same, but wrapped up as JavaScript */
 @e ALTERNATIVE_REQ /* an unused release instruction copied to inblorb for reporting only */
 
 =
@@ -132,9 +133,14 @@ void Requests::create_requested_material(void) {
 			case SOLUTION_REQ: @<Create a Solution::walkthrough file@>; break;
 			case SOURCE_REQ: @<Create a plain text source file@>; break;
 			case WEBSITE_REQ: @<Create a website@>; break;
-			case RESOURCE_MAP_REQ: @<Create a resource map@>; break;
 			case PICTURES_XFER_REQ: @<Transfer the pictures@>; break;
+			case RESOURCE_MAP_REQ: @<Create a resource map@>; break;
 			case SOUNDS_XFER_REQ: @<Transfer the sounds@>; break;
+		}
+	}
+	LOOP_OVER(req, request) {
+		switch (req->what_is_requested) {
+			case JS_RESOURCE_MAP_REQ: @<Create a JS-wrapped resource map@>; break;
 		}
 	}
 }
@@ -199,6 +205,17 @@ The necessary code exists in Inform already, so we'll do it there.)
 	if (from) { /* i.e., if the "(manifest).txt" file exists */
 		TextFiles::read(from, FALSE, "can't open (manifest) file", FALSE, Requests::read_requested_ifile, 0, NULL);
 	}
+	if (Str::len(Placeholders::read(I"RESOURCEMAP")) > 0) {
+		if (Str::ne_insensitive(Placeholders::read(I"SUPPORTSRESOURCEMAP"), I"Yes")) {
+			TEMPORARY_TEXT(warning)
+			text_stream *caveat = Placeholders::read(I"SUPPORTSRESOURCEMAP");
+			if ((Str::len(caveat) == 0) || (Str::eq_insensitive(caveat, I"No")))
+				WRITE_TO(warning, "this interpreter does not support 'separated resources'");
+			else
+				WRITE_TO(warning, "this interpreter has limited support for 'separated resources': %S", caveat);
+			BlorbErrors::warning(warning);
+		}
+	}
 
 @ We copy the CSS file, if we need one; make the home page; and make any
 other pages demanded by public released material. After that, it's up to
@@ -245,6 +262,18 @@ including a manifest called "(extras).txt":
 @<Create a resource map@> =
 	filename *map_filename = Filenames::from_text(req->details1);
 	ResourceMap::write(map_filename);
+
+@<Create a JS-wrapped resource map@> =
+	filename *map_filename = Filenames::from_text(req->details1);
+	text_stream RM_struct;
+	text_stream *RM = &RM_struct;
+	if (STREAM_OPEN_TO_FILE(RM, map_filename, UTF8_ENC) == FALSE)
+		BlorbErrors::fatal_fs("can't open JS-wrapped resource map for output", map_filename);
+	WRITE_TO(RM, "%S%S%S",
+		Placeholders::read(I"JSRESOURCEMAPTOP"),
+		Placeholders::read(I"ENCODEDRESOURCEMAP"),
+		Placeholders::read(I"JSRESOURCEMAPTAIL"));
+	STREAM_CLOSE(RM);
 
 @<Transfer the pictures@> =
 	pathname *destination = Pathnames::from_text(req->details1);

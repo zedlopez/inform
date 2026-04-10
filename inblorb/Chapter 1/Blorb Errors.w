@@ -23,8 +23,8 @@ void BlorbErrors::set_error_position(text_file_position *tfp) {
 
 void BlorbErrors::describe_file_position(OUTPUT_STREAM) {
 	if (error_position) {
-		WRITE("%f, line %d: ",
-			error_position->text_file_filename,
+		WRITE("%S, line %d: ",
+			Filenames::get_leafname(error_position->text_file_filename),
 			error_position->line_count);
 	}
 }
@@ -109,14 +109,25 @@ void BlorbErrors::errorf_2S(char *erm, text_stream *s1, text_stream *s2) {
 	DISCARD_TEXT(ERM)
 }
 
+@ And still more mere qualms:
+
+=
+void BlorbErrors::warning(text_stream *S) {
+	Placeholders::append_to(I"CBLORBWARNINGS", I"<li>");
+	Placeholders::append_to(I"CBLORBWARNINGS", S);
+	Placeholders::append_to(I"CBLORBWARNINGS", I"</li>");
+	STREAM_COPY(STDERR, S);
+	warning_count++;
+}
+
 @ As noted, errors are spooled to a placeholder variable, for the benefit of
 the report:
 
 =
-void BlorbErrors::spool_error(OUTPUT_STREAM) {
+void BlorbErrors::spool_error(text_stream *S) {
 	Placeholders::append_to(I"CBLORBERRORS", I"<li>");
-	Placeholders::append_to(I"CBLORBERRORS", OUT);
+	Placeholders::append_to(I"CBLORBERRORS", S);
 	Placeholders::append_to(I"CBLORBERRORS", I"</li>");
-	STREAM_COPY(STDERR, OUT);
+	STREAM_COPY(STDERR, S);
 	error_count++;
 }

@@ -28,6 +28,7 @@ indexes into the syntaxes table below.
 @e ifiction_public_COMMAND
 @e ifiction_file_COMMAND
 @e interpreter_COMMAND
+@e js_resource_map_COMMAND
 @e palette_COMMAND
 @e palette_16_bit_COMMAND
 @e palette_32_bit_COMMAND
@@ -126,6 +127,8 @@ blurb_command syntaxes[] = {
 	{ "ifiction \"filename\" include", U"ifiction \"(%q*)\" include", T_OPS, FALSE },
 	{ "interpreter \"interpreter-name\" \"vm-letter\"",
 			U"interpreter \"(%q*)\" \"([gz])\"", TT_OPS, FALSE },
+	{ "js resource map to \"filename\"",
+			U"js resource map to \"(%q*)\"", T_OPS, FALSE },
 	{ "palette { details }", U"palette {(%c*?)}", T_OPS, TRUE },
 	{ "palette 16 bit", U"palette 16 bit", VOID_OPS, TRUE },
 	{ "palette 32 bit", U"palette 32 bit", VOID_OPS, TRUE },
@@ -291,6 +294,10 @@ copied in `text1`, `num1`, ..., accordingly.
 		case interpreter_COMMAND:
 			Placeholders::set_to(I"INTERPRETERVMIS", text2, 0);
 			Requests::request_1(INTERPRETER_REQ, text1, FALSE); break;
+		case js_resource_map_COMMAND:
+			Requests::request_1(JS_RESOURCE_MAP_REQ, text1, FALSE);
+			Placeholders::set_to(I"JSRESOURCEMAP", text1, 0);
+			break;
 		case picture_COMMAND: Writer::picture_chunk(num1, Filenames::from_text(text1), I""); break;
 		case picture_text_COMMAND: Writer::picture_chunk_text(text1, Filenames::from_text(text2)); break;
 		case picture_noid_COMMAND: Writer::picture_chunk_text(I"", Filenames::from_text(text1)); break;
@@ -319,7 +326,9 @@ copied in `text1`, `num1`, ..., accordingly.
 		case release_source_COMMAND:
 			Requests::request_3(RELEASE_SOURCE_REQ, text1, text2, text3, FALSE); break;
 		case resource_map_COMMAND:
-			Requests::request_1(RESOURCE_MAP_REQ, text1, FALSE); break;
+			Requests::request_1(RESOURCE_MAP_REQ, text1, FALSE);
+			Placeholders::set_to(I"RESOURCEMAP", text1, 0);
+			break;
 		case solution_COMMAND: Requests::request_1(SOLUTION_REQ, I"", TRUE); break;
 		case solution_public_COMMAND: Requests::request_1(SOLUTION_REQ, I"", FALSE); break;
 		case sound_COMMAND: Writer::sound_chunk(num1, Filenames::from_text(text1), I""); break;

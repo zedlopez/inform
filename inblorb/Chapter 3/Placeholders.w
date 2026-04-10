@@ -49,13 +49,14 @@ void Placeholders::initialise(void) {
 	text_stream *V = Str::new();
 	WRITE_TO(V, "inblorb [[Version Number]]");
 	Placeholders::set_to(I"GENERATOR", V, 0);
-	Placeholders::set_to(I"BASE64_TOP", I"", 0);
-	Placeholders::set_to(I"BASE64_TAIL", I"", 0);
 	Placeholders::set_to(I"JAVASCRIPTPRELUDE", Str::literal(JAVASCRIPT_PRELUDE), 0);
 	Placeholders::set_to(I"FONTTAG", Str::literal(FONT_TAG), 0);
 	Placeholders::set_to(I"MATERIALSFOLDERPATHOPEN", I"", 0);
 	Placeholders::set_to(I"MATERIALSFOLDERPATHFILE", I"", 0);
-	Placeholders::set_to(I"BLURB", I"", 0);
+	Placeholders::set_to(I"SUPPORTSRESOURCEMAP", I"", 0);
+	Placeholders::set_to(I"RESOURCEMAP", I"", 0);
+	Placeholders::set_to(I"RESOURCEMAP_TOP", I"", 0);
+	Placeholders::set_to(I"RESOURCEMAP_TAIL", I"", 0);
 
 	Main::initialise_time_variables();
 }

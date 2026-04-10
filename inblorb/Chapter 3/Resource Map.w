@@ -133,11 +133,14 @@ void ResourceMap::write(filename *map_filename) {
 				}				
 				if (format_found == 0) real_format = I"unknown";
 			}
+			if ((Str::eq(real_format, I"unknown")) &&
+				(Filenames::guess_format(F) == FORMAT_PERHAPS_MP3)) real_format = I"MP3";
 			JSON::add_to_object(je, I"format", JSON::new_string(real_format));
 			if (Str::eq(real_format, I"MIDI")) {
 				JSON::add_to_object(je, I"version", JSON::new_number((int) midi_version));
 				JSON::add_to_object(je, I"tracks", JSON::new_number((int) no_tracks));
-			} else {
+			}
+			if ((Str::eq(real_format, I"AIFF")) || (Str::eq(real_format, I"Ogg Vorbis"))) {
 				JSON::add_to_object(je, I"duration", JSON::new_number((int) duration));
 				JSON::add_to_object(je, I"bps", JSON::new_number((int) pBitsPerSecond));
 				JSON::add_to_object(je, I"channels", JSON::new_number((int) pChannels));
@@ -152,4 +155,8 @@ void ResourceMap::write(filename *map_filename) {
 		BlorbErrors::fatal_fs("can't open resource map for output", map_filename);
 	JSON::encode(RM, map);
 	STREAM_CLOSE(RM);
+	TEMPORARY_TEXT(encoded)
+	JSON::encode(encoded, map);
+	Placeholders::set_to(I"ENCODEDRESOURCEMAP", encoded, 0);
+	DISCARD_TEXT(encoded)
 }

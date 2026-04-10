@@ -341,14 +341,23 @@ There can be any number of these chunks, too.
 
 =
 void Writer::sound_chunk(int n, filename *fn, text_stream *alt) {
-	char *type = "AIFF";
+	char *type = "AIFF", *blob = "Snd ";
 	int form = Filenames::guess_format(fn);
 	if (form == FORMAT_PERHAPS_OGG) type = "OGGV";
 	else if (form == FORMAT_PERHAPS_MIDI) type = "MIDI";
 	else if (form == FORMAT_PERHAPS_MOD) type = "MOD ";
 	else if (form == FORMAT_PERHAPS_AIFF) type = "AIFF";
-	else BlorbErrors::error_1f("sound file has unknown file extension "
-		"(expected e.g. '.ogg', '.midi', '.mod' or '.aiff', as appropriate)", fn);
+	else if (form == FORMAT_PERHAPS_MP3) {
+		static int warning_issued = FALSE;
+		if (warning_issued == FALSE) {
+			warning_issued = TRUE;
+			BlorbErrors::warning(I".mp3 sound files are not supported by Blorb");
+		}
+		type = "BINA"; blob = "Data";
+	} else {
+		BlorbErrors::error_1f("sound file has unknown file extension "
+			"(expected e.g. '.ogg', '.midi', '.mod' or '.aiff', as appropriate)", fn);
+	}
 
 	if (n < 3) BlorbErrors::fatal("Sound resource number is less than 3");
 	if (sound_resource == NULL) sound_resource = NEW_LINKED_LIST(resource_number);

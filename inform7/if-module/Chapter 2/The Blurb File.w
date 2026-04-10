@@ -73,6 +73,7 @@ the Blorb-file's filename won't be too long for the file system.
 	@<Give instructions about auxiliary files@>;
 	int templates_declared = FALSE;
 	if (rel->release_interpreter) @<Give instructions to release with an interpreter for Web play@>;
+	if (rel->separated_resources) @<Give instructions for separated resources@>;
 	if (rel->release_website) @<Give instructions to construct a website around the release@>;
 	@<Give hints to Inblorb for its HTML status page@>;
 
@@ -120,7 +121,7 @@ released along with the work.
 @ This will be recognisable as yet another form of the Library Card information.
 "Placeholders" are the only data structure in the primitive blurb language, and
 are in effect strings, whose names appear in block capitals within square
-brackets [THUS].
+brackets `[THUS]`.
 
 @<Write numerous placeholder variables@> =
 	WRITE("placeholder [IFID] = \"%S\"\n", BibliographicData::read_uuid());
@@ -237,7 +238,7 @@ file online.
 		Str::get_first_char(ext));
 
 	filename *SF = 
-		(rel->external_resources)?
+		(rel->separated_resources)?
 		(BlurbFile::storyfile_original()):
 		(Filenames::in(Task::release_path(), TEMP));
 	if (SF) {
@@ -246,14 +247,21 @@ file online.
 	}
 	STREAM_COPY(OUT, TEMP);
 	WRITE(".js\"\n");
-	if (rel->external_resources) {
-		WRITE("copy pictures to \"%p%c\"\n", Task::released_figures_path(),
+
+	if (rel->separated_resources)
+		WRITE("js resource map to \"%p%cjsresourcemap.js\"\n", Task::released_interpreter_path(),
 			FOLDER_SEPARATOR);
-		WRITE("copy sounds to \"%p%c\"\n", Task::released_sounds_path(),
-			FOLDER_SEPARATOR);
-		WRITE("resource map to \"%p%cresourcemap.json\"\n", Task::released_interpreter_path(),
-			FOLDER_SEPARATOR);
-	}
+
+@<Give instructions for separated resources@> =
+	WRITE("copy pictures to \"%p%c\"\n", Task::released_figures_path(),
+		FOLDER_SEPARATOR);
+	WRITE("copy sounds to \"%p%c\"\n", Task::released_sounds_path(),
+		FOLDER_SEPARATOR);
+	TEMPORARY_TEXT(leaf)
+	WRITE_TO(leaf, "%S.resourcemap.json", TEMP);
+	filename *F = Filenames::in(Task::release_path(), leaf);
+	WRITE("resource map to \"%f\"\n", F);
+	DISCARD_TEXT(leaf)
 
 @<Give instructions to construct a website around the release@> =
 	WRITE("\n! Website instructions\n\n");

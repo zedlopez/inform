@@ -18,7 +18,7 @@ classdef release_instructions {
 	int release_website; /* Release along with a website? */
 	inchar32_t *website_template_leafname; /* If so, the template name for it */
 	int release_interpreter; /* Release along with an interpreter? */
-	int external_resources; /* Release along with external resources? */
+	int separated_resources; /* Release along with separated resources? */
 	struct text_stream *interpreter_template_leafname; /* If so, the template name for it */
 	int release_booklet; /* Release along with introductory booklet? */
 	int release_postcard; /* Release along with Zarf's IF card? */
@@ -44,7 +44,7 @@ release_instructions *ReleaseInstructions::new_set(void) {
 	set->release_website = FALSE;
 	set->website_template_leafname = U"Standard";
 	set->release_interpreter = FALSE;
-	set->external_resources = FALSE;
+	set->separated_resources = FALSE;
 	set->interpreter_template_leafname = NULL;
 	set->release_booklet = FALSE;
 	set->release_postcard = FALSE;
@@ -311,7 +311,7 @@ void ReleaseInstructions::handle_release_declaration_inner(parse_node *p) {
 			my_instructions->release_interpreter = TRUE; my_instructions->release_website = TRUE;
 			break;
 		case EXTERNAL_RESOURCES_PAYLOAD:
-			my_instructions->external_resources = TRUE;
+			my_instructions->separated_resources = TRUE;
 			break;
 		case THEMED_INTERPRETER_PAYLOAD: {
 			wording TW = GET_RW(<release-sentence-object>, 1);

@@ -23,6 +23,7 @@ int reverse_slash_openUrl = FALSE, reverse_slash_fileUrl = FALSE;
 
 =
 int error_count = 0; /* number of error messages produced so far */
+int warning_count = 0; /* similarly */
 
 int verbose_mode = FALSE; /* print diagnostics to `stdout` while running? */
 int current_year_AD = 0; /* e.g., 2008 */
@@ -232,7 +233,11 @@ placeholders, of course; the template contains only some fancy formatting.
 
 =
 void Main::print_report(void) {
-	if (error_count > 0) PRINT("! Completed: %d error(s)\n", error_count);
+	if (error_count + warning_count > 0) {
+		if (warning_count == 0) PRINT("! Completed: %d error(s)\n", error_count);
+		else if (error_count == 0) PRINT("! Completed: %d warning(s)\n", warning_count);
+		else PRINT("! Completed: %d error(s), %d warning(s)\n", error_count, warning_count);
+	}
 	@<Set a whole pile of placeholders which will be needed to generate the status page@>;
 	if (status_template) Websites::web_copy(status_template, status_file);
 }
@@ -256,18 +261,31 @@ that's where they're used.
 				U"file': all of that worked fine. But the Release then went wrong, for "
 				U"the following reason:<p><ul>[CBLORBERRORS]</ul>"), 0
 		);
+		if (warning_count > 0) {
+			Placeholders::append_to(I"CBLORBSTATUSTEXT",
+				I"<p><b>Warning:</b></p><ul>[CBLORBWARNINGS]</ul>");		
+		}
 	} else {
-		Placeholders::set_to(I"CBLORBERRORS", I"No problems occurred", 0);
+		if (warning_count > 0) {
+			Placeholders::append_to(I"CBLORBSTATUSTEXT",
+				I"<p><b>Warning:</b></p><ul>[CBLORBWARNINGS]</ul>");		
+			Placeholders::set_to(I"CBLORBERRORS", I"Only warnings occurred", 0);
+			Placeholders::set_to(I"CBLORBSTATUSTEXT",
+				I"The release did succeed, but with warnings:</p><ul>[CBLORBWARNINGS]</ul><p>", 0);
+		} else {
+			Placeholders::set_to(I"CBLORBERRORS", I"No problems occurred", 0);
+			Placeholders::set_to(I"CBLORBSTATUSTEXT", I"All went well. ", 0);
+		}
 		Placeholders::set_to(I"CBLORBSTATUS", I"Succeeded", 0);
 		Placeholders::set_to(I"CBLORBSTATUSLOW", I"succeeded", 0);
 		Placeholders::set_to(I"CBLORBSTATUSIMAGE", I"file://[SMALLCOVER]", 0);
-		Placeholders::set_to(I"CBLORBSTATUSTEXT",
-			Str::literal(U"All went well. I've put the released material into the 'Release' subfolder "
+		Placeholders::append_to(I"CBLORBSTATUSTEXT",
+			Str::literal(U"I've put the released material into the 'Release' subfolder "
 				U"of the Materials folder for the project: you can take a look with "
 				U"the menu option <b>Release &gt; Open Materials Folder</b> or by clicking "
 				U"the blue folders above.<p>"
 				U"Releases can range in size from a single blorb file to a medium-sized website. "
-				U"Here's what we currently have:<p>"), 0
+				U"Here's what we currently have:<p>")
 		);
 		Requests::report_requested_material(I"CBLORBSTATUSTEXT");
 	}
