@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Extensions</a></li><li><a href="index.html">Basic Inform</a></li><li><b>Glulx and Glk</b></li></ul></div>
 <p class="purpose">Support for Glulx and Glk interpreter systems.</p>
 
-<ul class="toc"><li><a href="gag.html#SP2">&#167;2. Version numbering</a></li><li><a href="gag.html#SP3">&#167;3. Feature testing</a></li><li><a href="gag.html#SP4">&#167;4. Glk windows</a></li><li><a href="gag.html#SP7">&#167;7. Basic window functions</a></li><li><a href="gag.html#SP8">&#167;8. Glk events</a></li><li><a href="gag.html#SP10">&#167;10. Suspending input</a></li><li><a href="gag.html#SP11">&#167;11. Glk object recovery</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="gag.html#SP2">&#167;2. Version numbering</a></li><li><a href="gag.html#SP3">&#167;3. Feature testing</a></li><li><a href="gag.html#SP4">&#167;4. Glk windows</a></li><li><a href="gag.html#SP7">&#167;7. Basic window functions</a></li><li><a href="gag.html#SP8">&#167;8. Glk events</a></li><li><a href="gag.html#SP10">&#167;10. Hyperlinks</a></li><li><a href="gag.html#SP13">&#167;13. Suspending input</a></li><li><a href="gag.html#SP14">&#167;14. Glk object recovery</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b> </p>
 
@@ -196,9 +196,9 @@ require extensions.</p>
 <span class="plain-syntax">To decide what glk event is a/-- mouse event for/of/with row (y - number) and/-- column/col (x - a number) in (win - glk window):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_MouseInput, {win}, {x}, {y}) -).</span>
 
-<span class="plain-syntax">To decide what glk event is a/-- hyperlink event for/of/with (val - number):</span>
+<span class="plain-syntax">To decide what glk event is a/-- hyperlink event for/of/with (val - tagged hyperlink):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_Hyperlink, 0, {val}) -).</span>
-<span class="plain-syntax">To decide what glk event is a/-- hyperlink event for/of/with (val - number) in (win - glk window):</span>
+<span class="plain-syntax">To decide what glk event is a/-- hyperlink event for/of/with (val - tagged hyperlink) in (win - glk window):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_New({-new: glk event}, evtype_Hyperlink, {win}, {val}) -).</span>
 
 <span class="plain-syntax">To decide what glk event type is type of (ev - glk event)</span>
@@ -222,7 +222,7 @@ require extensions.</p>
 <span class="plain-syntax">To decide what number is the column/col of (ev - glk event):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_Value1({ev}, evtype_MouseInput) -).</span>
 
-<span class="plain-syntax">To decide what number is the hyperlink value of (ev - glk event):</span>
+<span class="plain-syntax">To decide what tagged hyperlink is the hyperlink value of (ev - glk event):</span>
 <span class="plain-syntax">    (- GLK_EVENT_TY_Value1({ev}, evtype_Hyperlink) -).</span>
 
 <span class="plain-syntax">To decide what text is the text of (ev - glk event)</span>
@@ -252,15 +252,94 @@ require extensions.</p>
 <span class="plain-syntax">    redraw the status window;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Suspending input.</b>  These properties and phrases allow the author to suspend and resume input requests.</p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Hyperlinks.</b>  A simple framework for handling hyperlinks in an interoperable manner.</p>
+<p>Hyperlink tags represent each kind of hyperlink that we might want to use.</p>
+<p>Tagged hyperlinks then combine a hyperlink tag with a value.</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">Chapter - Hyperlinks</span>
+
+<span class="plain-syntax">A hyperlink tag is a kind of value.</span>
+<span class="plain-syntax">The hyperlink tag kind is accessible to inter as "HYPERLINK_TAG_TY".</span>
+
+<span class="plain-syntax">To decide what tagged hyperlink is tagged/-- hyperlink of (T - hyperlink tag) for/of/with (V - value of kind K):</span>
+<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_New({T}, {-by-reference:V}, {-strong-kind:K}); -).</span>
+
+<span class="plain-syntax">To decide what tagged hyperlink is tagged/-- hyperlink of (T - hyperlink tag):</span>
+<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_New({T}, 0, NUMBER_TY); -).</span>
+
+<span class="plain-syntax">To decide what hyperlink tag is the tag of (tag - tagged hyperlink):</span>
+<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_Tag({tag}) -).</span>
+
+<span class="plain-syntax">To decide what K is the value of (tag - tagged hyperlink) as a/an (name of kind of value K):</span>
+<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_Value({tag}) -).</span>
+
+<span class="plain-syntax">To say link (T - tagged hyperlink):</span>
+<span class="plain-syntax">    (- if (Cached_Glk_Gestalts--&gt;gestalt_Hyperlinks) { glk_set_hyperlink({T}); } -).</span>
+
+<span class="plain-syntax">To say link (T - hyperlink tag):</span>
+<span class="plain-syntax">    (- if (Cached_Glk_Gestalts--&gt;gestalt_Hyperlinks) { glk_set_hyperlink({T}); } -).</span>
+
+<span class="plain-syntax">To say link (T - hyperlink tag) for/of/with (V - value of kind K):</span>
+<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_New({T}, {-by-reference:V}, {-strong-kind:K}, 1); -).</span>
+
+<span class="plain-syntax">To say end link:</span>
+<span class="plain-syntax">    (- if (Cached_Glk_Gestalts--&gt;gestalt_Hyperlinks) { glk_set_hyperlink(0); } -).</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  The hyperlink handling rules are how hyperlinks will generally be handled.
+The tagged hyperlink will be automatically processed for the author.</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">The hyperlink handling rules is a hyperlink tag based rulebook.</span>
+<span class="plain-syntax">The hyperlink handling rules is accessible to Inter as "HYPERLINK_HANDLING_RB".</span>
+
+<span class="plain-syntax">The handle hyperlinks rule is listed in the glk event handling rules.</span>
+<span class="plain-syntax">The handle hyperlinks rule is defined by Inter as "HANDLE_HYPERLINK_R".</span>
+
+<span class="plain-syntax">To decide what K is hyperlink value as a/an (name of kind of value K):</span>
+<span class="plain-syntax">    (- (hyperlink_value) -).</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  And some built-in hyperlink tags:</p>
+<ul>
+<li>A number hyperlink stores a number but doesn't do anything when clicked. It's
+basically just here to give a tagged hyperlink a sensible default value.</li>
+<li>A rule hyperlink runs a rule when clicked; that in turn allows you to run any
+other code you like.</li>
+<li>A keypress hyperlink converts a hyperlink event into a character event, for
+the specified unicode character.</li>
+</ul>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">Number hyperlink is a hyperlink tag.</span>
+
+<span class="plain-syntax">Rule hyperlink is a hyperlink tag.</span>
+<span class="plain-syntax">The rule hyperlink value is accessible to Inter as "rule_hyperlink".</span>
+
+<span class="plain-syntax">To say link (R - rule):</span>
+<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_New(rule_hyperlink, {-by-reference:R}, RULE_TY, 1); -).</span>
+
+<span class="plain-syntax">Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):</span>
+<span class="plain-syntax">    follow hyperlink value as a rule;</span>
+
+<span class="plain-syntax">Keypress hyperlink is a hyperlink tag.</span>
+<span class="plain-syntax">The keypress hyperlink value is accessible to Inter as "keypress_hyperlink".</span>
+
+<span class="plain-syntax">To say link (C - unicode character):</span>
+<span class="plain-syntax">    (- TAGGED_HYPERLINK_TY_New(keypress_hyperlink, {-by-reference:C}, UNICODE_CHARACTER_TY, 1); -).</span>
+
+<span class="plain-syntax">Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):</span>
+<span class="plain-syntax">    replace current event with a character event with (hyperlink value as a unicode character);</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Suspending input.</b>  These properties and phrases allow the author to suspend and resume input requests.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Chapter - Suspending and resuming input</span>
 
 <span class="plain-syntax">A glk window has a text input status.</span>
 <span class="plain-syntax">The text input status property translates into Inter as "text_input_status".</span>
-<span class="plain-syntax">A glk window can be requesting hyperlink input.</span>
-<span class="plain-syntax">The requesting hyperlink input property translates into Inter as "requesting_hyperlink".</span>
 <span class="plain-syntax">A glk window can be requesting mouse input.</span>
 <span class="plain-syntax">The requesting mouse input property translates into Inter as "requesting_mouse".</span>
 
@@ -277,7 +356,7 @@ require extensions.</p>
 <span class="plain-syntax">    (- WindowBufferSet({w}, {-by-reference:t}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Glk object recovery.</b>  These rules are a low level system for managing Glk references. When a Glulx
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Glk object recovery.</b>  These rules are a low level system for managing Glk references. When a Glulx
 game restarts and restores, the current Glk IO state is not reset. All the old
 windows, sound channels etc. will be kept as they were, even though the game file
 might be expecting a different state. This extension allows Inform 7 game files
@@ -322,7 +401,7 @@ windows which should but currently do not.</p>
 <span class="plain-syntax">The glk object updating rules is accessible to Inter as "GLK_OBJECT_UPDATING_RB".</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  And the standard rules, which may be replaced by extensions.</p>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  And the standard rules, which may be replaced by extensions.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">The reset glk references for built in objects rule is listed first in the reset glk references rules.</span>
