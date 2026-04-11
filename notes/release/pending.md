@@ -96,6 +96,23 @@ has been renamed:
 
 	player aware of their own actions rule
 
+## Phase-out of (+ ... +)
+
+Since the earliest days of Inform 7, the notation `(+` ... `+)` has needed to
+be used, at least occasionally, inside Inform 6-syntax matter in order to refer
+back to things which could only be described with source text. So, where `(-` ... `-)`
+allowed source text to drop down into C-like code in Inform 6 syntax, `(+` ... `+)`
+within that C-level code allowed a climb back up into natural language.
+
+This was always troublesome, and for some years _Writing with Inform_ has warned
+that it should be used only as a last resort, and that it would some day likely
+be phased out. That has turned out to be true, and this is that day.
+
+Use of `(+` ... `+)` continues to work, but generates a warning message, which
+provides a documentation link to the new facilities which replace it. In the
+next major release, any use of `(+` ... `+)` will throw a problem message,
+not a warning.
+
 ## Language kit changes to article-handling
 
 A low-level change to Inform's system for printing in natural languages at

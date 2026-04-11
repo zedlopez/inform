@@ -1865,6 +1865,7 @@ test case `BracketPlus` to exercise every part of this function.
 
 =
 void CSIInline::eval_bracket_plus(value_holster *VH, wording LW, int prim_cat) {
+	@<Issue bracket-plus warning@>;
 	if (<property-name>(LW)) {
 		CSIInline::eval_to_iname(RTProperties::iname(<<rp>>), prim_cat);
 		return;
@@ -1924,6 +1925,7 @@ representation. This is the functionality I would most like to remove from Infor
 
 =
 void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
+	@<Issue bracket-plus warning@>;
 	if (<property-name>(LW)) {
 		WRITE("%n", RTProperties::iname(<<rp>>));
 		return;
@@ -1994,6 +1996,17 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 	if (initial_problem_count < problem_count) return;
 	Dash::check_value(spec, NULL);
 	if (initial_problem_count < problem_count) return;
+
+@<Issue bracket-plus warning@> =
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_wording(2, LW);
+	StandardProblems::handmade_warning(Task::syntax_tree(), _p_(WM_BracketPlus));
+	Problems::issue_problem_segment(
+		"This project uses the '(+', ..., '+)' notation to write Inform source "
+		"text inside of Inform 6 material itself in '(-', ..., '-)' markers. "
+		"(Specifically, '(+ %2 +)' is needed when compiling %1.) "
+		"This feature is being phased out, and will not work in future releases.");
+	Problems::issue_warning_end();
 
 @
 

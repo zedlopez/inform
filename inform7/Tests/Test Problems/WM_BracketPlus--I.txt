@@ -1,0 +1,22 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 21 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 11026 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35490 words long.
+Warning__ WM_BracketPlus
+  >--> This project uses the '(+', ..., '+)' notation to write Inform source
+    text inside of Inform 6 material itself in '(-', ..., '-)' markers.
+    (Specifically, '(+ declare everything initially unmentioned rule +)' is
+    needed when compiling 'Include (- [ MatisseMagic; print (+ declare [...]
+    initially unmentioned rule +); ]; -)' (source text, line 9).) This feature
+    is being phased out, and will not work in future releases.
+Warning__ WM_BracketPlus
+  >--> This project uses the '(+', ..., '+)' notation to write Inform source
+    text inside of Inform 6 material itself in '(-', ..., '-)' markers.
+    (Specifically, '(+ West Dining Hall +)' is needed when compiling 'say
+    "Well, [whatever]."' (source text, line 4).) This feature is being phased
+    out, and will not work in future releases.
+
+  The 21-word source text has successfully been translated. There were 1 room
+    and 1 thing.
+Inform 7 has finished.

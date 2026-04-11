@@ -174,7 +174,6 @@ void UnicodeLiterals::ensure_data(void) {
 		filename *F = InstalledFiles::filename(UNICODE_DATA_IRES);
 		TextFiles::read(F, FALSE, "can't open UnicodeData file", TRUE,
 			&UnicodeLiterals::read_line, NULL, NULL);
-		LOG("Read Unicode data to code point 0x%06x in %f\n", max_known_unicode_point, F);
 	}
 }
 

@@ -282,6 +282,6 @@ PM_UnequalHeadingInPlaceOf PM_HeadingInPlaceOfUnknown PM_HeadingInPlaceOfUninclu
 ph_issuertp _ WI_30_16 "30.16" "30.16. Run-time problems"
 PM_BadInlineTag PM_BadInlineExpansion PM_InlineRule PM_InlineTooLong PM_UnendingI6 _ WI_32_2 "32.2" "32.2. Defining To phrases with I6"
 PM_LabelNamespaceTooLong _ WI_32_7 "32.7" "32.7. Invocation counters"
-PM_QuantityTranslatedAlready PM_NonQuantityTranslated PM_NonPropertyTranslated PM_TranslatedToNonIdentifier PM_TranslatedUnknownCategory PM_TranslatedTwice PM_TranslatesActionAlready PM_TranslatesNonAction _ WI_32_10 "32.10" "32.10. Inform values from I6"
+WM_BracketPlus PM_QuantityTranslatedAlready PM_NonQuantityTranslated PM_NonPropertyTranslated PM_TranslatedToNonIdentifier PM_TranslatedUnknownCategory PM_TranslatedTwice PM_TranslatesActionAlready PM_TranslatesNonAction _ WI_32_10 "32.10" "32.10. Inform values from I6"
 PM_IncludeInsteadOf PM_WhenDefiningUnknown PM_BeforeTheLibrary PM_BadI6Inclusion _ WI_32_13 "32.13" "32.13. Inclusions of I6 code"
 ph_numericalvalue ph_sequencenumber _ WI_33_7 "33.7" "33.7. Neptune and enumerative kinds"

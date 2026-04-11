@@ -1,0 +1,15 @@
+Warning: WM_BracketPlus
+
+The West Dining Hall is a room. 
+
+When play begins:
+	say "Well, [whatever].";
+
+To say whatever:
+	(- print (+ West Dining Hall +); -).
+
+Include (-
+
+[ MatisseMagic; print (+ declare everything initially unmentioned rule +); ];
+
+-);

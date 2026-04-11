@@ -10,8 +10,12 @@ To perform the test: (- beta(); -)
 To expostulate mildly about (N - a number) (this is the irked function):
 	say "I do think this is a pity, given [N]."
 
+The irked function phrase is accessible to Inter as "IRKED_FN".
+
 To expostulate firmly (this is the riled function):
 	say "Oh really! This is too much!"
+
+The riled function phrase is accessible to Inter as "RILED_FN".
 
 Include (-
 [ alpha;
@@ -24,8 +28,8 @@ alpha();
 plugh = alpha;
 plugh();
 
-((+ irked function +)-->1)(7);
-((+ irked function +)-->1)(22);
-((+ riled function +)-->1)();
+IRKED_FN(7);
+IRKED_FN(22);
+RILED_FN();
 ];
 -)

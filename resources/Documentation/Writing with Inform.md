@@ -22664,7 +22664,7 @@ A third way to define an adjective, which should be used only if speed is except
 
 The escape `*1` is expanded to the value on which the adjective is being tested. (This is usually faster than calling a routine, but in case of side-effects, the `*1` should occur only once in the condition, just as with a C macro.) To repeat: if in doubt, use the Inter routine method above.
 
-## Inform values from I6 {PM_TranslatesNonAction} {PM_TranslatesActionAlready} {PM_TranslatedTwice} {PM_TranslatedUnknownCategory} {PM_TranslatedToNonIdentifier} {PM_NonPropertyTranslated} {PM_NonQuantityTranslated} {PM_QuantityTranslatedAlready}
+## Inform values from I6 {PM_TranslatesNonAction} {PM_TranslatesActionAlready} {PM_TranslatedTwice} {PM_TranslatedUnknownCategory} {PM_TranslatedToNonIdentifier} {PM_NonPropertyTranslated} {PM_NonQuantityTranslated} {PM_QuantityTranslatedAlready} {WM_BracketPlus}
 
 ^^{accessible to Inter as...+assert+} ^^{Inter code: accessible to Inter as...+assert+} ^^{properties: making accessible to I6} ^^{actions: making accessible to I6} ^^{objects: making accessible to I6}  ^^{kinds: making accessible to I6} ^^{activities: making accessible to I6}
 ^^{((+ +)), for including Inform 7 code in I6+sourcepart+ --> (}
@@ -22752,6 +22752,29 @@ A table and column:
 
 	The niceness column table column is accessible to Inter as "NICENESS_COLUMN".
 
+A phrase:
+
+	The doubling phrase is accessible to Inter as "DOUBLING_FN".
+
+	To double up (N - a number):
+		(- print "Twice ", {N}, " is ", DOUBLING_FN({N}), "^"; -).
+	
+A kind:
+
+	A dragster is a kind of vehicle.
+	
+	The dragster kind is accessible to inter as "K_dragster".
+	
+	To decide if (V - vehicle) drags:
+		(- ({V} ofclass K_dragster) -).
+
+And an enumerated value:
+
+	A colour is a kind of value.
+	The colours are cerise, cerulean and chartreuse.
+
+	The cerulean value is accessible to inter as "CERULEAN_COLOUR".
+	
 Variables, however, cannot at present be made `accessible to Inter`.
 
 Note that none of these constructions — the `banana rules`, the `grimly testing something activity`, the `smashing action` and so on — are being created from raw Inter material. The Inform compiler is creating them, just as normal. All that is happening is that _names_ for them are being made available at the I6 level.
