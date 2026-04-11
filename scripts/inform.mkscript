@@ -130,6 +130,11 @@ INWEBWEB = ../inweb
 INFORM6X = inform6/Tangled/inform6
 INFORM6WEB = inform6
 
+# It also compiles two interpreters, used in testing:
+
+FROTZX = inform6/Tests/Assistants/dumb-frotz/dumb-frotz
+GLULXEX = inform6/Tests/Assistants/dumb-glulx/glulxe/glulxe
+
 # The "utools" set of executables provides unit testing for modules:
 
 {component type: tool   symbol: SYNTAXTEST      webname: syntax-test        path: services/syntax-test      set: utools}
@@ -579,6 +584,7 @@ ifdef BUILTINCOMPS
 .PHONY: integration
 integration: \
 		transfertools \
+		transferinterpreters \
 		transferpreform \
 		transferindext \
 		transferkits \
@@ -589,6 +595,7 @@ integration: \
 .PHONY: forceintegration
 forceintegration: \
 		forcetransfertools \
+		forcetransferinterpreters \
 		forcetransferpreform \
 		forcetransferindext \
 		forcetransferkits \
@@ -637,6 +644,30 @@ forcetransfertools:
 	{repeat with: SYMBOL in: {TOOLSINAPPS}}
 	{transfer-tool name: {SYMBOL}}
 	{end-repeat}
+
+# And similarly for the two interpreters used for testing within the app
+
+ifndef FROTZNAME
+FROTZNAME = dumb-frotz
+endif
+
+ifndef GLULXENAME
+GLULXENAME = dumb-glulxe
+endif
+
+.PHONY: transferinterpreters
+transferinterpreters: $(BUILTINCOMPS)/$(FROTZNAME) $(BUILTINCOMPS)/$(GLULXENAME) 
+
+$(BUILTINCOMPS)/$(FROTZNAME): $(FROTZX)
+	{transfer-tool name: FROTZ}
+
+$(BUILTINCOMPS)/$(GLULXENAME): $(GLULXEX)
+	{transfer-tool name: GLULXE}
+
+.PHONY: forcetransferinterpreters
+forcetransferinterpreters:
+	{transfer-tool name: FROTZ}
+	{transfer-tool name: GLULXE}
 
 # -----------------------------------------------------------------------------
 # Copying the main English-language Preform definition file into the app
