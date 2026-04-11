@@ -22779,7 +22779,7 @@ Variables, however, cannot at present be made `accessible to Inter`.
 
 Note that none of these constructions — the `banana rules`, the `grimly testing something activity`, the `smashing action` and so on — are being created from raw Inter material. The Inform compiler is creating them, just as normal. All that is happening is that _names_ for them are being made available at the I6 level.
 
-### By using `(+` and `+)`
+### A now-deprecated trick: using `(+` and `+)`
 
 This is very much a last resort. But for _some_ simple Inform values, it's possible to mix source text with I6 code like so:
 
@@ -22790,7 +22790,7 @@ Just as `(-` and `-)` is supposed to suggest stepping down from Inform 7 to I6, 
 
 Two cautionary notes:
 
-1) It is likely that this feature will some day be removed from Inform. While it is not officially deprecated yet, it is troublesome for the compiler to support and is subject to restrictions which are difficult to remove or explain. If at all possible, we should already use `accessible to Inter` instead.
+1) This feature is being removed from Inform. Any use of it generates warning messages, and in the next major release, the feature will be gone.
 
 2) On rare occasions, this notation can be triggered by accident. For example, this admittedly very strange definition looks as if it should work:
 
