@@ -161,6 +161,8 @@ external developers, which are periodically updated. In this release:
 - Fix for Jira bug [I7-2603](https://inform7.atlassian.net/browse/I7-2603)
 	"`window` in object names conflicting with `glk window`", and its duplicate
 	[I7-2649](https://inform7.atlassian.net/browse/I7-2649)
+- Fix for Jira bug [I7-2601](https://inform7.atlassian.net/browse/I7-2601)
+	"Add a new field to `rights` in `extension_metadata.json` to signal that a license needs no acknowledgement"
 - Fix for Jira bug [I7-2568](https://inform7.atlassian.net/browse/I7-2568)
 	"Setting numeric EPS map parameters causes parts of the EPS map to vanish"
 - Fix for Jira bug [I7-2589](https://inform7.atlassian.net/browse/I7-2589)
@@ -300,6 +302,10 @@ external developers, which are periodically updated. In this release:
 - Fix for Jira bug [I7-2297](https://inform7.atlassian.net/browse/I7-2297)
 	"Missing semicolon after I6 routine crashed compiler without explanation"
 	([commit 4fb6e57](https://github.com/ganelson/inform/commit/4fb6e57b866eacd84d27e4752c7d0147fc982ac0))
+- Fix for Jira bug [I7-2287](https://inform7.atlassian.net/browse/I7-2287)
+	"Replacing character(s) in a text that is part of a text substitution
+	within a property causes interpreters to hang before that property is
+	displayed when total length to be displayed is >1026 characters"
 - Fix for Jira bug [I7-2284](https://inform7.atlassian.net/browse/I7-2284)
 	"Inter error" - arising from a sentence trying to use an either-or property
 	in a way which would make it unheld by default, when an existing sentence

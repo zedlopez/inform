@@ -206,26 +206,30 @@ Constant TEXT_TY_BufferSize = BasicInformKit`TEXT_BUFFER_SIZE_CFGV + 3;
 Constant TEXT_TY_NoBuffers = 2;
 
 #Iftrue CHARSIZE == 1;
-Array TEXT_TY_Buffers -> TEXT_TY_BufferSize*TEXT_TY_NoBuffers; ! Where characters are bytes
+Array TEXT_TY_Buffers -> (TEXT_TY_BufferSize+2)*TEXT_TY_NoBuffers; ! Where characters are bytes
 #Ifnot;
 Array TEXT_TY_Buffers --> (TEXT_TY_BufferSize+2)*TEXT_TY_NoBuffers; ! Where characters are words
 #Endif;
 
-Global RawBufferAddress = TEXT_TY_Buffers;
-Global RawBufferSize = TEXT_TY_BufferSize;
-
 Global TEXT_TY_CastPrimitiveNesting = 0;
 
 @h Z Version.
-The two versions of this routine, one for each virtual machine, are in all
-important respects the same, but there are enough fiddly differences that
-it's clearer to give two definitions, so:
+The two versions of this routine, one for each virtual machine, are similar
+in structure, but there are enough differences to make two implementations
+worth it. This one is simpler, in that it cannot allocate memory as necessary
+to handle longer texts, and has to truncate.
+
+It is, annoyingly, essential that this function should work correctly when
+nested, because the call to `PrintI6Text` can through side-effects of printing
+activities cause other packed strings to need to be cast. While the language
+imposes no theoretical limit on how deep such nesting could go, in practice it
+almost never exceeds 2, which is why `TEXT_TY_NoBuffers` is set to that. 
 
 =
 #ifdef TARGET_ZCODE;
 [ TEXT_TY_CastPrimitive to_txt from_snippet from_value  len news buffer;
 	SuspendRTP();
-	buffer = RawBufferAddress + TEXT_TY_CastPrimitiveNesting*TEXT_TY_BufferSize;
+	buffer = TEXT_TY_Buffers + TEXT_TY_CastPrimitiveNesting*TEXT_TY_BufferSize;
 	TEXT_TY_CastPrimitiveNesting++;
 	if (TEXT_TY_CastPrimitiveNesting > TEXT_TY_NoBuffers)
 		FlexError("ran out with too many simultaneous text conversions");
@@ -242,7 +246,7 @@ it's clearer to give two definitions, so:
 	ResumeRTP();
 
 	len = buffer-->0;
-	if (len > RawBufferSize-1) len = RawBufferSize-1;
+	if (len > TEXT_TY_BufferSize-1) len = TEXT_TY_BufferSize-1;
 	buffer->(len+2) = 0;
 
 	TEXT_TY_CastPrimitiveNesting--;
@@ -250,26 +254,32 @@ it's clearer to give two definitions, so:
 ];
 
 @h Glulx Version.
+Here we can manage many more conversions simultaneously, and in principle of
+texts with arbitrary sizes: but we want to fail safe with at least the level
+of service we would have had from the Z-machine version if memory allocation
+is not available within this implementation of Glulx, or if memory runs out.
 
 =
 #ifnot; ! TARGET_ZCODE
 [ TEXT_TY_CastPrimitive to_txt from_snippet from_value
-	len i stream saved_stream news buffer buffer_size memory_to_free results;
-	buffer_size = (TEXT_TY_BufferSize + 2)*WORDSIZE;
-
-	RawBufferSize = TEXT_TY_BufferSize;
-	buffer = RawBufferAddress + TEXT_TY_CastPrimitiveNesting*buffer_size;
+	chars_needed i stream saved_stream enlarged_char_size buffer memory_to_free results char_size;
+	char_size = TEXT_TY_BufferSize;
+	buffer = TEXT_TY_Buffers + TEXT_TY_CastPrimitiveNesting*((char_size + 2)*WORDSIZE);
 	TEXT_TY_CastPrimitiveNesting++;
 	if (TEXT_TY_CastPrimitiveNesting > TEXT_TY_NoBuffers) {
-		buffer = VM_AllocateMemory(buffer_size); memory_to_free = buffer;
+		buffer = VM_AllocateMemory((char_size + 2)*WORDSIZE); memory_to_free = buffer;
 		if (buffer == 0)
 			FlexError("ran out with too many simultaneous text conversions");
 	}
 
-	SuspendRTP();
 	.RetryWithLargerBuffer;
+	! At this point buffer is guaranteed to point to char_size + 2 words of
+	! memory; the last two will be reserved for the results structure from
+	! `glk_stream_close`.
+	results = buffer + char_size*WORDSIZE;
+	SuspendRTP();
 	saved_stream = glk_stream_get_current();
-	stream = glk_stream_open_memory_uni(buffer, RawBufferSize, filemode_Write, 0);
+	stream = glk_stream_open_memory_uni(buffer, char_size, filemode_Write, 0);
 	glk_stream_set_current(stream);
 
 	@push say__p; @push say__pc;
@@ -278,33 +288,36 @@ it's clearer to give two definitions, so:
 	else print (PrintI6Text) from_value;
 	@pull say__pc; @pull say__p;
 
-	results = buffer + buffer_size - 2*WORDSIZE;
 	glk_stream_close(stream, results);
 	if (saved_stream) glk_stream_set_current(saved_stream);
 	ResumeRTP();
+	chars_needed = results-->1;
+	! `chars_needed` holds the number of characters that the stream wanted to
+	! write (which will not include a null terminator): but it will have stopped
+	! writing those characters after the first `char_size`.
 
-	len = results-->1;
-	if (len > RawBufferSize-1) {
+	if (chars_needed + 1 > char_size) { ! the extra 1 is for the null terminator
 		! Glulx had to truncate text output because the buffer ran out:
-		! len is the number of characters which it tried to print
-		news = RawBufferSize;
-		while (news < len) news=news*2;
-		i = VM_AllocateMemory(news*WORDSIZE);
+		! chars_needed is the number of characters which it tried to print
+		enlarged_char_size = char_size;
+		while (enlarged_char_size < chars_needed) enlarged_char_size=enlarged_char_size*2;
+		i = VM_AllocateMemory((enlarged_char_size + 2)*WORDSIZE);
 		if (i ~= 0) {
 			if (memory_to_free) VM_FreeMemory(memory_to_free);
 			memory_to_free = i;
 			buffer = i;
-			RawBufferSize = news;
-			buffer_size = (RawBufferSize + 2)*WORDSIZE;
+			char_size = enlarged_char_size;
 			jump RetryWithLargerBuffer;
 		}
 		! Memory allocation refused: all we can do is to truncate the text
-		len = RawBufferSize-1;
+		chars_needed = char_size-1;
 	}
-	buffer-->(len) = 0;
+	! At this point `buffer` contains all the characters `-->0`, ..., `-->(chars_needed-1)`,
+	! and has enough room both for them and for the promised null terminator:
+	buffer-->chars_needed = 0;
 
 	TEXT_TY_CastPrimitiveNesting--;
-	WritePVFieldsFromWordArray(to_txt, buffer, len+1);
+	WritePVFieldsFromWordArray(to_txt, buffer, chars_needed+1);
 	if (memory_to_free) VM_FreeMemory(memory_to_free);
 ];
 #endif;
@@ -699,7 +712,8 @@ characters are handled directly to avoid incurring all that overhead.)
 =
 [ TEXT_TY_ReplaceBlob blobtype txt wanted rtxt ctxt ilen rlen i p cp;
 	TEXT_TY_Transmute(txt);
-	cp = rtxt-->0; p = TEXT_TY_Temporarily_Transmute(rtxt);
+	cp = rtxt-->0;
+	p = TEXT_TY_Temporarily_Transmute(rtxt);
 	if (blobtype == CHR_BLOB) {
 		ilen = TEXT_TY_CharacterLength(txt);
 		rlen = TEXT_TY_CharacterLength(rtxt);
