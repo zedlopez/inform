@@ -399,6 +399,8 @@ external developers, which are periodically updated. In this release:
 - Fix for Jira bug [I7-2125](https://inform7.atlassian.net/browse/I7-2125)
 	"Inblorb copies Cover.png to Small Cover.png"
 	([commit 36a6eb0](https://github.com/ganelson/inweb/commit/36a6eb0bd9ff81425a75ff1435002053e09eb59e))
+- Fix for Jira bug [I7-2080](https://inform7.atlassian.net/browse/I7-2080)
+	"errors in list generation for possession relation"
 - Fix for Jira bug [I7-2074](https://inform7.atlassian.net/browse/I7-2074)
 	"Documentation recommends scene code that causes soft lock" (about times
 	since scene ending sometimes being negative)

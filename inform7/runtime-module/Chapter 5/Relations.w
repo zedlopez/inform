@@ -880,6 +880,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	kind *K = BinaryPredicates::term_kind(dbp, t);
 	#ifdef IF_MODULE
 	if ((dbp == R_containment) && (K == NULL)) K = K_object;
+	if ((dbp == a_has_b_predicate) && (K == NULL)) K = K_object;
 	#endif
 	if (Deferrals::has_finite_domain(K)) {
 		i6_schema loop_schema;
@@ -980,6 +981,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	kind *K = BinaryPredicates::term_kind(dbp, t);
 	#ifdef IF_MODULE
 	if ((dbp == R_containment) && (K == NULL)) K = K_object;
+	if ((dbp == a_has_b_predicate) && (K == NULL)) K = K_object;
 	#endif
 	if (Deferrals::has_finite_domain(K)) {
 		i6_schema loop_schema;
@@ -1020,6 +1022,8 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	#ifdef IF_MODULE
 	if ((dbp == R_containment) && (KL == NULL)) KL = K_object;
 	if ((dbp == R_containment) && (KR == NULL)) KR = K_object;
+	if ((dbp == a_has_b_predicate) && (KL == NULL)) KL = K_object;
+	if ((dbp == a_has_b_predicate) && (KR == NULL)) KR = K_object;
 	#endif
 	if ((Deferrals::has_finite_domain(KL)) && (Deferrals::has_finite_domain(KL))) {
 		i6_schema loop_schema_L, loop_schema_R;
