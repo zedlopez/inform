@@ -373,6 +373,8 @@ external developers, which are periodically updated. In this release:
 - Fix for Jira bug [I7-2225](https://inform7.atlassian.net/browse/I7-2225)
 	"Translating kinds into I6 doesn't work"
 	(Inweb: [commit d608388](https://github.com/ganelson/inweb/commit/d608388d643a85d1aa3c88cfa1710b848bd5cb7e))
+- Fix for Jira bug [I7-2213](https://inform7.atlassian.net/browse/I7-2213)
+	"I7 expansions such as (+ I7-property-name +) expand to the originally-allocated I6 name, not a translated one"
 - Fix for Jira bug [I7-2199](https://inform7.atlassian.net/browse/I7-2199)
 	"Property names whose identifiers begin with identical long strings -> Property given twice in the same declaration error"
 	([commit 2ac854e](https://github.com/ganelson/inform/commit/2ac854e163a779c0322ecf0736877916653fc40a))

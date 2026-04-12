@@ -3,6 +3,11 @@ Preamble.
 Verbs, use options and a few other preliminaries before the Standard Rules
 get properly started.
 
+@h Modesty.
+
+=
+Use authorial modesty.
+
 @h Verbs.
 This continues the built-in verbs (i.e. those with meaning built in to the
 Inform compiler), adding those which are relevant only to IF.

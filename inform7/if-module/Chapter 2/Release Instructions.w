@@ -394,7 +394,7 @@ void ReleaseInstructions::write_ifiction_and_blurb(void) {
 			Problems::fatal_on_file("Can't open metadata file", F);
 		int format = PLAIN_LICENSESFORMAT;
 		if (my_instructions->release_website) format = HTML_LICENSESFORMAT;
-		LicenceDeclaration::describe(xf, format);
+		LicenceDeclaration::describe(xf, format, FALSE);
 		STREAM_CLOSE(xf);
 	}
 

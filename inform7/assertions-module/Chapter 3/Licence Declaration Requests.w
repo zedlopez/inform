@@ -276,7 +276,7 @@ int LicenceDeclaration::to_be_declared(inbuild_licence *L) {
 @e HTML_LICENSESFORMAT
 
 =
-void LicenceDeclaration::describe(OUTPUT_STREAM, int format) {
+void LicenceDeclaration::describe(OUTPUT_STREAM, int format, int briefer) {
 	inform_project *proj = Task::project();
 	inbuild_licence *L = proj->as_copy->licence;
 	text_stream *mention = NULL;
@@ -297,12 +297,14 @@ void LicenceDeclaration::describe(OUTPUT_STREAM, int format) {
 	LOOP_OVER_LINKED_LIST(E, inform_extension, proj->extensions_included) {
 		L = E->as_copy->licence;
 		if ((L->read_from_JSON) || (L->discussed_in_source)) {
-			@<Open paragraph@>;
-			WRITE("%X v%v is ",
-				L->on_copy->edition->work, &(L->on_copy->edition->version));
-			mention = I", included";
-			@<Describe L@>;
-			@<Close paragraph@>;
+			if ((briefer == FALSE) || (E->authorial_modesty == FALSE)) {
+				@<Open paragraph@>;
+				WRITE("%X v%v is ",
+					L->on_copy->edition->work, &(L->on_copy->edition->version));
+				mention = I", included";
+				@<Describe L@>;
+				@<Close paragraph@>;
+			}
 		}
 	}
 	if (licences_cited) {

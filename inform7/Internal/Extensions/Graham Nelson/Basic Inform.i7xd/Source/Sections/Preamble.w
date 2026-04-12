@@ -170,3 +170,11 @@ can be raised by users if necessary.
 
 =
 Use Inform 6 compiler option "$MAX_STACK_SIZE=65536".
+
+@ Let's have a little modesty, in order to suppress the cumbersome copyright
+declaration which would otherwise appear in the output to `VERSION`. This
+use option applies per extension, not throughout, so choosing it here applies
+modesty only to `Basic Inform`:
+
+=
+Use authorial modesty.
