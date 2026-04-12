@@ -21347,6 +21347,56 @@ One of the main uses of block quotations in Inform documentation is to provide t
 >	might change IT to mean the silver key and HIM to mean Harry "Bunny" Manders,
 >   while leaving HER and THEM unaltered.
 
+## Notes, tips, and cautions
+
+Inform supports a modest extension to Markdown format made by GitHub which
+allows block quotations to become informational or warning notices. Thus:
+
+``` code
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
+> [!TIP]
+> Helpful advice for doing things better or more easily.
+
+> [!IMPORTANT]
+> Key information users need to know to achieve their goal.
+
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.
+```
+
+(This is GitHub's own description of what these tags are for.) The result is:
+
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
+> [!TIP]
+> Helpful advice for doing things better or more easily.
+
+> [!IMPORTANT]
+> Key information users need to know to achieve their goal.
+
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.
+
+Thus:
+
+>	[!TIP]
+>	A stamp sold as mint condition should have undisturbed gum for anything
+>	issued after about 1930. Look for very fine (VF) centering, intact
+>	perforations, postmarks (on used examples) that don't obscure the design,
+>	ideally with clear date and city details.
+
+Like all other block quotations, these can contain all manner of other
+material inside, and not only text.
+
 ## Tables
 
 ^^{tables: in extension documentation} ^^{extensions: documenting: tables}
