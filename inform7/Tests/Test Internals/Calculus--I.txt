@@ -699,7 +699,6 @@ UP empty('the entire game') cannot be applied
 22. the player is heavier than 6 feet 2 inches
 << heaviness('the player', '6 feet 2 inches') >>
 Failed: proposition would not type-check
-Comparative misapplied to 'height' not 'mass'
 BP heaviness('the player', '6 feet 2 inches') cannot be applied
 
 23. Entire Game is a density listed in the Table of Solid Stuff

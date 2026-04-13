@@ -80,6 +80,7 @@ void DeferredPropositions::compile(pcalc_prop_deferral *pdef) {
 	inter_symbol *selection_s = NULL;
 	inter_symbol *strong_kind_s = NULL;
 	inter_symbol *total_s = NULL;
+	kind *extremal_domain = K_object;
 
 	inter_symbol *NextOuterLoop_labels[MULTIPURPOSE_DEFER+1];
 	for (int r = 0; r < MULTIPURPOSE_DEFER+1; r++) NextOuterLoop_labels[r] = NULL;
@@ -674,7 +675,7 @@ possible choice of $v$, as required by the Invariant.
 		pl->terms[0].variable, var_ix_lv[pl->terms[0].variable],
 		pl,
 		(R_stack[R_sp-1].reason == NOW_ASSERTION_DEFER)?TRUE:FALSE,
-		(quant != exists_quantifier)?TRUE:FALSE, pdef);
+		(quant != exists_quantifier)?TRUE:FALSE, pdef, NULL);
 	@<Open a block in the Inter code compiled to perform the search@>;
 
 @ Generalised quantifiers — "at least three", "all but four", and
@@ -999,7 +1000,7 @@ at 0, since all Inter locals do.
 
 @<Initialisation before NUMBER search@> =
 	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
-		proposition, FALSE, FALSE, pdef);
+		proposition, FALSE, FALSE, pdef, NULL);
 
 @ Recall that we get here for each possible way that $\phi(x)$ could
 be true, that is, once for each viable set of values of bound variables in
@@ -1071,7 +1072,7 @@ is true. The local `list` holds the list so far, and already exists.
 	EmitCode::up();
 
 	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
-		proposition, FALSE, FALSE, pdef);
+		proposition, FALSE, FALSE, pdef, NULL);
 
 @ Recall that we get here for each possible way that $\phi(x)$ could
 be true, that is, once for each viable set of values of bound variables in
@@ -1189,7 +1190,7 @@ its random $x$ than it ideally would, but we accept the trade-off.
 	EmitCode::up();
 
 	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
-		proposition, FALSE, FALSE, pdef);
+		proposition, FALSE, FALSE, pdef, NULL);
 
 @ Again we exit the searcher as soon as a match is found, since that guarantees
 that $\phi(x)$.
@@ -1271,11 +1272,11 @@ in the domain $\lbrace x\mid \phi(x)\rbrace$.
 
 @<Initialisation before TOTAL search@> =
 	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
-		proposition, FALSE, FALSE, pdef);
+		proposition, FALSE, FALSE, pdef, &extremal_domain);
 
 @<Initialisation before TOTAL REAL search@> =
 	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
-		proposition, FALSE, FALSE, pdef);
+		proposition, FALSE, FALSE, pdef, &extremal_domain);
 
 @ The only wrinkle here is the way the compiled code knows which property it
 should be totalling. If we know that ourselves, we can compile in a direct
@@ -1293,7 +1294,7 @@ which until runtime — when its identity will be found in the Inter variable
 			EmitCode::val_symbol(K_value, total_s);
 			EmitCode::inv(PROPERTYVALUE_BIP);
 			EmitCode::down();
-				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
+				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(extremal_domain));
 				EmitCode::val_symbol(K_value, var_s[0]);
 				if (multipurpose_function) {
 					EmitCode::val_iname(K_value,
@@ -1317,7 +1318,7 @@ which until runtime — when its identity will be found in the Inter variable
 			EmitCode::val_symbol(K_value, total_s);
 			EmitCode::inv(PROPERTYVALUE_BIP);
 			EmitCode::down();
-				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
+				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(extremal_domain));
 				EmitCode::val_symbol(K_value, var_s[0]);
 				if (multipurpose_function) {
 					EmitCode::val_iname(K_value,
@@ -1416,7 +1417,7 @@ we don't, and have to look that up at run-time.
 		}
 	}
 	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
-		proposition, FALSE, FALSE, pdef);
+		proposition, FALSE, FALSE, pdef, &extremal_domain);
 
 @ It might look as if we could speed up the multipurpose case by
 multiplying by `property_loop_sign`, thus combining the max and min
@@ -1513,7 +1514,7 @@ multiplying by $-1$ is order-reversing.
 @<Emit code for a property lookup@> =
 	EmitCode::inv(PROPERTYVALUE_BIP);
 	EmitCode::down();
-		EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
+		EmitCode::val_iname(K_value, RTKindIDs::weak_iname(extremal_domain));
 		EmitCode::val_symbol(K_value, var_s[0]);
 		if (multipurpose_function) {
 			EmitCode::val_iname(K_value,
@@ -1601,7 +1602,7 @@ which defines I6, does not forbid this, and nor does Inter.
 	EmitCode::up();
 
 	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0], proposition,
-		FALSE, FALSE, pdef);
+		FALSE, FALSE, pdef, NULL);
 
 @<Act on successful match in LOOP search@> =
 	EmitCode::inv(RETURN_BIP);
@@ -1676,7 +1677,7 @@ kinds cannot be changed at run-time.
 i6_schema loop_schema;
 pcalc_prop *DeferredPropositions::compile_loop_header(int var, local_variable *index_var,
 	pcalc_prop *proposition,
-	int avoid_parent_optimisation, int grouped, pcalc_prop_deferral *pdef) {
+	int avoid_parent_optimisation, int grouped, pcalc_prop_deferral *pdef, kind **domain_K) {
 
 	kind *K = NULL;
 	pcalc_prop *kind_position = NULL;
@@ -1703,7 +1704,10 @@ pcalc_prop *DeferredPropositions::compile_loop_header(int var, local_variable *i
 	}
 
 	CompileSchemas::from_terms_in_void_context(&loop_schema, &var_term, &second_term);
-
+	if (domain_K) {
+		if (K == NULL) K = K_object;
+		*domain_K = Kinds::weaken(K, K_object);
+	}
 	return proposition;
 }
 

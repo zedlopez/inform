@@ -142,8 +142,8 @@ can't normally be unravelled at compile time.
 
 @<Feed the preamble for the superlative phrase into the lexer@> =
 	TEMPORARY_TEXT(TEMP)
-	WRITE_TO(TEMP, " To decide which object is %N ( S - description of objects ) ",
-		Wordings::first_wn(mdef->superlative));
+	WRITE_TO(TEMP, " To decide which %W is %N ( S - description of %W ) ",
+		DNW, Wordings::first_wn(mdef->superlative), DNW);
 	Sentences::make_node(Task::syntax_tree(),
 		Feeds::feed_text(TEMP),
 		':');
