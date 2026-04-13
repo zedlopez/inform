@@ -303,7 +303,6 @@ that's where they're used.
 		Placeholders::set_to(I"PLATFORMCSS", I"", 0);
 		Main::apply_css(Filenames::up(status_template), I"platform");
 		Main::apply_css(Filenames::up(status_template), I"main");
-		PRINT("Hey, R%S\n", Placeholders::read(I"PLATFORMCSS"));
 	}
 
 @ This is all imitating a more complex system in Inform itself: we only
