@@ -1,0 +1,66 @@
+Problem: PM_PlainOtherwiseAfterIfComma
+
+Taryn Michelle's Superbly Reported Bug Motel is a room. 
+
+Divider is always "[line break]-----------------------------------------------------------------[line break]";
+
+Instead of looking in the Bug Motel:
+	say "We're about to demonstrate four aspects of buggy behavior in Inform 10.2.20220830[paragraph break]";
+	demonstrate the bug;
+	say divider;
+	demonstrate the problem is definitely with the if-comma-phrase element;
+	say divider;
+	demonstrate an even worse side effect of the bug;
+	say divider;
+	demonstrate placement matters;
+	say divider;
+	say "Conclusion: something about the compilation of conditional  code written in the form 'if (condition), (phrase)' within a block of code that uses the 'begin; otherwise; end if;' format is problematic, potentially causing code to be skipped over and/or the wrong code to be executed."
+	
+To demonstrate the bug:
+	say "This code reproduces an Inform internal bug.";
+	say "We're about to test whether 6 >= 4 (hint: it is).";
+	if 6 >= 4
+	begin;
+		say "Right, 6 >= 4 is TRUE.";
+		if the location is the Bug Motel, say "So this should be the end of it.";
+	otherwise;
+		say "And this shouldn't be printed.";
+	end if;
+	say "Note that the 'otherwise' case was fallen into!".
+	
+To demonstrate the problem is definitely with the if-comma-phrase element:
+	say "This code removes the 'if (condition), say ...' expression. Note that the code now behaves properly.";
+	say "We're about to test whether 6 >= 4 (hint: it is).";
+	if 6 >= 4
+	begin;
+		say "Right, 6 >= 4 is TRUE.";
+		[if the location is the Bug Motel, ] say "So this should be the end of it.";
+	otherwise;
+		say "And this shouldn't be printed.";
+	end if;
+	say "In this case, without the 'if (condition), (phrase)' statement, the logic executes correctly.";
+	
+To demonstrate an even worse side effect of the bug:
+	say "This code puts the untrue condition first, note how the bug behaves now.";
+	say "We're about to test whether 6 < 4 (hint: it is NOT).";
+	if 6 < 4
+	begin;
+		if the location is the Bug Motel, say "Wow, this should never be printed (6 is NOT less than 4).";
+	otherwise;
+		say "Obviously 6 > 4, so this SHOULD be printed.";
+	end if;
+	say "But notice the message that says it SHOULD have been printed WAS NOT printed.";
+	say "(This suggests the error definitely occurs at compile time; at runtime the code in the false branch isn't being executed, thus should have no effect on the result.)".
+
+To demonstrate placement matters:
+	say "This code explores further behavior regarding the bug.";
+	say "We're about to test whether 6 >= 4 (hint: it is).";
+	if 6 >= 4
+	begin;
+		say "Right, 6 >= 4 is TRUE.";
+		if the location is the Bug Motel, say "So this should be the end of it.";
+		say "And when we place another statement AFTER the problematic 'if (condition), say ...' statement and before the 'otherwise' clause ... the bug does not raise its head.";
+	otherwise;
+		say "And this shouldn't be printed.";
+	end if;
+	say "Note that the 'otherwise' case was NOT fallen into this time!".
