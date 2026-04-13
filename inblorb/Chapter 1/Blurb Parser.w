@@ -294,10 +294,15 @@ copied in `text1`, `num1`, ..., accordingly.
 		case interpreter_COMMAND:
 			Placeholders::set_to(I"INTERPRETERVMIS", text2, 0);
 			Requests::request_1(INTERPRETER_REQ, text1, FALSE); break;
-		case js_resource_map_COMMAND:
+		case js_resource_map_COMMAND: {
 			Requests::request_1(JS_RESOURCE_MAP_REQ, text1, FALSE);
-			Placeholders::set_to(I"JSRESOURCEMAP", text1, 0);
+			filename *mf = Filenames::from_text(text1);
+			TEMPORARY_TEXT(as_txt)
+			Filenames::to_text_relative(as_txt, mf, release_folder);
+			Placeholders::set_to(I"JSRESOURCEMAP", as_txt, 0);
+			DISCARD_TEXT(as_txt)
 			break;
+		}
 		case picture_COMMAND: Writer::picture_chunk(num1, Filenames::from_text(text1), I""); break;
 		case picture_text_COMMAND: Writer::picture_chunk_text(text1, Filenames::from_text(text2)); break;
 		case picture_noid_COMMAND: Writer::picture_chunk_text(I"", Filenames::from_text(text1)); break;
@@ -325,10 +330,15 @@ copied in `text1`, `num1`, ..., accordingly.
 			break;
 		case release_source_COMMAND:
 			Requests::request_3(RELEASE_SOURCE_REQ, text1, text2, text3, FALSE); break;
-		case resource_map_COMMAND:
+		case resource_map_COMMAND: {
 			Requests::request_1(RESOURCE_MAP_REQ, text1, FALSE);
-			Placeholders::set_to(I"RESOURCEMAP", text1, 0);
+			filename *mf = Filenames::from_text(text1);
+			TEMPORARY_TEXT(as_txt)
+			Filenames::to_text_relative(as_txt, mf, release_folder);
+			Placeholders::set_to(I"RESOURCEMAP", as_txt, 0);
+			DISCARD_TEXT(as_txt)
 			break;
+		}
 		case solution_COMMAND: Requests::request_1(SOLUTION_REQ, I"", TRUE); break;
 		case solution_public_COMMAND: Requests::request_1(SOLUTION_REQ, I"", FALSE); break;
 		case sound_COMMAND: Writer::sound_chunk(num1, Filenames::from_text(text1), I""); break;
@@ -383,6 +393,9 @@ reasons these need to be manipulated to deal with awkward characters.
 	pathname *Materials = Pathnames::up(Release);
 
 	TEMPORARY_TEXT(as_txt)
+	WRITE_TO(as_txt, "%p", Release);
+	Placeholders::set_to(I"RELEASEFOLDERPATH", as_txt, 0);
+	Str::clear(as_txt);
 	WRITE_TO(as_txt, "%p", Materials);
 	Placeholders::set_to(I"MATERIALSFOLDERPATH", as_txt, 0);
 	DISCARD_TEXT(as_txt)
