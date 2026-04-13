@@ -312,6 +312,18 @@ to break this up.
 @ We string a plain "otherwise" node onto the "if" construction.
 
 @<Deal with an immediately following otherwise@> =
+	if (Annotations::read_int(then_node, results_from_splitting_ANNOT)) {
+		current_sentence = imperative_node;
+		Problems::quote_source_eliding_begin(1, current_sentence);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PlainOtherwiseAfterIfComma));
+		Problems::issue_problem_segment(
+			"You wrote %1, but 'otherwise' cannot be used on its own immediately after an 'if ..., ...' "
+			"which combines condition and outcome in a single instruction. 'otherwise ...', "
+			"where an alternative course of action is given, is okay, so that we then have "
+			"two consecutive lines giving what to do in each case. But 'otherwise' on its "
+			"own should only be part of a larger, multi-instruction 'if'.");
+		Problems::issue_problem_end();
+	}	
 	then_node->next = rest_of_defn;
 	last_node_of_if_construction = last_node_of_if_construction->next;
 	rest_of_defn = rest_of_defn->next;

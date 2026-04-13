@@ -402,6 +402,18 @@ to break this up.</p>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Deal with an immediately following otherwise</span><span class="named-paragraph-number">1.2.5.1.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">then_node</span><span class="plain-syntax">, </span><span class="identifier-syntax">results_from_splitting_ANNOT</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">imperative_node</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_source_eliding_begin</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_PlainOtherwiseAfterIfComma</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"You wrote %1, but 'otherwise' cannot be used on its own immediately after an 'if ..., ...' "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"which combines condition and outcome in a single instruction. 'otherwise ...', "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"where an alternative course of action is given, is okay, so that we then have "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"two consecutive lines giving what to do in each case. But 'otherwise' on its "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"own should only be part of a larger, multi-instruction 'if'."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">then_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">rest_of_defn</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">last_node_of_if_construction</span><span class="plain-syntax"> = </span><span class="identifier-syntax">last_node_of_if_construction</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">rest_of_defn</span><span class="plain-syntax"> = </span><span class="identifier-syntax">rest_of_defn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>

@@ -176,6 +176,8 @@ external developers, which are periodically updated. In this release:
 - Fix for Jira bug [I7-2543](https://inform7.atlassian.net/browse/I7-2543)
 	"Out-of-bounds memory access with one text to various K relations"
 	([commit 693da60](https://github.com/ganelson/inform/commit/693da60d8f734d62b0c7e9c04c34d5e814f9f613))	
+- Fix for Jira bug [I7-2542](https://inform7.atlassian.net/browse/I7-2542)
+	"Serious run-time problem with inclusion of `if (condition), (phrase)` statement in code blocks formatted with `begin; ... end if;`"
 - Fix for Jira bug [I7-2532](https://inform7.atlassian.net/browse/I7-2532)
 	"Can't refer to the the text of the announce items from multiple object lists rule response (A) in the normal way"
 	([commit d47d1bb](https://github.com/ganelson/inform/commit/d47d1bb801090ed6d4a60c27b8111e6cdcdabc7e))
