@@ -514,6 +514,11 @@ Similarly, [(IE-0042) Release along with separated resources](https://github.com
 - [I7-2679](https://inform7.atlassian.net/browse/I7-2679)
 	on smuggling `.mp3` sound files through the Release mechanism
 
+Similarly, [(IE-0043) Improved comparatives and superlatives](https://github.com/ganelson/inform-evolution/blob/main/proposals/0043-improved-comparatives-and-superlatives.md):
+
+- [I7-2595](https://inform7.atlassian.net/browse/I7-2595)
+	on comparatives/superlatives on a scene leading to problems or run-time errors
+
 ## Note about intest
 
 - On MacOS, `intest` is supplied inside the app for testing examples in the
