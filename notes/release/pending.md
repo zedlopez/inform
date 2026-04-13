@@ -237,6 +237,8 @@ external developers, which are periodically updated. In this release:
 - Fix for Jira bug [I7-2366](https://inform7.atlassian.net/browse/I7-2366)
 	"10.1 segfaults with compound units that haven't been explicitly defined"
 	([commit ad2c648](https://github.com/ganelson/inform/commit/ad2c648098279dec88c654b23e633037874bc8d3))
+- Fix for Jira bug [I7-2359](https://inform7.atlassian.net/browse/I7-2359)
+	"compiler accepts I6 with imbalanced braces (`{}`)"
 - Fix for Jira bug [I7-2356](https://inform7.atlassian.net/browse/I7-2356)
 	"If an after rule fails, the action `fails` despite having been carried out"
 	(see [PR#197](https://github.com/ganelson/inform/pull/197))

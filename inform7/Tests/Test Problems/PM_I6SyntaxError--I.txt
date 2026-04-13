@@ -1,8 +1,8 @@
 Inform 7 v10.2.0 has started.
 I've now read your source text, which is 12 words long.
-I've also read version 1 of Basic Inform by Graham Nelson, which is 7888 words long.
-I've also read version 1 of English Language by Graham Nelson, which is 2330 words long.
-I've also read version 6 of Standard Rules by Graham Nelson, which is 34398 words long.
+I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 11029 words long.
+I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
+I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35493 words long.
 Problem__ PM_I6SyntaxError
   >--> Inform 6 syntax error near here (source text, line 24): this is not an
     Inform 6 directive.
@@ -56,7 +56,7 @@ Problem__ PM_I6SyntaxError
   >--> Inform 6 syntax error near here (source text, line 58): conditional
     compilation wrongly structured: too many #endif.
 Problem__ PM_I6SyntaxError
-  >--> Inform 6 syntax error near here (source text, line 123): conditional
+  >--> Inform 6 syntax error near here (source text, line 142): conditional
     compilation wrongly structured: not enough #endif.
 Problem__ PM_I6SyntaxError
   >--> Inform 6 syntax error near here (source text, line 27): the annotation
@@ -210,4 +210,13 @@ Problem__ PM_I6SyntaxError
 Problem__ PM_I6SyntaxError
   >--> Inform 6 syntax error near here (source text, line 119): Inform 6 syntax
     error in function 'Dud19': operator '+' used with 1 not 2 operand(s).
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 122): Inform 6 syntax
+    error in function 'Dud20': braces '{' ... '}' are mismatched near here.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 127): Inform 6 syntax
+    error in function 'Dud21': braces '{' ... '}' are mismatched near here.
+Problem__ PM_I6SyntaxError
+  >--> Inform 6 syntax error near here (source text, line 135): Inform 6 syntax
+    error in function 'Dud22': braces '{' ... '}' are mismatched near here.
 Inform 7 has finished.

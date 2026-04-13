@@ -22,6 +22,7 @@ clear subtrees.
 
 =
 void Ramification::go(inter_schema *sch) {
+	REPEATEDLY_APPLY(Ramification::detect_mismatched_braces);
 	REPEATEDLY_APPLY(Ramification::implied_braces);
 	REPEATEDLY_APPLY(Ramification::unbrace_schema);
 	REPEATEDLY_APPLY(Ramification::divide_schema);
@@ -73,6 +74,26 @@ void Ramification::unmark(inter_schema_node *isn) {
 		}
 		Ramification::unmark(isn->child_node);
 	}
+}
+
+@h The detect mismatched braces ramification.
+This doesn't actually change anything, except to throw errors if braces have
+been used in a mismatched way.
+
+=
+int Ramification::detect_mismatched_braces(inter_schema_node *par, inter_schema_node *at) {
+	for (inter_schema_node *isn = at; isn; isn=isn->next_node) {
+		int bl = 0, mismatch = FALSE;
+		for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
+			if (t->ist_type == OPEN_BRACE_ISTT) bl++;
+			if (t->ist_type == CLOSE_BRACE_ISTT) bl--;
+			if (bl < 0) mismatch = TRUE;
+		}
+		if (bl != 0) mismatch = TRUE;
+		if (mismatch)
+			I6Errors::issue_at_node(isn, I"braces '{' ... '}' are mismatched near here");
+	}
+	return FALSE;
 }
 
 @h The implied braces ramification.

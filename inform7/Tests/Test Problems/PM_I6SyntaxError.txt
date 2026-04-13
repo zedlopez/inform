@@ -120,6 +120,25 @@ Constant STUFF = 200;
 [ Dud19;
 	print 3 + + 17;
 ];
+[ Dud20;
+	if (~~tmp) {
+		print 2;
+		print 3;
+];
+[ Dud21;
+	if (~~tmp) {
+		print 2;
+		print 3;
+	}
+	}
+	{
+];
+[ Dud22;
+	if (~~tmp)
+		print 2;
+		print 3;
+	}
+];
 
 #ifdef Tosh;
 [ WontBeCompiled; ];
