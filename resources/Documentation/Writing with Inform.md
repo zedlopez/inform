@@ -18958,6 +18958,12 @@ Inform will make sure this is true, **unless** we do something to break this our
 
 In particular, be aware that using "Save as..." in the Inform apps generally saves a clone of the current project _but with a fresh IFID_. This is intended so that people who use "Save as..." on an old project to begin a new one do not accidentally reuse its IFID.
 
+The IFID can be provided, or overridden, explicitly in source text like so:
+
+	Use project IFID of "c20500c5-495d-47dd-8706-c1bb66d077ed".
+
+Inform will generate a warning if this disagrees with what the app believes is the IFID, but will allow the explicit Use option version to prevail. This should be used only with care.
+
 ## The Release button and the Materials folder {PM_NoSuchPublicRelease} {release_files}
 
 ^^{user interface: Release button} ^^{Release button+ui+} ^^{release version (of the story)} ^^{materials folder: released story file} ^^{omitting code, for release version} ^^{|not for release} ^^{|for release only} ^^{headings} ^^{subheadings} ^^{source text: subdivisions}

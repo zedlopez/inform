@@ -136,6 +136,7 @@ Use no status window translates as the configuration flag NO_STATUS_WINDOW
 	in BasicInformKit.
 Use manual line input echoing translates as the configuration flag
 	MANUAL_INPUT_ECHOING in BasicInformKit.
+Use project IFID translates as a compiler feature.
 
 @ These, on the other hand, are settings used by the dynamic memory management
 code, which runs in I6 as part of the template layer. Each setting translates

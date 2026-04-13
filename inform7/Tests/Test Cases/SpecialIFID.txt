@@ -1,0 +1,8 @@
+Test: SpecialIFID
+For: Z-Machine
+
+Laboratory is a room.
+
+Use project IFID of "deadbeef-007".
+
+Test me with "version".

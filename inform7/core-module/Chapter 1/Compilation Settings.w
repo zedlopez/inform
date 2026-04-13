@@ -27,6 +27,7 @@ meaningful only for works of IF and are inert for Basic Inform projects.
 @e DICTIONARY_RESOLUTION_UO
 @e NO_AUTO_PLURAL_NAMES_UO
 @e NAMELESS_ROOM_DESCRIPTIONS_UO
+@e PROJECT_UUID_UO
 
 @ Note that Inform recognises these by their English names, so there would be no
 need to translate this to other languages.
@@ -47,7 +48,8 @@ need to translate this to other languages.
 	fast route-finding |  			==> { FAST_ROUTE_FINDING_UO, - }
 	slow route-finding | 			==> { SLOW_ROUTE_FINDING_UO, - }
 	dictionary resolution |         ==> { DICTIONARY_RESOLUTION_UO, - }
-	nameless room descriptions      ==> { NAMELESS_ROOM_DESCRIPTIONS_UO, - }
+	nameless room descriptions |    ==> { NAMELESS_ROOM_DESCRIPTIONS_UO, - }
+	project ifid                    ==> { PROJECT_UUID_UO, - }
 
 @ Some of the pragma-like settings are stored here:
 
@@ -67,6 +69,7 @@ typedef struct compilation_settings {
 	int dictionary_resolution;
 	int fast_route_finding;
 	int slow_route_finding;
+	struct text_stream *project_UUID;
 } compilation_settings;
 
 compilation_settings global_compilation_settings;
@@ -85,12 +88,13 @@ void CompilationSettings::initialise_gcs(void) {
 	global_compilation_settings.ranking_table_given = FALSE;
 	global_compilation_settings.scoring_option_set = NOT_APPLICABLE;
 	global_compilation_settings.use_exact_parsing_option = FALSE;
-       	global_compilation_settings.no_auto_plural_names = FALSE;
+    global_compilation_settings.no_auto_plural_names = FALSE;
 	int N = 14;
 	if (TargetVMs::is_16_bit(Task::vm())) N = 6;
 	global_compilation_settings.dictionary_resolution = N;
 	global_compilation_settings.fast_route_finding = FALSE;
 	global_compilation_settings.slow_route_finding = FALSE;
+	global_compilation_settings.project_UUID = NULL;
 }
 
 @ And when (for example) a "Use..." sentence triggers one of these, the
@@ -98,7 +102,7 @@ following function is called. (Note that this is not the only way that
 the above settings can be changed.)
 
 =
-void CompilationSettings::set(int U, int N, source_file *from) {
+void CompilationSettings::set(int U, int N, text_stream *text, source_file *from) {
 	compilation_settings *g = &global_compilation_settings;
 	switch (U) {
 		case AUTHORIAL_MODESTY_UO: {
@@ -117,6 +121,7 @@ void CompilationSettings::set(int U, int N, source_file *from) {
         case NO_AUTO_PLURAL_NAMES_UO:          g->no_auto_plural_names = TRUE;     break; 
 		case FAST_ROUTE_FINDING_UO:            g->fast_route_finding = TRUE;       break;
 		case SLOW_ROUTE_FINDING_UO:            g->slow_route_finding = TRUE;       break;
+		case PROJECT_UUID_UO:				   g->project_UUID = Str::duplicate(text); break;
 	}
 	if (N > 0) {
 		switch (U) {

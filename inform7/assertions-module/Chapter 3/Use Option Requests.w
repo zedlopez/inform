@@ -49,6 +49,7 @@ classdef parsed_use_option_setting {
 	struct parse_node *made_at;
 	int at_least;
 	int value;
+	struct text_stream *textual_value;
 	struct text_stream *language_for_pragma;
 	struct text_stream *content_of_pragma;
 }
@@ -59,6 +60,7 @@ parsed_use_option_setting *UseOptions::new_puos(wording W) {
 	puos->resolved_option = NULL;
 	puos->at_least = NOT_APPLICABLE;
 	puos->value = -1;
+	puos->textual_value = NULL;
 	puos->language_for_pragma = NULL;
 	puos->content_of_pragma = NULL;
 	return puos;
@@ -96,6 +98,7 @@ option name is taken from the `...` or `###` as appropriate:
 	### of <cardinal-number-unlimited>             ==> @<Make an exact setting@>
 
 <use-setting> ::=
+	... of {<quoted-text>} |                       ==> @<Make a quoted text setting@>
 	... of at least <cardinal-number-unlimited> |  ==> @<Make an at-least setting@>
 	... of <cardinal-number-unlimited> |		   ==> @<Make an exact setting@>
 	<definite-article> ...	|                      ==> @<Make a non-setting@>
@@ -103,6 +106,14 @@ option name is taken from the `...` or `###` as appropriate:
 
 @<Make a non-setting@> =
 	parsed_use_option_setting *puos = UseOptions::new_puos(GET_RW(<use-setting>, 1));
+	==> { -1, puos }
+
+@<Make a quoted text setting@> =
+	parsed_use_option_setting *puos = UseOptions::new_puos(GET_RW(<use-setting>, 1));
+	puos->textual_value = Str::new();
+	WRITE_TO(puos->textual_value, "%+W", GET_RW(<use-setting>, 2));
+	Str::delete_first_character(puos->textual_value);
+	Str::delete_last_character(puos->textual_value);
 	==> { -1, puos }
 
 @<Make an at-least setting@> =

@@ -329,13 +329,31 @@ text_stream *BibliographicData::read_uuid(void) {
 	uuid_text = Str::new();
 	uuid_read = 0;
 	FILE *xf = Filenames::fopen(Task::uuid_file(), "r");
-	if (xf == NULL) return uuid_text; /* the UUID is the empty string if the file is missing */
-	int c;
-	while (((c = fgetc(xf)) != EOF) /* the UUID file is plain text, not Unicode */
-		&& (uuid_read++ < MAX_UUID_LENGTH-1))
-		if (Characters::is_Unicode_whitespace((inchar32_t) c) == FALSE)
-			PUT_TO(uuid_text, Characters::toupper((inchar32_t) c));
-	fclose(xf);
+	if (xf) {
+		int c;
+		while (((c = fgetc(xf)) != EOF) /* the UUID file is plain text, not Unicode */
+			&& (uuid_read++ < MAX_UUID_LENGTH-1))
+			if (Characters::is_Unicode_whitespace((inchar32_t) c) == FALSE)
+				PUT_TO(uuid_text, Characters::toupper((inchar32_t) c));
+		fclose(xf);
+	}
+	if (Str::len(global_compilation_settings.project_UUID) > 0) {
+		if ((Str::len(uuid_text) > 0) &&
+			(Str::ne(uuid_text, I"00000000-0000-0000-0000-000000000000")) &&
+			(Str::ne_insensitive(uuid_text, global_compilation_settings.project_UUID))) {
+			Problems::quote_stream(1, uuid_text);
+			Problems::quote_stream(2, global_compilation_settings.project_UUID);
+			StandardProblems::handmade_warning(Task::syntax_tree(), _p_(Untestable));
+			Problems::issue_problem_segment(
+				"The 'uuid.txt' file for the project gives the IFID of this story "
+				"as '%1', which disagrees with the explicit setting in the text, "
+				"'%2'. I'm assuming you have a good reason for doing this! The "
+				"source text version, '%2', will be used.");
+			Problems::issue_warning_end();
+		}
+		Str::clear(uuid_text);
+		Str::copy(uuid_text, global_compilation_settings.project_UUID);
+	}
 	return uuid_text;
 }
 

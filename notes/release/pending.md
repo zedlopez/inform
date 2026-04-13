@@ -51,6 +51,17 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
     shouldn't: see for example the `make named things mentioned rule` in the
     Standard Rules, which is the only place it uses this phrase.
 
+- There is a new use option
+	```
+	Use project IFID of "...".
+	```
+	which sets the IFID. If the project already has a `uuid.txt` file, then the
+	Use option value takes precedence over that, but a warning is issued
+	(unless the `uuid.txt` sets the same IFID, tested case insensitively, or
+	the `uuid.txt` file sets the IFID `00000000-0000-0000-0000-000000000000`,
+	a special value reserved for testing). See Jira bug
+	[I7-2629](https://inform7.atlassian.net/browse/I7-2629).
+
 - When releasing a story with a website, and a cover image which has alt-text
 	provided, that text is now used on the thumbnail cover images in the website.
 	(See Jira bug [I7-2615](https://inform7.atlassian.net/browse/I7-2615): the

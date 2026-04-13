@@ -102,6 +102,7 @@ classdef use_option {
 	struct parsed_use_option_setting *default_value;
 	struct linked_list *settings_made; /* of `parsed_use_option_setting` */
 	int is_explicitly_numerical; /* must a Use sentence give a number? */
+	int is_explicitly_textual; /* ditto for text */
 	int notable_option_code; /* or negative if not notable */
 	int urgent; /* act on this in pass 1 of reading assertions */
 	struct use_option_compilation_data compilation_data;
@@ -144,6 +145,7 @@ classdef use_option {
 	uo->symbol_name = NULL;
 	uo->kit_name = NULL;
 	uo->is_explicitly_numerical = FALSE;
+	uo->is_explicitly_textual = FALSE;
 	if (puos->at_least != NOT_APPLICABLE) uo->is_explicitly_numerical = TRUE;
 	if ((uo->definition_form == CONFIG_VALUE_UTAS) ||
 		(uo->definition_form == CONFIG_NAMELESS_VALUE_UTAS) ||
@@ -172,6 +174,7 @@ classdef use_option {
 	uo->notable_option_code = -1;
 	if (<notable-use-option-name>(uo->name)) uo->notable_option_code = <<r>>;
 	if (uo->notable_option_code == AUTHORIAL_MODESTY_UO) uo->source_file_scoped = TRUE;
+	if (uo->notable_option_code == PROJECT_UUID_UO) uo->is_explicitly_textual = TRUE;
 	uo->urgent = FALSE;
 	if (uo->notable_option_code == UNABBREVIATED_OBJECT_NAMES_UO) uo->urgent = TRUE;
 	uo->where_created = current_sentence;
@@ -319,7 +322,15 @@ use_option *NewUseOptions::find_uo(int notable_code) {
 void NewUseOptions::set(parsed_use_option_setting *puos) {
 	use_option *uo = puos->resolved_option;
 	if (uo == NULL) internal_error("tried to set null UO");
-	if ((uo->is_explicitly_numerical == FALSE) && (puos->at_least != NOT_APPLICABLE)) {
+	if ((uo->is_explicitly_textual) && (Str::len(puos->textual_value) == 0)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UONotTextual),
+			"that 'Use' option needs a textual setting",
+			"placed in double-quotes.");
+	} else if ((uo->is_explicitly_textual == FALSE) && (Str::len(puos->textual_value) > 0)) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UOTextual),
+			"that 'Use' option does not have a textual setting",
+			"so the quoted value here makes no sense.");
+	} else if ((uo->is_explicitly_numerical == FALSE) && (puos->at_least != NOT_APPLICABLE)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UONotNumerical),
 			"that 'Use' option does not have a numerical setting",
 			"but is either used or not used.");
@@ -337,7 +348,7 @@ void NewUseOptions::set(parsed_use_option_setting *puos) {
 		inform_extension *E = Extensions::corresponding_to(from);
 		if (E) puos->made_at = NULL;
 	}
-	CompilationSettings::set(uo->notable_option_code, puos->value, from);
+	CompilationSettings::set(uo->notable_option_code, puos->value, puos->textual_value, from);
 }
 
 @ Target pragma settings arise from sentences like

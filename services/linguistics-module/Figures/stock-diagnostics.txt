@@ -1,12 +1,12 @@
 adjective: 147 items
 article: 2 items
-noun: 2595 items
+noun: 2596 items
 pronoun: 8 items
 preposition: 278 items
 determiner: 22 items
 verb: 109 items
 verb_form: 392 items
-total in all categories: 3553
+total in all categories: 3554
 
 adjective: 'supported'
 adjective: 'unsupported'
@@ -757,6 +757,7 @@ noun: proper: 'dictionary resolution'
 noun: proper: 'no automatic plural synonyms'
 noun: proper: 'no status window'
 noun: proper: 'manual line input echoing'
+noun: proper: 'project ifid'
 noun: proper: 'dynamic memory allocation'
 noun: proper: 'maximum text length'
 noun: proper: 'index figure thumbnails'

@@ -40,7 +40,7 @@ so the sentence-terminator will certainly be a full stop.
 
 @<Act on this use option immediately@> =
 	#ifdef CORE_MODULE
-	CompilationSettings::set(R[1], -1, NULL);
+	CompilationSettings::set(R[1], -1, NULL, NULL);
 	#endif
 	
 @ There is just one options file, so no need to load it more than once.
