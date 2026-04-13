@@ -509,6 +509,11 @@ Similarly, [(IE-0021) No automatic plural synonyms](https://github.com/ganelson/
 - [I7-1980 = Mantis 2016](https://inform7.atlassian.net/browse/I7-1980)
 	on understanding things by plural name of kind
 
+Similarly, [(IE-0042) Release along with separated resources](https://github.com/ganelson/inform-evolution/blob/main/proposals/0042-release-separated-resources.md):
+
+- [I7-2679](https://inform7.atlassian.net/browse/I7-2679)
+	on smuggling `.mp3` sound files through the Release mechanism
+
 ## Note about intest
 
 - On MacOS, `intest` is supplied inside the app for testing examples in the
