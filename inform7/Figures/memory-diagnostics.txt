@@ -1,6 +1,6 @@
-Total memory consumption was 190203K = 186 MB
+Total memory consumption was 190215K = 186 MB
 
- ---- was used for 2464223 objects, in 427201 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2464232 objects, in 427210 frames in 0 x 800K = 0K = 0 MB:
 
     22.9%  inter_tree_node_array                    62 x 8192 = 507904 objects, 44697536 bytes
     19.2%  text_stream_array                        6670 x 100 = 667000 objects, 37565440 bytes
@@ -35,7 +35,7 @@ Total memory consumption was 190203K = 186 MB
      0.4%  ptoken                                   8827 objects, 918008 bytes
      0.3%  unary_predicate_array                    18 x 1000 = 18000 objects, 720576 bytes
      0.2%  holon_splice_array                       71 x 100 = 7100 objects, 399872 bytes
-     0.2%  dictionary                               8272 objects, 397056 bytes
+     0.2%  dictionary                               8273 objects, 397104 bytes
      0.2%  verb_usage                               1148 objects, 394912 bytes
      0.2%  rule                                     498 objects, 390432 bytes
      0.1%  local_variable_array                     50 x 100 = 5000 objects, 361600 bytes
@@ -52,7 +52,7 @@ Total memory consumption was 190203K = 186 MB
      ----  hierarchy_location                       1278 objects, 184032 bytes
      ----  programming_language                     21 objects, 175056 bytes
      ----  linguistic_stock_item                    3554 objects, 170592 bytes
-     ----  filename                                 4120 objects, 164800 bytes
+     ----  filename                                 4128 objects, 165120 bytes
      ----  rule_family_data                         410 objects, 150880 bytes
      ----  nascent_array                            2303 objects, 147392 bytes
      ----  nonterminal                              780 objects, 143520 bytes
@@ -301,8 +301,8 @@ Total memory consumption was 190203K = 186 MB
 
 100.0% was used for memory not allocated for objects:
 
-    66.9%  text stream storage                      130391464 bytes in 709460 claims
-     4.3%  dictionary storage                       8418112 bytes in 8272 claims
+    66.9%  text stream storage                      130403028 bytes in 709510 claims
+     4.3%  dictionary storage                       8418624 bytes in 8273 claims
      ----  sorting                                  20984 bytes in 2690 claims
      3.6%  source text                              7200000 bytes in 3 claims
      5.5%  source text details                      10800000 bytes in 2 claims
@@ -310,7 +310,7 @@ Total memory consumption was 190203K = 186 MB
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
      2.5%  inter symbols storage                    4898560 bytes in 29411 claims
-     8.6%  inter bytecode storage                   16778588 bytes in 15 claims
+     8.6%  inter bytecode storage                   16778604 bytes in 15 claims
      3.1%  inter links storage                      6222976 bytes in 11 claims
      ----  inter tree location list storage         191232 bytes in 32 claims
      3.2%  Unicode data                             6291456 bytes in 18 claims
@@ -320,5 +320,5 @@ Total memory consumption was 190203K = 186 MB
      ----  code generation workspace for objects    3608 bytes in 19 claims
      0.1%  emitter array storage                    295200 bytes in 2112 claims
 
--119.-4% was overhead - -232648168 bytes = -227195K = -221 MB
+-119.-4% was overhead - -232648536 bytes = -227195K = -221 MB
 
