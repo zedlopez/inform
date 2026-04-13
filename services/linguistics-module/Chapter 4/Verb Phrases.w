@@ -618,7 +618,7 @@ int VerbPhrases::perform_of_surgery(parse_node *p) {
 				wording OW = GET_RW(<np-x-of-y>, 1);
 				if (VerbPhrases::allow_of_surgery(PW, OW)) {
 					Node::set_type(p, X_OF_Y_NT);
-					<np-articled>(OW);
+					<np-pronoun-or-articled>(OW);
 					p->down = <<rp>>;
 					<np-as-object>(PW);
 					p->down->next = <<rp>>;

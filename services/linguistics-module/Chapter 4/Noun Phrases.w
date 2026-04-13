@@ -55,6 +55,13 @@ indefinite, the latter has precedence.
 	<if-not-cap> <definite-article> <np-unparsed> |    ==> { 0, NounPhrases::add_art(RP[3], RP[2]) }
 	<np-unparsed>                                      ==> { pass 1 }
 
+<np-pronoun-or-articled> ::=
+	... |                                              ==> { lookahead }
+	<if-not-cap> <agent-pronoun> |                     ==> { 0, Diagrams::new_PRONOUN(W, RP[1]) }
+	<if-not-cap> <indefinite-article> <np-unparsed> |  ==> { 0, NounPhrases::add_art(RP[3], RP[2]) }
+	<if-not-cap> <definite-article> <np-unparsed> |    ==> { 0, NounPhrases::add_art(RP[3], RP[2]) }
+	<np-unparsed>                                      ==> { pass 1 }
+
 <np-articled-bal> ::=
 	^<balanced-text> |                                 ==> { fail }
 	<np-articled>                                      ==> { pass 1 }

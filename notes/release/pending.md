@@ -384,6 +384,8 @@ external developers, which are periodically updated. In this release:
 - Fix for Jira bug [I7-2199](https://inform7.atlassian.net/browse/I7-2199)
 	"Property names whose identifiers begin with identical long strings -> Property given twice in the same declaration error"
 	([commit 2ac854e](https://github.com/ganelson/inform/commit/2ac854e163a779c0322ecf0736877916653fc40a))
+- Fix for Jira bug [I7-2151](https://inform7.atlassian.net/browse/I7-2151)
+	"`The <property> of it` following the creation of something creates a thing named it"
 - Fix for Jira bug [I7-2142](https://inform7.atlassian.net/browse/I7-2142)
 	"With 'the foo rule substitutes for the bar rule when...', the bar rule is
 	suppressed but the foo rule isn't followed."
