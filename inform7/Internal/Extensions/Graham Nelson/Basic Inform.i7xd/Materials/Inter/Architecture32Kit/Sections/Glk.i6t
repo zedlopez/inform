@@ -343,7 +343,7 @@ Constant GLK_EVENT_TEXT_SF = 6;
 					print ev-->GLK_EVENT_VALUE1_SF, ", ", ev-->GLK_EVENT_VALUE2_SF;
 				}
 			evtype_Hyperlink:
-				print ev-->GLK_EVENT_VALUE1_SF;
+				SayKindValuePair(HYPERLINK_TAG_TY, ((ev-->GLK_EVENT_VALUE1_SF) & hyperlink_tag_mask));
 		}
 		print ") in ", (the) win_obj;
 	}
@@ -765,20 +765,23 @@ up into its parts again.
 
 =
 [ TAGGED_HYPERLINK_TY_New tag val kind make_link;
-	#Ifdef DEBUG;
-		if (val >= blockv_stack && val < (blockv_stack + BLOCKV_STACK_SIZE * WORDSIZE)) {
-			if (kind) {
-				if (KindConformsTo_POINTER_VALUE_TY(kind)) {
-					! Break up the message so that Inform doesn't think it's an Inter invocation
-					print "Error: cannot make hyperlink from ephemeral value; try creating with {", "-by-reference:V}^";
-					return;
-				}
-			}
-			else {
-				print "Warning: hyperlink value might be ephemeral; try creating with explicit kind^";
+	if (kind == REAL_NUMBER_TY) {
+		IssueRTP("HyperlinkRealNumber", "TAGGED_HYPERLINK_TY_New: Tagged hyperlinks cannot contain real numbers.", Architecture32KitRTPs);
+		return 0;
+	}
+	if (val >= blockv_stack && val < (blockv_stack + BLOCKV_STACK_SIZE * WORDSIZE)) {
+		if (kind) {
+			if (KindConformsTo_POINTER_VALUE_TY(kind)) {
+				IssueRTP("HyperlinkEphemeral", "TAGGED_HYPERLINK_TY_New: Tagged hyperlinks cannot contain ephemeral values.", Architecture32KitRTPs);
+				return 0;
 			}
 		}
-	#Endif; ! DEBUG
+		else {
+			#Ifdef DEBUG;
+			print "Warning: hyperlink value might be ephemeral; try creating with explicit kind^";
+			#Endif; ! DEBUG
+		}
+	}
 	if (val > 0) {
 		@shiftl val hyperlink_tag_width val;
 	}
@@ -792,17 +795,33 @@ up into its parts again.
 	return val;
 ];
 
-[ TAGGED_HYPERLINK_TY_Say val;
+[ TAGGED_HYPERLINK_TY_Say val tag;
 	print "tagged hyperlink (";
-	SayKindValuePair(HYPERLINK_TAG_TY, (val & hyperlink_tag_mask));
+	tag = val & hyperlink_tag_mask;
+	if (tag == 0) {
+		print "invalid";
+	}
+	else {
+		SayKindValuePair(HYPERLINK_TAG_TY, tag);
+	}
 	print ")";
 ];
 
 [ TAGGED_HYPERLINK_TY_Tag val;
-	return (val & hyperlink_tag_mask);
+	val = val & hyperlink_tag_mask;
+	if (val == 0 || val > ICOUNT_HYPERLINK_TAG) {
+		IssueRTP("HyperlinkInvalid", "TAGGED_HYPERLINK_TY_Tag: Cannot process an invalid tagged hyperlink.", Architecture32KitRTPs);
+		return 0;
+	}
+	return val;
 ];
 
-[ TAGGED_HYPERLINK_TY_Value val;
+[ TAGGED_HYPERLINK_TY_Value val tag;
+	tag = val & hyperlink_tag_mask;
+	if (tag == 0 || tag > ICOUNT_HYPERLINK_TAG) {
+		IssueRTP("HyperlinkInvalid", "TAGGED_HYPERLINK_TY_Value: Cannot process an invalid tagged hyperlink.", Architecture32KitRTPs);
+		return 0;
+	}
 	val = val & hyperlink_payload_mask;
 	if (val < 0) {
 		val = val | hyperlink_tag_mask;
