@@ -489,6 +489,7 @@ These affect documentation, or the wording of problem messages or the Index, but
 do not really change the compiler or other tools in any way which changes how
 source text is read.
 
+> [I7-2685](https://inform7.atlassian.net/browse/I7-2685),
 > [I7-2663](https://inform7.atlassian.net/browse/I7-2663),
 > [I7-2662](https://inform7.atlassian.net/browse/I7-2662),
 > [I7-2640](https://inform7.atlassian.net/browse/I7-2640),
