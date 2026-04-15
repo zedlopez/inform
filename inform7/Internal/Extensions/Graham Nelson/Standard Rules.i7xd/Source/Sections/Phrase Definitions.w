@@ -37,6 +37,9 @@ To display the/-- boxed quotation (Q - text)
 	(documented at ph_boxed):
 	(- DisplayBoxedQuotation({-box-quotation-text:Q}); -).
 
+To show the/-- current quotation:
+	(- ClearBoxedText(); -).
+
 @ And now some oddball special texts which must sometimes be said.
 
 =
