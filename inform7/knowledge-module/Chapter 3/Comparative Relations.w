@@ -92,17 +92,6 @@ int ComparativeRelations::typecheck(bp_family *self, binary_predicate *bp,
 	if (Kinds::eq(Kinds::weaken(kinds_of_terms[0], K_object), Kinds::weaken(kinds_of_terms[1], K_object)))
 		return ALWAYS_MATCH;
 
-/*	property *prn = Properties::property_with_same_name_as(kinds_of_terms[1]);
-	if ((prn) && (prn != D->comparative_property)) {
-		if (tck->log_to_I6_text)
-			LOG("Comparative misapplied to $Y not $Y\n", prn, D->comparative_property);
-		Problems::quote_property(4, D->comparative_property);
-		Problems::quote_property(5, prn);
-		StandardProblems::tcp_problem(_p_(PM_ComparativeMisapplied), tck,
-			"that ought to make a comparison of %4 not %5.");
-		return NEVER_MATCH;
-	}
-*/
 	kind *KV = ValueProperties::kind(D->comparative_property);
 	if (Kinds::compatible(kinds_of_terms[1], KV) != NEVER_MATCH)
 		return ALWAYS_MATCH;
@@ -112,18 +101,6 @@ int ComparativeRelations::typecheck(bp_family *self, binary_predicate *bp,
 	StandardProblems::tcp_problem(_p_(PM_ComparativeMisapplied), tck,
 		"that ought to make a comparison of %5 not %4.");
 	return NEVER_MATCH;
-
-
-/*	if (PropertyPermissions::find(
-		KindSubjects::from_kind(kinds_of_terms[1]), D->comparative_property, TRUE) == NULL) {
-		LOG("Term 1 is %u which does not provide $Y)\n",
-			kinds_of_terms[1], D->comparative_property);
-		TypecheckPropositions::issue_bp_typecheck_error(bp,
-			kinds_of_terms[0], kinds_of_terms[1], tck);
-		return NEVER_MATCH;
-	}
-	return ALWAYS_MATCH;
-*/
 }
 
 @h Compilation.
@@ -144,20 +121,6 @@ int ComparativeRelations::schema(bp_family *self, int task, binary_predicate *bp
 	}
 	return FALSE;
 }
-
-@ And here the relative and absolute cases have to be compiled differently.
-
-Rewrite the annotated schema if it turns out to be an absolute comparison=
-	if ((Kinds::eq(st[0], st[1]) == FALSE) &&
-		(Properties::can_name_coincide_with_kind(st[1]))) {
-		property *prn = Properties::property_with_same_name_as(st[1]);
-		if (prn) {
-			Calculus::Schemas::modify(asch->schema,
-				"%k>>*1.%n %s *2", st[0], RTProperties::iname(prn),
-				Measurements::strict_comparison(D->comparison_sign));
-			return TRUE;
-		}
-	}
 
 @<Rewrite it as an absolute comparison@> =
 	Calculus::Schemas::modify(asch->schema,

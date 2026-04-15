@@ -51,6 +51,46 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
     shouldn't: see for example the `make named things mentioned rule` in the
     Standard Rules, which is the only place it uses this phrase.
 
+- The humble business of printing the "banner" for a story, that is, text like:
+	```
+	Dreams of the Occident
+	An Interactive Fiction
+	Release 3 / Serial Number 260415 / Inform 7 v10.2.0
+	```
+	has been reimplemented in Inform source text. In particular, the new
+	```
+	standard printing the banner text rule
+	```
+	is the default arrangement: lines 1 to 3 above are responses `(A)` to `(C)`
+	for this rule. See Jira bug
+	[I7-2686](https://inform7.atlassian.net/browse/I7-2686).
+
+- Correspondingly, the `announce the story file version rule`, which provides
+	the default implementation of the `VERSION` command, has been rewritten as
+	Inform source text, and its output is slightly tidier:
+	```
+	>VERSION
+	Dreams of the Occident
+	An Interactive Fiction
+	Release 3 / Serial Number 260415 / Inform 7 v10.2.0+6X96
+	Identification number: A7A885DC-1187-4D85-9550-F2DC02B2BD90
+	Interpreter version 0.6.0 / VM 3.1.3
+
+	There are no copyright acknowledgements for extensions used by this story.
+	```
+	Note that that last sentence, the output from `COPYRIGHT` in this case,
+	is the new response `(A)` of the `announce the copyright licences rule`;
+	it is printed if every extension compiled into the story has `Use authorial modesty`
+	specified, so that the author is waiving the credit.
+
+- The above was handled with four new bibliographic variables, which are read-only:
+	```
+	story serial code
+	project IFID
+	Inform version number
+	Inform build code
+	```
+
 - There is a new use option
 	```
 	Use project IFID of "...".
@@ -81,7 +121,10 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 - The obscure debugging verb TREE has been renamed SHOWTREE to reduce the risk
 	of confusion when "tree" is typed in reply to a clarifying question from the
 	command parser, in a debug build (such as in the app). See
-	Jira bug [I7-2398](https://inform7.atlassian.net/browse/I7-2398).
+	Jira bug [I7-2398](https://inform7.atlassian.net/browse/I7-2398). Its output
+	has also been modernised so that it gives a clearer picture of the model
+	world, and in particular, covers incorporation. See  See Jira bug
+	[I7-2424](https://inform7.atlassian.net/browse/I7-2424).
 
 - The transcript file is, in Glulx, now written as UTF-8 text. See
 	Jira bug [I7-2516](https://inform7.atlassian.net/browse/I7-2516).

@@ -1,5 +1,6 @@
+Warning: This story has no proper IFID (Interactive Fiction ID), a unique number to identify it: it only has the IFID '00000000-0000-0000-0000-000000000000', which likely means that Inform could not find an IFID for it. It's a bad idea to release a story into the wild with this IFID, which is intended only for throwaway test projects. You might want to 'Use project IFID of "..."' in the source text, if you can generate your own IFID, or else use your Inform app to generate one.
 ! inblorb 99.99 [executing on Thursday 28 April 2016 at 11:00.00]
 ! The blorb spell (safely protect a small object as though in a strong box).
-! Release folder: </Users/gnelson/Natural Inform/intest/Workspace/T5/Example.materials/Release>
-Copy blorb to: [[/Users/gnelson/Natural Inform/intest/Workspace/T5/Example.materials/Release/Mansfield Perk.gblorb]]
-! Completed: wrote blorb file with 1 picture(s), 0 sound(s), 0 data file(s)
+! Release folder: </Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Release>
+Copy blorb to: [[/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Release/Mansfield Perk.gblorb]]
+! Completed with 1 warning: wrote blorb file with 1 picture(s), 0 sound(s), 0 data file(s)

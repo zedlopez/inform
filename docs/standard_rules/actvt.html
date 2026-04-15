@@ -227,11 +227,29 @@ existence of a room-which-is-not-a-room would break type safety.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  One special forms of printing: the banner which appears at or close
-to the start of play:</p>
+to the start of play. Note that we give two versions of the key rule, though
+they differ only in whether they print the <code>/ D</code> suffix to indicate a debug
+build has been compiled.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Printing the banner text (documented at act_banner) is an activity.</span>
 <span class="plain-syntax">The printing the banner text activity is accessible to Inter as "PRINTING_BANNER_TEXT_ACT".</span>
+
+<span class="plain-syntax">Section 2a (not for release)</span>
+
+<span class="plain-syntax">Last for printing the banner text rule (this is the standard printing the banner text rule):</span>
+<span class="plain-syntax">    say "[bold type][story title][roman type][line break]" (A);</span>
+<span class="plain-syntax">    say "[story headline][if story author is not empty] by [story author][end if][line break]" (B);</span>
+<span class="plain-syntax">    say "Release [release number] / Serial number [story serial code] / Inform 7 v[inform version number][if we are requesting the story file version]+[inform build code][end if]" (C);</span>
+<span class="plain-syntax">    say " / D[line break]" (D).</span>
+
+<span class="plain-syntax">Section 2b (for release only)</span>
+
+<span class="plain-syntax">Last for printing the banner text rule (this is the standard printing the banner text rule):</span>
+<span class="plain-syntax">    say "[bold type][story title][roman type][line break]" (A);</span>
+<span class="plain-syntax">    say "[story headline][if story author is not empty] by [story author][end if][line break]" (B);</span>
+<span class="plain-syntax">    say "Release [release number] / Serial number [story serial code] / Inform 7 v[inform version number][if we are requesting the story file version]+[inform build code][end if]" (C);</span>
+<span class="plain-syntax">    say "" (D).</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Parsing activites.</b>  Now a brace of activities to intervene in how the command parser does its

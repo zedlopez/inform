@@ -870,3 +870,11 @@ To ***:
 	(- {-primitive-definition:verbose-checking} -).
 To *** (T - text):
 	(- {-primitive-definition:verbose-checking} -).
+
+@ And something to assist with the output to the `VERSION` command:
+
+=
+Section 8 - Interpreter scrying - Unindexed
+
+To say VM report on interpreter:
+	(- VM_ReportOnInterpreter(); -).

@@ -17,6 +17,6 @@ SENTENCE_NT'the brother of the sister of the bride is the best of them'
             UNPARSED_NOUN_NT'sister'
         UNPARSED_NOUN_NT'brother'
     X_OF_Y_NT'best of them' {definite 'the' n/m/f s/p nom/acc}
-        UNPARSED_NOUN_NT'them'
+        PRONOUN_NT'them'
         UNPARSED_NOUN_NT'best'
 

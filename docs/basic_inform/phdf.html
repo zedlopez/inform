@@ -1917,49 +1917,29 @@ supported in Glulx.</p>
 <span class="plain-syntax">    (- VM_ScreenWidth() -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP60" class="paragraph-anchor"></a><b>&#167;60. </b>  Pausing the game.</p>
+<p class="commentary firstcommentary"><a id="SP60" class="paragraph-anchor"></a><b>&#167;60. </b>  Customising the status line.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 5 - Pausing the game</span>
+<span class="plain-syntax">Section 5 - The Status Window</span>
 
-<span class="plain-syntax">[ Exclude navigation keys ]</span>
-<span class="plain-syntax">To wait for any key:</span>
-<span class="plain-syntax">    while 1 is 1:</span>
-<span class="plain-syntax">        let code be the code of the next pressed key;</span>
-<span class="plain-syntax">        if code is:</span>
-<span class="plain-syntax">            -- the down key:</span>
-<span class="plain-syntax">                next;</span>
-<span class="plain-syntax">            -- the page down key:</span>
-<span class="plain-syntax">                next;</span>
-<span class="plain-syntax">            -- the page up key:</span>
-<span class="plain-syntax">                next;</span>
-<span class="plain-syntax">            -- the up key:</span>
-<span class="plain-syntax">                next;</span>
-<span class="plain-syntax">            -- unicode U+003F [?, which might be used for an unknown character]:</span>
-<span class="plain-syntax">                next;</span>
-<span class="plain-syntax">            -- otherwise:</span>
-<span class="plain-syntax">                break;</span>
+<span class="plain-syntax">The status window table is a table-name that varies.</span>
+<span class="plain-syntax">The status window table variable translates into Inter as "status_window_table".</span>
 
-<span class="plain-syntax">[ Technically the space or return key ]</span>
-<span class="plain-syntax">To wait for the/-- SPACE key/bar:</span>
-<span class="plain-syntax">    while 1 is 1:</span>
-<span class="plain-syntax">        let code be the code of the next pressed key;</span>
-<span class="plain-syntax">        if code is:</span>
-<span class="plain-syntax">            -- unicode U+0020 [space]:</span>
-<span class="plain-syntax">                break;</span>
-<span class="plain-syntax">            -- the return key:</span>
-<span class="plain-syntax">                break;</span>
+<span class="plain-syntax">To fill/redraw the/-- status bar/line/window with (new status table - a table-name), once only:</span>
+<span class="plain-syntax">    let old status window table be the status window table;</span>
+<span class="plain-syntax">    now the status window table is new status table;</span>
+<span class="plain-syntax">    redraw the status window;</span>
+<span class="plain-syntax">    if once only:</span>
+<span class="plain-syntax">        now the status window table is the old status window table;</span>
 
-<span class="plain-syntax">To pause the game/story:</span>
-<span class="plain-syntax">    say "[paragraph break]Please press SPACE to continue.";</span>
-<span class="plain-syntax">    wait for the space key;</span>
-<span class="plain-syntax">    clear the screen;</span>
+<span class="plain-syntax">To set the status bar/line/window to (rows - number) row/rows:</span>
+<span class="plain-syntax">    (- VM_StatusLineHeight({rows}); -).</span>
 
-<span class="plain-syntax">To stop the game/story abruptly:</span>
-<span class="plain-syntax">    (- quit; -).</span>
+<span class="plain-syntax">To move the status bar/line/window cursor to row (row - number) and/-- column/col (col - number):</span>
+<span class="plain-syntax">    (- VM_MoveCursorInStatusLine({row}, {col}); -).</span>
 
-<span class="plain-syntax">To show the/-- current quotation:</span>
-<span class="plain-syntax">    (- ClearBoxedText(); -).</span>
+<span class="plain-syntax">To redraw the/-- status bar/line/window:</span>
+<span class="plain-syntax">    (- DrawStatusLine(); -).</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP61" class="paragraph-anchor"></a><b>&#167;61. </b>  Keyboard input phrases.</p>
@@ -1975,7 +1955,6 @@ supported in Glulx.</p>
 
 <span class="plain-syntax">To say the/-- player's text input:</span>
 <span class="plain-syntax">    (- VM_PrintBuffer(buffer2); -).</span>
-
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP62" class="paragraph-anchor"></a><b>&#167;62. </b>  Function keys.
@@ -2012,29 +1991,46 @@ private use area codes.</p>
 <span class="plain-syntax">The up key is always unicode U+2191.</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP63" class="paragraph-anchor"></a><b>&#167;63. </b>  Customising the status line.</p>
+<p class="commentary firstcommentary"><a id="SP63" class="paragraph-anchor"></a><b>&#167;63. </b>  Pausing the game.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 7 - The Status Window</span>
+<span class="plain-syntax">Section 7 - Pausing the game</span>
 
-<span class="plain-syntax">To redraw the/-- status bar/line/window:</span>
-<span class="plain-syntax">    (- DrawStatusLine(); -).</span>
+<span class="plain-syntax">[ Exclude navigation keys ]</span>
+<span class="plain-syntax">To wait for any key:</span>
+<span class="plain-syntax">    while 1 is 1:</span>
+<span class="plain-syntax">        let code be the code of the next pressed key;</span>
+<span class="plain-syntax">        if code is:</span>
+<span class="plain-syntax">            -- the down key:</span>
+<span class="plain-syntax">                next;</span>
+<span class="plain-syntax">            -- the page down key:</span>
+<span class="plain-syntax">                next;</span>
+<span class="plain-syntax">            -- the page up key:</span>
+<span class="plain-syntax">                next;</span>
+<span class="plain-syntax">            -- the up key:</span>
+<span class="plain-syntax">                next;</span>
+<span class="plain-syntax">            -- unicode U+003F [?, which might be used for an unknown character]:</span>
+<span class="plain-syntax">                next;</span>
+<span class="plain-syntax">            -- otherwise:</span>
+<span class="plain-syntax">                break;</span>
 
-<span class="plain-syntax">The status window table is a table-name that varies.</span>
-<span class="plain-syntax">The status window table variable translates into Inter as "status_window_table".</span>
+<span class="plain-syntax">[ Technically the space or return key ]</span>
+<span class="plain-syntax">To wait for the/-- SPACE key/bar:</span>
+<span class="plain-syntax">    while 1 is 1:</span>
+<span class="plain-syntax">        let code be the code of the next pressed key;</span>
+<span class="plain-syntax">        if code is:</span>
+<span class="plain-syntax">            -- unicode U+0020 [space]:</span>
+<span class="plain-syntax">                break;</span>
+<span class="plain-syntax">            -- the return key:</span>
+<span class="plain-syntax">                break;</span>
 
-<span class="plain-syntax">To fill/redraw the/-- status bar/line/window with (new status table - a table-name), once only:</span>
-<span class="plain-syntax">    let old status window table be the status window table;</span>
-<span class="plain-syntax">    now the status window table is new status table;</span>
-<span class="plain-syntax">    redraw the status window;</span>
-<span class="plain-syntax">    if once only:</span>
-<span class="plain-syntax">        now the status window table is the old status window table;</span>
+<span class="plain-syntax">To pause the game/story:</span>
+<span class="plain-syntax">    say "[paragraph break]Please press SPACE to continue.";</span>
+<span class="plain-syntax">    wait for the space key;</span>
+<span class="plain-syntax">    clear the screen;</span>
 
-<span class="plain-syntax">To move the status bar/line/window cursor to row (row - number) and/-- column/col (col - number):</span>
-<span class="plain-syntax">    (- VM_MoveCursorInStatusLine({row}, {col}); -).</span>
-
-<span class="plain-syntax">To set the status bar/line/window to (rows - number) row/rows:</span>
-<span class="plain-syntax">    (- VM_StatusLineHeight({rows}); -).</span>
+<span class="plain-syntax">To stop the game/story abruptly:</span>
+<span class="plain-syntax">    (- quit; -).</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP64" class="paragraph-anchor"></a><b>&#167;64. External Files.</b>  Inform has a quirky level of support for file-handling, which comes out of what
