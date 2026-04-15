@@ -247,33 +247,54 @@ To decide what K is hyperlink value as a/an (name of kind of value K):
 
 @ And some built-in hyperlink tags:
 
-- A number hyperlink stores a number but doesn't do anything when clicked. It's
-  basically just here to give a tagged hyperlink a sensible default value.
-- A rule hyperlink runs a rule when clicked; that in turn allows you to run any
-  other code you like.
+- A command replacement hyperlink replaces the entire pending line input with
+  a specified text and then submits it, as if the player pressed enter.
+- A command appendment hyperlink suspends line input, adds its text to the
+  current line input, and then resumes line input.
 - A keypress hyperlink converts a hyperlink event into a character event, for
   the specified unicode character.
+- A rule hyperlink runs a rule when clicked; that in turn allows you to run any
+  other code you like.
 
 =
-Number hyperlink is a hyperlink tag.
+Command replacement is a hyperlink tag.
+The command replacement value is accessible to Inter as "hyperlink_replace".
 
-Rule hyperlink is a hyperlink tag.
-The rule hyperlink value is accessible to Inter as "rule_hyperlink".
+To say link command/-- replacement of/-- (T - text):
+	(- TAGGED_HYPERLINK_TY_New(hyperlink_replace, {-by-reference:T}, TEXT_TY, 1); -).
 
-To say link (R - rule):
-	(- TAGGED_HYPERLINK_TY_New(rule_hyperlink, {-by-reference:R}, RULE_TY, 1); -).
+Hyperlink handling rule for command replacement (this is the command replacement hyperlink rule):
+	suspend text input in the main window, without input echoing;
+	replace current event with a line event with (hyperlink value as a text);
 
-Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):
-	follow hyperlink value as a rule;
+Command appendment is a hyperlink tag.
+The command appendment value is accessible to Inter as "hyperlink_append".
+
+To say link append (T - text):
+	(- TAGGED_HYPERLINK_TY_New(hyperlink_append, {-by-reference:T}, TEXT_TY, 1); -).
+
+Hyperlink handling rule for command appendment (this is the command appendment hyperlink rule):
+	suspend text input in the main window, without input echoing;
+	set the current line input of the main window to "[current line input of the main window] [hyperlink value as a text]";
+	resume text input in the main window;
 
 Keypress hyperlink is a hyperlink tag.
-The keypress hyperlink value is accessible to Inter as "keypress_hyperlink".
+The keypress hyperlink value is accessible to Inter as "hyperlink_keypress".
 
 To say link (C - unicode character):
-	(- TAGGED_HYPERLINK_TY_New(keypress_hyperlink, {-by-reference:C}, UNICODE_CHARACTER_TY, 1); -).
+	(- TAGGED_HYPERLINK_TY_New(hyperlink_keypress, {-by-reference:C}, UNICODE_CHARACTER_TY, 1); -).
 
 Hyperlink handling rule for a keypress hyperlink (this is the keypress hyperlink rule):
 	replace current event with a character event with (hyperlink value as a unicode character);
+
+Rule hyperlink is a hyperlink tag.
+The rule hyperlink value is accessible to Inter as "hyperlink_rule".
+
+To say link (R - rule):
+	(- TAGGED_HYPERLINK_TY_New(hyperlink_rule, {-by-reference:R}, RULE_TY, 1); -).
+
+Hyperlink handling rule for a rule hyperlink (this is the rule hyperlink rule):
+	follow hyperlink value as a rule;
 
 @h Suspending input.
 These properties and phrases allow the author to suspend and resume input requests.

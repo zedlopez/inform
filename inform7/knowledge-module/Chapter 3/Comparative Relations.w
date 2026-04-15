@@ -59,23 +59,40 @@ and relative:
 - "if Geoff is taller than 4 foot 5 inches" is absolute, while
 - "if Geoff is taller than Miranda" is relative.
 
-To allow for these two different usages, we'll typecheck this asymmetrically;
-the left term is typechecked as usual, but the right is more leniently handled.
+This can be quite polymorphic, since different kinds can have the same property.
+We typecheck that the kind of the left term provides the property, and that
+the right term is either a value of the property, or an instance of a kind
+which also provides the property.
 
 =
 int ComparativeRelations::typecheck(bp_family *self, binary_predicate *bp,
 	kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 
-	if ((kinds_required[0]) &&
-		(Kinds::compatible(kinds_of_terms[0], kinds_required[0]) == NEVER_MATCH)) {
-		LOG("Term 0 is %u not %u\n", kinds_of_terms[0], kinds_required[0]);
-		TypecheckPropositions::issue_bp_typecheck_error(bp,
-			kinds_of_terms[0], kinds_of_terms[1], tck);
-		return NEVER_MATCH;
+	comparative_bp_data *D = RETRIEVE_POINTER_comparative_bp_data(bp->family_specific);
+	
+	if (Kinds::eq(K_object, Kinds::weaken(kinds_of_terms[0], K_object))) {
+		if (PropertyPermissions::find_any_object(D->comparative_property) == NULL) {
+			LOG("Term 0 is %u, a kind of object, no kind of which provides $Y)\n",
+				kinds_of_terms[0], D->comparative_property);
+			TypecheckPropositions::issue_bp_typecheck_error(bp,
+				kinds_of_terms[0], kinds_of_terms[1], tck);
+			return NEVER_MATCH;
+		}
+	} else {
+		if (PropertyPermissions::find(
+			KindSubjects::from_kind(kinds_of_terms[0]), D->comparative_property, TRUE) == NULL) {
+			LOG("Term 0 is %u which does not provide $Y)\n",
+				kinds_of_terms[0], D->comparative_property);
+			TypecheckPropositions::issue_bp_typecheck_error(bp,
+				kinds_of_terms[0], kinds_of_terms[1], tck);
+			return NEVER_MATCH;
+		}
 	}
 
-	property *prn = Properties::property_with_same_name_as(kinds_of_terms[1]);
-	comparative_bp_data *D = RETRIEVE_POINTER_comparative_bp_data(bp->family_specific);
+	if (Kinds::eq(Kinds::weaken(kinds_of_terms[0], K_object), Kinds::weaken(kinds_of_terms[1], K_object)))
+		return ALWAYS_MATCH;
+
+/*	property *prn = Properties::property_with_same_name_as(kinds_of_terms[1]);
 	if ((prn) && (prn != D->comparative_property)) {
 		if (tck->log_to_I6_text)
 			LOG("Comparative misapplied to $Y not $Y\n", prn, D->comparative_property);
@@ -85,7 +102,28 @@ int ComparativeRelations::typecheck(bp_family *self, binary_predicate *bp,
 			"that ought to make a comparison of %4 not %5.");
 		return NEVER_MATCH;
 	}
+*/
+	kind *KV = ValueProperties::kind(D->comparative_property);
+	if (Kinds::compatible(kinds_of_terms[1], KV) != NEVER_MATCH)
+		return ALWAYS_MATCH;
+
+	Problems::quote_kind(4, kinds_of_terms[1]);
+	Problems::quote_kind(5, KV);
+	StandardProblems::tcp_problem(_p_(PM_ComparativeMisapplied), tck,
+		"that ought to make a comparison of %5 not %4.");
+	return NEVER_MATCH;
+
+
+/*	if (PropertyPermissions::find(
+		KindSubjects::from_kind(kinds_of_terms[1]), D->comparative_property, TRUE) == NULL) {
+		LOG("Term 1 is %u which does not provide $Y)\n",
+			kinds_of_terms[1], D->comparative_property);
+		TypecheckPropositions::issue_bp_typecheck_error(bp,
+			kinds_of_terms[0], kinds_of_terms[1], tck);
+		return NEVER_MATCH;
+	}
 	return ALWAYS_MATCH;
+*/
 }
 
 @h Compilation.
@@ -93,26 +131,48 @@ int ComparativeRelations::typecheck(bp_family *self, binary_predicate *bp,
 =
 int ComparativeRelations::schema(bp_family *self, int task, binary_predicate *bp,
 	annotated_i6_schema *asch) {
-	if (task == TEST_ATOM_TASK)
-		@<Rewrite the annotated schema if it turns out to be an absolute comparison@>;
+	comparative_bp_data *D =
+		RETRIEVE_POINTER_comparative_bp_data(bp->family_specific);
+	kind *st[2];
+	st[0] = Cinders::kind_of_term(asch->pt0);
+	st[1] = Cinders::kind_of_term(asch->pt1);
+	if (task == TEST_ATOM_TASK) {
+		if (Kinds::eq(Kinds::weaken(st[0], K_object), Kinds::weaken(st[1], K_object)))
+			@<Rewrite it as a relative comparison@>
+		else
+			@<Rewrite it as an absolute comparison@>;		
+	}
 	return FALSE;
 }
 
 @ And here the relative and absolute cases have to be compiled differently.
 
-@<Rewrite the annotated schema if it turns out to be an absolute comparison@> =
-	kind *st[2];
-	st[0] = Cinders::kind_of_term(asch->pt0);
-	st[1] = Cinders::kind_of_term(asch->pt1);
+Rewrite the annotated schema if it turns out to be an absolute comparison=
 	if ((Kinds::eq(st[0], st[1]) == FALSE) &&
 		(Properties::can_name_coincide_with_kind(st[1]))) {
 		property *prn = Properties::property_with_same_name_as(st[1]);
 		if (prn) {
-			comparative_bp_data *D =
-				RETRIEVE_POINTER_comparative_bp_data(bp->family_specific);
 			Calculus::Schemas::modify(asch->schema,
-				"*1.%n %s *2", RTProperties::iname(prn),
+				"%k>>*1.%n %s *2", st[0], RTProperties::iname(prn),
 				Measurements::strict_comparison(D->comparison_sign));
 			return TRUE;
 		}
 	}
+
+@<Rewrite it as an absolute comparison@> =
+	Calculus::Schemas::modify(asch->schema,
+		"%k>>*1.%n %s *2",
+		st[0],
+		RTProperties::iname(D->comparative_property),
+		Measurements::strict_comparison(D->comparison_sign));
+	return TRUE;
+
+@<Rewrite it as a relative comparison@> =
+	Calculus::Schemas::modify(asch->schema,
+		"%k>>*1.%n %s %k>>*2.%n",
+		st[0],
+		RTProperties::iname(D->comparative_property),
+		Measurements::strict_comparison(D->comparison_sign),
+		st[1],
+		RTProperties::iname(D->comparative_property));
+	return TRUE;

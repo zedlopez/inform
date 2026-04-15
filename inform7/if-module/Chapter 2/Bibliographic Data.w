@@ -127,10 +127,14 @@ nonlocal_variable *story_genre_VAR = NULL;
 nonlocal_variable *story_description_VAR = NULL;
 nonlocal_variable *story_creation_year_VAR = NULL;
 nonlocal_variable *story_release_number_VAR = NULL;
+nonlocal_variable *story_serial_number_VAR = NULL;
+nonlocal_variable *story_IFID_VAR = NULL;
 nonlocal_variable *story_licence_VAR = NULL;
 nonlocal_variable *story_copyright_VAR = NULL;
 nonlocal_variable *story_origin_URL_VAR = NULL;
 nonlocal_variable *story_rights_history_VAR = NULL;
+nonlocal_variable *inform_version_number_VAR = NULL;
+nonlocal_variable *inform_build_code_VAR = NULL;
 
 @ As usual, Inform uses these English wordings to detect the creation of the
 variables in the Standard Rules, which are in English: so there's no point
@@ -143,10 +147,14 @@ in translating this nonterminal to other languages.
 @d STORY_DESCRIPTION_BIBV 4
 @d STORY_CREATION_YEAR_BIBV 5
 @d RELEASE_NUMBER_BIBV 6
-@d STORY_LICENCE_BIBV 7
-@d STORY_COPYRIGHT_BIBV 8
-@d STORY_ORIGIN_URL_BIBV 9
-@d STORY_RIGHTS_HISTORY_BIBV 10
+@d SERIAL_CODE_BIBV 7
+@d PROJECT_IFID_BIBV 8
+@d STORY_LICENCE_BIBV 9
+@d STORY_COPYRIGHT_BIBV 10
+@d STORY_ORIGIN_URL_BIBV 11
+@d STORY_RIGHTS_HISTORY_BIBV 12
+@d INFORM_VERSION_NUMBER_BIBV 13
+@d INFORM_BUILD_CODE_BIBV 14
 
 =
 <notable-bibliographic-variables> ::=
@@ -157,10 +165,14 @@ in translating this nonterminal to other languages.
 	story description |
 	story creation year |
 	release number |
+	story serial code |
+	project ifid |
 	story licence |
 	story copyright |
 	story origin url |
-	story rights history
+	story rights history |
+	inform version number |
+	inform build code
 
 @ And we read them here:
 
@@ -174,29 +186,83 @@ int BibliographicData::bibliographic_new_variable_notify(nonlocal_variable *q) {
 			case STORY_GENRE_BIBV: story_genre_VAR = q; break;
 			case STORY_DESCRIPTION_BIBV: story_description_VAR = q; break;
 			case STORY_CREATION_YEAR_BIBV: story_creation_year_VAR = q; break;
-			case RELEASE_NUMBER_BIBV:
-				story_release_number_VAR = q;
-				semantic_version_number V = Projects::get_version(Task::project());
-				if (VersionNumbers::is_null(V) == FALSE) {
-					if (P_variable_initial_value == NULL) internal_error("too soon");
-					int M = V.version_numbers[0];
-					parse_node *save = current_sentence;
-					current_sentence = NULL;
-					PropertyInferences::draw_from_metadata(
-						NonlocalVariables::to_subject(q), P_variable_initial_value,
-							Rvalues::from_int(M, EMPTY_WORDING));
-					current_sentence = save;
-				}
-				break;
+			case RELEASE_NUMBER_BIBV: story_release_number_VAR = q;
+				@<Prefill the release number variable@>; break;
+			case SERIAL_CODE_BIBV: story_serial_number_VAR = q;
+				@<Prefill the serial code variable@>; break;
+			case PROJECT_IFID_BIBV: story_IFID_VAR = q;
+				@<Prefill the IFID variable@>; break;
 			case STORY_LICENCE_BIBV: story_licence_VAR = q; break;
 			case STORY_COPYRIGHT_BIBV: story_copyright_VAR = q; break;
 			case STORY_ORIGIN_URL_BIBV: story_origin_URL_VAR = q; break;
 			case STORY_RIGHTS_HISTORY_BIBV: story_rights_history_VAR = q; break;
+			case INFORM_VERSION_NUMBER_BIBV: inform_version_number_VAR = q;
+				@<Prefill the Inform version number variable@>; break;
+			case INFORM_BUILD_CODE_BIBV: inform_build_code_VAR = q;
+				@<Prefill the Inform build code variable@>; break;
 		}
 		NonlocalVariables::make_constant(q, TRUE);
 	}
 	return FALSE;
 }
+
+@<Prefill the release number variable@> =
+	semantic_version_number V = Projects::get_version(Task::project());
+	if (VersionNumbers::is_null(V) == FALSE) {
+		if (P_variable_initial_value == NULL) internal_error("too soon");
+		int M = V.version_numbers[0];
+		parse_node *save = current_sentence;
+		current_sentence = NULL;
+		PropertyInferences::draw_from_metadata(
+			NonlocalVariables::to_subject(q), P_variable_initial_value,
+				Rvalues::from_int(M, EMPTY_WORDING), INFERENCE_DRAWN_FROM_METADATA);
+		current_sentence = save;
+	}
+
+@<Prefill the serial code variable@> =
+	TEMPORARY_TEXT(SN)
+	RTBibliographicData::write_serial_code(SN); PUT_TO(SN, ' ');
+	parse_node *save = current_sentence;
+	current_sentence = NULL;
+	PropertyInferences::draw_from_metadata(
+		NonlocalVariables::to_subject(q), P_variable_initial_value,
+			Rvalues::from_wording(Feeds::feed_text(SN)), INFERENCE_DRAWN_FROM_DATE);
+	current_sentence = save;
+	DISCARD_TEXT(SN)
+
+@<Prefill the IFID variable@> =
+	TEMPORARY_TEXT(SN)
+	WRITE_TO(SN, "%S ", BibliographicData::read_uuid());
+	parse_node *save = current_sentence;
+	current_sentence = NULL;
+	PropertyInferences::draw_from_metadata(
+		NonlocalVariables::to_subject(q), P_variable_initial_value,
+			Rvalues::from_wording(Feeds::feed_text(SN)),
+			INFERENCE_DRAWN_FROM_IFID);
+	current_sentence = save;
+	DISCARD_TEXT(SN)
+
+@<Prefill the Inform version number variable@> =
+	TEMPORARY_TEXT(SN)
+	WRITE_TO(SN, "[[Version Number]] ");
+	parse_node *save = current_sentence;
+	current_sentence = NULL;
+	PropertyInferences::draw_from_metadata(
+		NonlocalVariables::to_subject(q), P_variable_initial_value,
+			Rvalues::from_wording(Feeds::feed_text(SN)), INFERENCE_DRAWN_FROM_COMPILER);
+	current_sentence = save;
+	DISCARD_TEXT(SN)
+
+@<Prefill the Inform build code variable@> =
+	TEMPORARY_TEXT(SN)
+	WRITE_TO(SN, "[[Build Number]] ");
+	parse_node *save = current_sentence;
+	current_sentence = NULL;
+	PropertyInferences::draw_from_metadata(
+		NonlocalVariables::to_subject(q), P_variable_initial_value,
+			Rvalues::from_wording(Feeds::feed_text(SN)), INFERENCE_DRAWN_FROM_COMPILER);
+	current_sentence = save;
+	DISCARD_TEXT(SN)
 
 @h The opening sentence.
 The following is called in response to the bibliographic sentence — the

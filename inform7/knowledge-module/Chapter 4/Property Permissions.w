@@ -66,6 +66,27 @@ property_permission *PropertyPermissions::find(inference_subject *infs,
 	return NULL;
 }
 
+@ This tells us whether some kind of object can have the property:
+
+=
+property_permission *PropertyPermissions::find_any_object(property *prn) {
+	property *prnbar = NULL;
+	if (Properties::is_either_or(prn)) prnbar = EitherOrProperties::get_negation(prn);
+
+	if (prn) {
+		property_permission *pp;
+		linked_list *L = Properties::get_permissions(prn);
+		LOOP_OVER_LINKED_LIST(pp, property_permission, L) {
+			inference_subject *owner = pp->property_owner;
+			while (owner) {
+				if (owner == KindSubjects::from_kind(K_object)) return pp;
+				owner = InferenceSubjects::narrowest_broader_subject(owner);
+			}
+		}
+	}
+	return NULL;
+}
+
 @h Granting permission.
 This does nothing if permission already exists, simply returning the existing
 permission structure; but note the use of `allow_inheritance`. If this is

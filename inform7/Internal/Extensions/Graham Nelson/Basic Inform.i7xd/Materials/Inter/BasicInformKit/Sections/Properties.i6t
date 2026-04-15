@@ -17,6 +17,15 @@ it doesn't mean it actually does have.
 =
 [ ProvidesProperty K obj q issue_rtp  a l holder;
 	if (K == OBJECT_TY) {
+		if (obj == 0) {
+			if (issue_rtp) {
+				IssueRTP("PropertyOfNothing",
+					"Attempt to use a property of nothing.", BasicInformKitRTPs);
+				print "*** Since the nothing object has no properties, its ~",
+					(PrintPropertyName) q, "~ can't be used.^";
+			}
+			rfalse;
+		}
 		if (ScanPropertyMetadata(obj, q, 4)) jump PermissionFound;
 		if (obj provides KD_Count) {
 			l = obj.KD_Count;
@@ -27,6 +36,7 @@ it doesn't mean it actually does have.
 			}
 		}
 		if (ScanPropertyMetadata(K0_kind, q, 4)) jump PermissionFound;
+		.Unprovided;
 		if (issue_rtp) {
 			IssueRTP("UnprovidedProperty",
 				"Attempt to use a property without permission.", BasicInformKitRTPs);

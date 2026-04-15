@@ -15,7 +15,7 @@ For: Z-Machine
 
 The actual number chosen in this definition is pretty much irrelevant: the main thing is that we want to establish relative values. The lower the `last use` number of an item, the older that item should be understood to be, as we see here:
 
-	{**}To decide which thing is cyclically random (collection - a description of objects):
+	{**}To decide which thing is cyclically random (collection - a description of things):
 		let choice be the oldest member of the collection;
 		now the last use of the choice is the turn count;
 		decide on choice.

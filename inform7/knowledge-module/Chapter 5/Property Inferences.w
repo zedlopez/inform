@@ -47,9 +47,9 @@ void PropertyInferences::draw(inference_subject *subj, property *prn, parse_node
 }
 
 void PropertyInferences::draw_from_metadata(inference_subject *subj, property *prn,
-	parse_node *val) {
+	parse_node *val, int source) {
 	inference *i = PropertyInferences::new(subj, prn, val);
-	i->drawn_from_metadata = TRUE;
+	i->drawn_from_elsewhere = source;
 	Inferences::join_inference(i, subj);
 }
 
@@ -112,12 +112,30 @@ int PropertyInferences::explain_contradiction(inference_family *f, inference *A,
 	LOG("A = $I\nB = $I\n", A, B);
 	current_sentence = B->inferred_from;
 	if (B_data->inferred_property == P_variable_initial_value) {
-		if (A->drawn_from_metadata) {
+		if (A->drawn_from_elsewhere == INFERENCE_DRAWN_FROM_METADATA) {
 			current_sentence = B->inferred_from;
 			@<Issue a contradiction with metadata problem@>;
-		} else if (B->drawn_from_metadata) {
+		} else if (B->drawn_from_elsewhere == INFERENCE_DRAWN_FROM_METADATA) {
 			current_sentence = A->inferred_from;
 			@<Issue a contradiction with metadata problem@>;
+		} else if (A->drawn_from_elsewhere == INFERENCE_DRAWN_FROM_DATE) {
+			current_sentence = B->inferred_from;
+			@<Issue a contradiction with date problem@>;
+		} else if (B->drawn_from_elsewhere == INFERENCE_DRAWN_FROM_DATE) {
+			current_sentence = A->inferred_from;
+			@<Issue a contradiction with date problem@>;
+		} else if (A->drawn_from_elsewhere == INFERENCE_DRAWN_FROM_IFID) {
+			current_sentence = B->inferred_from;
+			@<Issue a contradiction with IFID problem@>;
+		} else if (B->drawn_from_elsewhere == INFERENCE_DRAWN_FROM_IFID) {
+			current_sentence = A->inferred_from;
+			@<Issue a contradiction with IFID problem@>;
+		} else if (A->drawn_from_elsewhere == INFERENCE_DRAWN_FROM_COMPILER) {
+			current_sentence = B->inferred_from;
+			@<Issue a contradiction with compiler problem@>;
+		} else if (B->drawn_from_elsewhere == INFERENCE_DRAWN_FROM_COMPILER) {
+			current_sentence = A->inferred_from;
+			@<Issue a contradiction with compiler problem@>;
 		} else {			
 			StandardProblems::two_sentences_problem(_p_(PM_VariableContradiction),
 				A->inferred_from,
@@ -180,6 +198,24 @@ int PropertyInferences::explain_contradiction(inference_family *f, inference *A,
 		"this looks like a contradiction",
 		"because it contradicts a value set by the metadata file in the "
 		"materials folder for the project.");
+
+@<Issue a contradiction with date problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(Untestable),
+		"this looks like a contradiction",
+		"because it contradicts a value set according to today's date.");
+
+@<Issue a contradiction with IFID problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(Untestable),
+		"this looks like a contradiction",
+		"because it contradicts a value set from the project's IFID, which "
+		"can be set either with a 'uuid.txt' file in the project bundle, or "
+		"else by using the 'Use project IFID of \"...\"' option.");
+
+@<Issue a contradiction with compiler problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(Untestable),
+		"this looks like a contradiction",
+		"because it contradicts a value set by the compiler itself. I am "
+		"what I am.");
 
 @ Access functions.
 

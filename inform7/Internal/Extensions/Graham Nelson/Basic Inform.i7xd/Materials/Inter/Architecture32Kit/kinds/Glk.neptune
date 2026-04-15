@@ -109,7 +109,7 @@ new base TAGGED_HYPERLINK_TY {
 	singular: tagged hyperlink
 	plural: tagged hyperlinks
 
-	default-value: 1
+	default-value: 0
 	say-function: TAGGED_HYPERLINK_TY_Say
 
 	specification-text: A tagged hyperlink combines a hyperlink tag and a value.

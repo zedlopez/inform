@@ -1,0 +1,24 @@
+
+
+
+
+"questiest scene" = scene: Cursed Casket Theft
+"priority of the questiest scene" = number: 4
+"whether or not the Cursed Casket Theft is questier than the Temple Defilement" = truth state: true
+"whether or not the Cursed Casket Theft is questier than 3" = truth state: true
+"whether or not the Temple Defilement is questier than 3" = truth state: false
+"total priority of the scenes" = number: 6
+"warmest color" = color: red
+"wavelength of the warmest color" = length: 7000 angstroms
+"whether or not yellow is warmer than blue" = truth state: true
+"whether or not yellow is warmer than 5000 angstroms" = truth state: true
+"list of warm colors" = list of colors: {red, orange, yellow}
+"topmost from warm colors" = color: red
+"cyclically random person" = thing: yourself
+"whether or not someone is older than the player" = truth state: false
+
+Welcome
+An Interactive Fiction
+Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+
+>Are you sure you want to quit? 

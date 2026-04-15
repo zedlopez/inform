@@ -6,6 +6,12 @@ untrue and with some degree of certainty.
 @h Inferences.
 This is quite a lightweight structure:
 
+@e INFERENCE_DRAWN_FROM_SOURCE 0
+@d INFERENCE_DRAWN_FROM_METADATA 1
+@d INFERENCE_DRAWN_FROM_DATE 2
+@d INFERENCE_DRAWN_FROM_IFID 3
+@d INFERENCE_DRAWN_FROM_COMPILER 4
+
 =
 classdef inference {
 	struct inference_family *family; /* see above */
@@ -13,7 +19,7 @@ classdef inference {
 	int certainty; /* any `*_CE` value other than `UNKNOWN_CE` */
 	struct parse_node *inferred_from; /* from what sentence was this drawn? */
 	int drawn_during_stage; /* or was this drawn during the model completion stage? */
-	int drawn_from_metadata; /* or from the project's metadata file? */
+	int drawn_from_elsewhere; /* or from the project's metadata file? */
 }
 
 @ The following routine coins a newly minted inference which is not yet attached
@@ -32,7 +38,7 @@ inference *Inferences::create_inference(inference_family *f, general_pointer dat
 	new_i->certainty = certitude;
 	new_i->inferred_from = current_sentence;
 	new_i->drawn_during_stage = World::current_building_stage();
-	new_i->drawn_from_metadata = FALSE;
+	new_i->drawn_from_elsewhere = INFERENCE_DRAWN_FROM_SOURCE;
 	return new_i;
 }
 

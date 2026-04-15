@@ -62,6 +62,12 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	a special value reserved for testing). See Jira bug
 	[I7-2629](https://inform7.atlassian.net/browse/I7-2629).
 
+- Two new bibliographic variables now exist: `story serial code` and `project IFID`.
+	These are read-only, and are automatically set by Inform at compile time.
+	```
+	say "Hmm, the bar code in the lining of my jacket reads [project IFID].";
+	```
+
 - When releasing a story with a website, and a cover image which has alt-text
 	provided, that text is now used on the thumbnail cover images in the website.
 	(See Jira bug [I7-2615](https://inform7.atlassian.net/browse/I7-2615): the
@@ -163,6 +169,8 @@ external developers, which are periodically updated. In this release:
 	"Compilation error when an `Index map with` assertions refers to `level`"
 - Fix for Jira bug [I7-2657](https://inform7.atlassian.net/browse/I7-2657)
 	"Web release encodes naked ULX instead of blorb"
+- Fix for Jira bug [I7-2635](https://inform7.atlassian.net/browse/I7-2635)
+	"Error messages about nothing having properties are contradictory"
 - Fix for Jira bug [I7-2625](https://inform7.atlassian.net/browse/I7-2625)
 	"`use unabbreviated object names` isn't working"
 - Fix for Jira bug [I7-2619](https://inform7.atlassian.net/browse/I7-2619)
@@ -513,6 +521,11 @@ Similarly, [(IE-0042) Release along with separated resources](https://github.com
 
 - [I7-2679](https://inform7.atlassian.net/browse/I7-2679)
 	on smuggling `.mp3` sound files through the Release mechanism
+
+Similarly, [(IE-0043) Improved comparatives and superlatives](https://github.com/ganelson/inform-evolution/blob/main/proposals/0043-improved-comparatives-and-superlatives.md):
+
+- [I7-2595](https://inform7.atlassian.net/browse/I7-2595)
+	on comparatives/superlatives on a scene leading to problems or run-time errors
 
 ## Note about intest
 
