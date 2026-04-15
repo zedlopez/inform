@@ -1882,10 +1882,81 @@ To decide what number is the/-- screen height:
 To decide what number is the/-- screen width:
 	(- VM_ScreenWidth() -).
 
+@ Customising the status line.
+
+=
+Section 5 - The Status Window
+
+The status window table is a table-name that varies.
+The status window table variable translates into Inter as "status_window_table".
+
+To fill/redraw the/-- status bar/line/window with (new status table - a table-name), once only:
+	let old status window table be the status window table;
+	now the status window table is new status table;
+	redraw the status window;
+	if once only:
+		now the status window table is the old status window table;
+
+To set the status bar/line/window to (rows - number) row/rows:
+	(- VM_StatusLineHeight({rows}); -).
+
+To move the status bar/line/window cursor to row (row - number) and/-- column/col (col - number):
+	(- VM_MoveCursorInStatusLine({row}, {col}); -).
+
+To redraw the/-- status bar/line/window:
+	(- DrawStatusLine(); -).
+
+@ Keyboard input phrases.
+
+=
+Section 6 - Keyboard Input
+
+To decide what unicode character is the code of the next pressed key:
+	(- VM_KeyChar() -).
+
+To prompt the player to enter a line of text:
+	(- VM_ReadKeyboard(buffer2); -).
+
+To say the/-- player's text input:
+	(- VM_PrintBuffer(buffer2); -).
+
+@ Function keys.
+Keyboard function keys are defined as unicode character constants. A mix of
+actual control codes, unicode characters which kind of represent the keys, and
+private use area codes.
+
+=
+
+The delete key is always unicode U+0008. [Both the Z-Machine and Glulx standards call it the delete key, even though backspace is perhaps more accurate.]
+The down key is always unicode U+2193.
+The end key is always unicode U+21F2.
+The escape key is always unicode U+001B.
+The f1 key is always unicode U+EF01.
+The f2 key is always unicode U+EF02.
+The f3 key is always unicode U+EF03.
+The f4 key is always unicode U+EF04.
+The f5 key is always unicode U+EF05.
+The f6 key is always unicode U+EF06.
+The f7 key is always unicode U+EF07.
+The f8 key is always unicode U+EF08.
+The f9 key is always unicode U+EF09.
+The f10 key is always unicode U+EF0A.
+The f11 key is always unicode U+EF0B.
+The f12 key is always unicode U+EF0C.
+The home key is always unicode U+21F1.
+The left key is always unicode U+2190.
+The page down key is always unicode U+21DF.
+The page up key is always unicode U+21DE.
+The return key is always unicode U+000A.
+The right key is always unicode U+2192.
+The tab key is always unicode U+0009.
+The unknown key is always unicode U+FFFD.
+The up key is always unicode U+2191.
+
 @ Pausing the game.
 
 =
-Section 5 - Pausing the game
+Section 7 - Pausing the game
 
 [ Exclude navigation keys ]
 To wait for any key:
@@ -1922,81 +1993,6 @@ To pause the game/story:
 
 To stop the game/story abruptly:
 	(- quit; -).
-
-To show the/-- current quotation:
-	(- ClearBoxedText(); -).
-
-@ Keyboard input phrases.
-
-=
-Section 6 - Keyboard Input
-
-To decide what unicode character is the code of the next pressed key:
-	(- VM_KeyChar() -).
-
-To prompt the player to enter a line of text:
-	(- VM_ReadKeyboard(buffer2); -).
-
-To say the/-- player's text input:
-	(- VM_PrintBuffer(buffer2); -).
-
-
-@ Function keys.
-Keyboard function keys are defined as unicode character constants. A mix of
-actual control codes, unicode characters which kind of represent the keys, and
-private use area codes.
-
-=
-
-The delete key is always unicode U+0008. [Both the Z-Machine and Glulx standards call it the delete key, even though backspace is perhaps more accurate.]
-The down key is always unicode U+2193.
-The end key is always unicode U+21F2.
-The escape key is always unicode U+001B.
-The f1 key is always unicode U+EF01.
-The f2 key is always unicode U+EF02.
-The f3 key is always unicode U+EF03.
-The f4 key is always unicode U+EF04.
-The f5 key is always unicode U+EF05.
-The f6 key is always unicode U+EF06.
-The f7 key is always unicode U+EF07.
-The f8 key is always unicode U+EF08.
-The f9 key is always unicode U+EF09.
-The f10 key is always unicode U+EF0A.
-The f11 key is always unicode U+EF0B.
-The f12 key is always unicode U+EF0C.
-The home key is always unicode U+21F1.
-The left key is always unicode U+2190.
-The page down key is always unicode U+21DF.
-The page up key is always unicode U+21DE.
-The return key is always unicode U+000A.
-The right key is always unicode U+2192.
-The tab key is always unicode U+0009.
-The unknown key is always unicode U+FFFD.
-The up key is always unicode U+2191.
-
-@ Customising the status line.
-
-=
-Section 7 - The Status Window
-
-To redraw the/-- status bar/line/window:
-	(- DrawStatusLine(); -).
-
-The status window table is a table-name that varies.
-The status window table variable translates into Inter as "status_window_table".
-
-To fill/redraw the/-- status bar/line/window with (new status table - a table-name), once only:
-	let old status window table be the status window table;
-	now the status window table is new status table;
-	redraw the status window;
-	if once only:
-		now the status window table is the old status window table;
-
-To move the status bar/line/window cursor to row (row - number) and/-- column/col (col - number):
-	(- VM_MoveCursorInStatusLine({row}, {col}); -).
-
-To set the status bar/line/window to (rows - number) row/rows:
-	(- VM_StatusLineHeight({rows}); -).
 
 @h External Files.
 Inform has a quirky level of support for file-handling, which comes out of what
