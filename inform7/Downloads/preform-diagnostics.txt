@@ -1,13 +1,13 @@
 <preform-nonterminal> internal nti 7 constraint (none) extremes [1, 1]
 
-<if-start-of-paragraph> internal hits 1506/9368 nti 8 constraint (none) extremes [0, 0]
+<if-start-of-paragraph> internal hits 1506/9370 nti 8 constraint (none) extremes [0, 0]
 
-<if-not-cap> internal hits 4588/9346 nti 9 constraint (none) extremes [0, 0]
+<if-not-cap> internal hits 4600/9370 nti 9 constraint (none) extremes [0, 0]
 
-<balanced-text> hits 794/1588 nti 10 constraint (none) extremes [1, infinity)
+<balanced-text> hits 798/1596 nti 10 constraint (none) extremes [1, infinity)
     English:
         {......} 
-          (hits 794/794) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 798/798) (matched long text) constraint (none) extremes [1, infinity)
 
 <list-comma-division> hits 6/28 nti 15 constraint DS = {15} extremes [3, infinity)
     English:
@@ -16,7 +16,7 @@
 
 <any-integer> internal nti 11 constraint (none) extremes [1, 1]
 
-<quoted-text> internal hits 3032/27530 nti 12 constraint (none) extremes [1, 1]
+<quoted-text> internal hits 3032/27542 nti 12 constraint (none) extremes [1, 1]
 
 <quoted-text-with-subs> internal nti 13 constraint (none) extremes [1, 1]
 
@@ -24,7 +24,7 @@
 
 <empty-text> internal nti 15 constraint (none) extremes [1, 1]
 
-<if-start-of-source-text> internal hits 2/14868 nti 16 constraint (none) extremes [0, 0]
+<if-start-of-source-text> internal hits 2/14872 nti 16 constraint (none) extremes [0, 0]
 
 <list-or-division> hits 0/18 nti 16 constraint DS = {16} extremes [3, infinity)
     English:
@@ -33,7 +33,7 @@
         {......} _or {......} 
           (hits 0/9) constraint DS = {16} extremes [3, infinity)
 
-<documentation-symbol-tail> hits 498/3872 nti 18 constraint DS = {17, 18} extremes [6, infinity)
+<documentation-symbol-tail> hits 498/3884 nti 18 constraint DS = {17, 18} extremes [6, infinity)
     English:
         {...} ( <documentation-symbol> ) 
           (hits 463/1115) (matched long text) constraint DS = {17, 18} extremes [6, infinity)
@@ -4709,7 +4709,7 @@
         twelfth 
           constraint CS = {27} extremes [1, 1]
 
-<cardinal-number> internal hits 218/24832 nti r0 constraint CS = {r0} extremes [1, 1]
+<cardinal-number> internal hits 218/24840 nti r0 constraint CS = {r0} extremes [1, 1]
 
 <ordinal-number> internal nti r1 constraint CS = {r1} extremes [1, 1]
 
@@ -4717,12 +4717,12 @@
 
 <adjective-name> internal hits 0/278 nti 6 constraint (none) extremes [1, infinity)
 
-<optional-definite-article> hits 39331/78662 nti 28 constraint (none) extremes [1, infinity)
+<optional-definite-article> hits 39334/78668 nti 28 constraint (none) extremes [1, infinity)
     English:
         <definite-article> {...} 
-          (hits 7839/39331) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 7839/39334) (matched long text) constraint (none) extremes [2, infinity)
         {...} 
-          (hits 31492/31492) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 31495/31495) (matched long text) constraint (none) extremes [1, infinity)
 
 <optional-indefinite-article> nti 29 constraint (none) extremes [1, infinity)
     English:
@@ -4731,23 +4731,23 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<optional-article> hits 98194/196388 nti 30 constraint (none) extremes [1, infinity)
+<optional-article> hits 98207/196414 nti 30 constraint (none) extremes [1, infinity)
     English:
         <article> {...} 
-          (hits 15845/55471) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 15845/55484) (matched long text) constraint (none) extremes [2, infinity)
         {...} 
-          (hits 82349/82349) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 82362/82362) (matched long text) constraint (none) extremes [1, infinity)
 
 <compulsory-article> nti 6 constraint (none) extremes [2, infinity)
     English:
         <article> {...} 
           constraint (none) extremes [2, infinity)
 
-<article> internal hits 16446/116064 nti r2 constraint (none) extremes [1, 1]
+<article> internal hits 16446/116096 nti r2 constraint (none) extremes [1, 1]
 
-<definite-article> internal hits 19920/253704 nti r2 constraint (none) extremes [1, 1]
+<definite-article> internal hits 19923/253756 nti r2 constraint (none) extremes [1, 1]
 
-<indefinite-article> internal hits 2380/45970 nti r2 constraint (none) extremes [1, 1]
+<indefinite-article> internal hits 2380/46002 nti r2 constraint (none) extremes [1, 1]
 
 <definite-article-table> nti r2 constraint CS = {r2} extremes [6, 6]
     English:
@@ -4808,10 +4808,10 @@
         other than 
           constraint CS = {28} extremes [2, 2]
 
-<negated-clause> hits 16/23196 nti 29 constraint DS = {29} extremes [2, infinity)
+<negated-clause> hits 16/23204 nti 29 constraint DS = {29} extremes [2, infinity)
     English:
         not {...} 
-          (hits 16/6089) (matched long text) constraint DS = {29} extremes [2, infinity)
+          (hits 16/6093) (matched long text) constraint DS = {29} extremes [2, infinity)
 
 <determination-of> hits 115/230 nti 30 constraint (none) extremes [1, infinity)
     English:
@@ -4822,7 +4822,7 @@
         {...} 
           (hits 115/115) (matched: 'dvd carried by the person asked') constraint (none) extremes [1, infinity)
 
-<excluded-from-determiners> hits 0/22898 nti 6 constraint DS = {6} extremes [2, infinity)
+<excluded-from-determiners> hits 0/22906 nti 6 constraint DS = {6} extremes [2, infinity)
     English:
         no one {***} 
           (hits 0/8447) constraint DS = {6} extremes [2, infinity)
@@ -4896,7 +4896,7 @@
 
 <copular-verb> internal hits 16/128 nti 7 constraint FS = {7} extremes [1, infinity)
 
-<negated-noncopular-verb-present> internal hits 1/13088 nti 8 constraint FS = {8} extremes [1, infinity)
+<negated-noncopular-verb-present> internal hits 1/13098 nti 8 constraint FS = {8} extremes [1, infinity)
 
 <universal-verb> internal hits 0/2750 nti 9 constraint FS = {9} extremes [1, infinity)
 
@@ -4918,9 +4918,9 @@
 
 <copular-preposition> internal hits 664/21016 nti 13 constraint DS = {13} extremes [1, infinity)
 
-<permitted-preposition> internal hits 262/8872 nti 14 constraint DS = {14} extremes [1, infinity)
+<permitted-preposition> internal hits 262/8884 nti 14 constraint DS = {14} extremes [1, infinity)
 
-<certainty> hits 93/5028 nti 14 constraint CS = {14} extremes [1, 1]
+<certainty> hits 93/5030 nti 14 constraint CS = {14} extremes [1, 1]
     English:
         always/certainly 
           (hits 35/710) (matched: 'always') constraint CS = {14} extremes [1, 1]
@@ -5000,10 +5000,10 @@
         <cardinal-number> 
           constraint CS = {r0} extremes [1, 1]
 
-<np-unparsed> hits 3606/7212 nti 22 constraint (none) extremes [1, infinity)
+<np-unparsed> hits 3609/7218 nti 22 constraint (none) extremes [1, infinity)
     English:
         {...} 
-          (hits 3606/3606) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 3609/3609) (matched long text) constraint (none) extremes [1, infinity)
 
 <np-unparsed-bal> hits 68/136 nti 23 constraint (none) extremes [0, infinity)
     English:
@@ -5012,21 +5012,21 @@
         <np-unparsed> 
           (hits 68/68) (matched: 'fixed in place') constraint (none) extremes [1, infinity)
 
-<np-existential> hits 33/163598 nti 20 constraint CS = {20} extremes [1, 1]
+<np-existential> hits 33/163782 nti 20 constraint CS = {20} extremes [1, 1]
     English:
         there 
-          (hits 33/611) (matched: 'there') constraint CS = {20} extremes [1, 1]
+          (hits 33/612) (matched: 'there') constraint CS = {20} extremes [1, 1]
 
-<np-articled> hits 2355/4710 nti 24 constraint (none) extremes [1, infinity)
+<np-articled> hits 2358/4716 nti 24 constraint (none) extremes [1, infinity)
     English:
         {...} 
-          (hits 99/2355) (matched: '"(considering the first sixteen objects only)[command clarification break]" ( a )') constraint (none) extremes [1, infinity)
+          (hits 99/2358) (matched: '"(considering the first sixteen objects only)[command clarification break]" ( a )') constraint (none) extremes [1, infinity)
         <if-not-cap> <indefinite-article> <np-unparsed> 
-          (hits 359/1594) (matched: 'an action based rule producing nothing that varies') constraint (none) extremes [2, infinity)
+          (hits 359/1597) (matched: 'an action based rule producing nothing that varies') constraint (none) extremes [2, infinity)
         <if-not-cap> <definite-article> <np-unparsed> 
-          (hits 756/1235) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 758/1238) (matched long text) constraint (none) extremes [2, infinity)
         <np-unparsed> 
-          (hits 1141/1141) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 1142/1142) (matched long text) constraint (none) extremes [1, infinity)
 
 <np-pronoun-or-articled> hits 109/218 nti 25 constraint (none) extremes [1, infinity)
     English:
@@ -5080,44 +5080,44 @@
         _{,/or} <np-alternative-list> 
           (hits 62/74) (matched: 'or unmarked for listing') constraint DS = {22} extremes [2, infinity)
 
-<np-as-subject> hits 536/1072 nti 29 constraint (none) extremes [1, infinity)
+<np-as-subject> hits 537/1074 nti 29 constraint (none) extremes [1, infinity)
     English:
         <np-existential> 
           constraint CS = {20} extremes [1, 1]
         <if-not-cap> <np-relative-phrase-limited> 
-          (hits 0/536) constraint (none) extremes [1, infinity)
+          (hits 0/537) constraint (none) extremes [1, infinity)
         <np-nonrelative> 
-          (hits 536/536) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 537/537) (matched long text) constraint (none) extremes [1, infinity)
 
-<np-as-object> hits 657/1314 nti 30 constraint (none) extremes [1, infinity)
+<np-as-object> hits 658/1316 nti 30 constraint (none) extremes [1, infinity)
     English:
         <if-not-cap> <np-relative-phrase-unlimited> 
-          (hits 0/657) constraint (none) extremes [1, infinity)
+          (hits 0/658) constraint (none) extremes [1, infinity)
         <np-nonrelative> 
-          (hits 657/657) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 658/658) (matched long text) constraint (none) extremes [1, infinity)
 
-<np-relative-phrase-limited> hits 0/1072 nti 6 constraint (none) extremes [1, infinity)
+<np-relative-phrase-limited> hits 0/1074 nti 6 constraint (none) extremes [1, infinity)
     English:
         <np-relative-phrase-implicit> 
           (hits 0/8) constraint CS = {23} extremes [1, 2]
         <probable-participle> {***} 
-          (hits 0/528) constraint (none) extremes [1, infinity)
+          (hits 0/529) constraint (none) extremes [1, infinity)
         <np-relative-phrase-explicit> 
-          (hits 0/425) constraint DS = {14} extremes [2, infinity)
+          (hits 0/426) constraint DS = {14} extremes [2, infinity)
 
-<np-relative-phrase-unlimited> hits 0/2196 nti 7 constraint (none) extremes [1, infinity)
+<np-relative-phrase-unlimited> hits 0/2206 nti 7 constraint (none) extremes [1, infinity)
     English:
         <np-relative-phrase-implicit> 
           (hits 0/2) constraint CS = {23} extremes [1, 2]
         <np-relative-phrase-explicit> 
-          (hits 0/1098) constraint (none) extremes [1, infinity)
+          (hits 0/1103) constraint (none) extremes [1, infinity)
 
 <non-participles> hits 104/1248 nti 30 constraint CS = {30} extremes [1, 1]
     English:
         thing/something 
           (hits 104/104) (matched: 'thing') constraint CS = {30} extremes [1, 1]
 
-<probable-participle> internal hits 520/25652 nti 8 constraint (none) extremes [1, 1]
+<probable-participle> internal hits 520/25662 nti 8 constraint (none) extremes [1, 1]
 
 <np-relative-phrase-implicit> hits 0/20 nti 23 constraint CS = {23} extremes [1, 2]
     English:
@@ -5128,53 +5128,53 @@
         initially carried 
           (hits 0/2) constraint CS = {23} extremes [2, 2]
 
-<np-relative-phrase-explicit> hits 0/3046 nti 29 constraint DS = {14} extremes [2, infinity)
+<np-relative-phrase-explicit> hits 0/3058 nti 29 constraint DS = {14} extremes [2, infinity)
     English:
         <permitted-preposition> _,/and {...} 
-          (hits 0/625) constraint DS = {14, 29} extremes [3, infinity)
+          (hits 0/630) constraint DS = {14, 29} extremes [3, infinity)
         <permitted-preposition> _,/and 
-          (hits 0/683) constraint DS = {14, 29} extremes [2, infinity)
+          (hits 0/688) constraint DS = {14, 29} extremes [2, infinity)
         <permitted-preposition> <np-nonrelative> 
-          (hits 0/972) constraint DS = {14} extremes [2, infinity)
+          (hits 0/977) constraint DS = {14} extremes [2, infinity)
 
-<np-nonrelative> hits 1660/3320 nti 28 constraint (none) extremes [1, infinity)
+<np-nonrelative> hits 1666/3332 nti 28 constraint (none) extremes [1, infinity)
     English:
         {...} 
-          (hits 184/1660) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 186/1666) (matched long text) constraint (none) extremes [1, infinity)
         <np-operand> {called} <np-articled-bal> 
-          (hits 61/679) (matched long text) constraint DS = {28} extremes [1, infinity)
+          (hits 61/682) (matched long text) constraint DS = {28} extremes [1, infinity)
         <np-operand> <np-with-or-having-tail> 
-          (hits 0/250) constraint DS = {25} extremes [2, infinity)
+          (hits 0/251) constraint DS = {25} extremes [2, infinity)
         <np-operand> <np-and-tail> 
-          (hits 92/609) (matched long text) constraint DS = {26} extremes [1, infinity)
+          (hits 93/613) (matched long text) constraint DS = {26} extremes [1, infinity)
         <np-kind-phrase> 
-          (hits 38/448) (matched: 'a kind of supporter that is portable') constraint DS = {27} extremes [1, infinity)
+          (hits 38/450) (matched: 'a kind of supporter that is portable') constraint DS = {27} extremes [1, infinity)
         <agent-pronoun> 
           (hits 4/361) (matched: 'it') constraint (none) extremes [1, 1]
         <here-pronoun> 
           (hits 0/357) constraint (none) extremes [1, 1]
         <np-articled> 
-          (hits 1281/1281) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 1284/1284) (matched long text) constraint (none) extremes [1, infinity)
 
-<np-operand> hits 467/934 nti 9 constraint (none) extremes [0, infinity)
+<np-operand> hits 471/942 nti 9 constraint (none) extremes [0, infinity)
     English:
         <if-not-cap> <np-relative-phrase-unlimited> 
-          (hits 0/467) constraint (none) extremes [1, infinity)
+          (hits 0/471) constraint (none) extremes [1, infinity)
         ^<balanced-text> 
-          (hits 0/467) constraint (none) extremes [0, infinity)
+          (hits 0/471) constraint (none) extremes [0, infinity)
         <np-nonrelative> 
-          (hits 467/467) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 471/471) (matched long text) constraint (none) extremes [1, infinity)
 
-<np-with-or-having-tail> hits 0/8976 nti 25 constraint DS = {25} extremes [2, infinity)
+<np-with-or-having-tail> hits 0/8992 nti 25 constraint DS = {25} extremes [2, infinity)
     English:
         it with action {***} 
-          (hits 0/3778) constraint DS = {25} extremes [3, infinity)
+          (hits 0/3782) constraint DS = {25} extremes [3, infinity)
         {with/having} (/) {***} 
-          (hits 0/3889) constraint DS = {25} extremes [2, infinity)
+          (hits 0/3893) constraint DS = {25} extremes [2, infinity)
         {with/having} {...} ( <response-letter> ) 
-          (hits 0/3518) constraint DS = {25} extremes [5, infinity)
+          (hits 0/3522) constraint DS = {25} extremes [5, infinity)
         {with/having} <np-new-property-list> 
-          (hits 0/3889) constraint DS = {25} extremes [2, infinity)
+          (hits 0/3893) constraint DS = {25} extremes [2, infinity)
 
 <np-new-property-list> nti 10 constraint (none) extremes [1, infinity)
     English:
@@ -5197,57 +5197,57 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<np-and-tail> hits 184/4142 nti 26 constraint DS = {26} extremes [1, infinity)
+<np-and-tail> hits 186/4166 nti 26 constraint DS = {26} extremes [1, infinity)
     English:
         , _{and} <np-operand> 
-          (hits 10/1244) (matched: ', and didn't understand addressee's last name error') constraint DS = {26} extremes [2, infinity)
+          (hits 10/1249) (matched: ', and didn't understand addressee's last name error') constraint DS = {26} extremes [2, infinity)
         _{,/and} <np-operand> 
-          (hits 174/1420) (matched long text) constraint DS = {26} extremes [1, infinity)
+          (hits 176/1426) (matched long text) constraint DS = {26} extremes [1, infinity)
 
-<np-kind-phrase> hits 38/896 nti 12 constraint DS = {27} extremes [1, infinity)
+<np-kind-phrase> hits 38/900 nti 12 constraint DS = {27} extremes [1, infinity)
     English:
         <indefinite-article> <np-kind-phrase-unarticled> 
-          (hits 38/448) (matched: 'a kind of supporter that is portable') constraint DS = {27} extremes [2, infinity)
+          (hits 38/450) (matched: 'a kind of supporter that is portable') constraint DS = {27} extremes [2, infinity)
         <np-kind-phrase-unarticled> 
-          (hits 0/410) constraint DS = {27} extremes [1, infinity)
+          (hits 0/412) constraint DS = {27} extremes [1, infinity)
 
-<np-kind-phrase-unarticled> hits 38/916 nti 27 constraint DS = {27} extremes [1, infinity)
+<np-kind-phrase-unarticled> hits 38/920 nti 27 constraint DS = {27} extremes [1, infinity)
     English:
         kind/kinds 
           constraint CS = {27} extremes [1, 1]
         kind/kinds of <np-operand> 
-          (hits 38/458) (matched: 'kind of supporter that is portable') constraint DS = {27} extremes [2, infinity)
+          (hits 38/460) (matched: 'kind of supporter that is portable') constraint DS = {27} extremes [2, infinity)
 
 <sentence> internal nti 13 constraint (none) extremes [1, infinity)
 
-<sentence-without-occurrences> internal hits 1560/3120 nti 14 constraint (none) extremes [1, infinity)
+<sentence-without-occurrences> internal hits 1561/3122 nti 14 constraint (none) extremes [1, infinity)
 
-<pre-verb-certainty> hits 0/3180 nti 15 constraint DS = {14} extremes [2, infinity)
+<pre-verb-certainty> hits 0/3182 nti 15 constraint DS = {14} extremes [2, infinity)
     English:
         {...} <certainty> 
-          (hits 0/1168) constraint DS = {14} extremes [2, infinity)
+          (hits 0/1169) constraint DS = {14} extremes [2, infinity)
 
-<post-verb-certainty> hits 93/3180 nti 16 constraint DS = {14} extremes [2, infinity)
+<post-verb-certainty> hits 93/3182 nti 16 constraint DS = {14} extremes [2, infinity)
     English:
         <certainty> {...} 
           (hits 93/1346) (matched: 'usually table of general chitchat') constraint DS = {14} extremes [2, infinity)
 
-<rc-marker> hits 837/30762 nti 6 constraint CS = {6} extremes [1, 1]
+<rc-marker> hits 837/30764 nti 6 constraint CS = {6} extremes [1, 1]
     English:
         which/who/that 
           (hits 837/9442) (matched: 'which') constraint CS = {6} extremes [1, 1]
 
-<pre-verb-rc-marker> hits 3/3152 nti 17 constraint DS = {6} extremes [2, infinity)
+<pre-verb-rc-marker> hits 3/3154 nti 17 constraint DS = {6} extremes [2, infinity)
     English:
         {...} <rc-marker> 
-          (hits 3/1067) (matched: 'the asking which') constraint DS = {6} extremes [2, infinity)
+          (hits 3/1068) (matched: 'the asking which') constraint DS = {6} extremes [2, infinity)
 
 <phrase-with-calling> nti 7 constraint DS = {7} extremes [3, infinity)
     English:
         {...} called {...} 
           constraint DS = {7} extremes [3, infinity)
 
-<np-x-of-y> hits 199/9662 nti 8 constraint DS = {8} extremes [2, infinity)
+<np-x-of-y> hits 199/9676 nti 8 constraint DS = {8} extremes [2, infinity)
     English:
         of {...} 
           (hits 199/2591) (matched long text) constraint DS = {8} extremes [2, infinity)
@@ -5270,7 +5270,7 @@
         abstract object 
           (hits 1/1) (matched: 'abstract object') constraint CS = {10} extremes [2, 2]
 
-<if-parsing-phrase-tokens> internal hits 2906/46556 nti 18 constraint (none) extremes [0, 0]
+<if-parsing-phrase-tokens> internal hits 2906/46576 nti 18 constraint (none) extremes [0, 0]
 
 <k-kind-prototype> internal hits 219/438 nti 19 constraint (none) extremes [1, infinity)
 
@@ -5296,18 +5296,18 @@
         <k-kind> 
           (hits 5/5) (matched: 'value of kind k') constraint (none) extremes [1, infinity)
 
-<k-kind> hits 6260/111402 nti r5 constraint (none) extremes [1, infinity)
+<k-kind> hits 6265/111432 nti r5 constraint (none) extremes [1, infinity)
     English:
         ( <k-kind> ) 
           (hits 0/2455) constraint DS = {r5} & CW = {r2, r5} extremes [3, infinity)
         ^<if-parsing-phrase-tokens> <k-kind-variable> 
-          (hits 1592/12435) (matched: 'k') constraint CW = {r2, r5} extremes [1, infinity)
+          (hits 1592/12440) (matched: 'k') constraint CW = {r2, r5} extremes [1, infinity)
         <if-parsing-phrase-tokens> <k-variable-definition> 
-          (hits 211/10843) (matched: 'sayable value of kind k') constraint CW = {r2, r5} extremes [1, infinity)
+          (hits 211/10848) (matched: 'sayable value of kind k') constraint CW = {r2, r5} extremes [1, infinity)
         <k-base-kind> 
-          (hits 4053/10632) (matched: 'an ice cream cone') constraint CW = {r2, r5} extremes [1, infinity)
+          (hits 4058/10637) (matched: 'an ice cream cone') constraint CW = {r2, r5} extremes [1, infinity)
         <k-irregular-kind-construction> 
-          (hits 2/17661) (matched: 'object-based rulebook') constraint DS = {r5} extremes [2, infinity)
+          (hits 2/17664) (matched: 'object-based rulebook') constraint DS = {r5} extremes [2, infinity)
         <k-kind-construction> 
           (hits 402/6577) (matched long text) constraint CW = {r2, r5} extremes [1, infinity)
 
@@ -5325,9 +5325,9 @@
         <k-kind-of-kind> of kind <k-formal-variable> 
           (hits 85/338) (matched: 'sayable value of kind k') constraint DS = {r5} & CW = {r2, r5} extremes [4, infinity)
 
-<k-base-kind> internal hits 4053/21264 nti r5 constraint CW = {r2, r5} extremes [1, infinity)
+<k-base-kind> internal hits 4058/21274 nti r5 constraint CW = {r2, r5} extremes [1, infinity)
 
-<k-irregular-kind-construction> hits 2/35322 nti r5 constraint DS = {r5} extremes [2, infinity)
+<k-irregular-kind-construction> hits 2/35328 nti r5 constraint DS = {r5} extremes [2, infinity)
     English:
         indexed text 
           (hits 0/1141) constraint CS = {r5} extremes [2, 2]
@@ -5401,7 +5401,7 @@
         <k-kind> 
           (hits 106/231) (matched: 'sayable value') constraint (none) extremes [1, infinity)
 
-<k-kind-variable> internal hits 1592/21964 nti r5 constraint CW = {r2, r5} extremes [1, 1]
+<k-kind-variable> internal hits 1592/21974 nti r5 constraint CW = {r2, r5} extremes [1, 1]
 
 <k-formal-variable> internal hits 232/1616 nti r5 constraint CW = {r2, r5} extremes [1, 1]
 
@@ -5466,12 +5466,12 @@
 
 <natural-language> internal nti 23 constraint (none) extremes [1, infinity)
 
-<dividing-sentence> hits 235/11728 nti 24 constraint DW = {13, 14} extremes [2, infinity)
+<dividing-sentence> hits 235/11730 nti 24 constraint DW = {13, 14} extremes [2, infinity)
     English:
         <if-start-of-paragraph> <heading> 
-          (hits 227/4670) (matched long text) constraint DS = {13} extremes [2, infinity)
+          (hits 227/4671) (matched long text) constraint DS = {13} extremes [2, infinity)
         <extension-end-marker-sentence> 
-          (hits 8/4478) (matched long text) constraint DS = {14} extremes [3, infinity)
+          (hits 8/4479) (matched long text) constraint DS = {14} extremes [3, infinity)
 
 <heading> hits 227/2984 nti 13 constraint DS = {13} extremes [2, infinity)
     English:
@@ -5494,55 +5494,55 @@
         section {...} 
           (hits 172/1437) (matched long text) constraint DS = {13} extremes [2, infinity)
 
-<extension-end-marker-sentence> hits 8/8956 nti 14 constraint DS = {14} extremes [3, infinity)
+<extension-end-marker-sentence> hits 8/8958 nti 14 constraint DS = {14} extremes [3, infinity)
     English:
         {...} begin/begins here 
-          (hits 4/4478) (matched long text) constraint DS = {14} extremes [3, infinity)
+          (hits 4/4479) (matched long text) constraint DS = {14} extremes [3, infinity)
         {...} end/ends here 
-          (hits 4/4474) (matched: 'basic inform ends here') constraint DS = {14} extremes [3, infinity)
+          (hits 4/4475) (matched: 'basic inform ends here') constraint DS = {14} extremes [3, infinity)
 
-<structural-sentence> hits 32/14868 nti 16 constraint (none) extremes [1, infinity)
+<structural-sentence> hits 32/14872 nti 16 constraint (none) extremes [1, infinity)
     English:
         <if-start-of-source-text> <quoted-text> 
           (hits 0/20) constraint (none) extremes [1, 1]
         <if-start-of-source-text> <quoted-text> {...} 
-          (hits 0/7414) constraint (none) extremes [2, infinity)
+          (hits 0/7416) constraint (none) extremes [2, infinity)
         <language-modifying-sentence> 
-          (hits 0/7247) constraint DS = {15} extremes [4, infinity)
+          (hits 0/7249) constraint DS = {15} extremes [4, infinity)
         * 
           constraint CS = {16} extremes [1, 1]
         * <quoted-text-without-subs> 
           constraint DS = {16} extremes [2, 2]
         <if-start-of-paragraph> table {...} 
-          (hits 14/7355) (matched long text) constraint DS = {16} extremes [2, infinity)
+          (hits 14/7357) (matched long text) constraint DS = {16} extremes [2, infinity)
         <if-start-of-paragraph> equation {...} 
-          (hits 0/7341) constraint DS = {16} extremes [2, infinity)
+          (hits 0/7343) constraint DS = {16} extremes [2, infinity)
         include the {...} by {...} 
-          (hits 0/7270) constraint DS = {16} extremes [5, infinity)
+          (hits 0/7272) constraint DS = {16} extremes [5, infinity)
         include {...} by {...} 
-          (hits 18/7341) (matched long text) constraint DS = {16} extremes [4, infinity)
+          (hits 18/7343) (matched long text) constraint DS = {16} extremes [4, infinity)
         include (- {...} 
-          (hits 0/7323) constraint DS = {16} extremes [3, infinity)
+          (hits 0/7325) constraint DS = {16} extremes [3, infinity)
 
-<comma-divisible-sentence> hits 9/3194 nti 17 constraint DS = {17} extremes [2, infinity)
+<comma-divisible-sentence> hits 9/3196 nti 17 constraint DS = {17} extremes [2, infinity)
     English:
         instead of {...} 
-          (hits 0/1405) constraint DS = {17} extremes [3, infinity)
+          (hits 0/1406) constraint DS = {17} extremes [3, infinity)
         every turn {***} 
-          (hits 1/1405) (matched: 'every turn rules is a rulebook') constraint DS = {17} extremes [2, infinity)
+          (hits 1/1406) (matched: 'every turn rules is a rulebook') constraint DS = {17} extremes [2, infinity)
         before {...} 
-          (hits 2/1404) (matched long text) constraint DS = {17} extremes [2, infinity)
+          (hits 2/1405) (matched long text) constraint DS = {17} extremes [2, infinity)
         after {...} 
-          (hits 2/1402) (matched long text) constraint DS = {17} extremes [2, infinity)
+          (hits 2/1403) (matched long text) constraint DS = {17} extremes [2, infinity)
         when {...} 
-          (hits 4/1400) (matched: 'when scene begins is a scene based rulebook') constraint DS = {17} extremes [2, infinity)
+          (hits 4/1401) (matched: 'when scene begins is a scene based rulebook') constraint DS = {17} extremes [2, infinity)
 
-<language-modifying-sentence> hits 0/14494 nti 15 constraint DS = {15} extremes [4, infinity)
+<language-modifying-sentence> hits 0/14498 nti 15 constraint DS = {15} extremes [4, infinity)
     English:
         include (- {###} in the preform grammar 
           (hits 0/151) constraint DS = {15} extremes [7, 7]
         use {...} language element/elements 
-          (hits 0/7247) constraint DS = {15} extremes [4, infinity)
+          (hits 0/7249) constraint DS = {15} extremes [4, infinity)
 
 <heading-qualifier> hits 36/508 nti 23 constraint DS = {23} extremes [2, infinity)
     English:
@@ -5967,12 +5967,12 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<plural-sentence-subject> hits 4/1876 nti 26 constraint DS = {26} extremes [3, infinity)
+<plural-sentence-subject> hits 4/1878 nti 26 constraint DS = {26} extremes [3, infinity)
     English:
         <article> plural of <np-articled> 
-          (hits 4/524) (matched: 'the plural of person') constraint DS = {26} extremes [4, infinity)
+          (hits 4/525) (matched: 'the plural of person') constraint DS = {26} extremes [4, infinity)
         plural of <np-articled> 
-          (hits 0/685) constraint DS = {26} extremes [3, infinity)
+          (hits 0/686) constraint DS = {26} extremes [3, infinity)
 
 <translation-target-language> nti 11 constraint (none) extremes [1, infinity)
     English:
@@ -6000,12 +6000,12 @@
         inform 6 
           constraint CS = {28} extremes [2, 2]
 
-<defined-by-inter-sentence-object> hits 139/1302 nti 29 constraint DS = {29} extremes [5, infinity)
+<defined-by-inter-sentence-object> hits 139/1304 nti 29 constraint DS = {29} extremes [5, infinity)
     English:
         defined by inter as {...} 
           (hits 139/263) (matched long text) constraint DS = {29} extremes [5, infinity)
 
-<accessible-to-inter-sentence-object> hits 159/1620 nti 30 constraint DS = {30} extremes [5, infinity)
+<accessible-to-inter-sentence-object> hits 159/1622 nti 30 constraint DS = {30} extremes [5, infinity)
     English:
         accessible to inter as {...} 
           (hits 159/452) (matched: 'accessible to inter as STARTUP_RB') constraint DS = {30} extremes [5, infinity)
@@ -6176,7 +6176,7 @@
         with {...} 
           constraint DS = {17} extremes [2, infinity)
 
-<defined-by-sentence-object> hits 0/1024 nti 18 constraint DS = {18} extremes [3, infinity)
+<defined-by-sentence-object> hits 0/1026 nti 18 constraint DS = {18} extremes [3, infinity)
     English:
         defined by <np-as-object> 
           (hits 0/213) constraint DS = {18} extremes [3, infinity)
@@ -6211,26 +6211,26 @@
         not listed <np-unparsed> 
           (hits 1/1) (matched: 'not listed in any rulebook') constraint DS = {21} extremes [3, infinity)
 
-<nounphrase-rule-list> hits 133/1114 nti 17 constraint (none) extremes [1, infinity)
+<nounphrase-rule-list> hits 134/1118 nti 17 constraint (none) extremes [1, infinity)
     English:
         {...} 
-          (hits 36/557) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 37/559) (matched long text) constraint (none) extremes [1, infinity)
         <nounphrase-rule> <np-rule-tail> 
-          (hits 0/266) constraint DS = {22, 23} extremes [4, infinity)
+          (hits 0/267) constraint DS = {22, 23} extremes [4, infinity)
         <nounphrase-rule> 
-          (hits 97/452) (matched long text) constraint DS = {22} extremes [2, infinity)
+          (hits 97/453) (matched long text) constraint DS = {22} extremes [2, infinity)
 
-<np-rule-tail> hits 36/2960 nti 23 constraint DS = {23} extremes [2, infinity)
+<np-rule-tail> hits 37/2976 nti 23 constraint DS = {23} extremes [2, infinity)
     English:
         , _{and} <nounphrase-rule-list> 
-          (hits 2/644) (matched: ', and the story rights history') constraint DS = {23} extremes [3, infinity)
+          (hits 2/649) (matched: ', and the story rights history') constraint DS = {23} extremes [3, infinity)
         _{,/and} <nounphrase-rule-list> 
-          (hits 34/752) (matched long text) constraint DS = {23} extremes [2, infinity)
+          (hits 35/757) (matched long text) constraint DS = {23} extremes [2, infinity)
 
-<nounphrase-rule> hits 97/976 nti 22 constraint DS = {22} extremes [2, infinity)
+<nounphrase-rule> hits 97/980 nti 22 constraint DS = {22} extremes [2, infinity)
     English:
         {...} rule 
-          (hits 97/488) (matched long text) constraint DS = {22} extremes [2, infinity)
+          (hits 97/490) (matched long text) constraint DS = {22} extremes [2, infinity)
 
 <substitutes-for-sentence-object> nti 24 constraint DS = {22} extremes [2, infinity)
     English:
@@ -6322,7 +6322,7 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<bare-activity-sentence-object> hits 33/1868 nti 27 constraint DS = {27} extremes [1, 2]
+<bare-activity-sentence-object> hits 33/1870 nti 27 constraint DS = {27} extremes [1, 2]
     English:
         <article> activity 
           (hits 33/62) (matched: 'an activity') constraint DS = {27} extremes [2, 2]
@@ -6559,10 +6559,10 @@
         {...} relation 
           constraint DS = {29} extremes [2, infinity)
 
-<either-sentence-object> hits 0/1620 nti 30 constraint DS = {30} extremes [2, infinity)
+<either-sentence-object> hits 0/1622 nti 30 constraint DS = {30} extremes [2, infinity)
     English:
         either <np-unparsed> 
-          (hits 0/610) constraint DS = {30} extremes [2, infinity)
+          (hits 0/611) constraint DS = {30} extremes [2, infinity)
 
 <forbidden-property-owners> hits 0/90 nti 6 constraint (none) extremes [1, 2]
     English:
@@ -6607,7 +6607,7 @@
         <np-unparsed> 
           constraint (none) extremes [1, infinity)
 
-<new-verb-sentence-object> hits 74/2024 nti 29 constraint DS = {10} extremes [1, infinity)
+<new-verb-sentence-object> hits 74/2026 nti 29 constraint DS = {10} extremes [1, infinity)
     English:
         <indefinite-article> <new-verb-sentence-object-unarticled> 
           (hits 74/629) (matched: 'a verb') constraint DS = {10} extremes [2, infinity)
@@ -6701,14 +6701,14 @@
         {***} <probable-participle> 
           (hits 0/1) constraint (none) extremes [1, infinity)
 
-<new-adjective-sentence-object> hits 0/1620 nti 7 constraint DS = {17} extremes [1, infinity)
+<new-adjective-sentence-object> hits 0/1622 nti 7 constraint DS = {17} extremes [1, infinity)
     English:
         <indefinite-article> <new-adjective-sentence-object-unarticled> 
-          (hits 0/466) constraint DS = {17} extremes [2, infinity)
+          (hits 0/467) constraint DS = {17} extremes [2, infinity)
         <new-adjective-sentence-object-unarticled> 
-          (hits 0/476) constraint DS = {17} extremes [1, infinity)
+          (hits 0/477) constraint DS = {17} extremes [1, infinity)
 
-<new-adjective-sentence-object-unarticled> hits 0/1236 nti 17 constraint DS = {17} extremes [1, infinity)
+<new-adjective-sentence-object-unarticled> hits 0/1238 nti 17 constraint DS = {17} extremes [1, infinity)
     English:
         adjective 
           (hits 0/41) constraint CS = {17} extremes [1, 1]
@@ -6750,7 +6750,7 @@
         after 
           constraint CS = {19} extremes [1, 1]
 
-<licence-sentence-subject> hits 0/828 nti 22 constraint DW = {21, 22} & DS = {22} extremes [4, infinity)
+<licence-sentence-subject> hits 0/830 nti 22 constraint DW = {21, 22} & DS = {22} extremes [4, infinity)
     English:
         <article> <licence-detail> of/for this extension 
           (hits 0/61) constraint DS = {21, 22} extremes [5, 6]
@@ -6761,7 +6761,7 @@
         <licence-detail> of/for this story/project 
           constraint DS = {21, 22} & CW = {21, 22} extremes [4, 5]
         {...} of/for this story/project/extension 
-          (hits 0/169) constraint DS = {22} extremes [4, infinity)
+          (hits 0/170) constraint DS = {22} extremes [4, infinity)
 
 <licence-detail> nti 21 constraint CS = {21} extremes [1, 2]
     English:
@@ -6781,18 +6781,18 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<assertion-np-as-value> hits 822/2270 nti 23 constraint (none) extremes [1, infinity)
+<assertion-np-as-value> hits 823/2276 nti 23 constraint (none) extremes [1, infinity)
     English:
         variable 
           (hits 0/6) constraint CS = {23} extremes [1, 1]
         action of <s-explicit-action> 
           (hits 0/116) constraint DS = {23} extremes [3, infinity)
         <s-descriptive-type-expression> 
-          (hits 816/1135) (matched: 'action based rule producing nothing that varies') constraint (none) extremes [1, infinity)
+          (hits 817/1138) (matched: 'action based rule producing nothing that varies') constraint (none) extremes [1, infinity)
         <s-global-variable> 
-          (hits 6/319) (matched: 'language of play') constraint (none) extremes [1, infinity)
+          (hits 6/321) (matched: 'language of play') constraint (none) extremes [1, infinity)
 
-<grammatical-gender-marker> hits 0/652 nti 25 constraint DS = {24, 25} extremes [4, infinity)
+<grammatical-gender-marker> hits 0/656 nti 25 constraint DS = {24, 25} extremes [4, infinity)
     English:
         {...} ( <grammatical-gender-abbreviation> ) 
           (hits 0/17) constraint DS = {24, 25} extremes [4, infinity)
@@ -6806,7 +6806,7 @@
         f 
           constraint CS = {24} extremes [1, 1]
 
-<creation-problem-diagnosis> hits 0/684 nti 26 constraint (none) extremes [1, infinity)
+<creation-problem-diagnosis> hits 0/688 nti 26 constraint (none) extremes [1, infinity)
     English:
         <article> 
           (hits 0/77) constraint (none) extremes [1, 1]
@@ -6829,7 +6829,7 @@
         {...} when/while {...} 
           (hits 0/67) constraint DS = {26} extremes [3, infinity)
         {***} <quoted-text> {***} 
-          (hits 0/342) constraint (none) extremes [1, infinity)
+          (hits 0/344) constraint (none) extremes [1, infinity)
         condition 
           constraint CS = {26} extremes [1, 1]
         conditions 
@@ -7769,7 +7769,7 @@
         i6/inter condition <quoted-text-without-subs> says so ( {...} ) 
           (hits 1/29) (matched long text) constraint DS = {24} extremes [8, infinity)
 
-<s-literal> hits 2165/25596 nti 20 constraint (none) extremes [1, infinity)
+<s-literal> hits 2165/25604 nti 20 constraint (none) extremes [1, infinity)
     English:
         <cardinal-number> 
           (hits 183/183) (matched: '100') constraint CS = {r0} extremes [1, 1]
@@ -7787,9 +7787,9 @@
           (hits 1573/5919) (matched: 'Can be used for objects which are purely
         conceptual, like ideas, or are needed for internal book-keeping.') constraint (none) extremes [1, 1]
         <s-literal-real-number> 
-          (hits 11/10771) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
+          (hits 11/10775) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
         <s-literal-version-number> 
-          (hits 0/10760) constraint (none) extremes [1, infinity)
+          (hits 0/10764) constraint (none) extremes [1, infinity)
         <s-literal-truth-state> 
           (hits 100/487) (matched: 'false') constraint CS = {14} extremes [1, 1]
         <s-literal-list> 
@@ -7801,7 +7801,7 @@
         <s-literal-time> 
           (hits 0/3807) constraint DW = {17, 18, 19} extremes [2, 5]
         <s-literal-unit-notation> 
-          (hits 0/10633) constraint (none) extremes [1, infinity)
+          (hits 0/10637) constraint (none) extremes [1, infinity)
 
 <response-letter> internal hits 694/1388 nti 9 constraint (none) extremes [1, 1]
 
@@ -7820,9 +7820,9 @@
 
 <lp-group-name> internal nti 13 constraint (none) extremes [1, infinity)
 
-<s-literal-unit-notation> internal hits 0/21266 nti 14 constraint (none) extremes [1, infinity)
+<s-literal-unit-notation> internal hits 0/21274 nti 14 constraint (none) extremes [1, infinity)
 
-<s-literal-real-number> hits 11/21542 nti 12 constraint (none) extremes [1, infinity)
+<s-literal-real-number> hits 11/21550 nti 12 constraint (none) extremes [1, infinity)
     English:
         _pi 
           (hits 1/358) (matched: 'pi') constraint CS = {12} extremes [1, 1]
@@ -7833,11 +7833,11 @@
         minus infinity 
           (hits 4/38) (matched: 'minus infinity') constraint CS = {12} extremes [2, 2]
         <literal-real-in-digits> 
-          (hits 1/10761) (matched: '0.5') constraint (none) extremes [1, infinity)
+          (hits 1/10765) (matched: '0.5') constraint (none) extremes [1, infinity)
 
-<literal-real-in-digits> internal hits 1/21522 nti 15 constraint (none) extremes [1, infinity)
+<literal-real-in-digits> internal hits 1/21530 nti 15 constraint (none) extremes [1, infinity)
 
-<s-literal-version-number> internal hits 0/21520 nti 16 constraint (none) extremes [1, infinity)
+<s-literal-version-number> internal hits 0/21528 nti 16 constraint (none) extremes [1, infinity)
 
 <s-literal-time> hits 0/7614 nti 19 constraint DW = {17, 18, 19} extremes [2, 5]
     English:
@@ -7889,7 +7889,7 @@
         { } 
           (hits 0/94) constraint CS = {16} extremes [2, 2]
         { <list-conts> } 
-          (hits 0/2034) constraint DS = {16} extremes [3, infinity)
+          (hits 0/2036) constraint DS = {16} extremes [3, infinity)
 
 <list-conts> nti 15 constraint (none) extremes [1, infinity)
     English:
@@ -7917,7 +7917,7 @@
 
 <s-type-expression> internal hits 2024/5468 nti 28 constraint (none) extremes [1, infinity)
 
-<s-descriptive-type-expression> internal hits 1477/3610 nti 29 constraint (none) extremes [1, infinity)
+<s-descriptive-type-expression> internal hits 1478/3616 nti 29 constraint (none) extremes [1, infinity)
 
 <s-phrase-token-type> internal hits 646/1310 nti 30 constraint (none) extremes [1, infinity)
 
@@ -7932,14 +7932,14 @@
 
 <s-constant-action> internal hits 0/244 nti 8 constraint (none) extremes [1, infinity)
 
-<s-constant-value> hits 2459/22300 nti 6 constraint (none) extremes [1, infinity)
+<s-constant-value> hits 2459/22304 nti 6 constraint (none) extremes [1, infinity)
     English:
         <s-literal> 
-          (hits 1834/11150) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint (none) extremes [1, infinity)
+          (hits 1834/11152) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint (none) extremes [1, infinity)
         nothing 
           (hits 99/872) (matched: 'nothing') constraint CS = {6} extremes [1, 1]
         <s-miscellaneous-proper-noun> 
-          (hits 478/9217) (matched: 'printing the name of a dark room') constraint (none) extremes [1, infinity)
+          (hits 478/9219) (matched: 'printing the name of a dark room') constraint (none) extremes [1, infinity)
         <s-rulebook-outcome-name> outcome 
           (hits 0/3702) constraint DS = {6} extremes [2, infinity)
         <s-use-option-name> option 
@@ -7951,7 +7951,7 @@
         <s-rule-name> response ( <response-letter> ) 
           (hits 17/908) (matched: 'list writer internal rule response ( k )') constraint DS = {6} extremes [5, infinity)
 
-<s-miscellaneous-proper-noun> internal hits 478/18434 nti 9 constraint (none) extremes [1, infinity)
+<s-miscellaneous-proper-noun> internal hits 478/18438 nti 9 constraint (none) extremes [1, infinity)
 
 <s-named-constant> internal hits 0/244 nti 10 constraint (none) extremes [1, infinity)
 
@@ -7972,37 +7972,37 @@
 
 <s-property-name> internal hits 845/22770 nti 16 constraint (none) extremes [1, infinity)
 
-<s-adjective-list-as-desc> hits 714/23512 nti 17 constraint (none) extremes [1, infinity)
+<s-adjective-list-as-desc> hits 714/23518 nti 17 constraint (none) extremes [1, infinity)
     English:
         <s-adjective-list> 
-          (hits 714/11756) (matched: 'unmarked for listing') constraint (none) extremes [1, infinity)
+          (hits 714/11759) (matched: 'unmarked for listing') constraint (none) extremes [1, infinity)
 
-<s-adjective-list> hits 1521/29534 nti 27 constraint (none) extremes [1, infinity)
+<s-adjective-list> hits 1521/29548 nti 27 constraint (none) extremes [1, infinity)
     English:
         not <indefinite-article> <s-adjective-list-unarticled> 
           (hits 0/2903) constraint DS = {27} extremes [3, infinity)
         <indefinite-article> <s-adjective-list-unarticled> 
-          (hits 0/7464) constraint (none) extremes [2, infinity)
+          (hits 0/7469) constraint (none) extremes [2, infinity)
         <s-adjective-list-unarticled> 
-          (hits 1521/14767) (matched: 'marked for listing other') constraint (none) extremes [1, infinity)
+          (hits 1521/14774) (matched: 'marked for listing other') constraint (none) extremes [1, infinity)
 
-<s-adjective-list-unarticled> hits 1592/31838 nti 26 constraint (none) extremes [1, infinity)
+<s-adjective-list-unarticled> hits 1592/31852 nti 26 constraint (none) extremes [1, infinity)
     English:
         not <s-adjective> 
-          (hits 12/4314) (matched: 'not lockable') constraint DS = {26} extremes [2, infinity)
+          (hits 12/4315) (matched: 'not lockable') constraint DS = {26} extremes [2, infinity)
         <s-adjective> 
           (hits 1509/2372) (matched: 'unmarked for listing') constraint CS = {r3} extremes [1, infinity)
         not <s-adjective> <s-adjective-list-unarticled> 
           (hits 0/2891) constraint DS = {26} extremes [3, infinity)
         <s-adjective> <s-adjective-list-unarticled> 
-          (hits 71/7799) (matched: 'marked for listing other') constraint (none) extremes [2, infinity)
+          (hits 71/7804) (matched: 'marked for listing other') constraint (none) extremes [2, infinity)
 
-<s-adjective> internal hits 2325/20396 nti r3 constraint CS = {r3} extremes [1, infinity)
+<s-adjective> internal hits 2325/20406 nti r3 constraint CS = {r3} extremes [1, infinity)
 
-<s-qualifiable-noun> hits 3905/96720 nti 18 constraint (none) extremes [1, infinity)
+<s-qualifiable-noun> hits 3909/96744 nti 18 constraint (none) extremes [1, infinity)
     English:
         <k-kind> 
-          (hits 2754/48360) (matched: 'value of kind k') constraint (none) extremes [1, infinity)
+          (hits 2758/48372) (matched: 'value of kind k') constraint (none) extremes [1, infinity)
         <s-object-instance> 
           (hits 1151/2186) (matched: 'the alfred cralle pool hall') constraint CW = {r2, r4} extremes [1, infinity)
 
@@ -8016,55 +8016,55 @@
         <s-object-instance> 
           (hits 123/330) (matched: 'alfred cralle pool hall') constraint CW = {r2, r4} extremes [1, infinity)
 
-<s-applicable-adjective-list> hits 784/5510 nti 21 constraint (none) extremes [1, infinity)
+<s-applicable-adjective-list> hits 784/5518 nti 21 constraint (none) extremes [1, infinity)
     English:
         <s-adjective-list> 
-          (hits 784/2755) (matched: 'marked for listing other') constraint (none) extremes [1, infinity)
+          (hits 784/2759) (matched: 'marked for listing other') constraint (none) extremes [1, infinity)
 
-<s-description> hits 1751/41202 nti 22 constraint (none) extremes [1, infinity)
+<s-description> hits 1751/41206 nti 22 constraint (none) extremes [1, infinity)
     English:
         <s-desc-uncomposite-inner> 
-          (hits 1482/20601) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 1482/20603) (matched long text) constraint (none) extremes [1, infinity)
         <s-np-with-relative-clause> 
-          (hits 269/5187) (matched long text) constraint (none) extremes [3, infinity)
+          (hits 269/5189) (matched long text) constraint (none) extremes [3, infinity)
 
-<s-desc-uncomposite> hits 262/2364 nti 23 constraint (none) extremes [1, infinity)
+<s-desc-uncomposite> hits 262/2368 nti 23 constraint (none) extremes [1, infinity)
     English:
         <s-desc-uncomposite-inner> 
-          (hits 262/1182) (matched: 'thing ( called the item being printed )') constraint (none) extremes [1, infinity)
+          (hits 262/1184) (matched: 'thing ( called the item being printed )') constraint (none) extremes [1, infinity)
 
-<s-desc-uncomposite-inner> hits 1744/43566 nti 28 constraint (none) extremes [1, infinity)
+<s-desc-uncomposite-inner> hits 1744/43574 nti 28 constraint (none) extremes [1, infinity)
     English:
         <s-desc-uncalled> ( called <s-calling-name> ) 
           (hits 108/1610) (matched long text) constraint DS = {28} extremes [5, infinity)
         <s-desc-uncalled> 
-          (hits 1636/21675) (matched: 'the alfred cralle pool hall') constraint (none) extremes [1, infinity)
+          (hits 1636/21679) (matched: 'the alfred cralle pool hall') constraint (none) extremes [1, infinity)
 
-<s-desc-uncalled> hits 1744/43578 nti 24 constraint (none) extremes [1, infinity)
+<s-desc-uncalled> hits 1744/43586 nti 24 constraint (none) extremes [1, infinity)
     English:
         <s-specifier> <s-desc-unspecified> 
-          (hits 71/11280) (matched: 'at least two stamped envelopes') constraint (none) extremes [2, infinity)
+          (hits 71/11284) (matched: 'at least two stamped envelopes') constraint (none) extremes [2, infinity)
         <s-specifying-noun> 
-          (hits 156/21718) (matched: 'something') constraint (none) extremes [1, infinity)
+          (hits 156/21722) (matched: 'something') constraint (none) extremes [1, infinity)
         <s-specifying-noun> <s-adjective-list> 
-          (hits 22/11209) (matched: 'something switched on') constraint (none) extremes [2, infinity)
+          (hits 22/11213) (matched: 'something switched on') constraint (none) extremes [2, infinity)
         <if-can-omit-trying> <definite-article> <s-common-desc-unspecified> 
-          (hits 2/11187) (matched: 'the person') constraint (none) extremes [2, infinity)
+          (hits 2/11191) (matched: 'the person') constraint (none) extremes [2, infinity)
         ^<if-can-omit-trying> ^<if-multiplicitous> <definite-article> <s-common-desc-unspecified> 
-          (hits 0/11185) constraint (none) extremes [2, infinity)
+          (hits 0/11189) constraint (none) extremes [2, infinity)
         <definite-article> <s-proper-desc-unspecified> 
-          (hits 50/11185) (matched: 'the alfred cralle pool hall') constraint (none) extremes [2, infinity)
+          (hits 50/11189) (matched: 'the alfred cralle pool hall') constraint (none) extremes [2, infinity)
         <indefinite-article> <s-desc-unspecified> 
-          (hits 621/11135) (matched: 'a marked for listing person') constraint (none) extremes [2, infinity)
+          (hits 621/11139) (matched: 'a marked for listing person') constraint (none) extremes [2, infinity)
         <s-desc-unspecified> 
-          (hits 822/20867) (matched: 'marked for listing other people') constraint (none) extremes [1, infinity)
+          (hits 822/20871) (matched: 'marked for listing other people') constraint (none) extremes [1, infinity)
 
-<s-desc-unspecified> hits 1514/43616 nti 25 constraint (none) extremes [1, infinity)
+<s-desc-unspecified> hits 1514/43624 nti 25 constraint (none) extremes [1, infinity)
     English:
         <s-qualifiable-noun> 
-          (hits 1122/21808) (matched: 'nancy johnson memorial square') constraint (none) extremes [1, infinity)
+          (hits 1122/21812) (matched: 'nancy johnson memorial square') constraint (none) extremes [1, infinity)
         <s-applicable-adjective-list> <s-qualifiable-noun> 
-          (hits 392/10839) (matched: 'marked for listing other people') constraint (none) extremes [2, infinity)
+          (hits 392/10843) (matched: 'marked for listing other people') constraint (none) extremes [2, infinity)
 
 <s-common-desc-unspecified> hits 2/324 nti 26 constraint (none) extremes [1, infinity)
     English:
@@ -8131,9 +8131,9 @@
         {...} 
           (hits 35/35) (matched: 'random bystander') constraint (none) extremes [1, infinity)
 
-<s-specifier> internal hits 115/22898 nti 8 constraint (none) extremes [1, infinity)
+<s-specifier> internal hits 115/22906 nti 8 constraint (none) extremes [1, infinity)
 
-<s-specifying-noun> internal hits 288/66700 nti 9 constraint (none) extremes [1, infinity)
+<s-specifying-noun> internal hits 288/66716 nti 9 constraint (none) extremes [1, infinity)
 
 <s-type-expression-uncached> hits 1999/5016 nti 10 constraint (none) extremes [1, infinity)
     English:
@@ -8142,54 +8142,54 @@
         <s-type-expression-unarticled> 
           (hits 1857/2366) (matched long text) constraint (none) extremes [1, infinity)
 
-<s-type-expression-unarticled> hits 3381/8530 nti 11 constraint (none) extremes [1, infinity)
+<s-type-expression-unarticled> hits 3382/8536 nti 11 constraint (none) extremes [1, infinity)
     English:
         <s-variable-scope> variable/variables 
-          (hits 4/481) (matched: 'glk event variable') constraint DS = {11} extremes [2, infinity)
+          (hits 5/482) (matched: 'glk event variable') constraint DS = {11} extremes [2, infinity)
         <s-variable-scope> that/which vary/varies 
           (hits 72/382) (matched: 'action based rule producing nothing that varies') constraint DS = {11} extremes [3, infinity)
         <k-kind> 
-          (hits 2624/4189) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 2624/4191) (matched long text) constraint (none) extremes [1, infinity)
         <s-literal> 
-          (hits 250/1565) (matched: 'unicode u+0008') constraint (none) extremes [1, infinity)
+          (hits 250/1567) (matched: 'unicode u+0008') constraint (none) extremes [1, infinity)
         <s-constant-value> 
-          (hits 134/1315) (matched: 'for starting the virtual machine rules') constraint (none) extremes [1, infinity)
+          (hits 134/1317) (matched: 'for starting the virtual machine rules') constraint (none) extremes [1, infinity)
         <s-desc-uncomposite> 
-          (hits 262/1181) (matched: 'thing ( called the item being printed )') constraint (none) extremes [1, infinity)
+          (hits 262/1183) (matched: 'thing ( called the item being printed )') constraint (none) extremes [1, infinity)
         <s-action-pattern-as-value> 
-          (hits 8/919) (matched: 'taking') constraint (none) extremes [1, infinity)
+          (hits 8/921) (matched: 'taking') constraint (none) extremes [1, infinity)
         <s-description> 
-          (hits 27/911) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 27/913) (matched long text) constraint (none) extremes [1, infinity)
         <s-object-instance> 
           (hits 0/26) constraint CW = {r2, r4} extremes [1, infinity)
 
-<s-descriptive-type-expression-uncached> hits 1457/3570 nti 11 constraint (none) extremes [1, infinity)
+<s-descriptive-type-expression-uncached> hits 1458/3576 nti 11 constraint (none) extremes [1, infinity)
     English:
         <article> <s-descriptive-type-expression-unarticled> 
-          (hits 209/1031) (matched: 'a list of values of kind k') constraint (none) extremes [2, infinity)
+          (hits 209/1034) (matched: 'a list of values of kind k') constraint (none) extremes [2, infinity)
         <s-descriptive-type-expression-unarticled> 
-          (hits 1248/1576) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 1249/1579) (matched long text) constraint (none) extremes [1, infinity)
 
-<s-descriptive-type-expression-unarticled> hits 1457/3570 nti 12 constraint (none) extremes [1, infinity)
+<s-descriptive-type-expression-unarticled> hits 1458/3576 nti 12 constraint (none) extremes [1, infinity)
     English:
         <s-adjective-list-as-desc> 
-          (hits 75/1785) (matched: 'unmarked for listing') constraint (none) extremes [1, infinity)
+          (hits 75/1788) (matched: 'unmarked for listing') constraint (none) extremes [1, infinity)
         <s-type-expression-unarticled> 
-          (hits 1382/1710) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 1383/1713) (matched long text) constraint (none) extremes [1, infinity)
 
-<s-variable-scope> hits 76/154 nti 10 constraint (none) extremes [1, infinity)
+<s-variable-scope> hits 77/156 nti 10 constraint (none) extremes [1, infinity)
     English:
         global 
           (hits 0/16) constraint CS = {10} extremes [1, 1]
         global <s-variable-contents> 
           (hits 0/2) constraint DS = {10} extremes [2, infinity)
         <s-variable-contents> 
-          (hits 76/77) (matched: 'action based rule producing nothing') constraint (none) extremes [1, infinity)
+          (hits 77/78) (matched: 'action based rule producing nothing') constraint (none) extremes [1, infinity)
 
-<s-variable-contents> hits 76/154 nti 13 constraint (none) extremes [1, infinity)
+<s-variable-contents> hits 77/156 nti 13 constraint (none) extremes [1, infinity)
     English:
         <k-kind> 
-          (hits 76/77) (matched: 'action based rule producing nothing') constraint (none) extremes [1, infinity)
+          (hits 77/78) (matched: 'action based rule producing nothing') constraint (none) extremes [1, infinity)
         <s-literal> 
           (hits 0/1) constraint (none) extremes [1, infinity)
         <s-constant-value> 
@@ -8288,7 +8288,7 @@
 
 <s-stacked-variable> internal hits 922/19710 nti 21 constraint (none) extremes [1, infinity)
 
-<s-global-variable> internal hits 2399/20938 nti 22 constraint (none) extremes [1, infinity)
+<s-global-variable> internal hits 2399/20942 nti 22 constraint (none) extremes [1, infinity)
 
 <property-of-shape> hits 108/19486 nti 13 constraint DS = {13} extremes [3, infinity)
     English:
@@ -8338,7 +8338,7 @@
         <s-noun-phrase> to <s-noun-phrase> 
           constraint DS = {9} extremes [3, infinity)
 
-<s-np-with-relative-clause> hits 269/10730 nti 28 constraint (none) extremes [3, infinity)
+<s-np-with-relative-clause> hits 269/10734 nti 28 constraint (none) extremes [3, infinity)
     English:
         <s-noun-phrase-nounless> <s-implied-relative-verb-tail> 
           (hits 175/4341) (matched long text) constraint DS = {13} extremes [3, infinity)
@@ -8619,7 +8619,7 @@
         <instance-of-non-object> 
           constraint (none) extremes [1, infinity)
 
-<notable-variables> hits 4/278 nti 10 constraint CS = {10} extremes [1, 2]
+<notable-variables> hits 4/282 nti 10 constraint CS = {10} extremes [1, 2]
     English:
         i6-varying-global 
           (hits 1/3) (matched: 'i6-varying-global') constraint CS = {10} extremes [1, 1]
@@ -8650,7 +8650,7 @@
 
 <either-or-property-name> internal hits 0/52 nti 24 constraint (none) extremes [1, infinity)
 
-<value-property-name> internal hits 136/2544 nti 25 constraint (none) extremes [1, infinity)
+<value-property-name> internal hits 136/2550 nti 25 constraint (none) extremes [1, infinity)
 
 <property-name-v> internal hits 109/398 nti 26 constraint (none) extremes [1, infinity)
 
@@ -8783,7 +8783,7 @@
         it is very unlikely 
           (hits 1/1) (matched: 'it is very unlikely') constraint CS = {22} extremes [4, 4]
 
-<value-understood-variable-name> hits 26/220 nti 23 constraint DS = {23} extremes [2, infinity)
+<value-understood-variable-name> hits 26/224 nti 23 constraint DS = {23} extremes [2, infinity)
     English:
         <k-kind> understood 
           (hits 26/36) (matched: 'glk event type understood') constraint DS = {23} extremes [2, infinity)
@@ -8827,7 +8827,7 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<episode-sentence-subject> hits 0/828 nti 27 constraint DS = {27} extremes [1, 2]
+<episode-sentence-subject> hits 0/830 nti 27 constraint DS = {27} extremes [1, 2]
     English:
         <definite-article> story 
           (hits 0/27) constraint DS = {27} extremes [2, 2]
@@ -8843,7 +8843,7 @@
         episode {...} 
           constraint DS = {28} extremes [2, infinity)
 
-<notable-bibliographic-variables> hits 12/278 nti 29 constraint CS = {29} extremes [2, 3]
+<notable-bibliographic-variables> hits 15/282 nti 29 constraint CS = {29} extremes [2, 3]
     English:
         story title 
           (hits 1/9) (matched: 'story title') constraint CS = {29} extremes [2, 2]
@@ -8856,21 +8856,25 @@
         story description 
           (hits 1/5) (matched: 'story description') constraint CS = {29} extremes [2, 2]
         story creation year 
-          (hits 1/4) (matched: 'story creation year') constraint CS = {29} extremes [3, 3]
+          (hits 1/6) (matched: 'story creation year') constraint CS = {29} extremes [3, 3]
         release number 
           (hits 1/4) (matched: 'release number') constraint CS = {29} extremes [2, 2]
         story serial code 
-          (hits 1/3) (matched: 'story serial code') constraint CS = {29} extremes [3, 3]
+          (hits 1/5) (matched: 'story serial code') constraint CS = {29} extremes [3, 3]
         project ifid 
-          (hits 0/3) constraint CS = {29} extremes [2, 2]
+          (hits 1/3) (matched: 'project ifid') constraint CS = {29} extremes [2, 2]
         story licence 
-          (hits 1/3) (matched: 'story licence') constraint CS = {29} extremes [2, 2]
+          (hits 1/2) (matched: 'story licence') constraint CS = {29} extremes [2, 2]
         story copyright 
-          (hits 1/2) (matched: 'story copyright') constraint CS = {29} extremes [2, 2]
+          (hits 1/1) (matched: 'story copyright') constraint CS = {29} extremes [2, 2]
         story origin url 
-          (hits 1/2) (matched: 'story origin url') constraint CS = {29} extremes [3, 3]
+          (hits 1/4) (matched: 'story origin url') constraint CS = {29} extremes [3, 3]
         story rights history 
-          (hits 1/1) (matched: 'story rights history') constraint CS = {29} extremes [3, 3]
+          (hits 1/3) (matched: 'story rights history') constraint CS = {29} extremes [3, 3]
+        inform version number 
+          (hits 1/2) (matched: 'inform version number') constraint CS = {29} extremes [3, 3]
+        inform build code 
+          (hits 1/1) (matched: 'inform build code') constraint CS = {29} extremes [3, 3]
 
 <release-sentence-object> nti 7 constraint DW = {6, 7, 30} extremes [1, infinity)
     English:
@@ -8959,7 +8963,7 @@
         matching key 
           (hits 1/1) (matched: 'matching key') constraint CS = {9} extremes [2, 2]
 
-<spatial-specifying-nouns> hits 288/64920 nti 10 constraint DS = {10} extremes [1, infinity)
+<spatial-specifying-nouns> hits 288/64936 nti 10 constraint DS = {10} extremes [1, infinity)
     English:
         _something/anything {***} 
           (hits 207/9459) (matched long text) constraint DS = {10} extremes [1, infinity)
@@ -8980,7 +8984,7 @@
         _no _one {***} 
           (hits 0/7948) constraint DS = {10} extremes [2, infinity)
 
-<notable-spatial-noun-phrases> hits 0/2490 nti 11 constraint CS = {11} extremes [1, 1]
+<notable-spatial-noun-phrases> hits 0/2496 nti 11 constraint CS = {11} extremes [1, 1]
     English:
         nowhere 
           (hits 0/128) constraint CS = {11} extremes [1, 1]
@@ -8990,7 +8994,7 @@
         stage 
           (hits 0/12) constraint CS = {12} extremes [1, 1]
 
-<notable-player-variables> hits 2/278 nti 13 constraint CS = {13} extremes [1, 3]
+<notable-player-variables> hits 2/282 nti 13 constraint CS = {13} extremes [1, 3]
     English:
         player 
           (hits 1/1) (matched: 'player') constraint CS = {13} extremes [1, 1]
@@ -9062,7 +9066,7 @@
         leading-through destination 
           (hits 1/1) (matched: 'leading-through destination') constraint CS = {24} extremes [2, 2]
 
-<notable-map-noun-phrases> hits 0/2490 nti 25 constraint CS = {25} extremes [1, 1]
+<notable-map-noun-phrases> hits 0/2496 nti 25 constraint CS = {25} extremes [1, 1]
     English:
         below 
           (hits 0/1) constraint CS = {25} extremes [1, 1]
@@ -9165,7 +9169,7 @@
         <s-value> 
           constraint (none) extremes [1, infinity)
 
-<notable-scoring-variables> hits 2/278 nti 8 constraint CS = {8} extremes [1, 2]
+<notable-scoring-variables> hits 2/282 nti 8 constraint CS = {8} extremes [1, 2]
     English:
         score 
           (hits 1/2) (matched: 'score') constraint CS = {8} extremes [1, 1]
@@ -9283,19 +9287,19 @@
         waiting 
           (hits 1/2) (matched: 'waiting') constraint CS = {16} extremes [1, 1]
 
-<new-action-sentence-object> hits 92/1802 nti 19 constraint DS = {17} extremes [1, infinity)
+<new-action-sentence-object> hits 92/1804 nti 19 constraint DS = {17} extremes [1, infinity)
     English:
         <indefinite-article> <new-action-sentence-object-unarticled> 
-          (hits 92/557) (matched long text) constraint DS = {17} extremes [2, infinity)
+          (hits 92/558) (matched long text) constraint DS = {17} extremes [2, infinity)
         <new-action-sentence-object-unarticled> 
-          (hits 0/475) constraint DS = {17} extremes [1, infinity)
+          (hits 0/476) constraint DS = {17} extremes [1, infinity)
 
-<new-action-sentence-object-unarticled> hits 92/1416 nti 17 constraint DS = {17} extremes [1, infinity)
+<new-action-sentence-object-unarticled> hits 92/1418 nti 17 constraint DS = {17} extremes [1, infinity)
     English:
         action based {...} 
           (hits 1/614) (matched: 'action based rule producing nothing that varies') constraint DS = {17} extremes [3, infinity)
         action <nounphrase-actionable> 
-          (hits 91/690) (matched long text) constraint DS = {17} extremes [1, infinity)
+          (hits 91/691) (matched long text) constraint DS = {17} extremes [1, infinity)
         action 
           (hits 0/41) constraint CS = {17} extremes [1, 1]
 
@@ -9515,7 +9519,7 @@
 
 <clause-opening> internal hits 0/666 nti 7 constraint (none) extremes [1, infinity)
 
-<if-can-omit-trying> internal hits 1263/32570 nti 8 constraint (none) extremes [0, 0]
+<if-can-omit-trying> internal hits 1263/32578 nti 8 constraint (none) extremes [0, 0]
 
 <if-nonconstant-action-context> internal hits 1372/2744 nti 9 constraint (none) extremes [0, 0]
 
@@ -9532,7 +9536,7 @@
         <s-type-expression-or-value> 
           (hits 251/619) (matched long text) constraint (none) extremes [1, infinity)
 
-<s-action-pattern-as-value> internal hits 8/21324 nti 11 constraint (none) extremes [1, infinity)
+<s-action-pattern-as-value> internal hits 8/21328 nti 11 constraint (none) extremes [1, infinity)
 
 <s-action-pattern-as-condition> hits 29/2912 nti 12 constraint (none) extremes [1, infinity)
     English:
@@ -9554,7 +9558,7 @@
         <action-pattern-past-negated> 
           (hits 0/783) constraint DS = {18} extremes [4, infinity)
 
-<action-pattern> hits 565/22738 nti 8 constraint (none) extremes [1, infinity)
+<action-pattern> hits 565/22742 nti 8 constraint (none) extremes [1, infinity)
     English:
         asking <s-ap-parameter> to try <ap-three-present> 
           (hits 0/1156) constraint DS = {8} extremes [5, infinity)
@@ -9567,9 +9571,9 @@
         trying <ap-three-present> 
           (hits 0/3800) constraint DS = {8} extremes [2, infinity)
         <ap-three-present> 
-          (hits 65/10934) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 65/10936) (matched long text) constraint (none) extremes [1, infinity)
         <actor-description> <ap-three-present> 
-          (hits 65/5770) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 65/5772) (matched long text) constraint (none) extremes [2, infinity)
 
 <we-are-action-pattern> hits 29/2912 nti 19 constraint (none) extremes [1, infinity)
     English:
@@ -9647,9 +9651,9 @@
         we have not <ap-three-past> 
           (hits 0/783) constraint DS = {18} extremes [4, infinity)
 
-<actor-description> internal hits 100/13944 nti 16 constraint (none) extremes [1, infinity)
+<actor-description> internal hits 100/13948 nti 16 constraint (none) extremes [1, infinity)
 
-<ap-three-present> internal hits 594/25850 nti 17 constraint (none) extremes [1, infinity)
+<ap-three-present> internal hits 594/25854 nti 17 constraint (none) extremes [1, infinity)
 
 <ap-three-past> internal nti 18 constraint (none) extremes [1, infinity)
 
@@ -9740,7 +9744,7 @@
         somewhere 
           (hits 0/3) constraint CS = {17} extremes [1, 1]
 
-<notable-parsing-variables> hits 31/278 nti 18 constraint DS = {18} extremes [1, infinity)
+<notable-parsing-variables> hits 31/282 nti 18 constraint DS = {18} extremes [1, infinity)
     English:
         <k-kind> understood 
           (hits 26/44) (matched: 'glk event type understood') constraint DS = {18} extremes [2, infinity)
@@ -10168,10 +10172,10 @@
         file <np-unparsed> 
           (hits 1/1) (matched: 'file of cover art ( The cover art. )') constraint DS = {19} extremes [2, infinity)
 
-<nounphrase-figure> hits 2/830 nti 20 constraint DS = {20} extremes [2, infinity)
+<nounphrase-figure> hits 2/832 nti 20 constraint DS = {20} extremes [2, infinity)
     English:
         figure {...} 
-          (hits 2/271) (matched: 'figure of cover') constraint DS = {20} extremes [2, infinity)
+          (hits 2/272) (matched: 'figure of cover') constraint DS = {20} extremes [2, infinity)
 
 <figure-sentence-object> hits 1/2 nti 22 constraint (none) extremes [1, infinity)
     English:
@@ -10206,10 +10210,10 @@
         file <np-unparsed> 
           (hits 0/1) constraint DS = {24} extremes [2, infinity)
 
-<nounphrase-sound> hits 1/828 nti 25 constraint DS = {25} extremes [2, infinity)
+<nounphrase-sound> hits 1/830 nti 25 constraint DS = {25} extremes [2, infinity)
     English:
         sound {...} 
-          (hits 1/84) (matched: 'sound name understood') constraint DS = {25} extremes [2, infinity)
+          (hits 1/85) (matched: 'sound name understood') constraint DS = {25} extremes [2, infinity)
 
 <sound-sentence-object> nti 26 constraint (none) extremes [1, infinity)
     English:
@@ -10225,27 +10229,27 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<external-file-sentence-subject> hits 0/1302 nti 29 constraint (none) extremes [2, infinity)
+<external-file-sentence-subject> hits 0/1306 nti 29 constraint (none) extremes [2, infinity)
     English:
         <definite-article> <external-file-sentence-subject> 
-          (hits 0/625) constraint (none) extremes [2, infinity)
+          (hits 0/627) constraint (none) extremes [2, infinity)
         internal data/binary <external-file-name> 
-          (hits 0/224) constraint DS = {28, 29} extremes [4, infinity)
+          (hits 0/226) constraint DS = {28, 29} extremes [4, infinity)
         internal text <external-file-name> 
-          (hits 0/224) constraint DS = {28, 29} extremes [4, infinity)
+          (hits 0/226) constraint DS = {28, 29} extremes [4, infinity)
         text <external-file-name> 
-          (hits 0/231) constraint DS = {28, 29} extremes [3, infinity)
+          (hits 0/233) constraint DS = {28, 29} extremes [3, infinity)
         binary <external-file-name> 
-          (hits 0/231) constraint DS = {28, 29} extremes [3, infinity)
+          (hits 0/233) constraint DS = {28, 29} extremes [3, infinity)
         <external-file-name> 
-          (hits 0/356) constraint DS = {28} extremes [2, infinity)
+          (hits 0/358) constraint DS = {28} extremes [2, infinity)
 
-<external-file-name> hits 0/712 nti 28 constraint DS = {28} extremes [2, infinity)
+<external-file-name> hits 0/716 nti 28 constraint DS = {28} extremes [2, infinity)
     English:
         {file ...} ( owned by <external-file-owner> ) 
-          (hits 0/83) constraint DS = {28} extremes [7, infinity)
+          (hits 0/85) constraint DS = {28} extremes [7, infinity)
         {file ...} 
-          (hits 0/356) constraint DS = {28} extremes [2, infinity)
+          (hits 0/358) constraint DS = {28} extremes [2, infinity)
 
 <external-file-owner> nti 27 constraint (none) extremes [1, infinity)
     English:
@@ -10275,10 +10279,10 @@
         called <np-unparsed> 
           constraint DS = {30} extremes [2, infinity)
 
-<nounphrase-external-file> hits 0/828 nti 11 constraint (none) extremes [2, infinity)
+<nounphrase-external-file> hits 0/830 nti 11 constraint (none) extremes [2, infinity)
     English:
         <external-file-sentence-subject> 
-          (hits 0/400) constraint (none) extremes [2, infinity)
+          (hits 0/401) constraint (none) extremes [2, infinity)
 
 <s-instance-of-object> nti 12 constraint (none) extremes [0, 0]
 

@@ -10,6 +10,7 @@ This is quite a lightweight structure:
 @d INFERENCE_DRAWN_FROM_METADATA 1
 @d INFERENCE_DRAWN_FROM_DATE 2
 @d INFERENCE_DRAWN_FROM_IFID 3
+@d INFERENCE_DRAWN_FROM_COMPILER 4
 
 =
 classdef inference {

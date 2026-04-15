@@ -1,12 +1,12 @@
 adjective: 147 items
 article: 2 items
-noun: 2601 items
+noun: 2603 items
 pronoun: 8 items
 preposition: 278 items
 determiner: 22 items
 verb: 109 items
 verb_form: 392 items
-total in all categories: 3559
+total in all categories: 3561
 
 adjective: 'supported'
 adjective: 'unsupported'
@@ -1094,11 +1094,13 @@ noun: proper: 'story description'
 noun: proper: 'release number'
 noun: proper: 'story creation year'
 noun: proper: 'story serial code'
-noun: proper: 'story ifid'
+noun: proper: 'project ifid'
 noun: proper: 'story licence'
 noun: proper: 'story copyright'
 noun: proper: 'story origin url'
 noun: proper: 'story rights history'
+noun: proper: 'inform version number'
+noun: proper: 'inform build code'
 noun: proper: 'figure of cover'
 noun: proper: 'i6-nothing-constant'
 noun: proper: 'i6-varying-global'

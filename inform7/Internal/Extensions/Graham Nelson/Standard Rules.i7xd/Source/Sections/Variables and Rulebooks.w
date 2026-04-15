@@ -175,8 +175,9 @@ Section 7 - Unindexed Standard Rules variables - Unindexed
 The story title, the story author, the story headline, the story genre
 and the story description are text variables. [*****]
 The release number and the story creation year are number variables. [**]
-The story serial code, the story IFID, the story licence, the story copyright,
+The story serial code, the project IFID, the story licence, the story copyright,
 the story origin URL, and the story rights history are text variables. [******]
+The Inform version number and the Inform build code are text variables. [**]
 
 The release number is usually 1.
 The story headline is usually "An Interactive Fiction".

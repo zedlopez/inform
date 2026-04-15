@@ -130,6 +130,12 @@ int PropertyInferences::explain_contradiction(inference_family *f, inference *A,
 		} else if (B->drawn_from_elsewhere == INFERENCE_DRAWN_FROM_IFID) {
 			current_sentence = A->inferred_from;
 			@<Issue a contradiction with IFID problem@>;
+		} else if (A->drawn_from_elsewhere == INFERENCE_DRAWN_FROM_COMPILER) {
+			current_sentence = B->inferred_from;
+			@<Issue a contradiction with compiler problem@>;
+		} else if (B->drawn_from_elsewhere == INFERENCE_DRAWN_FROM_COMPILER) {
+			current_sentence = A->inferred_from;
+			@<Issue a contradiction with compiler problem@>;
 		} else {			
 			StandardProblems::two_sentences_problem(_p_(PM_VariableContradiction),
 				A->inferred_from,
@@ -204,6 +210,12 @@ int PropertyInferences::explain_contradiction(inference_family *f, inference *A,
 		"because it contradicts a value set from the project's IFID, which "
 		"can be set either with a 'uuid.txt' file in the project bundle, or "
 		"else by using the 'Use project IFID of \"...\"' option.");
+
+@<Issue a contradiction with compiler problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(Untestable),
+		"this looks like a contradiction",
+		"because it contradicts a value set by the compiler itself. I am "
+		"what I am.");
 
 @ Access functions.
 
