@@ -27,37 +27,6 @@ and `TARGET_GLULX` is defined if and only if `CHARSIZE` is 4.
 =
 Constant COMMANDPARSERKIT = 1;
 
-@h Parser Error Numbers.
-The traditional ways in which the I6 library's parser, which we adopt here
-more or less intact, can give up on a player's command.
-
-=
-Constant STUCK_PE         = 1;
-Constant UPTO_PE          = 2;
-Constant NUMBER_PE        = 3;
-Constant ANIMA_PE         = 4;
-Constant CANTSEE_PE       = 5;
-Constant TOOLIT_PE        = 6;
-Constant NOTHELD_PE       = 7;
-Constant MULTI_PE         = 8;
-Constant MMULTI_PE        = 9;
-Constant VAGUE_PE         = 10;
-Constant EXCEPT_PE        = 11;
-Constant VERB_PE          = 12;
-Constant SCENERY_PE       = 13;
-Constant ITGONE_PE        = 14;
-Constant JUNKAFTER_PE     = 15;
-Constant TOOFEW_PE        = 16;
-Constant NOTHING_PE       = 17;
-Constant ASKSCOPE_PE      = 18;
-Constant NOTINCONTEXT_PE  = 19;
-Constant BLANKLINE_PE     = 20; ! Not formally a parser error, but used by I7 as if
-Constant ANIMAAGAIN_PE    = 21;
-Constant COMMABEGIN_PE    = 22;
-Constant MISSINGPERSON_PE = 23;
-Constant ANIMALISTEN_PE   = 24;
-Constant TOTALK_PE        = 25;
-
 @h Grammar Line Variables.
 This is the I6 library parser in mostly untouched form: reformatted for template
 file use, and with paragraph divisions, but otherwise hardly changed at all.
@@ -1479,20 +1448,14 @@ Print best possible error message.
     }
     if (etype == NUMBER_PE) {   PARSER_ERROR_INTERNAL_RM('D'); new_line; }
     if (etype == CANTSEE_PE) {  PARSER_ERROR_INTERNAL_RM('E'); new_line; oops_from=saved_oops; }
-    if (etype == TOOLIT_PE) {   PARSER_ERROR_INTERNAL_RM('F'); new_line; }
-    if (etype == NOTHELD_PE) {  PARSER_ERROR_INTERNAL_RM('G'); new_line; oops_from=saved_oops; }
     if (etype == MULTI_PE) {    PARSER_ERROR_INTERNAL_RM('H'); new_line; }
-    if (etype == MMULTI_PE) {   PARSER_ERROR_INTERNAL_RM('I'); new_line; }
     if (etype == VAGUE_PE) {    PARSER_ERROR_INTERNAL_RM('J'); new_line; }
     if (etype == ITGONE_PE) {
         if (pronoun_obj == NULL) { PARSER_ERROR_INTERNAL_RM('J'); new_line; }
         else { PARSER_ERROR_INTERNAL_RM('K', noun); new_line; }
     }
-    if (etype == EXCEPT_PE) {   PARSER_ERROR_INTERNAL_RM('L'); new_line; }
     if (etype == ANIMA_PE) {    PARSER_ERROR_INTERNAL_RM('M'); new_line; }
     if (etype == VERB_PE) {     PARSER_ERROR_INTERNAL_RM('N'); new_line; }
-    if (etype == SCENERY_PE) {  PARSER_ERROR_INTERNAL_RM('O'); new_line; }
-    if (etype == JUNKAFTER_PE) {  PARSER_ERROR_INTERNAL_RM('P'); new_line; }
     if (etype == TOOFEW_PE) {  PARSER_ERROR_INTERNAL_RM('Q', multi_had); new_line; }
     if (etype == NOTHING_PE) {
     	if (parser_results-->ACTION_PRES == ##Remove &&

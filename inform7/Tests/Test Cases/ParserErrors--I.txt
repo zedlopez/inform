@@ -1,7 +1,7 @@
    Garden
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
   Garden
   You can see a wheelbarrow (in which is a pile of dirt), a flower plot and three marbles here.
@@ -9,54 +9,79 @@
 > >   Garden
   (Testing.)
   
-  >[1] me,
+  >[1] put dirt except dirt in wheelbarrow
+  "Lazy bum."
+  
+  >[2] x him
+  "C'd you be more specific, runtling?"
+  
+  >[3] me,
   "Speak up, lad, I don't hear as well as I used to."
   
-  >[2] push the wheelbarrow north to the yard
+  >[4] ,me
+  "You feel set about who you mean to talk to?"
+  
+  >[5] push the wheelbarrow north to the yard
   "Too much nonsense at the end of your sentence! Talk simpler!"
   
-  >[3] examine the wiggle
+  >[6] examine the wiggle
   "My eyes might not be what they used to be, sonny, but I can't make out anything remotely like that hereabouts."
   
-  >[4] x marbles
+  >[7] x marbles
   "I know your mother always called you her little Houdini, but even Harry couldn't do that to more than one thing at once."
   
-  >[5] ask her about me
+  >[8] ask her about me
   "Not here at the moment, or are you daft?"
   
-  >[6] ask dirt about me
+  >[9] ask dirt about me
   "That ain't something you can do with inanimate objects. It's unnatural."
   
-  >[7] wiggle
+  >[10] wiggle
   "What kind of action is that? Just because your friends all do it doesn't make it acceptable around here!"
   
-  >[8] x it
+  >[11] x it
   You see nothing special about the marble.
   
-  >[9] n
+  >[12] n
   
   Yard
+  You can see Princess here.
   
-  >[10] x it
+  >[13] x it
   "Not here at the moment, or are you daft?"
   
-  >[11] s
+  >[14] princess donut, sit
+  "Only caught the first part of that name."
+  
+  >[15] s
   
   Garden
   You can see a wheelbarrow (in which is a pile of dirt), a flower plot and three marbles here.
   
-  >[12] get five marbles
+  >[16] get five marbles
   "What, you seeing double? There ain't enough of those to go around."
   
-  >[13] get all marbles
+  >[17] get all marbles
   marble: Taken.
   marble: Taken.
   marble: Taken.
   
-  >[14] get three marbles
+  >[18] get three marbles
   What do you want to get those things from?
   
-  >[15]
+  >[19]
   "Come again?"
+  
+  >[20] number plot as eleventeen
+  "What's the matter with you, son? Can't you count?"
+  
+  >[21] wheelbarrow, will you be my new best friend?
+  "If you're waitin' for a reply, best be willing to sit a spell."
+  
+  >[22] new bestie, what do you say?
+  "Don't mean to alarm you, but you seem a be talkin' to someone as ain't there."
+  
+  >[23] zap hemoglobin
+  "Can't rightly figure how you're fixin' to go about that with... whatever that is."
   
 > >
