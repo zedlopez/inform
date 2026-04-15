@@ -50,6 +50,14 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
+            <span class="librarycardother"><span class="typewritten">Serial code</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            <span class="librarycardother"><span class="typewritten"><b>160428</b></span></span>
+        </td>
+    </tr>
+    <tr>
+        <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="librarycardother"><span class="typewritten">Story creation year</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">

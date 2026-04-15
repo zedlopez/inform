@@ -1,6 +1,6 @@
-Total memory consumption was 190443K = 186 MB
+Total memory consumption was 190449K = 186 MB
 
- ---- was used for 2466821 objects, in 428112 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2466822 objects, in 428113 frames in 0 x 800K = 0K = 0 MB:
 
     22.9%  inter_tree_node_array                    62 x 8192 = 507904 objects, 44697536 bytes
     19.2%  text_stream_array                        6681 x 100 = 668100 objects, 37627392 bytes
@@ -35,7 +35,7 @@ Total memory consumption was 190443K = 186 MB
      0.4%  ptoken                                   8838 objects, 919152 bytes
      0.3%  unary_predicate_array                    18 x 1000 = 18000 objects, 720576 bytes
      0.2%  holon_splice_array                       71 x 100 = 7100 objects, 399872 bytes
-     0.2%  dictionary                               8296 objects, 398208 bytes
+     0.2%  dictionary                               8297 objects, 398256 bytes
      0.2%  verb_usage                               1148 objects, 394912 bytes
      0.2%  rule                                     500 objects, 392000 bytes
      0.1%  local_variable_array                     50 x 100 = 5000 objects, 361600 bytes
@@ -299,10 +299,10 @@ Total memory consumption was 190443K = 186 MB
      ----  i6_memory_setting                        1 object, 32 bytes
      ----  md_links_dictionary                      1 object, 32 bytes
 
-100.0% was used for memory not allocated for objects:
+99.9% was used for memory not allocated for objects:
 
-    66.9%  text stream storage                      130583056 bytes in 710691 claims
-     4.3%  dictionary storage                       8431936 bytes in 8296 claims
+    66.9%  text stream storage                      130588508 bytes in 710718 claims
+     4.3%  dictionary storage                       8432448 bytes in 8297 claims
      ----  sorting                                  20984 bytes in 2690 claims
      3.6%  source text                              7200000 bytes in 3 claims
      5.5%  source text details                      10800000 bytes in 2 claims
@@ -320,5 +320,5 @@ Total memory consumption was 190443K = 186 MB
      ----  code generation workspace for objects    3640 bytes in 19 claims
      0.1%  emitter array storage                    295840 bytes in 2117 claims
 
--119.-4% was overhead - -232872760 bytes = -227414K = -222 MB
+-119.-4% was overhead - -232872808 bytes = -227414K = -222 MB
 

@@ -1,40 +1,43 @@
-   Lab
+   Forest of Arden
   Welcome
   An Interactive Fiction
   Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
   
-  Lab
-  You can see a red tree and a red envelope here.
+  Forest of Arden
+  You can see a sturdy oak here.
   
-> >   Lab
+> >   Forest of Arden
   (Testing.)
   
-  >[1] x red
-  Which do you mean, the red tree or the red envelope?
+  >[1] showtree
+  Forest of Arden = location
+    yourself = player
+      hat (worn)
+        parts:
+          feather
+    sturdy oak
+      parts:
+        willowy branch
+          acorn (on)
+          green leaf (on)
+        knot-hole
+          bee's nest
   
-  >[2] tree
-  You see nothing special about the red tree.
+  >[2] showtree oak
+  sturdy oak (in Forest of Arden)
+    parts:
+      willowy branch
+        acorn (on)
+        green leaf (on)
+      knot-hole
+        bee's nest
   
-  >[3] showtree
-  (Compass object) (23)
-    the north
-    the northeast
-    the northwest
-    the south
-    the southeast
-    the southwest
-    the east
-    the west
-    the up
-    the down
-    the inside
-    the outside
-  (thedark object) (24)
-  (VPH_26) (25)
-  (VPH_3) (26)
-  Lab (40)
-    yourself
-    a red tree
-    a red envelope
+  >[3] showtree branch
+  willowy branch (part of sturdy oak)
+    acorn (on)
+    green leaf (on)
+  
+  >[4] showtree acorn
+  acorn (on willowy branch)
   
 > >

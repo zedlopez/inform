@@ -1,9 +1,10 @@
 Test: Showtree
 For: Z-Machine
 
-Lab is a room.
+The Forest of Arden is a room.
 
-The red tree is in the Lab.
-The red envelope is in the Lab.
+A sturdy oak is here. The willowy branch is part of the oak. An acorn and a green leaf are on the branch. The knot-hole is part of the oak. The bee's nest is in the knot-hole.
 
-Test me with "x red / tree / showtree".
+The player is wearing a hat. The feather is part of the hat.
+
+Test me with "showtree / showtree oak / showtree branch / showtree acorn".
