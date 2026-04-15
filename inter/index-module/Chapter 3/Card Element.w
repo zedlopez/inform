@@ -42,6 +42,8 @@ void CardElement::render(OUTPUT_STREAM, index_session *session) {
 			CardElement::Library_Card_entry(OUT, "Full version number", pack, NULL, version_text);
 		DISCARD_TEXT(version_text)
 	}
+	if (Metadata::optional_textual(pack, I"^serial"))
+		CardElement::Library_Card_entry(OUT, "Serial code", pack, I"^serial", I"Unspecified");
 	CardElement::Library_Card_entry(OUT, "Story creation year", pack, I"^year", I"(This year)");
 	CardElement::Library_Card_entry(OUT, "Language of play", pack, I"^language", I"English");
 	CardElement::Library_Card_entry(OUT, "IFID number", pack, I"^IFID", NULL);

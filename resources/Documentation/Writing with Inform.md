@@ -18914,6 +18914,8 @@ It is also possible to provide copyright and licencing details for a project. Th
 	The origin for this story is "https://www.loosecannonif.com/bh".
 	The rights history for this story is "Adapted by permission from Jennifer Pond's novel 'The Transfinite Kitten' (2003)."
 
+Finally, the text variables `story serial code` and `project IFID` are automatically set by Inform to the IFID for a project, which is intended to be permanent, and to the serial code it's got today, which is more ephemeral since it is computed from the date (in the form `YYMMDD`). These variables cannot be changed at run-time, and cannot be set from assertion sentences, although there is a use option to set the IFID.
+
 ## Genres
 
 ^^{genre+biblio+}

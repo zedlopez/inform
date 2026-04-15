@@ -1,12 +1,12 @@
 adjective: 147 items
 article: 2 items
-noun: 2596 items
+noun: 2601 items
 pronoun: 8 items
 preposition: 278 items
 determiner: 22 items
 verb: 109 items
 verb_form: 392 items
-total in all categories: 3554
+total in all categories: 3559
 
 adjective: 'supported'
 adjective: 'unsupported'
@@ -338,8 +338,10 @@ noun: proper: 'glk window handle'
 noun: proper: 'property glk window handle'
 noun: proper: 'set glk event processing variables rule'
 noun: proper: 'redraw the status line rule'
-noun: proper: 'rule hyperlink rule'
+noun: proper: 'command replacement hyperlink rule'
+noun: proper: 'command appendment hyperlink rule'
 noun: proper: 'keypress hyperlink rule'
+noun: proper: 'rule hyperlink rule'
 noun: proper: 'adaptive text viewpoint'
 noun: proper: 'property adaptive text viewpoint'
 noun: proper: 'description'
@@ -840,6 +842,7 @@ noun: proper: 'after printing the plural name rules'
 noun: proper: 'after printing the plural name rulebook'
 noun: proper: 'standard printing the plural name rule'
 noun: common: 'rgb colour'
+noun: proper: 'status window table'
 noun: proper: 'delete key'
 noun: proper: 'down key'
 noun: proper: 'end key'
@@ -865,7 +868,6 @@ noun: proper: 'right key'
 noun: proper: 'tab key'
 noun: proper: 'unknown key'
 noun: proper: 'up key'
-noun: proper: 'status window table'
 noun: common: 'glk window'
 noun: common: 'graphics window'
 noun: common: 'text buffer window'
@@ -882,9 +884,10 @@ noun: proper: 'hyperlink handling'
 noun: proper: 'hyperlink handling rules'
 noun: proper: 'hyperlink handling rulebook'
 noun: proper: 'handle hyperlinks rule'
-noun: proper: 'number hyperlink'
-noun: proper: 'rule hyperlink'
+noun: proper: 'command replacement'
+noun: proper: 'command appendment'
 noun: proper: 'keypress hyperlink'
+noun: proper: 'rule hyperlink'
 noun: proper: 'text input status'
 noun: proper: 'property text input status'
 noun: proper: 'requesting mouse input'
@@ -1090,6 +1093,8 @@ noun: proper: 'story genre'
 noun: proper: 'story description'
 noun: proper: 'release number'
 noun: proper: 'story creation year'
+noun: proper: 'story serial code'
+noun: proper: 'story ifid'
 noun: proper: 'story licence'
 noun: proper: 'story copyright'
 noun: proper: 'story origin url'

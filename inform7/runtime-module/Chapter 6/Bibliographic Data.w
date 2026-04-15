@@ -22,7 +22,8 @@ void RTBibliographicData::compile_constants(void) {
 	if (story_headline_VAR) @<Compile the I6 Headline constant@>;
 	if (story_author_VAR) @<Compile the I6 Story Author constant@>;
 	if (story_release_number_VAR) @<Compile the I6 Release directive@>;
-	@<Compile the I6 serial number, based on the date@>;
+	if (story_serial_number_VAR) @<Compile the I6 Serial directive@>
+	else @<Compile the I6 serial number, based on the date@>;
 	@<Compile metadata@>;
 	encode_constant_text_bibliographically = FALSE;
 }
@@ -98,12 +99,17 @@ void RTBibliographicData::compile_constants(void) {
 number "130625" — is actually controversial: quite a few users feel they
 should be able to fake the date-stamp with dates of their own choosing.
 
+@<Compile the I6 Serial directive@> =
+	inter_name *iname = Hierarchy::find(SERIAL_HL);
+	Emit::initial_value_as_raw_text(iname, story_serial_number_VAR);
+	Hierarchy::make_available(iname);
+	Emit::initial_value_as_raw_text(Hierarchy::find(SERIAL_MD_HL),
+		story_serial_number_VAR);
+
 @<Compile the I6 serial number, based on the date@> =
 	inter_name *iname = Hierarchy::find(SERIAL_HL);
 	TEMPORARY_TEXT(SN)
-	int year_digits = (the_present->tm_year) % 100;
-	WRITE_TO(SN, "%02d%02d%02d",
-		year_digits, (the_present->tm_mon)+1, the_present->tm_mday);
+	RTBibliographicData::write_serial_code(SN);
 	Emit::text_constant(Hierarchy::find(SERIAL_MD_HL), SN);
 	Emit::serial_number(iname, SN);
 	DISCARD_TEXT(SN)
@@ -150,6 +156,13 @@ not compile to any data in the object code:
 	Emit::initial_value_as_raw_text(Hierarchy::find(COPYRIGHT_MD_HL), story_copyright_VAR);
 	Emit::initial_value_as_raw_text(Hierarchy::find(ORIGIN_URL_MD_HL), story_origin_URL_VAR);
 	Emit::initial_value_as_raw_text(Hierarchy::find(RIGHTS_HISTORY_MD_HL), story_rights_history_VAR);
+
+@ =
+void RTBibliographicData::write_serial_code(OUTPUT_STREAM) {
+	int year_digits = (the_present->tm_year) % 100;
+	WRITE("%02d%02d%02d",
+		year_digits, (the_present->tm_mon)+1, the_present->tm_mday);
+}
 
 @ The IFID is written into the compiled story file, too, both in order
 that it can be printed by the VERSION command and to brand the file so

@@ -62,6 +62,12 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 	a special value reserved for testing). See Jira bug
 	[I7-2629](https://inform7.atlassian.net/browse/I7-2629).
 
+- Two new bibliographic variables now exist: `story serial code` and `project IFID`.
+	These are read-only, and are automatically set by Inform at compile time.
+	```
+	say "Hmm, the bar code in the lining of my jacket reads [project IFID].";
+	```
+
 - When releasing a story with a website, and a cover image which has alt-text
 	provided, that text is now used on the thumbnail cover images in the website.
 	(See Jira bug [I7-2615](https://inform7.atlassian.net/browse/I7-2615): the
