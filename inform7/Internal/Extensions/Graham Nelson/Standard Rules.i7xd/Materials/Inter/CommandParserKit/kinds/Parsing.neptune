@@ -19,21 +19,16 @@ new base COMMAND_PARSER_ERROR_TY {
 
 	specification-text: errors the parser might throw (and the possible values of `latest parser error`)
 
+instance: absence of parser error = NULL_PE = 0
 instance: didn't understand error = STUCK_PE         = 1
 instance: only understood as far as error = UPTO_PE          = 2
 instance: didn't understand that number error = NUMBER_PE        = 3
 instance: can only do that to something animate error = ANIMA_PE         = 4
 instance: can't see any such thing error = CANTSEE_PE       = 5
-!instance: said too little error = TOOLIT_PE        = 6
-!instance: aren't holding that error = NOTHELD_PE       = 7
 instance: can't use multiple objects error = MULTI_PE         = 8
-!instance: can only use multiple objects error = MMULTI_PE        = 9
 instance: not sure what it refers to error = VAGUE_PE         = 10
-!instance: excepted something not included error = EXCEPT_PE        = 11
 instance: not a verb I recognise error = VERB_PE          = 12
-!instance: not something you need to refer to error = SCENERY_PE       = 13
 instance: can't see it at the moment error = ITGONE_PE        = 14
-!instance: didn't understand the way that finished error = JUNKAFTER_PE     = 15
 instance: not enough of those available error = TOOFEW_PE        = 16
 instance: nothing to do error = NOTHING_PE       = 17
 instance: referred to a determination of scope error = ASKSCOPE_PE      = 18
