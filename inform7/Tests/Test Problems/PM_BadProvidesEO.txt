@@ -1,0 +1,6 @@
+Problem: PM_BadProvidesEO
+
+Xanadu is a room.
+
+When play begins:
+	if the player provides openable, say "Yes!"

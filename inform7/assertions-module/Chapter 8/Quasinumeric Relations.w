@@ -78,7 +78,7 @@ void Calculus::QuasinumericRelations::stock(bp_family *self, int n) {
 
 =
 int Calculus::QuasinumericRelations::typecheck(bp_family *self, binary_predicate *bp,
-		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
+		pcalc_term *terms, kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	if ((Kinds::compatible(kinds_of_terms[0], kinds_of_terms[1]) == NEVER_MATCH) &&
 		(Kinds::compatible(kinds_of_terms[1], kinds_of_terms[0]) == NEVER_MATCH)) {
 		if (tck->log_to_I6_text)

@@ -66,7 +66,7 @@ which also provides the property.
 
 =
 int ComparativeRelations::typecheck(bp_family *self, binary_predicate *bp,
-	kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
+	pcalc_term *terms, kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 
 	comparative_bp_data *D = RETRIEVE_POINTER_comparative_bp_data(bp->family_specific);
 	

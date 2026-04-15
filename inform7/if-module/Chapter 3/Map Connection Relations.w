@@ -159,7 +159,7 @@ remaining anomalies.
 
 =
 int MapRelations::typecheck(bp_family *self, binary_predicate *bp,
-		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
+		pcalc_term *terms, kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	for (int t=0; t<2; t++)
 		if ((Kinds::compatible(kinds_of_terms[t], K_room) == NEVER_MATCH) &&
 			(Kinds::compatible(kinds_of_terms[t], K_door) == NEVER_MATCH)) {

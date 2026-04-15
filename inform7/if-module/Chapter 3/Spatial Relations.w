@@ -175,7 +175,7 @@ can be tested at run-time, but which can't be asserted or made true or false.
 
 =
 int SpatialRelations::typecheck(bp_family *self, binary_predicate *bp,
-		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
+		pcalc_term *terms, kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	return DECLINE_TO_MATCH;
 }
 

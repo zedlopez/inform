@@ -187,7 +187,7 @@ instance, but hasn't been yet.
 
 =
 int SettingPropertyRelations::typecheck(bp_family *self, binary_predicate *bp,
-		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
+		pcalc_term *terms, kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	property_setting_bp_data *PSD =
 		RETRIEVE_POINTER_property_setting_bp_data(bp->family_specific);
 	property *prn = PSD->set_property;

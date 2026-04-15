@@ -147,7 +147,7 @@ char *ExplicitRelations::form_to_text(binary_predicate *bp) {
 
 =
 int ExplicitRelations::typecheck(bp_family *self, binary_predicate *bp,
-		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
+		pcalc_term *terms, kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	return DECLINE_TO_MATCH;
 }
 

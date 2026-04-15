@@ -56,13 +56,13 @@ such as "if 19 is false", where the terms of the relation do not fit.
 
 =
 INT_METHOD_TYPE(TYPECHECK_BPF_MTID, bp_family *f, binary_predicate *bp,
-	kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck)
+	pcalc_term *terms, kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck)
 
-int BinaryPredicateFamilies::typecheck(binary_predicate *bp,
+int BinaryPredicateFamilies::typecheck(binary_predicate *bp, pcalc_term *terms,
 	kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	int rv = DECLINE_TO_MATCH;
-	INT_METHOD_CALL(rv, bp->relation_family, TYPECHECK_BPF_MTID, bp, kinds_of_terms,
-		kinds_required, tck);
+	INT_METHOD_CALL(rv, bp->relation_family, TYPECHECK_BPF_MTID, bp, terms,
+		kinds_of_terms, kinds_required, tck);
 	return rv;
 }
 

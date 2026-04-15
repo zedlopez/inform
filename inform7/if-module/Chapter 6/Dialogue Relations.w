@@ -36,7 +36,7 @@ void DialogueRelations::stock(bp_family *self, int n) {
 
 =
 int DialogueRelations::typecheck(bp_family *self, binary_predicate *bp,
-		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
+		pcalc_term *terms, kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	if ((K_dialogue_beat) &&
 		(Kinds::compatible(kinds_of_terms[1], K_dialogue_beat) == NEVER_MATCH)) {
 		LOG("Term 0 is %u not %u\n", kinds_of_terms[1], K_dialogue_beat);

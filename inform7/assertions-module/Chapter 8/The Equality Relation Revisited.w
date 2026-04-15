@@ -21,7 +21,7 @@ any kind.
 
 =
 int EqualityDetails::typecheck(bp_family *self, binary_predicate *bp,
-		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
+		pcalc_term *terms, kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	LOGIF(MATCHING, "Typecheck %u '==' %u\n", kinds_of_terms[0], kinds_of_terms[1]);
 	if ((K_understanding) && (Kinds::eq(kinds_of_terms[0], K_understanding)) &&
 			(Kinds::eq(kinds_of_terms[1], K_text))) {
@@ -102,7 +102,7 @@ anything else (except of course that it always is not).
 
 =
 int EqualityDetails::typecheck_empty(bp_family *self, binary_predicate *bp,
-		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
+		pcalc_term *terms, kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	return ALWAYS_MATCH;
 }
 
