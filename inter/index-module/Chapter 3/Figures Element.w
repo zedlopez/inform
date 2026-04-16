@@ -295,7 +295,7 @@ to match this width, preserving the aspect ratio.
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->internal_file_nodes) {
 		inter_ti id = Metadata::read_numeric(pack, I"^resource_id");
-		text_stream *filename_as_text = Metadata::required_textual(pack, I"^filename");
+		text_stream *filename_as_text = Metadata::required_textual(pack, I"^leafname");
 		filename *F = Filenames::from_text(filename_as_text);
 		inter_ti format = Metadata::read_numeric(pack, I"^internal_file_format");
 		TEMPORARY_TEXT(description)

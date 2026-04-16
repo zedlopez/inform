@@ -13,7 +13,7 @@ typedef struct instance_compilation_data {
 	struct linked_list *usages; /* of `parse_node` */
 	int declaration_sequence_number;
 	int has_explicit_runtime_value;
-	inter_ti explicit_runtime_value;
+	int explicit_runtime_value;
 	struct text_stream *accessibility_name;
 } instance_compilation_data;
 
@@ -90,7 +90,7 @@ the next free value above all specific values in the enumeration.
 		kind_constructor *kc = Kinds::get_construct(K);
 		if (kc->compilation_data.enumeration_checked == FALSE) {
 			kc->compilation_data.enumeration_checked = TRUE;
-			inter_ti max_val = 0;
+			int max_val = 0;
 			instance *I2;
 			LOOP_OVER(I2, instance)
 				if (Kinds::eq(Instances::to_kind(I2), K))
@@ -338,7 +338,7 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	int has_value = TRUE;
 	if (val == 0) has_value = FALSE;
 	if (I->compilation_data.has_explicit_runtime_value)
-		val = I->compilation_data.explicit_runtime_value;
+		val = (inter_ti) I->compilation_data.explicit_runtime_value;
 	Emit::instance(RTInstances::value_iname(I), Instances::to_kind(I), val, has_value);
 	if (I->compilation_data.declaration_sequence_number >= 0) {
 		inter_name *iname = RTInstances::value_iname(I);
@@ -374,14 +374,14 @@ series of values such as 2, 6, 17, ... rather than 1, 2, 3, ..., and if so then
 an instance with an unexpected runtime value is called "out of place".
 
 =
-void RTInstances::set_explicit_runtime_value(instance *I, inter_ti val) {
+void RTInstances::set_explicit_runtime_value(instance *I, int val) {
 	I->compilation_data.has_explicit_runtime_value = TRUE;
 	I->compilation_data.explicit_runtime_value = val;
 }
 
 int RTInstances::out_of_place(instance *I) {
 	if (I->compilation_data.has_explicit_runtime_value == FALSE) return FALSE;
-	if (I->compilation_data.explicit_runtime_value == (inter_ti) I->enumeration_index)
+	if (I->compilation_data.explicit_runtime_value == I->enumeration_index)
 		return FALSE;
 	return TRUE;
 }

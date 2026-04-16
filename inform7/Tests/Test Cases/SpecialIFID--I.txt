@@ -11,9 +11,10 @@
   >[1] version
   Welcome
   An Interactive Fiction
-  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
-  Inform 7 v10.2.0-beta+6X96
-  Identification number: //DEADBEEF-007//
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0+6X97 / D
+  Identification number: DEADBEEF-007
   Standard interpreter 1.0 (1F)
+  
+  There are no copyright acknowledgements for extensions used by this story.
   
 > >

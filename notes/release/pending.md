@@ -1,7 +1,7 @@
 # Pending
 
 These will be added to release notes when the release is made. This page
-only hold bug fixes and other minor tweaks: anything larger is covered by
+only holds bug fixes and other minor tweaks: anything larger is covered by
 [Inform evolution](https://github.com/ganelson/inform-evolution) proposals.
 
 ## Featurettes arising from bug reports, but too small for Inform Evolution proposals

@@ -641,7 +641,7 @@ enumeration" if it has an out of order instance.
 
 =
 void RTKindConstructors::set_explicit_runtime_instance_value(kind *K, instance *I,
-	inter_ti val) {
+	int val) {
 	kind_constructor *kc = Kinds::get_construct(K);
 	RTInstances::set_explicit_runtime_value(I, val);
 	if (RTInstances::out_of_place(I))
