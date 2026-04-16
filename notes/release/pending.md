@@ -204,6 +204,8 @@ external developers, which are periodically updated. In this release:
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2692](https://inform7.atlassian.net/browse/I7-2692)
+	"K1_room doesn't have action_bitmap"
 - Fix for Jira bug [I7-2676](https://inform7.atlassian.net/browse/I7-2676)
 	"Extended kit-defined enumerated kinds assigns the same value twice"
 - Fix for Jira bug [I7-2673](https://inform7.atlassian.net/browse/I7-2673)

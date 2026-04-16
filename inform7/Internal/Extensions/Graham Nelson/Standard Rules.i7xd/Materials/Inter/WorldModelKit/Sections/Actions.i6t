@@ -401,7 +401,7 @@ more discussion of this.
 		SetRulebookOutcome(rv); ! In case disturbed by printing activities
 	}
 	#ENDIF;
-	if (rv == RS_SUCCEEDS) UpdateActionBitmap();
+	if (rv == RS_SUCCEEDS) SetActionBitmap(noun, action);
 	if (frame_id ~= -1) {
 		p1 = FindAction(action);
 		Mstack_Destroy_Frame(ActionData-->(p1+AD_VARIABLES_CREATOR), frame_id);
@@ -775,11 +775,6 @@ Constant ActionCount = CCOUNT_ACTION_NAME;
 		k = k*2; if (k == 256) { k = 1; j++; }
 	}
 	rfalse;
-];
-
-[ UpdateActionBitmap;
-	SetActionBitmap(noun, action);
-	if (action == ##Go) SetActionBitmap(location, ##Enter);
 ];
 
 [ SetActionBitmap obj act i j k bitmap;
