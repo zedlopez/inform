@@ -247,6 +247,17 @@ the template file called `CblorbModel.html` in the Inform application —
 that's where they're used.
 
 @<Set a whole pile of placeholders which will be needed to generate the status page@> =
+	if (Str::eq(Placeholders::read(I"IFID"), I"00000000-0000-0000-0000-000000000000")) {
+		BlorbErrors::warning_s(
+			"This story has no proper IFID (Interactive Fiction ID), a unique number "
+    		"to identify it: it only has the IFID '00000000-0000-0000-0000-000000000000', "
+    		"which likely means that Inform could not find an IFID for it. It's a bad "
+    		"idea to release a story into the wild with this IFID, which is intended "
+    		"only for throwaway test projects. You might want to 'Use project IFID of \"...\"' "
+    		"in the source text, if you can generate your own IFID, or else use your "
+    		"Inform app to generate one.");
+	}
+
 	if (error_count > 0) {
 		Placeholders::set_to(I"CBLORBSTATUS", I"Failed", 0);
 		Placeholders::set_to(I"CBLORBSTATUSLOW", I"failed", 0);
@@ -262,17 +273,19 @@ that's where they're used.
 		}
 	} else {
 		if (warning_count > 0) {
+			Placeholders::set_to(I"CBLORBSTATUS", I"Succeeded (but with warnings)", 0);
+			Placeholders::set_to(I"CBLORBSTATUSLOW", I"succeeded", 0);
 			Placeholders::append_to(I"CBLORBSTATUSTEXT",
 				I"<p><b>Warning:</b></p><ul>[CBLORBWARNINGS]</ul>");		
 			Placeholders::set_to(I"CBLORBERRORS", I"Only warnings occurred", 0);
 			Placeholders::set_to(I"CBLORBSTATUSTEXT",
-				I"The release did succeed, but with warnings:</p><ul>[CBLORBWARNINGS]</ul><p>", 0);
+				I"The release did succeed, <b>but with warnings</b>:</p><ul>[CBLORBWARNINGS]</ul><p>", 0);
 		} else {
+			Placeholders::set_to(I"CBLORBSTATUS", I"Succeeded", 0);
+			Placeholders::set_to(I"CBLORBSTATUSLOW", I"succeeded", 0);
 			Placeholders::set_to(I"CBLORBERRORS", I"No problems occurred", 0);
 			Placeholders::set_to(I"CBLORBSTATUSTEXT", I"All went well. ", 0);
 		}
-		Placeholders::set_to(I"CBLORBSTATUS", I"Succeeded", 0);
-		Placeholders::set_to(I"CBLORBSTATUSLOW", I"succeeded", 0);
 		Placeholders::set_to(I"CBLORBSTATUSIMAGE", I"file://[SMALLCOVER]", 0);
 		Placeholders::append_to(I"CBLORBSTATUSTEXT",
 			Str::literal(U"I've put the released material into the 'Release' subfolder "
@@ -284,12 +297,14 @@ that's where they're used.
 		);
 		Requests::report_requested_material(I"CBLORBSTATUSTEXT");
 	}
+	PRINT("! Completed");
+	if (warning_count > 0) PRINT(" with %d warning%s", warning_count, (warning_count==1)?"":"s");
 	if (blorb_file_size > 0) {
 		Placeholders::set_to_number(I"BLORBFILESIZE", blorb_file_size/1024);
 		Placeholders::set_to_number(I"BLORBFILEPICTURES", no_pictures_included);
 		Placeholders::set_to_number(I"BLORBFILESOUNDS", no_sounds_included);
 		Placeholders::set_to_number(I"BLORBFILEDATAFILES", no_data_files_included);
-		PRINT("! Completed: wrote blorb file with ");
+		PRINT(": wrote blorb file with ");
 		PRINT("%d picture(s), %d sound(s), %d data file(s)\n",
 			no_pictures_included, no_sounds_included, no_data_files_included);
 	} else {
@@ -297,7 +312,7 @@ that's where they're used.
 		Placeholders::set_to_number(I"BLORBFILEPICTURES", 0);
 		Placeholders::set_to_number(I"BLORBFILESOUNDS", 0);
 		Placeholders::set_to_number(I"BLORBFILEDATAFILES", 0);
-		PRINT("! Completed: no blorb output requested\n");
+		PRINT(": no blorb output requested\n");
 	}
 	if (status_template) {
 		Placeholders::set_to(I"PLATFORMCSS", I"", 0);

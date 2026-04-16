@@ -376,7 +376,7 @@ void Instances::make_instances_from_Neptune(void) {
 				highest_val++;
 				current_val = highest_val;
 			}
-			RTKindConstructors::set_explicit_runtime_instance_value(K, I, (inter_ti) current_val);
+			RTKindConstructors::set_explicit_runtime_instance_value(K, I, current_val);
 			RTInstances::set_translation(I, kci->identifier);
 			// LOG("From kit: %W = %S = %d -> $O\n", W, kci->identifier, current_val, I);
 		}

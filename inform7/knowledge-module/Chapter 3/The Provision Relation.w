@@ -45,18 +45,35 @@ void ProvisionRelation::stock(bp_family *self, int n) {
 @h Typechecking.
 Any property can in principle be assigned to any inference subject, so there's
 really no restriction on the left term. The right term, of course, has to be
-a property.
+a value property. It's surprisingly tricky to provide a good problem message
+for the case where an either-or property has been quoted because that will have
+been read adjectivally, so that term 1 here will be a variable ranging over
+some kind (usually `object`) which might or might not have the either-or property:
+in effect, `X provides open` is read as `X provides something open`. But we can't
+see the whole proposition here, so we just have to make a guess at what might
+be a good problem message.
 
 =
 int ProvisionRelation::typecheck(bp_family *self, binary_predicate *bp,
-	kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
+	pcalc_term *terms, kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
 	if (Kinds::get_construct(kinds_of_terms[1]) == CON_property) return ALWAYS_MATCH;
-	Problems::quote_kind(4, kinds_of_terms[1]);
-	StandardProblems::tcp_problem(_p_(PM_BadProvides), tck,
-		"that asks whether something provides something, and in Inform 'to provide' "
-		"means that an object (or value) has a property attached - for instance, "
-		"containers provide the property 'carrying capacity'. Here, though, what "
-		"comes after 'provides' is %4 rather than the name of a property.");
+	if ((terms[1].variable >= 0) && (Kinds::eq(kinds_of_terms[1], K_object))) {
+		Problems::quote_kind(4, kinds_of_terms[1]);
+		StandardProblems::tcp_problem(_p_(PM_BadProvidesEO), tck,
+			"that asks whether something provides something, and in Inform 'to provide' "
+			"means that an object (or value) has a property attached - for instance, "
+			"containers provide the property 'carrying capacity'. But it has to be "
+			"a property with a value, not an either-or property like 'open' or 'lighted'. "
+			"This doesn't seem to be a property with a value.");
+	} else {
+		Problems::quote_kind(4, kinds_of_terms[1]);
+		StandardProblems::tcp_problem(_p_(PM_BadProvides), tck,
+			"that asks whether something provides something, and in Inform 'to provide' "
+			"means that an object (or value) has a property attached - for instance, "
+			"containers provide the property 'carrying capacity'. But it has to be "
+			"a property with a value. Here, what comes after 'provides' is %4 "
+			"rather than the name of a property with a value.");
+	}
 	return NEVER_MATCH;
 }
 

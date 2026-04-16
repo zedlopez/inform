@@ -10294,7 +10294,7 @@ These responses are named so that they can be changed. Most IF authors dislike o
 
 It's very easy to change responses:
 
-	The print empty inventory rule response (A) is "Your hands are, like, totally empty. Lame."
+	The print empty inventory rule response (A) is "Your hands are, like, totally empty. Loser."
 
 and we can even do this dynamically during play:
 
@@ -14885,8 +14885,7 @@ The phrases `it does` and `it does not` make a decision.
 
 	Relations
 	An Interactive Fiction by Emily Short
-	
-	Release 1 / Serial number 050630 / Inform 7 build 2U98 (I6/v6.30 lib 6/10N) SD
+	Release 1 / Serial number 050630 / Inform 7 v10.2.0
 
 (The serial and build numbers are those applying when the story file was last made: these ones are from the mid-2000s.) The banner is printed at the start of play, and when the player types ``VERSION`` at the command line, and when say `"[banner text]"` occurs.
 
@@ -14894,13 +14893,17 @@ The phrases `it does` and `it does not` make a decision.
 >
 > This text substitution expands to the banner text giving bibliographic details of the current story file, rather like the opening credits of a movie, or the title page of a book.
 
-**2. The default behaviour.** Prints the text above, giving the title, the headline, the author, the release number, the date of compilation (that's the serial number: YYMMDD), and version numbers of the Inform components used to put the story together.
+**2. The default behaviour.** Prints the text above, giving the title, the headline, the author, the release number, the date of compilation (that's the serial number: YYMMDD), and version numbers of the Inform components used to put the story together. This is done by the `standard printing the banner text rule`. Lines 1 to 3 of the standard banner are responses `(A)` to `(C)` of this rule.
 
 **3. Examples.** (a) Adding a line to the banner:
 
 	After printing the banner text, say "DRM authentication code: 13S-451-2034u75y65u%%a1248."
 
-(b) Simplifying the banner:
+(b) Amending a line in the banner:
+
+	The standard printing the banner text rule response (C) is "There are versions, but it's not like you care."
+
+(c) Replacing the banner altogether:
 
 	Rule for printing the banner text: say "Welcome." instead.
 
@@ -18952,19 +18955,36 @@ Modern IF interpreters such as Zoom for Mac OS X and Unix, and Windows Frotz, ca
 
 During March and April 2006, an agreement was reached between the IF archive and most of the different systems for creating IF – of which Inform is only one – called the Treaty of Babel. While these different systems create computer programs which are quite different internally, the Treaty provides for works of IF to come with bibliographic data which identifies them in a standard way.
 
-Inform is fully compliant with the Treaty. In particular, each new project created by Inform is allocated a unique identification number called its IFID. The IFID is the equivalent for IF of the ISBN of a printed book. Inform copies it onto the "library card" for the benefit of Internet-based libraries which may eventually accession the work. Of course many projects start but never see the light of day, so many possible IFIDs are "wasted": but that hardly matters, as there are plenty more numbers in the world.
+Inform is fully compliant with the Treaty. In particular, each new project created by Inform is allocated a unique identification number called its IFID. The IFID is the equivalent for IF of the ISBN of a printed book. Inform copies it onto the "library card" for the benefit of Internet-based libraries which may eventually accession the work. Of course many projects start but never see the light of day, so many possible IFIDs are "wasted": but that hardly matters, as there are plenty more numbers in the world. To see the IFID of your project, see the Library Card in the Index, or type the command ``VERSION``.
 
-The important thing is that **the IFID number must be unique to this one work out of all the IF ever created.**
+> [!IMPORTANT]
+> The important thing is that **the IFID number must be unique to this one work out of all the IF ever created.**
+>
+> The Inform apps will try to make sure this is true, **unless** we do something to break this ourselves. For instance, if we take an existing project, copy it as a file, then work divergently on the original and on the copy so that they become two radically different works, they will still each have the same ID. This is a bad thing: if we want to duplicate a project but then turn it into something new, the best way to do that is to create a new project, and to copy and paste the source from the old to the new.
+>
+> In particular, be aware that using "Save as..." in the Inform apps generally saves a clone of the current project _but with a fresh IFID_. This is intended so that people who use "Save as..." on an old project to begin a new one do not accidentally reuse its IFID.
 
-Inform will make sure this is true, **unless** we do something to break this ourselves. For instance, if we take an existing project, copy it as a file, then work divergently on the original and on the copy so that they become two radically different works, they will still each have the same ID. This is a bad thing: if we want to duplicate a project but then turn it into something new, the best way to do that is to create a new project, and to copy and paste the source from the old to the new.
+-- -- --
 
-In particular, be aware that using "Save as..." in the Inform apps generally saves a clone of the current project _but with a fresh IFID_. This is intended so that people who use "Save as..." on an old project to begin a new one do not accidentally reuse its IFID.
-
-The IFID can be provided, or overridden, explicitly in source text like so:
+Inform does provide a way to specify the IFID within the source text, but it should be used only with care. A special use option is needed:
 
 	Use project IFID of "c20500c5-495d-47dd-8706-c1bb66d077ed".
 
-Inform will generate a warning if this disagrees with what the app believes is the IFID, but will allow the explicit Use option version to prevail. This should be used only with care.
+The IFID cannot be just any piece of text. To quote the Treaty of Babel, at §2.2:
+
+> The IFID shall be a sequence of between 8 and 63 characters, each of which shall be a digit, a capital letter or a hyphen.
+
+Inform enforces this by issuing problem messages for any attempt to use an illegal IFID, except that it silently converts lower-case `a` to `z` into capitals. The above example thus actually produces the IFID `C20500C5-495D-47DD-8706-C1BB66D077ED`.
+
+> [!WARNING]
+> So, then, there are two ways an IFID can be specified: in a special `uuid.txt` file tucked away inside the project, usually put there by the Inform apps; or in the source text, with `Use project IFID`. But since both are optional, and it's legal to give either, both, or neither, Inform sometimes needs to make a choice. This is how:
+>
+> - If neither is given, the IFID is `00000000-0000-0000-0000-000000000000`.
+>
+> - If both are given and they disagree, then the `Use project IFID` version as the answer.
+>   Unless the version being overridden is `00000000-0000-0000-0000-000000000000`, a warning message is generated.
+>
+> As this suggests, the IFID `00000000-0000-0000-0000-000000000000` is special. Inform uses it only for throwaway test projects. A story should never actually be released with this IFID, and Inform will issue a warning if this is tried.
 
 ## The Release button and the Materials folder {PM_NoSuchPublicRelease} {release_files}
 

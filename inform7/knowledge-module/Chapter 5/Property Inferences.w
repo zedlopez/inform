@@ -48,9 +48,11 @@ void PropertyInferences::draw(inference_subject *subj, property *prn, parse_node
 
 void PropertyInferences::draw_from_metadata(inference_subject *subj, property *prn,
 	parse_node *val, int source) {
+	assert_recursion_depth++;
 	inference *i = PropertyInferences::new(subj, prn, val);
 	i->drawn_from_elsewhere = source;
 	Inferences::join_inference(i, subj);
+	assert_recursion_depth--;
 }
 
 void PropertyInferences::draw_negated(inference_subject *subj, property *prn, parse_node *val) {

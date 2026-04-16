@@ -112,11 +112,18 @@ void BlorbErrors::errorf_2S(char *erm, text_stream *s1, text_stream *s2) {
 @ And still more mere qualms:
 
 =
+void BlorbErrors::warning_s(char *s) {
+	TEMPORARY_TEXT(ERM)
+	WRITE_TO(ERM, s);
+	BlorbErrors::warning(ERM);
+	DISCARD_TEXT(ERM)
+}
+
 void BlorbErrors::warning(text_stream *S) {
 	Placeholders::append_to(I"CBLORBWARNINGS", I"<li>");
 	Placeholders::append_to(I"CBLORBWARNINGS", S);
 	Placeholders::append_to(I"CBLORBWARNINGS", I"</li>");
-	STREAM_COPY(STDERR, S);
+	WRITE_TO(STDERR, "Warning: %S\n", S);
 	warning_count++;
 }
 

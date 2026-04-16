@@ -1,14 +1,18 @@
 Inform 7 v10.2.0 has started.
-I've now read your source text, which is 8 words long.
+I've now read your source text, which is 14 words long.
 I've also read version 10.2.0 of Basic Inform by Graham Nelson, which is 11164 words long.
 I've also read version 10.2.0 of English Language by Graham Nelson, which is 2330 words long.
 I've also read version 10.2.0 of Standard Rules by Graham Nelson, which is 35707 words long.
-Problem__ PM_BadProvides
-  >--> In the sentence 'The player provides 10' (source text, line 3), it looks
-    as if you intend 'The player provides 10' to be asserting something, but
+Problem__ PM_BadProvidesEO
+  >--> In the sentence 'if the player provides openable' (source text, line 4),
+    it looks as if you intend 'player provides openable' to be a condition, but
     that asks whether something provides something, and in Inform 'to provide'
     means that an object (or value) has a property attached - for instance,
     containers provide the property 'carrying capacity'. But it has to be a
-    property with a value. Here, what comes after 'provides' is a number rather
-    than the name of a property with a value.
+    property with a value, not an either-or property like 'open' or 'lighted'.
+    This doesn't seem to be a property with a value.
+    I was trying to match this phrase:
+      if (player provides openable - a condition): 
+    I recognised:
+    player provides openable = a condition
 Inform 7 has finished.

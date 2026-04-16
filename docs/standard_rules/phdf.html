@@ -106,6 +106,9 @@ even the 2020 restructuring of Inform's language design.</p>
 <span class="plain-syntax">To display the/-- boxed quotation (Q - text)</span>
 <span class="plain-syntax">    (documented at ph_boxed):</span>
 <span class="plain-syntax">    (- DisplayBoxedQuotation({-box-quotation-text:Q}); -).</span>
+
+<span class="plain-syntax">To show the/-- current quotation:</span>
+<span class="plain-syntax">    (- ClearBoxedText(); -).</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  And now some oddball special texts which must sometimes be said.</p>
@@ -969,6 +972,15 @@ toggles verbose logging of the type-checker.</p>
 <span class="plain-syntax">    (- {-primitive-definition:verbose-checking} -).</span>
 <span class="plain-syntax">To *** (T - text):</span>
 <span class="plain-syntax">    (- {-primitive-definition:verbose-checking} -).</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43. </b>  And something to assist with the output to the <code>VERSION</code> command:</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">Section 8 - Interpreter scrying - Unindexed</span>
+
+<span class="plain-syntax">To say VM report on interpreter:</span>
+<span class="plain-syntax">    (- VM_ReportOnInterpreter(); -).</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="cmgr.html">&#10094;</a></li><li class="progresssection"><a href="prmbl.html">prmbl</a></li><li class="progresssection"><a href="pwm.html">pwm</a></li><li class="progresssection"><a href="var.html">var</a></li><li class="progresssection"><a href="dlg.html">dlg</a></li><li class="progresssection"><a href="actvt.html">actvt</a></li><li class="progresssection"><a href="actns.html">actns</a></li><li class="progresssection"><a href="cmgr.html">cmgr</a></li><li class="progresscurrent">phdf</li><li class="progressnextoff">&#10095;</li></ul></div>

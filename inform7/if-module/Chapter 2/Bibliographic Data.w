@@ -28,6 +28,19 @@ void BibliographicData::start(void) {
 
 int BibliographicData::production_line(int stage, int debugging,
 	stopwatch_timer *sequence_timer) {
+	if (stage == ASSERTIONS_PASS_2_CSEQ) {
+		if (story_IFID_VAR) {
+			parse_node *val = BibliographicData::val(BibliographicData::read_uuid());
+			if (val) {
+				parse_node *save = current_sentence;
+				current_sentence = NULL;
+				PropertyInferences::draw_from_metadata(
+					NonlocalVariables::to_subject(story_IFID_VAR), P_variable_initial_value,
+						val, INFERENCE_DRAWN_FROM_IFID);
+				current_sentence = save;
+			}
+		}
+	}
 	if (stage == INTER1_CSEQ) {
 		BENCH(RTBibliographicData::compile_constants);
 	}
@@ -190,8 +203,7 @@ int BibliographicData::bibliographic_new_variable_notify(nonlocal_variable *q) {
 				@<Prefill the release number variable@>; break;
 			case SERIAL_CODE_BIBV: story_serial_number_VAR = q;
 				@<Prefill the serial code variable@>; break;
-			case PROJECT_IFID_BIBV: story_IFID_VAR = q;
-				@<Prefill the IFID variable@>; break;
+			case PROJECT_IFID_BIBV: story_IFID_VAR = q; break;
 			case STORY_LICENCE_BIBV: story_licence_VAR = q; break;
 			case STORY_COPYRIGHT_BIBV: story_copyright_VAR = q; break;
 			case STORY_ORIGIN_URL_BIBV: story_origin_URL_VAR = q; break;
@@ -221,48 +233,61 @@ int BibliographicData::bibliographic_new_variable_notify(nonlocal_variable *q) {
 
 @<Prefill the serial code variable@> =
 	TEMPORARY_TEXT(SN)
-	RTBibliographicData::write_serial_code(SN); PUT_TO(SN, ' ');
-	parse_node *save = current_sentence;
-	current_sentence = NULL;
-	PropertyInferences::draw_from_metadata(
-		NonlocalVariables::to_subject(q), P_variable_initial_value,
-			Rvalues::from_wording(Feeds::feed_text(SN)), INFERENCE_DRAWN_FROM_DATE);
-	current_sentence = save;
-	DISCARD_TEXT(SN)
-
-@<Prefill the IFID variable@> =
-	TEMPORARY_TEXT(SN)
-	WRITE_TO(SN, "%S ", BibliographicData::read_uuid());
-	parse_node *save = current_sentence;
-	current_sentence = NULL;
-	PropertyInferences::draw_from_metadata(
-		NonlocalVariables::to_subject(q), P_variable_initial_value,
-			Rvalues::from_wording(Feeds::feed_text(SN)),
-			INFERENCE_DRAWN_FROM_IFID);
-	current_sentence = save;
+	RTBibliographicData::write_serial_code(SN);
+	parse_node *val = BibliographicData::val(SN);
+	if (val) {
+		parse_node *save = current_sentence;
+		current_sentence = NULL;
+		PropertyInferences::draw_from_metadata(
+			NonlocalVariables::to_subject(q), P_variable_initial_value,
+			val, INFERENCE_DRAWN_FROM_DATE);
+		current_sentence = save;
+	}
 	DISCARD_TEXT(SN)
 
 @<Prefill the Inform version number variable@> =
 	TEMPORARY_TEXT(SN)
-	WRITE_TO(SN, "[[Version Number]] ");
-	parse_node *save = current_sentence;
-	current_sentence = NULL;
-	PropertyInferences::draw_from_metadata(
-		NonlocalVariables::to_subject(q), P_variable_initial_value,
-			Rvalues::from_wording(Feeds::feed_text(SN)), INFERENCE_DRAWN_FROM_COMPILER);
-	current_sentence = save;
+	WRITE_TO(SN, "[[Version Number]]");
+	parse_node *val = BibliographicData::val(SN);
+	if (val) {
+		parse_node *save = current_sentence;
+		current_sentence = NULL;
+		PropertyInferences::draw_from_metadata(
+			NonlocalVariables::to_subject(q), P_variable_initial_value,
+				val, INFERENCE_DRAWN_FROM_COMPILER);
+		current_sentence = save;
+	}
 	DISCARD_TEXT(SN)
 
 @<Prefill the Inform build code variable@> =
 	TEMPORARY_TEXT(SN)
-	WRITE_TO(SN, "[[Build Number]] ");
-	parse_node *save = current_sentence;
-	current_sentence = NULL;
-	PropertyInferences::draw_from_metadata(
-		NonlocalVariables::to_subject(q), P_variable_initial_value,
-			Rvalues::from_wording(Feeds::feed_text(SN)), INFERENCE_DRAWN_FROM_COMPILER);
-	current_sentence = save;
+	WRITE_TO(SN, "[[Build Number]]");
+	parse_node *val = BibliographicData::val(SN);
+	if (val) {
+		parse_node *save = current_sentence;
+		current_sentence = NULL;
+		PropertyInferences::draw_from_metadata(
+			NonlocalVariables::to_subject(q), P_variable_initial_value,
+				val, INFERENCE_DRAWN_FROM_COMPILER);
+		current_sentence = save;
+	}
 	DISCARD_TEXT(SN)
+
+@ This should only be used on texts known not to contain double-quotes.
+
+=
+parse_node *BibliographicData::val(text_stream *text) {
+	parse_node *val = NULL;
+	TEMPORARY_TEXT(QUOTED)
+	WRITE_TO(QUOTED, "\"%S\" ", text);
+	wording W = Feeds::feed_text(QUOTED);
+	if (Wordings::nonempty(W)) {
+		Word::dequote(Wordings::first_wn(W));
+		val = Rvalues::from_wording(W);
+	}
+	DISCARD_TEXT(QUOTED)
+	return val;
+}
 
 @h The opening sentence.
 The following is called in response to the bibliographic sentence — the
@@ -384,16 +409,20 @@ by that application. After some agonising, I decided that the Treaty did not
 actually oblige me to crash out if this file did not exist: but in such
 cases the UUID is empty.
 
+§2.2 of the Treaty of Babel reads:
+
+> The IFID shall be a sequence of between 8 and 63 characters, each of which shall be a digit, a capital letter or a hyphen.
+
 @d MAX_UUID_LENGTH 128 /* the UUID is truncated to this if necessary */
 
 =
 text_stream *uuid_text = NULL;
-int uuid_read = -1;
 
 text_stream *BibliographicData::read_uuid(void) {
-	if (uuid_read >= 0) return uuid_text;
+	static int uuid_read = FALSE;
+	if (uuid_read) return uuid_text;
+	uuid_read = TRUE;
 	uuid_text = Str::new();
-	uuid_read = 0;
 	FILE *xf = Filenames::fopen(Task::uuid_file(), "r");
 	if (xf) {
 		int c;
@@ -403,12 +432,13 @@ text_stream *BibliographicData::read_uuid(void) {
 				PUT_TO(uuid_text, Characters::toupper((inchar32_t) c));
 		fclose(xf);
 	}
-	if (Str::len(global_compilation_settings.project_UUID) > 0) {
+	text_stream *UUU = global_compilation_settings.project_UUID;
+	if (Str::len(UUU) > 0) {
 		if ((Str::len(uuid_text) > 0) &&
 			(Str::ne(uuid_text, I"00000000-0000-0000-0000-000000000000")) &&
-			(Str::ne_insensitive(uuid_text, global_compilation_settings.project_UUID))) {
+			(Str::ne_insensitive(uuid_text, UUU))) {
 			Problems::quote_stream(1, uuid_text);
-			Problems::quote_stream(2, global_compilation_settings.project_UUID);
+			Problems::quote_stream(2, UUU);
 			StandardProblems::handmade_warning(Task::syntax_tree(), _p_(Untestable));
 			Problems::issue_problem_segment(
 				"The 'uuid.txt' file for the project gives the IFID of this story "
@@ -418,7 +448,35 @@ text_stream *BibliographicData::read_uuid(void) {
 			Problems::issue_warning_end();
 		}
 		Str::clear(uuid_text);
-		Str::copy(uuid_text, global_compilation_settings.project_UUID);
+		Str::copy(uuid_text, UUU);
+	}
+	int bogus_characters = FALSE;
+	for (int i=0; i<Str::len(uuid_text); i++) {
+		inchar32_t c = Str::get_at(uuid_text, i);
+		if (!((c == '-') || (Characters::isalpha(c)) || (Characters::isdigit(c))))
+			bogus_characters = TRUE;
+		Str::put_at(uuid_text, i, Characters::toupper(c));
+	}
+	if (Str::len(uuid_text) == 0) Str::copy(uuid_text, I"00000000-0000-0000-0000-000000000000");
+	if ((Str::len(uuid_text) < 8) || (Str::len(uuid_text) > 63)) {
+		Problems::quote_stream(1, uuid_text);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+		Problems::issue_problem_segment(
+			"The IFID must be between 8 and 63 characters long: "
+			"Inform normally generates 36-character IFIDs. You gave '%1', which is "
+			"outside that range of sizes.");
+		Problems::issue_warning_end();
+		Str::clear(uuid_text);
+		Str::copy(uuid_text, I"00000000-0000-0000-0000-000000000000");
+	} else if (bogus_characters) {
+		Problems::quote_stream(1, uuid_text);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+		Problems::issue_problem_segment(
+			"The IFID you gave, '%1', contains characters which are not hyphens, "
+			"English letters A-Z, or digits 0-9: this is not allowed.");
+		Problems::issue_warning_end();
+		Str::clear(uuid_text);
+		Str::copy(uuid_text, I"00000000-0000-0000-0000-000000000000");
 	}
 	return uuid_text;
 }

@@ -171,11 +171,29 @@ This is the look around once light available rule:
 	try looking.
 
 @ One special forms of printing: the banner which appears at or close
-to the start of play:
+to the start of play. Note that we give two versions of the key rule, though
+they differ only in whether they print the `/ D` suffix to indicate a debug
+build has been compiled.
 
 =
 Printing the banner text (documented at act_banner) is an activity.
 The printing the banner text activity is accessible to Inter as "PRINTING_BANNER_TEXT_ACT".
+
+Section 2a (not for release)
+
+Last for printing the banner text rule (this is the standard printing the banner text rule):
+	say "[bold type][story title][roman type][line break]" (A);
+	say "[story headline][if story author is not empty] by [story author][end if][line break]" (B);
+	say "Release [release number] / Serial number [story serial code] / Inform 7 v[inform version number][if we are requesting the story file version]+[inform build code][end if]" (C);
+	say " / D[line break]" (D).
+
+Section 2b (for release only)
+
+Last for printing the banner text rule (this is the standard printing the banner text rule):
+	say "[bold type][story title][roman type][line break]" (A);
+	say "[story headline][if story author is not empty] by [story author][end if][line break]" (B);
+	say "Release [release number] / Serial number [story serial code] / Inform 7 v[inform version number][if we are requesting the story file version]+[inform build code][end if]" (C);
+	say "" (D).
 
 @h Parsing activites.
 Now a brace of activities to intervene in how the command parser does its

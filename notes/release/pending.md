@@ -1,7 +1,7 @@
 # Pending
 
 These will be added to release notes when the release is made. This page
-only hold bug fixes and other minor tweaks: anything larger is covered by
+only holds bug fixes and other minor tweaks: anything larger is covered by
 [Inform evolution](https://github.com/ganelson/inform-evolution) proposals.
 
 ## Featurettes arising from bug reports, but too small for Inform Evolution proposals
@@ -51,6 +51,46 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
     shouldn't: see for example the `make named things mentioned rule` in the
     Standard Rules, which is the only place it uses this phrase.
 
+- The humble business of printing the "banner" for a story, that is, text like:
+	```
+	Dreams of the Occident
+	An Interactive Fiction
+	Release 3 / Serial Number 260415 / Inform 7 v10.2.0
+	```
+	has been reimplemented in Inform source text. In particular, the new
+	```
+	standard printing the banner text rule
+	```
+	is the default arrangement: lines 1 to 3 above are responses `(A)` to `(C)`
+	for this rule. See Jira bug
+	[I7-2686](https://inform7.atlassian.net/browse/I7-2686).
+
+- Correspondingly, the `announce the story file version rule`, which provides
+	the default implementation of the `VERSION` command, has been rewritten as
+	Inform source text, and its output is slightly tidier:
+	```
+	>VERSION
+	Dreams of the Occident
+	An Interactive Fiction
+	Release 3 / Serial Number 260415 / Inform 7 v10.2.0+6X96
+	Identification number: A7A885DC-1187-4D85-9550-F2DC02B2BD90
+	Interpreter version 0.6.0 / VM 3.1.3
+
+	There are no copyright acknowledgements for extensions used by this story.
+	```
+	Note that that last sentence, the output from `COPYRIGHT` in this case,
+	is the new response `(A)` of the `announce the copyright licences rule`;
+	it is printed if every extension compiled into the story has `Use authorial modesty`
+	specified, so that the author is waiving the credit.
+
+- The above was handled with four new bibliographic variables, which are read-only:
+	```
+	story serial code
+	project IFID
+	Inform version number
+	Inform build code
+	```
+
 - There is a new use option
 	```
 	Use project IFID of "...".
@@ -81,7 +121,10 @@ only hold bug fixes and other minor tweaks: anything larger is covered by
 - The obscure debugging verb TREE has been renamed SHOWTREE to reduce the risk
 	of confusion when "tree" is typed in reply to a clarifying question from the
 	command parser, in a debug build (such as in the app). See
-	Jira bug [I7-2398](https://inform7.atlassian.net/browse/I7-2398).
+	Jira bug [I7-2398](https://inform7.atlassian.net/browse/I7-2398). Its output
+	has also been modernised so that it gives a clearer picture of the model
+	world, and in particular, covers incorporation. See  See Jira bug
+	[I7-2424](https://inform7.atlassian.net/browse/I7-2424).
 
 - The transcript file is, in Glulx, now written as UTF-8 text. See
 	Jira bug [I7-2516](https://inform7.atlassian.net/browse/I7-2516).
@@ -161,6 +204,8 @@ external developers, which are periodically updated. In this release:
 
 ## Bug fixes
 
+- Fix for Jira bug [I7-2692](https://inform7.atlassian.net/browse/I7-2692)
+	"K1_room doesn't have action_bitmap"
 - Fix for Jira bug [I7-2676](https://inform7.atlassian.net/browse/I7-2676)
 	"Extended kit-defined enumerated kinds assigns the same value twice"
 - Fix for Jira bug [I7-2673](https://inform7.atlassian.net/browse/I7-2673)
@@ -446,6 +491,7 @@ These affect documentation, or the wording of problem messages or the Index, but
 do not really change the compiler or other tools in any way which changes how
 source text is read.
 
+> [I7-2685](https://inform7.atlassian.net/browse/I7-2685),
 > [I7-2663](https://inform7.atlassian.net/browse/I7-2663),
 > [I7-2662](https://inform7.atlassian.net/browse/I7-2662),
 > [I7-2640](https://inform7.atlassian.net/browse/I7-2640),

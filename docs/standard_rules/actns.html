@@ -3246,19 +3246,19 @@ is the current VM: so these are close to the metal, as they say.</p>
 <span class="plain-syntax">    "Attempt to end transcript failed." (C).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP176" class="paragraph-anchor"></a><b>&#167;176. </b>  The VERSION command is not quite so close to the metal — it is implemented
-in I6, at the end of the day — but it does involve reading the bytes of the
-story file header, so it needs to take quite different forms for the
-different formats being compiled to.</p>
+<p class="commentary firstcommentary"><a id="SP176" class="paragraph-anchor"></a><b>&#167;176. </b>  The VERSION command is now largely handled by regular Inform 7 source text.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Requesting the story file version is an action out of world and applying to nothing.</span>
 <span class="plain-syntax">The requesting the story file version action is accessible to Inter as "Version".</span>
 
-<span class="plain-syntax">The announce the story file version rule is listed in the carry out requesting the story</span>
-<span class="plain-syntax">    file version rulebook.</span>
-<span class="plain-syntax">The announce the story file version rule is defined by Inter as "ANNOUNCE_STORY_FILE_VERSION_R".</span>
-
+<span class="plain-syntax">Carry out requesting the story file version (this is the announce the story file version rule):</span>
+<span class="plain-syntax">    carry out the printing the banner text activity;</span>
+<span class="plain-syntax">    say "Identification number: [project IFID][line break]" (A);</span>
+<span class="plain-syntax">    say VM report on interpreter;</span>
+<span class="plain-syntax">    say list of extension credits;</span>
+<span class="plain-syntax">    try requesting copyright licences;</span>
+<span class="plain-syntax">    rule succeeds.</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP177" class="paragraph-anchor"></a><b>&#167;177. </b>  And similarly for COPYRIGHT.</p>
@@ -3269,7 +3269,8 @@ different formats being compiled to.</p>
 
 <span class="plain-syntax">The announce the copyright licences rule is listed in the carry out requesting</span>
 <span class="plain-syntax">    copyright licences rulebook.</span>
-<span class="plain-syntax">The announce the copyright licences rule is defined by Inter as "ANNOUNCE_COPYRIGHT_LICENCES_R".</span>
+<span class="plain-syntax">The announce the copyright licences rule is defined by Inter as "ANNOUNCE_COPYRIGHT_LICENCES_R" with</span>
+<span class="plain-syntax">    "There are no copyright acknowledgements for extensions used by this story." (A).</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP178" class="paragraph-anchor"></a><b>&#167;178. </b>  There's really no very good reason why we provide the out-of-world command

@@ -3086,19 +3086,19 @@ The switch the story transcript off rule is defined by Inter as "SWITCH_TRANSCRI
     "[line break]End of transcript." (B),
     "Attempt to end transcript failed." (C).
 
-@ The VERSION command is not quite so close to the metal — it is implemented
-in I6, at the end of the day — but it does involve reading the bytes of the
-story file header, so it needs to take quite different forms for the
-different formats being compiled to.
+@ The VERSION command is now largely handled by regular Inform 7 source text.
 
 =
 Requesting the story file version is an action out of world and applying to nothing.
 The requesting the story file version action is accessible to Inter as "Version".
 
-The announce the story file version rule is listed in the carry out requesting the story
-	file version rulebook.
-The announce the story file version rule is defined by Inter as "ANNOUNCE_STORY_FILE_VERSION_R".
-
+Carry out requesting the story file version (this is the announce the story file version rule):
+	carry out the printing the banner text activity;
+	say "Identification number: [project IFID][line break]" (A);
+	say VM report on interpreter;
+	say list of extension credits;
+	try requesting copyright licences;
+	rule succeeds.
 
 @ And similarly for COPYRIGHT.
 
@@ -3108,7 +3108,8 @@ The requesting copyright licences action is accessible to Inter as "Copyright".
 
 The announce the copyright licences rule is listed in the carry out requesting
 	copyright licences rulebook.
-The announce the copyright licences rule is defined by Inter as "ANNOUNCE_COPYRIGHT_LICENCES_R".
+The announce the copyright licences rule is defined by Inter as "ANNOUNCE_COPYRIGHT_LICENCES_R" with
+	"There are no copyright acknowledgements for extensions used by this story." (A).
 
 @ There's really no very good reason why we provide the out-of-world command
 SCORE but not (say) TIME, or any one of dozens of other traditional what's-my-status

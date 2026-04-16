@@ -64,6 +64,16 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Inferences.</b>  This is quite a lightweight structure:</p>
 </div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">INFERENCE_DRAWN_FROM_SOURCE</span> <span class="constant-syntax">0</span><span class="plain-syntax"> </span>
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">INFERENCE_DRAWN_FROM_METADATA</span> <span class="constant-syntax">1</span>
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">INFERENCE_DRAWN_FROM_DATE</span> <span class="constant-syntax">2</span>
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">INFERENCE_DRAWN_FROM_IFID</span> <span class="constant-syntax">3</span>
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">INFERENCE_DRAWN_FROM_COMPILER</span> <span class="constant-syntax">4</span>
+</pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">inference</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">inference_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">family</span><span class="plain-syntax">; </span><span class="comment-syntax">/* see above */</span>
@@ -71,7 +81,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">certainty</span><span class="plain-syntax">; </span><span class="comment-syntax">/* any <code>*_CE</code> value other than <code>UNKNOWN_CE</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inferred_from</span><span class="plain-syntax">; </span><span class="comment-syntax">/* from what sentence was this drawn? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">drawn_during_stage</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or was this drawn during the model completion stage? */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">drawn_from_metadata</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or from the project's metadata file? */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">drawn_from_elsewhere</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or from the project's metadata file? */</span>
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inference is accessed in 1/ap, 2/iaa, 3/epa, 5/pi, 5/ri and here.</li></ul>
@@ -92,7 +102,7 @@ has been said about likelihood, it is assumed to be factually certain.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">new_i</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">certainty</span><span class="plain-syntax"> = </span><span class="identifier-syntax">certitude</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">new_i</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">inferred_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">new_i</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">drawn_during_stage</span><span class="plain-syntax"> = </span><a href="5-tmw.html#SP1" class="function-link"><span class="function-syntax">World::current_building_stage</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">new_i</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">drawn_from_metadata</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">new_i</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">drawn_from_elsewhere</span><span class="plain-syntax"> = </span><span class="constant-syntax">INFERENCE_DRAWN_FROM_SOURCE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">new_i</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>

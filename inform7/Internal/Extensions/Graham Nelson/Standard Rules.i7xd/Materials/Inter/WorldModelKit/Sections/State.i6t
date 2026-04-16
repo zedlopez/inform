@@ -99,25 +99,6 @@ could not properly be read.
 	if (VM_TranscriptOff() == false) { SWITCH_TRANSCRIPT_ON_RM('C'); new_line; rtrue; }
 ];
 
-@h Announce Story File Version Rule.
-
-=
-[ ANNOUNCE_STORY_FILE_VERSION_R ix;
-	if (actor ~= player) rfalse;
-	Banner();
-	print "Inform 7 v", (PrintI6Text) I7_FULL_VERSION_NUMBER, "^";
-	if (UUID_ARRAY->0 >= 6) {
-		print "Identification number: ";
-		for (ix=6: ix <= UUID_ARRAY->0: ix++) print (char) UUID_ARRAY->ix;
-		print "^";
-	}
-	VM_ReportOnInterpreter();
-	ShowExtensionVersions();
-	say__p = 1;
-	DivideParagraphPoint();
-	ANNOUNCE_COPYRIGHT_LICENCES_R();
-];
-
 @h Announce the Copyright Licences Rule.
 
 =
@@ -126,5 +107,7 @@ could not properly be read.
 	if (COPYRIGHT_LICENCE_TEXT ofclass String) {
 		print (string) COPYRIGHT_LICENCE_TEXT, "^";
 		say__p = 1;
+	} else {
+		ANNOUNCE_COPYRIGHT_LICENCES_RM('A'); new_line;
 	}
 ];

@@ -4,6 +4,9 @@
 language of play - <i>natural language</i><br>
 parameter-object - <i>object</i><br>
 </p>
+<p><b>The Status Window</b><br>
+status window table - <i>table name</i><br>
+</p>
 <p><b>Keyboard Input</b><br>
 delete key - <i>unicode character</i><br>
 down key - <i>unicode character</i><br>
@@ -30,9 +33,6 @@ right key - <i>unicode character</i><br>
 tab key - <i>unicode character</i><br>
 unknown key - <i>unicode character</i><br>
 up key - <i>unicode character</i><br>
-</p>
-<p><b>The Status Window</b><br>
-status window table - <i>table name</i><br>
 </p>
 <p><b>Glk events</b><br>
 current glk event initialiser - <i>glk event</i><br>
