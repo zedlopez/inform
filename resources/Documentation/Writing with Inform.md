@@ -5054,11 +5054,20 @@ This is actually an abbreviation for the longer, some would say preferable form:
 
 	if we are taking a container, ...
 
-Secondly, we can talk about the past as well as the present, which is very useful since interactive fiction often contains situations which are changed by earlier events.
+Secondly, we can talk about the past as well as the present, which is very useful since interactive fiction often contains situations which are changed by earlier events. There are limitations on what we can ask about the past, but one case which is often useful is to test whether a simple action has happened:
+
+	if we have taken the lantern, ...
+
+So, for example,
 
 	Instead of waiting when we have taken the lantern, say "No, your acquisitive nature is roused now, and simply waiting will no longer do."
 
-More on the past tense later follows in the next section: note that `we are taking` has become `we have taken`. For the rule to apply, it is not enough that the action `taking the lantern` has been tried: it must have succeeded. Note also that it's enough for any actor in the story to have successfully taken the lantern: it doesn't have to be the player.
+For the rule to apply, it is not enough that the action `taking the lantern` has been tried: it must have succeeded. On the other hand, it's enough for any actor to have taken the lantern: it doesn't have to be the player.
+
+Other forms of past-tense condition will follow in the next section.
+
+> [!WARNING]
+> There are other restrictions, too. The mention of "simple" action above is because this system within Inform only tracks the main noun involved, not any second noun, for example. That's fine for the action `taking the lantern`, but not for `putting the lantern on the shelf`. It also tracks only nouns which are things rather than rooms. All in all, this feature is best thought of as a convenience in handling simple commonly-needed cases: more elaborate tests will need to be made by hand.
 
 ## The past and perfect tenses {PM_PastSubordinate} {PM_PTAPMakesCallings} {PM_PastTableLookup} {PM_PastCallings}  {PM_PastActionCalled} {PM_NonPresentTense} {PM_PastTableEntries}
 
