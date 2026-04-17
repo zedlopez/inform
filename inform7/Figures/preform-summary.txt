@@ -20,14 +20,14 @@
         <s-literal-version-number>=1 
           (hits 0/10777) constraint (none) extremes [1, infinity)
         (@1)<s-literal-truth-state>=1 
-          (hits 100/487) (matched: 'false') constraint CS = {14} extremes [1, 1]
+          (hits 100/424) (matched: 'false') constraint CS = {14} extremes [1, 1]
         <s-literal-list>=1 
-          (hits 0/3422) constraint DS = {16} extremes [2, infinity)
+          (hits 0/3083) constraint DS = {16} extremes [2, infinity)
         (@1)unicode (@2)( <s-unicode-character>=1 (@-1)) 
           (hits 0/1547) constraint DS = {20} extremes [4, infinity)
         (@1)unicode <s-unicode-character>=1 
-          (hits 27/3544) (matched: 'unicode u+0008') constraint DS = {20} extremes [2, infinity)
+          (hits 27/3542) (matched: 'unicode u+0008') constraint DS = {20} extremes [2, infinity)
         <s-literal-time>=1 
-          (hits 0/3808) constraint DW = {17, 18, 19} extremes [2, 5]
+          (hits 0/3549) constraint DW = {17, 18, 19} extremes [2, 5]
         <s-literal-unit-notation>=1 
           (hits 0/10650) constraint (none) extremes [1, infinity)

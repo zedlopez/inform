@@ -484,6 +484,8 @@ external developers, which are periodically updated. In this release:
 - Fix for Jira bug [I7-1929](https://inform7.atlassian.net/browse/I7-1929) = Mantis 1965
 	"When defining a kind-of-object via table, properties are misplaced"
 	([commit 70fa464](https://github.com/ganelson/inweb/commit/70fa464c677791501bd83efda9bf63802a77e558))
+- Fix for Jira bug [I7-256](https://inform7.atlassian.net/browse/I7-256) = Mantis 286 (no, really)
+	"Praying is an action out of world applying to one topic with past participle prayed"
 
 ## Cosmetic fixes
 

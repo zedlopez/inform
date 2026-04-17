@@ -250,6 +250,7 @@ the initial text "applying to one thing" would be valid as it stands.
 =
 <action-sentence-object> ::=
 	<action-clauses> |                   ==> { 0, - }
+	<action-clauses-diagnosing> |        ==> { 0, - }
 	...                                  ==> @<Issue PM_ActionClauseUnknown problem@>
 
 <action-clauses> ::=
@@ -266,7 +267,7 @@ the initial text "applying to one thing" would be valid as it stands.
 <action-clause> ::=
 	out of world |                       ==> { OOW_ACT_CLAUSE, - }; @<Make out of world@>
 	abbreviable |                        ==> { ABBREV_ACT_CLAUSE, - }; @<Make abbreviable@>
-	with past participle ... |           ==> { PP_ACT_CLAUSE, - }; @<Give irregular participle@>
+	with past participle ### |           ==> { PP_ACT_CLAUSE, - }; @<Give irregular participle@>
 	applying to <action-applications> |  ==> { APPLYING_ACT_CLAUSE, - }
 	requiring light                      ==> { LIGHT_ACT_CLAUSE, - }; @<Require light@>
 
@@ -279,8 +280,7 @@ the initial text "applying to one thing" would be valid as it stands.
 	nothing or one <act-req> |           ==> @<Set kind and access for an optional one@>
 	one <act-req> |                      ==> @<Set kind and access for one@>
 	two <act-req>	|                    ==> @<Set kind and access for one, doubling up@>
-	<act-req> |                          ==> @<Set kind and access for one@>
-	...                                  ==> @<Issue PM_ActionMisapplied problem@>;
+	<act-req>                            ==> @<Set kind and access for one@>
 
 <act-req> ::=
 	<act-req-inner>                      ==> @<Check action kind@>;
@@ -293,6 +293,36 @@ the initial text "applying to one thing" would be valid as it stands.
 	visible |                            ==> { DOESNT_REQUIRE_ACCESS, - }
 	touchable |                          ==> { REQUIRES_ACCESS, - }
 	carried                              ==> { REQUIRES_POSSESSION, - }
+
+<action-clauses-diagnosing> ::=
+	... |                                                               ==> { lookahead }
+	<action-clauses-diagnosing> <action-clause-diagnosing-terminated> | ==> { 0, - };
+	<action-clause-diagnosing-terminated>                    			==> { 0, - };
+
+<action-clause-diagnosing-terminated> ::=
+	<action-clause-diagnosing> , and |              ==> { pass 1 }
+	<action-clause-diagnosing> and |                ==> { pass 1 }
+	<action-clause-diagnosing> , |                  ==> { pass 1 }
+	<action-clause-diagnosing>                      ==> { pass 1 }
+
+<action-clause-diagnosing> ::=
+	out of world |                       ==> { OOW_ACT_CLAUSE, - }; @<Make out of world@>
+	abbreviable |                        ==> { ABBREV_ACT_CLAUSE, - }; @<Make abbreviable@>
+	with past participle ... |           ==> { PP_ACT_CLAUSE, - }; @<Give irregular participle@>
+	applying to <action-applications-diagnosing> |  ==> { APPLYING_ACT_CLAUSE, - }
+	requiring light                      ==> { LIGHT_ACT_CLAUSE, - }; @<Require light@>
+
+<action-applications-diagnosing> ::=
+	nothing |
+	one <act-req> and one <act-req> |    ==> @<Set kind and access for two@>
+	one <act-req> and <act-req> |        ==> @<Set kind and access for two@>
+	<act-req> and one <act-req> |        ==> @<Set kind and access for two@>
+	<act-req> and <act-req> |            ==> @<Set kind and access for two@>
+	nothing or one <act-req> |           ==> @<Set kind and access for an optional one@>
+	one <act-req> |                      ==> @<Set kind and access for one@>
+	two <act-req>	|                    ==> @<Set kind and access for one, doubling up@>
+	<act-req> |                          ==> @<Set kind and access for one@>
+	...                                  ==> @<Issue PM_ActionMisapplied problem@>;
 
 @<Make out of world@> =
 	ActionSemantics::make_action_out_of_world(an_being_parsed);
