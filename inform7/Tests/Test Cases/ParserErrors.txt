@@ -4,25 +4,39 @@ For: Z-Machine
 The Garden is a room. A wheelbarrow is here. It contains a pile of dirt. The Garden contains a flower plot. The plot is fixed in place. A marble is a kind of thing. Three marbles are in the Garden.
 
 The Yard is north of the Garden.
+Princess is an animal in the Yard.
 
-Rule for printing a parser error:
-	[x] if the latest parser error is didn't understand error, say "'Speak up, lad, I don't hear as well as I used to.'";
-	[x] if the latest parser error is only understood as far as error, say "'Too much nonsense at the end of your sentence! Talk simpler!'";
+Numbering is an action applying to one thing and one number.
+Understand "number [thing] as [number]" as numbering.
+
+Persuasion: rule succeeds.
+
+Understand "zap [any container]" as entering.
+
+For printing a parser error:
+	[say "during: [latest parser error cast as number].";]
+	if the latest parser error is didn't understand error, say "'Speak up, lad, I don't hear as well as I used to.'"; [me,]
+	if the latest parser error is only understood as far as error, say "'Too much nonsense at the end of your sentence! Talk simpler!'"; [push the wheelbarrow north to the yard]
 	if the latest parser error is didn't understand that number error, say "'What's the matter with you, son? Can't you count?'";
-	[x] if the latest parser error is can't see any such thing error, say "'My eyes might not be what they used to be, sonny, but I can't make out anything remotely like that hereabouts.'";
-	if the latest parser error is said too little error, say "'Well? Go on, don't just stop in the middle.'";
-	if the latest parser error is aren't holding that error, say "'Look, you ain't carrying any such thing!'";
-	[x] if the latest parser error is can't use multiple objects error, say "'I know your mother always called you her little Houdini, but even Harry couldn't do that to more than one thing at once.'";
-	if the latest parser error is can only use multiple objects error, say "'What are you, thick? You can't do that one at a time.'";
-	[x] if the latest parser error is the not sure what it refers to error, say "'C'd you be more specific, runtling?'";
-	if the latest parser error is excepted something not included error, say "'Well, now, I wasn't planning on including that anyway, boyo.'";
-	[x] if the latest parser error is can only do that to something animate error, say "'That ain't something you can do with inanimate objects. It's unnatural.'";
-	[x] if the latest parser error is the not a verb I recognise error, say "'What kind of action is that? Just because your friends all do it doesn't make it acceptable around here!'";
-	[-] if the latest parser error is the not something you need to refer to error, say "'I don't want to ever hear you refer to that again.'";
-	[x] if the latest parser error is can't see it at the moment error, say "'Not here at the moment, or are you daft?'";
-	if the latest parser error is didn't understand the way that finished error, say "'Elocution ain't your strong suit, is it?'";
-	[x] if the latest parser error is the not enough of those available error, say "'What, you seeing double? There ain't enough of those to go around.'";
-	if the latest parser error is nothing to do error, say "'Lazy bum.'";
-	[x] if the latest parser error is I beg your pardon error, say "'Come again?'";
+	if the latest parser error is can't see any such thing error, say "'My eyes might not be what they used to be, sonny, but I can't make out anything remotely like that hereabouts.'"; [ examine the wiggle ]
+	if the latest parser error is can't use multiple objects error, say "'I know your mother always called you her little Houdini, but even Harry couldn't do that to more than one thing at once.'"; [ x marbles ]
+	if the latest parser error is the not sure what it refers to error, say "'C'd you be more specific, runtling?'"; [ x him ]
+	if the latest parser error is can only do that to something animate error, say "'That ain't something you can do with inanimate objects. It's unnatural.'"; [ ask dirt about me ]
+	if the latest parser error is the not a verb I recognise error, say "'What kind of action is that? Just because your friends all do it doesn't make it acceptable around here!'"; [ wiggle ]
+	if the latest parser error is can't see it at the moment error, say "'Not here at the moment, or are you daft?'"; [ ask her about me / x it [ when `it` -> marble, no longer present ] ]
+	if the latest parser error is the not enough of those available error, say "'What, you seeing double? There ain't enough of those to go around.'"; [ get 5 marbles ]
+	if the latest parser error is nothing to do error, say "'Lazy bum.'"; [ put dirt except dirt in wheelbarrow ]
+	if the latest parser error is I beg your pardon error, say "'Come again?'"; [ (empty command) ]
+	[ with the default printing a parser error behavior, this would end up being a
+	NOTINCONTEXT_PE / noun did not make sense in that context error, which may not
+	be possible to get in an author-created `for printing a parser error` rule ]
+	if the latest parser error is referred to a determination of scope error, say "'Can't rightly figure how you're fixin['] to go about that with... whatever that is.'";
+	[ it may be possible to get NOTINCONTEXT_PE with the default printing a parser error activity and not in an author-specified rule ]
+	if the latest parser error is noun did not make sense in that context error, say "'Can't  how you're fixin['] to go about that with... whatever that is.'";
+	if the latest parser error is can't again the addressee error, say "?"; [ vestigial? ]
+	if the latest parser error is comma can't begin error, say "'You feel set about who you mean to talk to?'"; [ ,me ]
+	if the latest parser error is can't see whom to talk to error, say "'Don't mean to alarm you, but you seem a be talkin['] to someone as ain't there.'";
+	if the latest parser error is can't talk to inanimate things error, say "'If you're waitin['] for a reply, best be willing to sit a spell.'"; [ wheelbarrow, will you be my new best friend? ]
+	if the latest parser error is didn't understand addressee's last name error, say "'Only caught the first part of that name.'"; [ princess donut, sit ]
 	
-Test me with "me, / push the wheelbarrow north to the yard / examine the wiggle / x marbles / ask her about me / ask dirt about me / wiggle / x it / n / x it / s / get five marbles / get all marbles / get three marbles / / ".
+Test me with "put dirt except dirt in wheelbarrow / x him / me, / ,me / push the wheelbarrow north to the yard / examine the wiggle / x marbles / ask her about me / ask dirt about me / wiggle / x it / n / x it / princess donut, sit / s / get five marbles / get all marbles / get three marbles / / number plot as eleventeen / wheelbarrow, will you be my new best friend? / new bestie, what do you say? / zap hemoglobin".
