@@ -32,11 +32,11 @@ For printing a parser error:
 	be possible to get in an author-created `for printing a parser error` rule ]
 	if the latest parser error is referred to a determination of scope error, say "'Can't rightly figure how you're fixin['] to go about that with... whatever that is.'";
 	[ it may be possible to get NOTINCONTEXT_PE with the default printing a parser error activity and not in an author-specified rule ]
-	if the latest parser error is noun did not make sense in that context error, say "'Can't  how you're fixin['] to go about that with... whatever that is.'";
-	if the latest parser error is can't again the addressee error, say "?"; [ vestigial? ]
+	if the latest parser error is noun did not make sense in that context error, say "'Can't how you're fixin['] to go about that with... whatever that is.'";
+	if the latest parser error is can't again the addressee error, say "'Who you wanna again?'"; [me, again]
 	if the latest parser error is comma can't begin error, say "'You feel set about who you mean to talk to?'"; [ ,me ]
 	if the latest parser error is can't see whom to talk to error, say "'Don't mean to alarm you, but you seem a be talkin['] to someone as ain't there.'";
 	if the latest parser error is can't talk to inanimate things error, say "'If you're waitin['] for a reply, best be willing to sit a spell.'"; [ wheelbarrow, will you be my new best friend? ]
 	if the latest parser error is didn't understand addressee's last name error, say "'Only caught the first part of that name.'"; [ princess donut, sit ]
 	
-Test me with "put dirt except dirt in wheelbarrow / x him / me, / ,me / push the wheelbarrow north to the yard / examine the wiggle / x marbles / ask her about me / ask dirt about me / wiggle / x it / n / x it / princess donut, sit / s / get five marbles / get all marbles / get three marbles / / number plot as eleventeen / wheelbarrow, will you be my new best friend? / new bestie, what do you say? / zap hemoglobin".
+Test me with "put dirt except dirt in wheelbarrow / x him / me, / ,me / push the wheelbarrow north to the yard / examine the wiggle / x marbles / ask her about me / ask dirt about me / wiggle / x it / n / x it / princess donut, sit / s / get five marbles / get all marbles / get three marbles / / number plot as eleventeen / wheelbarrow, will you be my new best friend? / new bestie, what do you say? / zap hemoglobin / me, again".

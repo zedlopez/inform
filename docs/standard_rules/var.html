@@ -1264,38 +1264,10 @@ Rules is all about.</p>
 <span class="plain-syntax">        say "[description of the event][paragraph break]".</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP49" class="paragraph-anchor"></a><b>&#167;49. Command parser errors.</b>  This abstracts a set of return codes from the I6 parser, which are written
-there as constants with the notation <code>*_ETYPE</code>.</p>
+<p class="commentary firstcommentary"><a id="SP49" class="paragraph-anchor"></a><b>&#167;49. Command parser errors.</b>  The command parser errors are defined in Parsing.neptune.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 8 - Command parser errors</span>
-
-<span class="plain-syntax">A command parser error is a kind of value. The command parser errors are</span>
-<span class="plain-syntax">    didn't understand error,</span>
-<span class="plain-syntax">    only understood as far as error,</span>
-<span class="plain-syntax">    didn't understand that number error,</span>
-<span class="plain-syntax">    can only do that to something animate error,</span>
-<span class="plain-syntax">    can't see any such thing error,</span>
-<span class="plain-syntax">    said too little error,</span>
-<span class="plain-syntax">    aren't holding that error,</span>
-<span class="plain-syntax">    can't use multiple objects error,</span>
-<span class="plain-syntax">    can only use multiple objects error,</span>
-<span class="plain-syntax">    not sure what it refers to error,</span>
-<span class="plain-syntax">    excepted something not included error,</span>
-<span class="plain-syntax">    not a verb I recognise error,</span>
-<span class="plain-syntax">    not something you need to refer to error,</span>
-<span class="plain-syntax">    can't see it at the moment error,</span>
-<span class="plain-syntax">    didn't understand the way that finished error,</span>
-<span class="plain-syntax">    not enough of those available error,</span>
-<span class="plain-syntax">    nothing to do error,</span>
-<span class="plain-syntax">    referred to a determination of scope error,</span>
-<span class="plain-syntax">    noun did not make sense in that context error,</span>
-<span class="plain-syntax">    I beg your pardon error,</span>
-<span class="plain-syntax">    can't again the addressee error,</span>
-<span class="plain-syntax">    comma can't begin error,</span>
-<span class="plain-syntax">    can't see whom to talk to error,</span>
-<span class="plain-syntax">    can't talk to inanimate things error, and</span>
-<span class="plain-syntax">    didn't understand addressee's last name error.</span>
 
 <span class="plain-syntax">The latest parser error is a command parser error that varies.</span>
 <span class="plain-syntax">The latest parser error variable is defined by Inter as "etype".</span>
@@ -1354,32 +1326,26 @@ some response texts can be hung.</p>
 
 <span class="plain-syntax">The parser error internal rule is defined by Inter as</span>
 <span class="plain-syntax">    "PARSER_ERROR_INTERNAL_R" with</span>
-<span class="plain-syntax">    "I didn't understand that sentence." (A),</span>
-<span class="plain-syntax">    "I only understood you as far as wanting to " (B),</span>
-<span class="plain-syntax">    "I only understood you as far as wanting to (go) " (C),</span>
-<span class="plain-syntax">    "I didn't understand that number." (D),</span>
-<span class="plain-syntax">    "[We] [can't] see any such thing." (E),</span>
-<span class="plain-syntax">    "You seem to have said too little!" (F),</span>
-<span class="plain-syntax">    "[We] [aren't] holding that!" (G),</span>
-<span class="plain-syntax">    "You can't use multiple objects with that verb." (H),</span>
-<span class="plain-syntax">    "You can only use multiple objects once on a line." (I),</span>
-<span class="plain-syntax">    "I'm not sure what ['][pronoun i6 dictionary word]['] refers to." (J),</span>
-<span class="plain-syntax">    "[We] [can't] see ['][pronoun i6 dictionary word]['] ([the noun]) at the moment." (K),</span>
-<span class="plain-syntax">    "You excepted something not included anyway!" (L),</span>
-<span class="plain-syntax">    "You can only do that to something animate." (M),</span>
+<span class="plain-syntax">    "I didn't understand that sentence." (A),  [ didn't understand error ]</span>
+<span class="plain-syntax">    "I only understood you as far as wanting to " (B), [ only understood as far as error ]</span>
+<span class="plain-syntax">    "I only understood you as far as wanting to (go) " (C), [ (also) only understood as far as error ]</span>
+<span class="plain-syntax">    "I didn't understand that number." (D), [ didn't understand that number error ]</span>
+<span class="plain-syntax">    "[We] [can't] see any such thing." (E), [ can't see any such thing error ]</span>
+<span class="plain-syntax">    "You can't use multiple objects with that verb." (H), [ can't use multiple objects error ]</span>
+<span class="plain-syntax">    "I'm not sure what ['][pronoun i6 dictionary word]['] refers to." (J), [ not sure what it refers to error ]</span>
+<span class="plain-syntax">    "[We] [can't] see ['][pronoun i6 dictionary word]['] ([the noun]) at the moment." (K), [ can't see it at the moment error ]</span>
+<span class="plain-syntax">    "You can only do that to something animate." (M), [ can only do that to something animate error ]</span>
 <span class="plain-syntax">    "That's not a verb I [if American dialect option is</span>
-<span class="plain-syntax">        active]recognize[otherwise]recognise[end if]." (N),</span>
-<span class="plain-syntax">    "That's not something you need to refer to in the course of this game." (O),</span>
-<span class="plain-syntax">    "I didn't understand the way that finished." (P),</span>
+<span class="plain-syntax">        active]recognize[otherwise]recognise[end if]." (N), [ not a verb I recognise error ]</span>
 <span class="plain-syntax">    "[if number understood is 0]None[otherwise]Only [number understood in words][end if]</span>
-<span class="plain-syntax">        of those [regarding the number understood][are] available." (Q),</span>
-<span class="plain-syntax">    "That noun did not make sense in this context." (R),</span>
-<span class="plain-syntax">    "To repeat a command like 'frog, jump', just say 'again', not 'frog, again'." (S),</span>
-<span class="plain-syntax">    "You can't begin with a comma." (T),</span>
-<span class="plain-syntax">    "You seem to want to talk to someone, but I can't see whom." (U),</span>
-<span class="plain-syntax">    "You can't talk to [the noun]." (V),</span>
-<span class="plain-syntax">    "To talk to someone, try 'someone, hello' or some such." (W),</span>
-<span class="plain-syntax">    "I beg your pardon?" (X).</span>
+<span class="plain-syntax">        of those [regarding the number understood][are] available." (Q), [ not enough of those available error ]</span>
+<span class="plain-syntax">    "That noun did not make sense in this context." (R), [ noun did not make sense in that context error ]</span>
+<span class="plain-syntax">    "To repeat a command like 'frog, jump', just say 'again', not 'frog, again'." (S), [ can't again the addressee error ]</span>
+<span class="plain-syntax">    "You can't begin with a comma." (T), [ comma can't begin error ]</span>
+<span class="plain-syntax">    "You seem to want to talk to someone, but I can't see whom." (U), [ can't see whom to talk to error ]</span>
+<span class="plain-syntax">    "You can't talk to [the noun]." (V), [ can't talk to inanimate things error ]</span>
+<span class="plain-syntax">    "To talk to someone, try 'someone, hello' or some such." (W), [ didn't understand addressee's last name error ]</span>
+<span class="plain-syntax">    "I beg your pardon?" (X). [ I beg your pardon error ]</span>
 
 <span class="plain-syntax">The parser nothing error internal rule is defined by Inter as</span>
 <span class="plain-syntax">    "PARSER_N_ERROR_INTERNAL_R" with</span>

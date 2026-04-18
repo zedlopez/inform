@@ -1,7 +1,7 @@
    SS Bernice
   phrase number -> number: doubling
   Twice 71 is 142
-  I see 2 is 2 in the kind 25 not K_dragster
+  I see 2 is 2 in the kind 24 not K_dragster
   Welcome
   An Interactive Fiction
   Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D

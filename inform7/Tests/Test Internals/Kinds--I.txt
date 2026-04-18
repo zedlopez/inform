@@ -31,7 +31,7 @@ description of values <= value, stored value
 property <= value, stored value
 table column <= value, stored value
 combination value and value <= value, stored value, sayable value, pointer value
-nothing <= value, stored value, sayable value, understandable value, arithmetic value, real arithmetic value, enumerated value, pointer value, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, phrase value -> value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, , nothing, value, value, external file, internal file, basic colour, glk feature, glulx feature, glk event, glk event type, glk window type, tagged hyperlink, text input status, version number, described action, action, action name, time, time period, scene, figure name, sound name, topic, abstract object, natural language, rgb colour, glk window, graphics window, text buffer window, text grid window, hyperlink tag, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, concept, man, woman, animal, device, vehicle, player's holdall, command parser error
+nothing <= value, stored value, sayable value, understandable value, arithmetic value, real arithmetic value, enumerated value, pointer value, object, number, real number, truth state, text, snippet, unicode character, use option, response, verb, table name, equation name, rulebook outcome, phrase value -> value, values variable-pointer, relation of values, values based rule producing values, values based rulebook producing values, activity on values, list of nothing, description of values, property, table column, combination value and value, , nothing, value, value, external file, internal file, basic colour, glk feature, glulx feature, glk event, glk event type, glk window type, tagged hyperlink, text input status, version number, described action, action, action name, time, time period, scene, figure name, sound name, topic, command parser error, abstract object, natural language, rgb colour, glk window, graphics window, text buffer window, text grid window, hyperlink tag, grammatical tense, narrative viewpoint, grammatical case, grammatical gender, room, thing, direction, door, container, supporter, backdrop, person, region, concept, man, woman, animal, device, vehicle, player's holdall
  <= value
 nothing <= value
 value, value <= value
@@ -55,6 +55,7 @@ scene <= value, stored value, sayable value, understandable value, enumerated va
 figure name <= value, stored value, sayable value, understandable value, enumerated value
 sound name <= value, stored value, sayable value, understandable value, enumerated value
 topic <= value, stored value
+command parser error <= value, stored value, sayable value, understandable value, enumerated value
 abstract object <= value, stored value, sayable value, object
 natural language <= value, stored value, sayable value, understandable value, enumerated value
 rgb colour <= value, stored value, sayable value, understandable value, arithmetic value
@@ -83,7 +84,6 @@ animal <= value, stored value, sayable value, object, thing, person
 device <= value, stored value, sayable value, object, thing
 vehicle <= value, stored value, sayable value, object, thing, container
 player's holdall <= value, stored value, sayable value, object, thing, container
-command parser error <= value, stored value, sayable value, understandable value, enumerated value
 
 2. 2
 The (always) compatibility relation on (base) kinds, where it differs from <=:
@@ -150,6 +150,7 @@ scene -> enumerated value -> understandable value -> sayable value -> stored val
 figure name -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 sound name -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 topic -> stored value -> value -> 
+command parser error -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 abstract object -> object -> sayable value -> stored value -> value -> 
 natural language -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 rgb colour -> arithmetic value -> understandable value -> sayable value -> stored value -> value -> 
@@ -178,7 +179,6 @@ animal -> person -> thing -> object -> sayable value -> stored value -> value ->
 device -> thing -> object -> sayable value -> stored value -> value -> 
 vehicle -> container -> thing -> object -> sayable value -> stored value -> value -> 
 player's holdall -> container -> thing -> object -> sayable value -> stored value -> value -> 
-command parser error -> enumerated value -> understandable value -> sayable value -> stored value -> value -> 
 
 4. 4
 Looking for partially ordered set violations.
