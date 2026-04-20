@@ -1829,8 +1829,13 @@ Section 2 - Basic Colours
 To set the foreground/-- colour/color/-- to (C - basic colour):
 	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
 
-To say (C - basic colour) letters:
+To say (C - basic colour) letters
+	(documented at phs_colourletters):
 	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
+
+To say (C - basic colour) background
+	(documented at phs_colourbackground):
+	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
 
 To set the background colour/color/-- to (C - basic colour):
 	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
@@ -1858,7 +1863,7 @@ To say (C - RGB colour) letters:
 To set the background colour/color/-- to (C - RGB colour):
 	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
 
-To decide what RGB colour is (C - basic colour) as a RGB colour:
+To decide what RGB colour is (C - basic colour) as a/an/-- RGB colour:
 	(- {C} -).
 
 @ Some basic window phrases, which are supported by both the Z-Machine and Glulx.

@@ -1,5 +1,5 @@
 Example: ** Lost In My Thoughts
-Location: Glk
+Location: Other Glk event types
 RecipeLocation: Glk
 Index: Handle Glk timer events
 Description: Create and handle timer events.

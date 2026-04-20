@@ -1862,8 +1862,13 @@ supported in Glulx.</p>
 <span class="plain-syntax">To set the foreground/-- colour/color/-- to (C - basic colour):</span>
 <span class="plain-syntax">    (- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).</span>
 
-<span class="plain-syntax">To say (C - basic colour) letters:</span>
+<span class="plain-syntax">To say (C - basic colour) letters</span>
+<span class="plain-syntax">    (documented at phs_colourletters):</span>
 <span class="plain-syntax">    (- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).</span>
+
+<span class="plain-syntax">To say (C - basic colour) background</span>
+<span class="plain-syntax">    (documented at phs_colourbackground):</span>
+<span class="plain-syntax">    (- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).</span>
 
 <span class="plain-syntax">To set the background colour/color/-- to (C - basic colour):</span>
 <span class="plain-syntax">    (- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).</span>
@@ -1891,7 +1896,7 @@ supported in Glulx.</p>
 <span class="plain-syntax">To set the background colour/color/-- to (C - RGB colour):</span>
 <span class="plain-syntax">    (- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).</span>
 
-<span class="plain-syntax">To decide what RGB colour is (C - basic colour) as a RGB colour:</span>
+<span class="plain-syntax">To decide what RGB colour is (C - basic colour) as a/an/-- RGB colour:</span>
 <span class="plain-syntax">    (- {C} -).</span>
 </pre>
 <div class="lsmarkdown">

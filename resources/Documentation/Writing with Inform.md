@@ -17900,6 +17900,762 @@ These of course have different effects – one produces the name with a definite
 
 The rule here is that whichever possibility contains the most words, in this case `say the (...)`, takes precedence, because it's assumed to be a more specific form of the less wordy version.
 
+# Screen and Keyboard
+
+## Virtual machines, story files, and I/O {PM_UnknownVirtualMachine}
+
+^^{virtual machine} ^^{Glulx <-- virtual machine: Glulx} ^^{Z-machine <-- virtual machine: Z-machine}
+
+The many chapters so far in this book have talked about creating an interactive fiction as if it lived in an abstract world of its own. The inner life of the story takes place in that same abstract world whatever needs to be done, whether that's working out how the characters move around in a murder mystery, or sorting lists of numbers. As for how the story communicates with the outside world, there has only been the ability to `say` text, and in some mysterious way to receive commands.
+
+	> EXAMINE LAMP
+	It's a typical Linux-Apache-MySQL-Perl server dating from the late 1990s.
+
+Up to now, that has been the only sort of _input/output_, or _I/O_, available. The typed command was input, and the reply back was output. The player might not have a traditional keyboard or screen at all, and could be using anything from a palm-sized phone to a Braille display the size of a loom — and yet it is as if the story plays out on an old teletype machine, where text is chattered out and then pauses for typed commands.
+
+Many classic interactive fictions have been written that way, like dialogues with a typewriter, but finding creative new styles of interaction is just as much part of the art form. To make those possible, authors need further ways for an Inform story to interact with the outside world. Not just by text, but images, sound effects, and music. Not just keyboard input, but mouse clicks. Not just scrolling text, but a screen divided up into windows.
+
+Different hardware handles all of that quite differently. But clearly it would be impractical for Inform, when the user clicks the Release button, to produce thousands of variant programs, one for each sort of computer a player might want to use. What Inform does instead is to generate a _story file_. A story file is a program, but for a _virtual machine_, or VM.
+
+The VM is an idealised computer. It has no physical existence. In effect, it is the abstract world mentioned above. But a wide range of real-world computers can be made to behave like this imaginary one using an app called an _interpreter_ — one which can play any Inform story file. Or, more commonly nowadays, Inform releases a website, which contains both the story file and the interpreter all bundled up within it: and once this is hosted online, anybody with a modern web browser can play. So by producing programs for the VM, Inform can make stories which can be played almost anywhere.
+
+Another advantage of the VM is that those story files have only very limited access to the computers they run on. They can show an image, or play music, but not rummage through the user's file system looking for crypto wallets: they cannot steal credentials, or vandalise. Because of that, story files belong in the "mostly harmless" category of files – like images – rather than the "how far do you trust this person?" category – like apps. When running on web browsers, they are safer still.
+
+The two VMs which Inform can work with are called the Z-machine and Glulx. The Settings panel of an Inform project allows authors to choose between these, but the default nowaways is Glulx, which is much the more capable. Glulx removes many size limits: stories can be have more text, numbers can be larger, and so on. Inform takes advantage of that automatically. But Glulx also offers another sort of extra capacity: it gives story files more access to hardware features beyond the printing and typing of text, through its system for input/output, which is called Glk.
+
+This chapter, and the next two, are about how Inform authors can access these hardware features in a safe and portable way. Most of those will be for Glulx only, but some simpler features (such as boldface lettering) will work on the Z-machine too.
+
+## Glulx features and Glk features
+
+A recurring issue throughout these three chapters is that not every feature of Glk is available on every Glulx interpreter.
+
+For some authors this may not be a concern: if a story is intended to run only on a website, then its author can choose exactly which Glulx interpreter will run it, and will therefore know in advance what will and will not work.
+
+> [!IMPORTANT]
+> With that said, note that the Story pane in the Inform app is also a Glulx interpreter, and — not being web-based — has different capabilities than website interpreters. Because of that, testing some Glk features intended for web use can only really be done by releasing a project to a website and then trying it out in a web browser.
+
+If a story is released not as part of a website but as a downloadable story file for use on many platforms, then the author will have to think: what if, say, pictures or coloured text are not available? One solution is to provide alternatives:
+
+	To say emphasise (T - text):
+		if the text formatting feature is supported:
+			say "[basic red letters][T][default colours]";
+		otherwise:
+			say "[bold type][T][roman type]".
+
+Or there is always the more draconian solution:
+
+	When play begins:
+		if the glk unicode feature is unsupported:
+			end the story saying "This interpreter does not support Unicode."
+
+As this suggests, when a project is running on Glulx, Inform knows the names of various possible features, and can test whether they are `supported` or `unsupported`. These features are divided into two sets:
+
+- Features of the Glulx virtual machine itself belong to the kind `glulx feature`, and
+
+- Features of the Glk input/output system used by Glulx belong to the kind `glk feature`.
+
+For example, `double precision real numbers feature` is a `glulx feature`, since computation is all done inside the VM itself, whereas the `sound volume feature` is a `glk feature`, since sound effects are a form of output.
+
+Giving a full list of these features here would not be very enlightening, but the curious could always try running this to find out:
+
+	When play begins:
+		say "Good news about the VM: [list of supported glulx features].";
+		say "Bad news: [list of unsupported glulx features].";
+		say "And on the I/O front, good news: [list of supported glk features].";
+		say "Bad news: [list of unsupported glk features].";
+
+> [!TIP]
+> The test made by `supported` is very rapid, so there need not be any performance concerns over performing it frequently. Nothing is really gained by storing the result in a variable to avoid having to test a second time, and indeed that might not be a good idea, because the abilities of the interpreter might change during play (and particularly after restoring a game).
+
+It is also possible to access three version numbers:
+
+> phrase: glulx version number ... version number
+>
+> The version of the Glulx interpreter which the story is running in. This is a phrase, not a variable: it cannot be set by the story. On the other hand, it can conceivably change, if a story is saved mid-play on one platform and then restored on another.
+
+> phrase: {ph_glkversion} glk version number ... version number
+>
+> The version of the Glk interface used by the interpreter. This is a phrase, not a variable: it cannot be set by the story. On the other hand, it can conceivably change, if a story is saved mid-play on one platform and then restored on another.
+
+> phrase: interpreter version number ... version number
+>
+> The version of the interpreter itself which the story is running in. This is a phrase, not a variable: it cannot be set by the story. On the other hand, it can conceivably change, if a story is saved mid-play on one platform and then restored on another. Interpreter version numbers do not correspond to anything in the Glulx specification, and each interpreter uses its own numbering system.
+
+When Inform stories on Glulx respond to the command ``VERSION``, they normally produce a chubby banner of text like so:
+
+``` transcript
+Exemplum
+An Interactive Fiction
+Release 1 / Serial number 260419 / Inform 7 v10.2.0+6X97 / D
+Identification number: A7A885DC-1187-4D85-9550-F2DC02B2BD90
+Interpreter version 0.6.0 / VM 3.1.3
+```
+
+So on that day, the story was running with `interpreter version number` equal to `v0.6.0`, and `glulx version number` equal to `v3.1.3`.
+
+> [!TIP]
+> On the whole, it is better not to use these version numbers. For example, real-number arithmetic only arrived in Glulx v3.1.2. But this test:
+>
+>     if the glulx version number is at least v3.1.2:
+>
+> is not telling us whether we can safely use real numbers: we might be on a current interpreter which has opted out of that feature, or is on hardware making it impossible to provide. The safe way is:
+>
+>     if the real numbers feature is supported:
+
+## Basic text formatting
+
+^^{proportional-spaced text} ^^{monospaced text} ^^{fonts: fixed-width / variable-width <-- variable-width <-- fixed-width}
+^^{fonts: italic / bold / roman <-- italics <-- bold <-- roman}
+
+Inform does not go in for the use of fonts: a work of IF will be rendered with different fonts on different machines anyway, from tiny personal organisers up to huge workstations. However, it does allow for a modest amount of styling. Unusually, the features of this section work on both our virtual machines.
+
+> phrase: {phs_bold} say "[bold type]"
+>
+> This text substitution produces no text. It's used only for a side-effect: to make the text following it appear in bold face. `"[roman type]"` should be used to switch back to normal. Example:
+>
+>     "Jane looked down. [bold type]Danger[roman type], the sign read."
+
+> phrase: {phs_italic} say "[italic type]"
+>
+> This text substitution produces no text. It's used only for a side-effect: to make the text following it appear in italics. `"[roman type]"` should be used to switch back to normal. Example:
+>
+>     "This is [italic type]very suspicious[roman type], said Peter."
+
+> phrase: {phs_roman} say "[roman type]"
+>
+> This text substitution produces no text. It's used only for a side-effect: to return to ordinary Roman type after a previous use of `"[bold type]"` or `"[italic type]"`.
+
+Two other effects can be employed:
+
+> phrase: {phs_fixedspacing} say "[fixed letter spacing]"
+>
+> This text substitution produces no text. It's used only for a side-effect: to make the text following it appear with fixed letter spacing. In variable letter spacing, a lower case "m" is much wider than an "l", which is natural to the eye since it has been printing practice since the Renaissance. Fixed letter spacing is more like typewriting, and it is best used to reproduce typewritten text or printed notices; it can also be convenient for making simple diagrams. Example:
+>
+>     "On the door is written: [fixed letter spacing]-J45--O-O-O[variable letter spacing]."
+
+> phrase: {phs_varspacing} say "[variable letter spacing]"
+>
+> This text substitution produces no text. It's used only for a side-effect: to return to ordinary letter spacing after a previous use of `"[fixed letter spacing]"`.
+
+Whichever effect we use, we should be careful to ensure that we return to normal – roman type and variable letter spacing – after any specially-treated text has been printed. Combining these effects (for, say, bold fixed-spaced lettering) is not guaranteed to work, though on some platforms it will.
+
+> phrase: say "[reverse mode]"
+>
+> This text substitution switches to "reverse" mode, where the foreground and background colours are reversed.
+
+> phrase: say "[reverse mode off]"
+>
+> This text substitution switches reverse mode off.
+
+> [!CAUTION]
+> Reverse-mode text is a feature of the Z-Machine. On Glulx, it is available only if the `text formatting feature` is `supported`. See [Glulx features and Glk features] for more on features.
+
+## Coloured text
+
+^^{coloured text}
+
+Inform's two virtual machines support colour differently, so this section will have be divided in two.
+
+**The Z-Machine**. Here there are just eight colours, which Inform represents in a kind of value called `basic colour`. The colours are:
+
+	basic black
+	basic red
+	basic green
+	basic yellow
+	basic blue
+	basic magenta
+	basic cyan
+	basic white
+
+These colour names are each prefixed with `basic` because authors often want to use colour-words like "red" in their own definitions or names of things. `basic red` is less likely to clash with such definitions.
+
+> phrase: {phs_colourletters} say "[(basic colour) letters]"
+> 
+> Sets the foreground colour for text to a basic colour.
+
+> phrase: {phs_colourbackground} say "[(basic colour) background]"
+> 
+> Sets the background colour for text to a basic colour. This is not the way to, for example, turn the whole play area background green; it only affects the background of subsequent printed text from the point at which the change is made. If lengthy text is then produced, the effect is likely to look ragged, since the background tint extends only under the letters themselves, not all the way to the right-hand margin.
+
+> phrase: {phs_defaultcolours} say "[default colours]"
+>
+> Resets both the foreground and background colours to their usual setting. The American spelling `say [default colors]` can also be used.
+
+> phrase: set the foreground colour to (basic colour)
+> 
+> Sets the foreground colour for text to a basic colour.
+
+> phrase: set the background colour to (basic colour)
+>
+> Sets the background colour for text to a basic colour. 
+
+> phrase: reset the screen colours
+>
+> Resets both the foreground and background colours to their usual setting.
+
+**Glulx**. Direct styling of colours is not part of the Glulx/Glk specification, and there are principled reasons for that. Glulx was designed both for portability and also accessibility, with the needs of partially-sighted players kept always in mind. The model was intended to be more like that of a Kindle ebook, where it is (largely) for the reader to choose how the text will appear: the author of the book just writes the words.
+
+However, the Glk specification is extensible, and some though not all interpreters today do support an extension to Glk providing for coloured text. Not every author will want to use this feature. It is mainly intended for stories which will only be played on web browsers, where we can be fairly confident that the colours will come out as intended, and where (on good browsers, at least) accessibility features are provided so that readers can indeed choose how text appears to them.
+
+Still, in for a penny, in for a pound: if we do want colours on Glulx, we can have 16 million of them, because we have the entire 24-bit RGB colour range available, which provides far more shades than most people can actually distinguish. These colours are values of the kind `RGB colour`, where RGB stands for red-green-blue, because they are specified in terms of how much red light, green light, and blue light goes to make them up.
+
+RGB colour values in Inform look like those in the ubiquitous web-styling language CSS, or at least the commonest six-digit form of those. The notation is `#RRGGBB` using six hexadecimal digits. `RR` is the amount of red, from `00` (none) to `ff` (full on), and similarly for `GG` and `BB`: thus, `#000000` is black, and `#ffffff` is white. `#ff00ff` is an in-your-face fuchsia, `#ccff99` is a fairly zingy light lime, `#73264d` a muddy dark reddish-purple, and so on, and so on. Many websites provide handy tools for finding these hexadecimal values: a good one is [https://www.w3schools.com/colors/colors_picker.asp](https://www.w3schools.com/colors/colors_picker.asp).
+
+The phrases used for foreground and background colour selection are exactly as for the Z-machine above.
+
+> [!TIP]
+> `basic colour` values like `basic magenta` remain available on Glulx, so they can also still be used, and can also be converted:
+>
+> > phrase: (basic colour) as a/an/-- RGB colour ... RGB colour
+> >
+> > Converts a `basic colour` to an `RGB colour`. For example, `basic red as RGB colour` evaluates to `#ff0000`.
+
+> [!CAUTION]
+> Foreground and background colours on Glulx are available only if the `text formatting feature` is `supported`. See [Glulx features and Glk features] for more on features.
+
+## The main screen and the status window
+
+For Inform, the _screen_ is the rectangular area in which an Inform story can display text or pictures. That rectangle is unlikely to be the whole physical screen which the user can see: maybe it's the Story panel in the Inform app, or a portion of a browser tab, or the play area in an IF app like Spatterlight, or even a tab in a Unix terminal app, partying like it's 1979.
+
+In short, the _screen_ is a rectangular space we can use. We cannot control its size, and must live within what we're given. That size might change at any time during play, for example if the player drags the corner of a browser window to resize it.
+
+What we can control is how the screen is divided up into panels called _windows_. These are not quite like the windows which Mac or Windows users are accustomed to. They do not necessarily have visible boundaries, and if two windows have positions which overlap, one has to be entirely inside the other.
+
+For many decades the conventional layout of an IF work has had just two windows:
+
+- A main screen area in which commands are typed, and replies scroll upwards.
+
+- A short status window on top, often drawn in contrasting colours, which holds some state-of-play information — a score, or a location, for example. This occupies a fixed position and does not scroll away. Since it is often just one line high, it is sometimes called the status line. This one does not receive keystrokes: it's for output only.
+
+That main window/status window arrangement is the screen layout used by default in Inform stories. Running on the Z-machine, it's almost the only layout possible, and although Glulx can support much more complicated setups, many Glulx stories continue to use it too. On both VMs, the following phrases can be used:
+
+> phrase: clear the screen
+>
+> This phrase clears the whole screen, both the main window and the status line.
+
+> phrase: clear only the main screen
+>
+> Clears the main screen, leaving the status window unchanged.
+
+> phrase: clear only the status window
+>
+> Clears the status window, leaving the main screen unchanged.
+
+> phrase: the screen height ... number
+>
+> The height of the screen in characters, that is, in lines of text.
+
+> phrase: the screen width ... number
+>
+> The width of the screen in characters. Note that the main window typically uses proportional text, so this width is an approximation of how many characters will actually fit on one of the main window's lines.
+>
+> [!CAUTION]
+> The status line is sometimes drawn with a fixed-pitch rather than a proportional one: it may therefore have a slightly different width in terms of how many characters will fit.
+
+^^{Custom status window columns}
+
+The default Inform usage for the status window is to have just a status line, that is, a single line at the top of the screen. This is generally used for the location, perhaps with a score or time of day: the variables `left hand status line` and `right hand status line` allow the content to be changed, since one is printed left-aligned in this line, and the other right-aligned.
+
+But more elaborate arrangements are possible. The window can have additional rows, and/or can accommodate a third, centred, column, using the following:
+
+> phrase: fill the status window with (table name)
+>
+> This phrase redraws the status window using the contents of a table, and sets things so that whenever the status window is subsequently redrawn, the same table will be used. The table can have any number of rows, and the status window will adjust its height accordingly.
+>
+> - If the table has 1 column, material in it is centred.
+> - If the table has 2 columns, column 1 is left-aligned and column 2 is right-aligned.
+> - If the table has 3 columns, they are left-aligned, centred, and right-aligned respectively.
+> - It is an error for the table to have more than 3 columns.
+> 
+> > [!WARNING]
+> > On a narrow screen, it's possible for these columns to overlap each other, especially if all three columns are used.
+
+> phrase: fill the status window with (table name), once only
+>
+> This phrase redraws the status window using the contents of a table, but just once.
+
+The status window will usually be refreshed right at the end of the turn sequence before the player is asked to respond. But occasionally you may want to manually redraw it, particularly if you start using custom Glk event handler rules.
+
+> phrase: redraw the status window
+>
+> Redraw the status window immediately.
+
+Still more variety is possible by writing hand-made rules for the `constructing the status line` activity (see [Constructing the status line]). In such rules, these low-level phrases may be useful:
+
+> phrase: set the status window to (number) row/rows
+>
+> Sets the status window to be this many rows high.
+
+> phrase: move the status window cursor to row (number) and column (number)
+>
+> Moves the cursor to the specified row and column number. Note that these begin with 1; the top left is (1, 1).
+
+## Dividing the screen into windows
+
+On Glulx, but not the Z-machine, the screen can be divided up in many different ways.
+
+The windows into which it is divided must all be declared explicitly in the source text, except that three are declared for us already in Basic Inform. Readers of the previous section might have expected just two, the main window and the status window, but there's also an ephemeral window to hold boxed quotations, which sometimes pops up for a while and then scrolls away. That counts as a `glk window`, too.
+
+So by default, `showme the list of glk windows` produces:
+
+``` transcript
+"list of glk windows" = list of glk windows: {main window, status window, quote window}
+```
+
+In fact, `glk window` has three subkinds, which represent the different sorts of window we might need: `text buffer window`, `text grid window` and `graphics window`; and it is itself a kind of `abstract object`, which is a kind of `object`. Thus we have:
+
+- `object` ▸ `abstract object` ▸ `glk window` ▸ `text buffer window` ▹ main window, quote window
+
+- `object` ▸ `abstract object` ▸ `glk window` ▸ `text grid window` ▹ status window
+
+So we could write, say, `if W is a text grid window` to test which kind the window `W` is. But it's also sometimes convenient to use a property of `glk window` called `glk window type`. If we run:
+
+	repeat with W running through glk windows:
+		say "[W]: [window type of W].";
+
+then we get, assuming we haven't created any extra windows,
+
+``` transcript
+main window: text buffer window type.
+status window: text grid window type.
+quote window: text buffer window type.
+```
+
+So, what goes on here?
+
+- The `main window` is a `text buffer window`. This is where the bulk of textual input and output goes on. This is where room descriptions are printed, where commands are typed, and so on. Being a `text buffer window` means that characters (letters, digits and such) do not have to appear on grid positions. Glk is free to write this text in a pleasantly legible font in which a "w", for example, is wider than an "i".
+
+- The `status window` is a `text grid window`. This is traditionally a bar across the top line or two of the screen, which is a sort of summary of the situation. In an IF story it might show the current room name, and/or the score, number of turns played, or time of day. Being a `text grid window` means that text appears on it at regularly-spaced grid positions, rather like typewritten letters. Here a "w" will be the same width as an "i", or a space, or anything else.
+
+- The `quote window` is a `text buffer window`. This can overlay the `main window` for a time, and was historically used to display an apposite quotation, which is why it's so named. (See [Displaying quotations].)
+
+There's also a third glk window type, `graphics window`, but in the default setup stories are pure textual and no window exists with this type. That doesn't mean that the main window can't display pictures, or emoji: but only a `graphics` window can plot arbitrary shapes or designs. Inform doesn't provide phrases for doing that in its basic installation, but extensions do.
+
+> phrase: {ph_glkwindowheight} height of (glk window) ... number
+>
+> The current height of the window. For an open `graphics window` this is measured in pixels, and for `text grid window` or `text buffer window` in characters, though in the latter case the value will only be approximate because characters vary in size.
+>
+> If the window is closed, this returns 0 whatever the type.
+>
+> > [!WARNING]
+> > A known bug in the MacOS Inform app's Story panel version of Glk means that it reports `text buffer window` widths in pixels, not characters. That likely affects the story only when running in the app, not when Released.
+
+> phrase: {ph_glkwindowwidth} width of (glk window) ... number
+>
+> The current width of the window. For an open `graphics window` this is measured in pixels, and for `text grid window` or `text buffer window` in characters, though in the latter case the value will only be approximate because characters vary in size.
+>
+> If the window is closed, this returns 0 whatever the type.
+>
+> > [!WARNING]
+> > A known bug in the MacOS Inform app's Story panel version of Glk means that it reports `text buffer window` widths in pixels, not characters. That likely affects the story only when running in the app, not when Released.
+
+The basic installation of Inform does not contain phrases to open or close windows. The `main window` and `status window` are open throughout play, and the `quote window` is opened automatically if needed. So Inform does not, out of the box, provide ways to open or close other windows at other times. This is not because Glk can't do that: Glk contains elegant mechanisms for creating a cascade of Glk windows, panelling the screen in a variety of different ways. But since most users never need that, the functionality is left for extensions to provide for. In particular, see Flexible Windows.
+
+However, even an unextended Inform allows the following:
+
+> phrase: {ph_glkwindowclear} clear (glk window)
+>
+> If the window is closed, nothing happens. If it is open, then what happens depends on the window type. A text grid is erased to a grid of spaces. A graphics window is filled with its background colour. Exactly what happens to a text buffer depends on the platform. In most modern situations that too will be erased, but a story playing in a so-called dumb terminal may do something more primitive, such as throwing many blank lines of output.
+
+> phrase: {ph_glkwindowfocus} focus (glk window)
+>
+> When a `say` text is printed, which window is it printed into? The answer is whichever window has the _focus_. That's normally the `main window`, of course, but this phrase allows a switch. (For example, this is used when updating the status window.) The window must be open, or a run-time problem will be thrown.
+>
+> While it is technically legal to focus a `graphics window`, any text sent to it will be humanely destroyed, so in practice this phrase should be used only with `text grid windows` or `text buffer windows`.
+
+> phrase: {ph_glksetcursor} set (glk window) cursor to row (number) and column (number)
+>
+> The window must be open and must be a `text grid window`, or else run-time problems are thrown. The _cursor_ for such a window is the position where the next character is printed, and like all cursors, it moves forward with each printing.
+>
+> The top left position in a grid is row 1, column 1. For example, if the grid is, say, 80 characters wide by 3 characters high then the top right is row 1, column 1, and the bottom right is row 3, column 80. If the row and column supplied lie within the rectangle, that's where the cursor moves to. If not:
+>
+> - if the column is a negative value or zero, it's rounded up to 1, the leftmost position;
+> - if the column exceeds the width of the grid, the cursor moves to column 1 on the _next_ row;
+> - if the row is a negative value or zero, a run-time problem is thrown;
+> - if the row exceeds the height of the grid, the cursor is allowed to occupy this off-the-bottom position, but any text printed there is thrown away without being displayed.
+
+Glk windows have two `number` properties, `rock number` and `glk window handle`: see the Glk reference documentation for what they mean. `glk window handle` is what the Glk spec calls the window ID, and it therefore exists only for open windows. A glk window has handle 0 if and only if it is closed.
+
+## Pausing for keystrokes or commands
+
+^^{Key presses}
+
+Inform stories ordinarily pause at the same point in each turn to wait for the player to type something which will be parsed as a command and turned into actions. But it's possible to pause at other times, or to get typed input for other reasons.
+
+Outside of the turn sequence you may at any time ask the player to type something on their keyboard.
+
+> phrase: the code of the next pressed key ... unicode character
+>
+> This phrase pauses and waits for the player to press a single key.
+
+When you get a key press from the player it could be a regular printable unicode character, or it could be a function key. Some function keys have a printable representation (like the enter or return key). Inform substitutes other unicode characters to represent some of the function keys, or uses "private use" unicode characters. So it is not necessarily safe to directly say the key the player pressed.
+
+The function keys supported by Inform are:
+
+- navigation keys: up, down, left, right, home, end, page up, page down
+- the function row: f1, f2, f3, ... f12
+- others: delete (ie, backspace), escape, return (ie, enter), tab, unknown
+
+> phrase: prompt the player to enter a line of text
+>
+> This phrase pauses and waits for the player to enter a whole line of text followed by the enter key. It does not parse the player's response or do anything with it.
+
+> phrase: say "[player's text input]"
+>
+> This phrase will say the player's previously entered line of text. You can also use this to put it in a text variable:
+>
+>     let response be "[the player's text input]";
+
+Inform includes a few utility phrases to handle pausing the game and waiting for the player to respond.
+
+> phrase: wait for any key
+>
+> Wait for the player to press (almost) any key. It actually excludes the up/down/page up/page down keys in order to let the player read the transcript without the story progressing.
+
+> phrase: wait for the space key
+>
+> Wait for the player to press the space or enter/return key.
+
+> phrase: pause the game/story
+>
+> The previous two phrases do not print anything out. This phrase will say "Please press SPACE to continue." and then wait until they press the space key (or enter/return).
+
+> phrase: stop the game/story abruptly
+>
+> Mostly useful in Basic Inform, this phrase will tell the virtual machine to stop immediately. It does not invoke any of the end of play systems — the `shutdown rules`, the `when play ends` rules, and so on.
+
+# Events and Hyperlinks
+
+## Glk events
+
+An Inform story is always in control of what it outputs. It decides what to say, and when to say it. Input is not as predictable. Somewhere outside of the story is a player, pressing keys or clicking on links. 
+
+The Glk input/output system handles those situations as _events_. Events are values, of the kind `Glk event`: and being values, they can be put into variables, they can have phrases or rulebooks act on them, and so on. Events come in quite a variety, but are sorted out by type:
+
+> phrase: {ph_glkeventtype} type of (glk event) ... glk event type
+>
+> Every `glk event` falls into one of (currently) 10 types, which are the possible values of `glk event type`.
+
+Besides having a type, events usually have details attached. For example, if `E` is the event arising when the player presses the X key, then `type of E` will be  `character event`, and `character value of E` will be the Unicode character for X.
+
+> [!CAUTION]
+> Events can really only be handled by the phrases appropriate for their type. For example, taking `character value of` what turns out to be a `volume event` would make no sense. But Inform would compile this happily enough: it wouldn't go wrong until run-time, when a run-time problem would result.
+
+Here is the complete list of event types:
+
+Value of `glk event type`    | Meaning
+---------------------------- | ---------------------
+`null event`                 | Nothing happening.
+`character event`            | A key has been typed.
+`line event`                 | A line of text ending with a RETURN or ENTER has been typed.
+`hyperlink event`            | A web-style link has been selected.
+`mouse event`                | A mouse has been clicked, or a touch-screen touched.
+`screen resize event`        | The screen has been resized.
+`graphics window lost event` | A graphic window needs redrawing from scratch.
+`timer event`                | A timer has run out.
+`sound notification event`   | A sound effect has finished playing.
+`volume event`               | A change in sound volume has completed.
+
+Note that some of these are our own fault, so to speak. If we set a timer to run for, say, ten seconds, it will in due course lead to a `timer event`.
+
+The story deals with Glk events using the `glk event handling rulebook`, which is a `glk event type based rulebook`. This rulebook has a variable called `event`, which contains the full details within it, and has the kind `glk event`.
+
+The story can react to Glk events as they arise by providing rules for this rulebook. For example, this logs each event as it comes in:
+
+	A glk event handling rule:
+		say "Newsflash: [event]."
+
+Exactly what events come in may depend on which Glk interpreter is running the story, and what capabilities it has. For example, on the MacOS Inform app the first event logged when the story starts up is:
+
+``` transcript
+	Newsflash: screen resize event.
+```
+
+But on the Parchment website interpreter, we find:
+
+``` transcript
+	Newsflash: graphics window lost event.
+	Newsflash: screen resize event.
+	Newsflash: graphics window lost event.
+```
+
+So it may be advisable to remember that no two implementations of Glk are exactly the same, and no two environments for the story have exactly the same capacities. Typed commands do produce the same event on all platforms, though:
+
+``` transcript
+> WAIT
+Newsflash: line event ("wait") in the main window.
+Time passes.
+> LOOK
+Newsflash: line event ("look") in the main window.
+```
+
+The Newsflash rule ran twice there, once after each typed command, with two different values of `event`. But though they were different values of the `glk event` kind, they both had the same type, `line event`.
+
+Event types are useful because most of the time we want to write a rule applying to all events of a given type. This is why the rulebook is based on `glk event type` and not `glk event`. So, for instance:
+
+	A glk event handling rule for a timer event:
+		say "Time out! [event]."
+
+Events of different event types work differently, and have to be handled in different ways. The next few sections cover how to handle particular event types, but there is one more phrase which can usefully be applied to glk events of at least some different types:
+
+> phrase: {ph_glkeventwindow} window of (glk event) ... glk window
+>
+> Some events take place in or on a given window: for example, commands are typed into windows, so line events have a window, and a mouse event indicates a click or tap on a window. For those events, this returns the window in question; for events not tied to any specific window, such as a timer event, this will display an error message.
+
+## Character and line events
+
+There are times when individual key-presses matter — for example, if the user presses a cursor key to navigate a menu, and we have to react immediately — and then there are times when we don't care what is being typed until an entire command has been entered. That's why there are two different types of keyboard event: `character event` and `line event`.
+
+* A `character event` is the pressing of a key, or strictly speaking, the input of a character from the keyboard. If the user presses and releases the shift key, for example, that won't generate a character event. Typing the 7 key will do, however, as will typing shift-7, which on most keyboards will lead to a character event with the ``&`` symbol. Most function keys other than shift or alt will result in a character event.
+
+* A `line event` marks when a complete line has been fully typed in, and the user has indicated that it's finished by pressing the RETURN or ENTER key. (That end-marker does not become part of the text of the command.)
+
+### How to request these events
+
+Glk sends us these events only if we have requested them. By default, an Inform story never requests character events. Traditionally, turn-by-turn command parser stories only care about entire commands, not individual keypresses. If the player is typing ``EAT CAKE``, we don't want to receive a stream of character events (E, A, Y, delete, T, space, ...).
+
+An Inform story requests a line event only when it has, in effect, halted waiting for a command to be typed in. But since Inform stories usually print quickly and spend most of their time waiting for player input, this means they are almost always requesting line events.
+
+But you can also request them at other times: see [Keyboard input].
+
+### Details for these events
+
+Both character and line events are tied to windows, because players who type are always typing into whichever window currently has the focus. Given a character or line event, `window of (glk event)` can be used to find which window it came from.
+
+> phrase: {ph_glkeventcharactervalue} character value of (glk event) ... unicode character
+>
+> For a character event, this returns the character in question. For any other event, it displays an error message.
+
+> phrase: {ph_glkeventtextvalue} text value of (glk event) ... text
+>
+> For a line event, this returns the text of the line. For any other event, it throws a run-time problem.
+
+### Fictitious character and line events
+
+Some types of event can be created even though they haven't happened yet, and the two keyboard types are a case in point. It may seem peculiar to create fictitious Glk events, but it turns out be very useful in order to, say, treat mouse clicks as if they were keypresses or commands, as we shall see. Here are the phrases to create such events:
+
+> phrase: {ph_glkcharacterevent} character event with (unicode character) in (glk window) ... glk event
+>
+> This produces an event value exactly like that which would have been generated by glk if a key with the given character had been typed in the given window.
+> 
+> The `in (glk window)` can be omitted, in which case the event is in the `main window`.
+
+> phrase: {ph_glklineevent} line event with (text) in (glk window) ... glk event
+>
+> This produces an event value exactly like that which would have been generated by glk if the given whole command had been typed in the given window. There's no necessity for the text to be in upper case, or for that matter in lower case. These all produce different events:
+>
+>     line event with "GATHER YE ROSEBUDS" in main window
+>     line event with "GATHER   YE   ROSEBUDS" in main window
+>     line event with "gather ye rosebuds" in main window
+>
+> Though the Inform command parser would treat all three commands just the same, that all happens much higher up than in this input-output layer. The texts are different, so the events are different.
+> 
+> The `in (glk window)` can be omitted, in which case the event is in the `main window`.
+
+## Hyperlinks 
+
+"Hypertext" is a term coined in 1965 for a text which contains "hyperlinks" to other passages of text. This idea, long nascent, led directly to technologies like _The Interactive Encyclopaedia System_ ("HyperTIES", 1983), the creative playground _HyperCard_ (1987), the world wide web (1989), and in perhaps its purest expression, _Wikipedia_ (2001). In all these systems, clicking on a "linked" button or phrase moves the reader to a new part of the text.
+
+But Inform stories are interactive, and non-linear. They are not divided up into pages in the way that Wikipedia, for example, is. In an interactive story, links are instead active gadgets. Clicking on them does something to change the state of the story, and that then has the effect of moving the reader along. Whereas links in Wikipedia are almost all "go to new page X", Inform links might want to do all sorts of things: behave like commands, behave like typed characters, behave like rules firing, and so on.
+
+Inform's system for handling hyperlinks aims to make them easy and flexible to use, but at the same time to work in a way which extensions can build on.
+
+### The story of a hyperlink
+
+This is the story of a typical hyperlink, which we can tell at three levels.
+
+**A top level explanation**. This is how things look to the author of an Inform story:
+
+	Professor Chromo's Paint Machine is in the Laboratory. "The sinister machine hums, just waiting for someone to press the [link splash rule]big red button[end link]."
+
+	This is the splash rule:
+		say "The world goes red, or anyway the part of the world nearest the paint-throwing machine."
+
+The idea here is that the player sees that the words "big red button" are highlighted in some way, and may want to click on them. If so, the `splash rule` will run.
+
+**A mid-level explanation**. Under the hood, this is how that same hyperlink looks inside Inform's run-time facilities. When Inform says `"[link splash rule]big red button[end link]"`, it generates a value of a kind called `tagged hyperlink` to represent the "destination" of the link: that is, to represent what should happen if the link is clicked on. This is called "tagged" because it consists of both a "tag", meaning what to do, and a "value", meaning what to do it with. In this case, the tagged hyperlink is a combination of:
+
+- the tag `rule hyperlink`, which is an instance of the kind `hyperlink tag`, with
+
+- the value `splash rule`, which is an instance of the kind `rule`.
+
+Inform provides four different `hyperlink tag` possibilities, of which `rule hyperlink` is only one. The others correspond to different ways that links can cause effects, and will come up later. Because Inform authors and extension writers can create new `hyperlink tag` values, this system is flexible enough to be built on in new ways.
+
+If the tag is clicked on, Inform receives a `hyperlink event` from Glk and handles it. What it does is to retrieve the tagged hyperlink and take the necessary action — in this case, to run the rule.
+
+**A low-level explanation**. Still further under the hood, from the point of view of the Glk I/O system, all that happens is that Glk is told that certain printed words are part of a link with a given identification number — say, 17. If the player ever clicks on those words, Glk sends a `hyperlink event` with number 17 attached to it. Glk never knows what this number means, and never needs to know.
+
+### Making hyperlinks
+
+So, then, whereas Inform authors need to write handling rules to take care of other types of Glk event, there is no need to think about a `hyperlink event` because Inform takes care of it automatically.
+
+To create a link, all that is necessary is to use the `[link]` and `[end link]` text substitutions:
+
+> phrase: say "[link (tagged hyperlink)]"
+>
+> Starts a hyperlink with the given "destination", that is, with the given instruction on what to do if the link is clicked or tapped. No text will be printed yet, but anything said after this substitution will be part of the hyperlink. The link will continue until the next `[link ...]` or `[end link]`, either of which will end it. So it is impossible for one piece of hyperlinked text to contain another.
+
+> phrase: say "[end link]"
+>
+> Ends the current hyperlink. Any subsequent printed text will just be regular text.
+
+The `[link ...]` substitution looks as if it comes in many variant versions, but in fact it doesn't: the variety in possible outcomes is because there are many ways to create the `tagged hyperlink` value which occupies the `...` part of `[link ...]`. In particular, Inform provides four out-of-the-box ways to create them:
+
+-	**Command replacement**. For example,
+	
+		let command be "PRESS BUTTON";
+		say "Your eyes stray to the [link command replacement of command]pretty red button[end link].";
+
+	> phrase: command replacement of (text) ... tagged hyperlink
+	>
+	> A link given this outcome replaces an entire pending line input with the specified text and then submits it, as if the player had typed it themselves and then pressed enter.
+
+-	**Command appendment**. For example,
+	
+		let extra text be " BUTTON";
+		say "Your eyes stray to the [link append extra text]pretty red button[end link].";
+
+	> phrase: append (text) ... tagged hyperlink
+	>
+	> A link given this outcome suspends line input, adds its text to the current line input, and then resumes line input. It's as if the player had typed the text in question.
+
+-	**Keypress**. For example,
+	
+		say "[link unicode space]Press SPACE to begin.[end link]";
+		wait for the space key;
+	
+	makes clicking on the text "Press SPACE to begin" as good as pressing SPACE.
+
+	> phrase: say "[link (unicode character)]"
+	>
+	> A link given this outcome issues a `character event` with the specified unicode character.
+
+-	**Rule**. 
+
+	> phrase: say "[link (rule)]"
+	>
+	> A link given this outcome follows the specified rule. Any result of the rule (success or failure) is ignored.
+
+## New types of hyperlink
+
+Inform's system of hyperlinks is designed to be _incomplete_. The forms of link above will cover many common needs, but inevitably authors and extension writers will want to create others.
+
+As a first example, this section will create a sort of examine-this hyperlink: one where clicking on the link causes something in the room to be examined. Of course, the built-in system can already imitate this, more or less:
+
+	Professor Chromo's Paint Machine is in the Laboratory. "The sinister machine hums, just waiting for someone to press the [link examine-me rule]big red button[end link]."
+	
+	The big red button is part of the Paint Machine. "So shiny!";
+
+	This is the examine-me rule:
+		try examining the big red button.
+
+But this is clumsy. What we want is this:
+
+	Professor Chromo's Paint Machine is in the Laboratory. "The sinister machine hums, just waiting for someone to press the [link examine button]big red button[end link]."
+	
+	The big red button is part of the Paint Machine. "So shiny!";
+
+Firstly, since this will mean a new type of hyperlink, we will have to assign a fresh tag to hyperlinks of this type:
+
+	Examination hyperlink is a hyperlink tag.
+
+Now we need a way to create hyperlinks of this type:
+
+	To decide what tagged hyperlink is examine (X - thing):
+		decide on tagged hyperlink of examination hyperlink with X.
+
+Internally, a tagged hyperlink consists of a _tag_ plus (usually) a _value_. Here, the tag was `examination hyperlink` and the value was `X`, except that of course in the case of the Paint Machine, that will end up being the object `big red button`. We've used one of these creation phrases:
+
+> phrase: tagged hyperlink of (hyperlink tag) for/of/with (value) ... tagged hyperlink
+>
+> Creates a new tagged hyperlink by combining a tag with a value.
+
+> phrase: tagged hyperlink of (hyperlink tag)
+>
+> Creates a new tagged hyperlink which has a tag, but no value.
+
+Lastly, Inform needs to know what to do when a link of this type is clicked. In general, when any link is clicked, Glk sends a `hyperlink event`, but Inform handles this by then following the `hyperlink handling rules`. The basis of this rule book is the hyperlink tag of the event.
+
+To handle our new action links, all we need to do is write a new rule for this rulebook:
+
+	Hyperlink handling rule for examination hyperlink:
+		let the item be the hyperlink value as a thing;
+		try examining the item;
+		rule succeeds.
+
+This is using a phrase which only makes sense within the hyperlink handling rules:
+
+> phrase: hyperlink value as a (name of kind of value K) ... K
+>
+> Extracts the hyperlink value as the specified kind of value. This must be used with great care so that the kind of value is correct, since Inform cannot check that. The important thing is to use this phrase on a hyperlink of type 
+
+### Dubious
+
+> phrase: say "[link (hyperlink tag)]"
+> phrase: say "[link (hyperlink tag) for (value)]"
+>
+> You can also start a hyperlink just using a tag (if that type of hyperlink doesn't use a value), or both a hyperlink tag and its value.
+
+Hyperlink tags and their corresponding values are then combined into a kind called a `tagged hyperlink`. Even though Glk only allows hyperlinks to carry a single number, tagged hyperlinks can contain almost all kinds found in Inform, with the exception of real numbers. Authors must however be careful not to try to put an ephemeral value into a hyperlink, such as some local variables. The hyperlink phrases described below will display an error if it cannot safely put a value inside a tagged hyperlink.
+
+> phrase: tag of (tagged hyperlink) ... hyperlink
+> phrase: value of (tagged hyperlink) as a (name of kind of value K) ... K
+>
+> These phrases will extract the hyperlink tag and value out of a hyperlink. Note that it is the author's responsibility to use the correct kind of value when extracting the value. Inform cannot detect if you use the wrong kind, but using a value extracted with the wrong kind could cause serious problems down the line.
+
+> phrase: say "[link (hyperlink tag)]"
+> phrase: say "[link (hyperlink tag) for (value)]"
+>
+> You can also start a hyperlink just using a tag (if that type of hyperlink doesn't use a value), or both a hyperlink tag and its value.
+
+## Suspending text input while handling events
+
+^^{Suspend and resume text input}
+
+Sometimes when a Glk event arrives we will want to respond. But how can we do that if we're currently waiting for the player to submit line input? We cannot simply print text; the interpreter may even crash if we try.
+
+The Glk interface allows us to instead _suspend_ text input. We can then output whatever we like, before we resume text input.
+
+> phrase: suspend text input in (glk window)
+>
+> Suspends any text input in the specified window.
+
+> phrase: resume text input in (glk window)
+>
+> Resumes any text input in the specified window.
+
+Suspended character input is simple enough, but what about line input: what happens to what the player has already typed? This can be accessed and even changed, provided input is suspended:
+
+> phrase: current line input of (glk window) ... text
+>
+> Extracts the current line input of a suspended Glk window and returns it to the player.
+
+> phrase: set the current line input of (glk window) to (text)
+>
+> Updates the current line input of a suspended Glk window.
+
+By default if we suspend line input then whatever the player has already typed will remain visible. Altering that can produce quite a messy transcript. So there is an option to suspend and resume input without printing anything in between. This requires the `manual line input echoing` use option to be enabled.
+
+> phrase: suspend text input in (glk window), without input echoing
+>
+> Suspends input without echoing the current line input.
+
+## Other Glk event types
+
+^^{Handle Glk timer events}
+
+Glk supports several other event types, though most will be of limited use to Inform authors. Extensions may make more use of them: at present, core Inform does not.
+
+* A `screen resize event` is generated whenever the size of the interpreter window is changed. Inform has a screen resize event handling rule that redraws the status window because if the width has changed then part of the status window might have been erased, or it might not be correctly aligned anymore.
+
+* Similarly a `graphics window lost event` is generated when a graphics window needs to be redrawn.
+
+* A `timer event` is generated when a timer fires. Inform doesn't come with any phrases for making timers out of the box, but see the "Lost in My Thoughts" example.
+
+* A `mouse event` can be generated when you click in a grid window or graphics window.
+
+* The `sound notification event` and `volume event` types both concern advanced sound channel features which extensions can implement.
+
 # Figures, Sounds and Files
 
 ## Beyond text
@@ -17921,18 +18677,6 @@ In the cultural history of IF, graphics in text adventures have sometimes been l
 Whether to have illustrations ought to be an artistic choice, like whether to include a romantic sub-plot or how much of the back story is revealed. But there are practical considerations too. The most successful illustrated books are those whose pictures are well-chosen, have a sense of design to them, and above all are consistent. Consider how much worse off *Winnie the Pooh* would have been if a selection of random teddy-bear drawings had been used, instead of E. H. Shepherd's beautifully conceived world; or a cookery book in which the recipes are all photographed at different distances and light levels. IF writers  may want to look for collaborators with a visual eye, just as most novelists do not draw their own illustrations.
 
 Another consideration is that displaying images is more complicated for computers than displaying text. Not all devices can show pictures (consider handheld gadgets) and if they do, they may use different colour ranges or resolutions. So IF with pictures is always just a bit less portable than IF without, and because of that we must next look again at IF story file formats.
-
-## Virtual machines and story file formats {PM_UnknownVirtualMachine}
-
-^^{virtual machine} ^^{Glulx <-- virtual machine: Glulx} ^^{Z-machine <-- virtual machine: Z-machine}
-
-Back in the [Source Text] chapter, we saw that the Settings panel allows any given Inform project to be produced in either of two possible story file formats. Recall that story files are the released IF works: what the player sees. The source text, the Index, and so on are not part of this.
-
-A story file is not like a word-processed document, or a photograph. There are many rival formats for these – for instance, an image on a web page might be in JPEG or PNG format, among many others – but basically they are simple things for the reader to look at, and see everything in one go. An IF story file is more complicated, because the "reader" reacts to it, types in to it, is surprised by it, never quite knows what might happen next.
-
-A story file is in fact a computer program in its own right, but not a program like iTunes or Firefox which runs on a typical home or business computer. Instead it is a program for an imaginary computer, called a "virtual machine" or "VM". This has a design ideally suited to IF, and it would be the perfect IF player's computer if only it actually existed. Because it doesn't, the player instead runs an "interpreter" program like Windows Glulxe or Zoom or Spatterlight – and this one is a program like iTunes or Firefox – and the interpreter acts as a middle-man. It creates a software version of the virtual machine, and then runs the IF story file on that VM. This sounds slow and impractical, but in fact it works well, and is also much safer since programs on the VM are not allowed to touch the real computer – so they cannot at all easily contain viruses or other malware. (In theory a malicious story file might try to exploit a bug in one of the various VM implementations in use, just as malicious image files have been used to attack bugs in web browsers, but this has never in practice happened. Nothing can be absolutely safe, but a story file belongs in the "mostly harmless" category of files – like images – rather than the "how far do you trust this person?" category – like programs.)
-
-The different formats of story file are programs for different virtual machines. Just as Windows and Mac OS X offer basically similar services to the user but are very different in appearance and their workings, so the different VMs are quite different. Some can display pictures, others not.
 
 ## Gathering the figures {kind_figurename} {FIGURES}
 
@@ -18244,270 +18988,6 @@ The opening character is an asterisk if the file is currently ready, a hyphen if
 ```
 * //4122DDA8-A153-46BC-8F57-42220F9D8795// ice
 ```
-
-# Screen and Keyboard
-
-## Glk
-
-An interactive story as released by Inform is, in the end, a computer program. Sometimes that is a stand-alone _story file_, which can be played by an app called an _interpreter_, and sometimes it is a website with an interpreter built in, but a website is also a sort of computer program.
-
-Once built, the program may run on quite a range of different hardware. A stand-alone story file could be played on a so-called dumb terminal, not much more capable than an 1970s teletype machine, or in a windowed app controlled by a mouse, or on a touch-screen. A website might be browsed on a phone, a tablet, a desktop computer, or a Braille display. The range of potential environments is huge, and the current one is sometimes called the _platform_.
-
-The inner life of the program is the same whatever the platform. Perhaps it's working out how the characters move around in a murder mystery, or sorting lists of numbers and then turning the result into text: all of that computation would be the same inside of a phone's web browser as in a command-line interpreter for a Unix workstation. But that computation is no use unless instructions can be taken in from the outside world, and results sent back out. This two-way communication is called _input/output_, or _IO_, and it works very differently on different platforms.
-
-Of course, Inform stories throughout this book have been using IO right from the start. For example:
-
-	> EXAMINE LAMP
-	It's a typical Linux-Apache-MySQL-Perl server dating from the late 1990s.
-
-The typed command was input, and the reply back was output. But these are the absolute basics of IO, which work on more or less every platform. This chapter is about less standard user interactions, which don't at all work on every platform. They mostly involve screen or keyboard effects, hence the chapter title, but a few other exotica also come in.
-
-Unless otherwise stated, *everything in this chapter assumes that a project is using the Glulx setting*. (This is the default, of course.) The older Z-machine has almost no ability to support IO. Glulx, by contrast, can liaise with a sort of intermediary called _glk_ which performs advanced IO for it.
-
-The first thing glk can do for us is to tell us what our current platform will and won't be able to do:
-
-> phrase: {ph_glksupported} if (F - glk feature) is/are supported:
->
-> Whether the platform supports feature `F` or not. This test is very rapid, so there need not be any performance concerns over performing it frequently: in particular there is nothing gained by storing the result in a variable to avoid having to test a second time, and indeed that might not be a good idea, because the abilities of glk might change during play.
-
-> phrase: {ph_glkversion} glk version number ... number
->
-> The version of the glk interface which the story can currently see. This is a phrase, not a variable: it cannot be set by the story. On the other hand, it can conceivably change, if a story is saved mid-play on one platform and then restored on another. Versions of glk are normally written in the form ```0.7.5``` on specification documents online, but ```X.Y.Z``` is normally converted to a number as 65536 times ```X``` plus 256 times ```Y``` plus ```Z```: thus, version ```0.7.5``` produces the number 1797. Later glk versions always have higher version numbers than earlier ones.
-
-Here `glk feature` is a kind of value. So, for example,
-
-	repeat with F running through glk features:
-		say "[F]: [whether or not F is supported].";
-
-might produce:
-
-	timers feature: true.
-	graphics feature: true.
-	basic sounds feature: true.
-	sound volume feature: true.
-	sound notifications feature: true.
-	hyperlinks feature: true.
-	MOD sounds feature: true.
-	PNG transparency feature: true.
-	glk unicode feature: true.
-	unicode normalization feature: true.
-	line input echo suppression feature: true.
-	line input terminators feature: false.
-	system clock feature: true.
-	extended sounds feature: true.
-	resource streams feature: false.
-	graphics window character input feature: true.
-	text formatting feature: false.
-	buffer window graphics feature: true.
-	graphics window graphics feature: true.
-	buffer window hyperlinks feature: true.
-	grid window hyperlinks feature: true.
-	graphics window mouse input feature: true.
-	grid window mouse input feature: true.
-
-## Dividing the screen into windows
-
-For historical reasons, Inform uses the words "screen" and "window" in a slightly unusual way. The _screen_ is the rectangular area in which an Inform story can display text or pictures. That rectangle is unlikely to be the whole physical screen which the user can see: maybe it's the Story panel in the Inform app, or a portion of a browser tab, or the play area in an IF app like Spatterlight, or even a tab in a Unix terminal app, partying like it's 1979. An Inform story has no access to the rest of the user's physical screen, and can't even tell whether its own screen is visible at any given time.
-
-In short, the _screen_ is a rectangular space we can use. We cannot control its size, and must live within what we're given. That size might even change at any time during play, for example if the user drags the corner of a browser window to resize it.
-
-What we can control is how the screen is divided up into panels which can either display text, or accept typed text from the keyboard, or both. Those panels are called _windows_, but they aren't like the windows which Mac or Windows users are accustomed to. If two windows have positions which overlap, one has to be entirely inside the other. Windows also have no backgrounds: a window in which no text or image has been placed is invisible.
-
-The kind `glk window` holds all of the windows used by a story. Windows must all be declared explicitly in the source text, except that three are declared for us already in Basic Inform. Many stories never need more than those three. By default,
-
-	the list of glk windows
-
-produces
-
-	{main window, status window, quote window}
-
-In fact, Inform provides three different kinds of window:
-
-	glk window
-		text buffer window
-		text grid window
-		graphics window
-
-So we could write, say, `if W is a graphics window` to test which kind `W` is. But it's also sometimes convenient to use a property of `glk window` called `glk window type` value. If we run:
-
-	repeat with W running through glk windows:
-		say "[W]: [window type of W].";
-
-then we get, assuming we haven't created any extra windows or types,
-
-``` transcript
-main window: text buffer window type.
-status window: text grid window type.
-quote window: text buffer window type.
-```
-
-So, what goes on here?
-
-- The `main window` is a `text buffer window`. This is where the bulk of textual input and output goes on. This is where room descriptions are printed, where commands are typed, and so on. Having the type `text buffer` means that characters (letters, digits and such) do not have to appear on grid positions. Glk is free to write this text in a pleasantly legible font in which a "w", for example, is wider than an "i".
-
-- The `status window` is a `text grid window`. This is traditionally a bar across the top line or two of the screen, which is a sort of summary of the situation. In an IF story it might show the current room name, and/or the score, number of turns played, or time of day. The type this time is `text grid`, which means that text appears on it at regularly-spaced grid positions, rather like typewritten letters. Here a "w" will be the same width as an "i", or a space, or anything else.
-
-- The `quote window` is a `text buffer window`. This can overlay the `main window` for a time, and was historically used to display an apposite quotation, which is why it's so named. (See [Displaying quotations].)
-
-There's also a third glk window type, `graphics`, but in the default setup stories are pure textual and no window exists with this type. That doesn't mean that the main window can't display pictures, or emoji: but only a `graphics` window can plot arbitrary shapes or designs. Inform doesn't provide phrases for doing that in its basic installation, but extensions do.
-
-> phrase: {ph_glkwindowheight} height of (glk window) ... number
->
-> The current height of the window. For an open `graphics window` this is measured in pixels, and for `text grid window` or `text buffer window` in characters, though in the latter case the value will only be approximate because characters vary in size. (Also, a known bug in the MacOS Inform app's Story panel version of glk means that it reports `text buffer window` heights in pixels.)
->
-> If the window is closed, this returns 0 whatever the type.
-
-> phrase: {ph_glkwindowwidth} width of (glk window) ... number
->
-> The current width of the window. For an open `graphics window` this is measured in pixels, and for `text grid window` or `text buffer window` in characters, though in the latter case the value will only be approximate because characters vary in size. (Also, a known bug in the MacOS Inform app's Story panel version of glk means that it reports `text buffer window` widths in pixels.)
->
-> If the window is closed, this returns 0 whatever the type.
-
-The basic installation of Inform does not contain phrases to open or close windows. The main window and status window are open throughout play, and the quote window is opened automatically if needed. Inform does not, out of the box, provide ways to open or close other windows at other times. This is not because Glk can't do that: Glk contains elegant mechanisms for creating a cascade of Glk windows, panelling the screen in a variety of different ways. But since most users never need that, the functionality is left for extensions to provide for. In particular, see Flexible Windows.
-
-But even an unextended Inform allows the following:
-
-> phrase: {ph_glkwindowclear} clear (glk window)
->
-> If the window is closed, nothing happens. If it is open, then what happens depends on the window type. A text grid is erased to a grid of spaces. A graphics window is filled with its background colour. Exactly what happens to a text buffer depends on the platform. In most modern situations that too will be erased, but a story playing in a so-called dumb terminal may do something more primitive, such as throwing many blank lines of output.
-
-> phrase: {ph_glkwindowfocus} focus (glk window)
->
-> When a `say` text is printed, which window is it printed into? The answer is whichever window has the _focus_. That's normally the `main window`, of course, but this phrase allows a switch. (For example, this is used when updating the status window.) The window must be open, or a run-time problem will be thrown.
->
-> While it is technically legal to focus a `graphics window`, any text sent to it will be humanely destroyed, so in practice this phrase should be used only with `text grid windows` or `text buffer windows`.
-
-> phrase: {ph_glksetcursor} set (glk window) cursor to row (number) and column (number)
->
-> The window must be open and must be a `text grid window`, or else run-time problems are thrown. The _cursor_ for such a window is the position where the next character is printed, and like all cursors, it moves forward with each printing.
->
-> The top left position in a grid is row 1, column 1. For example, if the grid is, say, 80 characters wide by 3 characters high then the top right is row 1, column 1, and the bottom right is row 3, column 80. If the row and column supplied lie within the rectangle, that's where the cursor moves to. If not:
->
-> - if the column is a negative value or zero, it's rounded up to 1, the leftmost position;
-> - if the column exceeds the width of the grid, the cursor moves to column 1 on the _next_ row;
-> - if the row is a negative value or zero, a run-time problem is thrown;
-> - if the row exceeds the height of the grid, the cursor is allowed to occupy this off-the-bottom position, but any text printed there is thrown away without being displayed.
-
-Glk windows have two `number` properties, `rock number` and `glk window handle`: see the Glk reference documentation for what they mean. `glk window handle` is what the Glk spec calls the window ID, and it therefore exists only for open windows. A glk window has handle 0 if and only if it is closed.
-
-## Glk events
-
-An Inform story is always in control of what it outputs. It decides what to say, and when to say it. Input is not as predictable. Somewhere outside of the story is a player, pressing keys or clicking on links. These are examples of _Glk events_, and the Inform kind `glk event type` identifies them. Here is the complete list:
-
-Value                        | Meaning
----------------------------- | ---------------------
-`null event`                 | Nothing happening.
-`character event`            | A key has been typed.
-`line event`                 | A line of text ending with a RETURN or ENTER has been typed.
-`hyperlink event`            | A web-style link has been selected.
-`mouse event`                | A mouse has been clicked, or a touch-screen touched.
-`screen resize event`        | The screen has been resized.
-`graphics window lost event` | A graphic window needs redrawing from scratch.
-`timer event`                | A timer has run out.
-`sound notification event`   | A sound effect has finished playing.
-`volume event`               | A change in sound volume has completed.
-
-Note that some of these are our own fault, so to speak. If we set a timer to run for, say, ten seconds, it will in due course lead to a `timer event`.
-
-The story deals with Glk events using the `glk event handling rulebook`, which is a `glk event type based rulebook`. This rulebook has a variable called `event`, which contains the full details within it, and has the kind `glk event`.
-
-The story can react to Glk events as they arise by providing rules for this rulebook. For example, this logs each event as it comes in:
-
-	A glk event handling rule:
-		say "Newsflash: [event]."
-
-Exactly what events come in may depend on which Glk interpreter is running the story, and what capabilities it has. For example, on the MacOS Inform app the first event logged when the story starts up is:
-
-``` transcript
-	Newsflash: screen resize event.
-```
-
-But on the Parchment website interpreter, we find:
-
-``` transcript
-	Newsflash: graphics window lost event.
-	Newsflash: screen resize event.
-	Newsflash: graphics window lost event.
-```
-
-So it may be advisable to remember that no two implementations of Glk are exactly the same, and no two environments for the story have exactly the same capacities. Typed commands do produce the same event on all platforms, though:
-
-``` transcript
-> WAIT
-Newsflash: line event ("wait") in the main window.
-Time passes.
-> LOOK
-Newsflash: line event ("look") in the main window.
-```
-
-The Newsflash rule ran twice there, once after each typed command, with two different values of `event`. But though they were different values of the `glk event` kind, they both had the same type, `line event`. (Glk events are a little like actions in that respect: `taking the book` and `taking the candle` are two different actions but have the same `action name`, i.e., `the taking action`.)
-
-Event types are useful because most of the time we want to write a rule applying to all events of a given type. This is why the rulebook is based on `glk event type` and not `glk event`. So, for instance:
-
-	A glk event handling rule for a timer event:
-		say "Time out! [event]."
-
-The different event types, and how to handle them, will be covered in subsequent sections. But these general phrases are worth knowing:
-
-> phrase: {ph_glkeventtype} type of (glk event) ... glk event type
->
-> Fairly self-explanatory: every `glk event` falls into one of (currently) 10 types, which are the possible values of `glk event type`.
-
-> phrase: {ph_glkeventwindow} window of (glk event) ... glk window
->
-> Some events take place in or on a given window: for example, commands are typed into windows, so line events have a window, and a mouse event indicates a click or tap on a window. For those events, this returns the window in question; for events not tied to any specific window, such as a timer event, this returns `nothing`.
-
-## Character and line events
-
-As has already been hinted (see [Dividing the screen into windows]), windows channel text input as well as text output. There are times when individual key-presses matter — for example, if the user presses a cursor key to navigate a menu, and we have to react immediately — and then there are times when we don't care what is being typed until an entire command has been entered. That's why there are two different keyboard events: `character event` and `line event`.
-
-* A `character event` is the pressing of a key, or strictly speaking, the input of a character from the keyboard. If the user presses and releases the shift key, for example, that won't generate a character event. Typing the 7 key will do, however, as will typing shift-7, which on most keyboards will lead to a character event with the ``&`` symbol.
-
-* A `line event` marks when a complete line has been fully typed in, and the user has indicated that it's finished by pressing the RETURN or ENTER key. (That end-marker does not become part of the text of the command.)
-
-### How to request these events
-
-Glk sends us events only if we have requested them. By default, an Inform story never requests character events. Traditionally turn-by-turn command parser stories only care about entire commands, not individual keypresses. If the player is typing ``EAT CAKE``, we don't want to receive a stream of character events (E, A, Y, delete, T, space, ...).
-
-An Inform story requests a line event only when it has, in effect, halted waiting for a command to be typed in. But since Inform stories usually print quickly and spend most of the time waiting for player input, this means they are almost always requesting line events.
-
-### Details for these events
-
-Both character and line events are tied to windows, so `window of (glk event)` can be used to find which.
-
-> phrase: {ph_glkeventcharactervalue} character value of (glk event) ... unicode character
->
-> For a character event, this returns the character in question: for any other event, it returns `U+003F`, that is, the Unicode value for a question mark.
-
-> phrase: {ph_glkeventtextvalue} text value of (glk event) ... text
->
-> For a line event, this returns the text of the line. For any other event, it throws a run-time problem.
-
-### Fictitious character and line events
-
-Some types of event can be created even though they haven't happened yet, and the two keyboard types are a case in point. It may seem peculiar to create fictitious Glk events, but it turns out be very useful in order to, say, treat mouse clicks as if they were keypresses or commands, as we shall see. Here are the phrases to create such events:
-
-> phrase: {ph_glkcharacterevent} character event with (unicode character) in (glk window) ... glk event
->
-> This produces an event value exactly like that which would have been generated by glk if a key with the given character had been typed in the given window.
-> 
-> The `in (glk window)` can be omitted, in which case the event is in the `main window`.
-
-> phrase: {ph_glklineevent} line event with (text) in (glk window) ... glk event
->
-> This produces an event value exactly like that which would have been generated by glk if the given whole command had been typed in the given window. There's no necessity for the text to be in upper case, or for that matter in lower case. These all produce different events:
->
->     line event with "GATHER YE ROSEBUDS" in main window
->     line event with "GATHER   YE   ROSEBUDS" in main window
->     line event with "gather ye rosebuds" in main window
->
-> Though the Inform command parser would treat all three commands just the same, that all happens much higher up than in this input-output layer. The texts are different, so the events are different.
-> 
-> The `in (glk window)` can be omitted, in which case the event is in the `main window`.
-
-## Basic IO
-
-This is placeholder text only.
 
 # Testing and Debugging
 
