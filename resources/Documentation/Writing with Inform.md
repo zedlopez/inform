@@ -18131,7 +18131,7 @@ That main window/status window arrangement is the screen layout used by default 
 
 > phrase: clear the screen
 >
-> This phrase clears the whole screen, both the main window and the status line.
+> This phrase clears both the main window and the status window (and, if a boxed quotation is being displayed currently, that as well). On Glulx, it is possible to create multi-window layouts with additional elements (e.g., graphical panels): those would not be cleared, so this phrase is best thought of as clearing the main textual part of the play area.
 
 > phrase: clear only the main screen
 >
@@ -18143,14 +18143,14 @@ That main window/status window arrangement is the screen layout used by default 
 
 > phrase: the screen height ... number
 >
-> The height of the screen in characters, that is, in lines of text.
+> The height of the screen in characters, that is, in lines of text. This includes the status line or lines. On Glulx, properly speaking, it's the height of the main window plus that of the status window. In the default page layout, this is the same thing, but it would be possible to construct more elaborate multi-window layouts (for example where a graphics area is above the text) where `the screen height` is measuring the height of the main textual part of the play area.
 
 > phrase: the screen width ... number
 >
-> The width of the screen in characters. Note that the main window typically uses proportional text, so this width is an approximation of how many characters will actually fit on one of the main window's lines.
+> The width of the status window in characters. Since the status window almost always runs across the whole width of the textual play area, this is in effect the screen width.
 >
-> [!CAUTION]
-> The status line is sometimes drawn with a fixed-pitch rather than a proportional one: it may therefore have a slightly different width in terms of how many characters will fit.
+> > [!IMPORTANT]
+> > The reason that this phrase measures the status window, not the main window, is that the status window has a grid format in which all characters have equal width; in the main window, proportional text is usually used, so that a run of 100 letter `i`s might be the same width as 50 letter `w`s. In short, this can be used as an exact measurement when preparing material to be displayed on the status window, but is only a rough approximation of what fits below it.
 
 ^^{Custom status window columns}
 
@@ -18160,13 +18160,14 @@ But more elaborate arrangements are possible. The window can have additional row
 
 > phrase: fill the status window with (table name)
 >
-> This phrase redraws the status window using the contents of a table, and sets things so that whenever the status window is subsequently redrawn, the same table will be used. The table can have any number of rows, and the status window will adjust its height accordingly.
+> This phrase redraws the status window using the contents of a table, and sets things so that whenever the status window is subsequently redrawn, the same table will be used. The table can have any number of rows, and the status window will adjust its height accordingly — though of course players on smaller devices may not be pleased by a huge status window consuming their limited screen space. The table should have one to three columns:
 >
 > - If the table has 1 column, material in it is centred.
 > - If the table has 2 columns, column 1 is left-aligned and column 2 is right-aligned.
 > - If the table has 3 columns, they are left-aligned, centred, and right-aligned respectively.
-> - It is an error for the table to have more than 3 columns.
 > 
+> The contents of the table can be changed during play. Note that blank entries count as if they were empty text, i.e., they leave a blank area in the status window; in particular, a blank row in the table makes a blank line in the status window.
+>
 > > [!WARNING]
 > > On a narrow screen, it's possible for these columns to overlap each other, especially if all three columns are used.
 
