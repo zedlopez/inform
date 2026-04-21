@@ -2851,14 +2851,48 @@ Still another alternative is to write `unicode "C"`: this is no use inside a tex
 
 ...will work fine. `unicode "☣"`, `unicode U+2623`, `unicode 9763` and `unicode Biohazard Sign` are all ways to write the same value, which has the kind `unicode character`.
 
-But before getting carried away, we should remember the hazards: Inform allows us to type, say, `unicode Saturn` (an astrological sign) but it appears only as a black square if the resulting story is played using a font which lacks the relevant sign. (Another issue is that the fixed letter spacing font, such as used in the status line, may not contain all the characters that the font of the main text contains.) To write something with truly outré characters is therefore a little chancy.
+> [!CAUTION]
+> Before getting carried away, we should remember the hazards: Inform allows us to type, say, `unicode Saturn` (an astrological sign) but it appears only as a black square if the resulting story is played using a font which lacks the relevant sign. (Another issue is that the fixed letter spacing font, such as used in the status line, may not contain all the characters that the font of the main text contains.) To write something with truly outré characters is therefore a little chancy.
 
-At one time, Inform could only use named Unicode values in a story which had first included an extension:
+Inform also sometimes deals with Unicode characters when reading the keyboard. If the player types an `A`, that comes back as its everyday Unicode value, 65, or `Unicode "A"`. But what if the player types the f3 function key, or the page down button? Inform then needs codes to represent those not-really-a-character-at-all characters, and the codes it uses are as follows:
 
-	Include Unicode Character Names by Graham Nelson.
-	Include Unicode Full Character Names by Graham Nelson.
+Inform name     | Unicode value    | Notes
+--------------- | ---------------- | -----------------
+`delete key`    | `unicode U+0008` | Some people call this "backspace", Inform does not
+`tab key`       | `unicode U+0009` | 
+`return key`    | `unicode U+000A` | Some people call this "enter", Inform does not
+`escape key`    | `unicode U+001B` | 
+`left key`      | `unicode U+2190` | Same as `unicode leftwards arrow`
+`right key`     | `unicode U+2192` | Same as `unicode rightwards arrow`
+`up key`        | `unicode U+2191` | Same as `unicode upwards arrow`
+`down key`      | `unicode U+2193` | Same as `unicode downwards arrow`
+`home key`      | `unicode U+21F1` | Same as `unicode north west arrow to corner`
+`end key`       | `unicode U+21F2` | Same as `unicode south east arrow to corner`
+`page up key`   | `unicode U+21DE` | Same as `unicode upwards arrow with double stroke`
+`page down key` | `unicode U+21DF` | Same as `unicode downwards arrow with double stroke`
+`f1 key`        | `unicode U+EF01` | This is in the Unicode Private Use area
+`f2 key`        | `unicode U+EF02` | This is in the Unicode Private Use area
+`f3 key`        | `unicode U+EF03` | This is in the Unicode Private Use area
+`f4 key`        | `unicode U+EF04` | This is in the Unicode Private Use area
+`f5 key`        | `unicode U+EF05` | This is in the Unicode Private Use area
+`f6 key`        | `unicode U+EF06` | This is in the Unicode Private Use area
+`f7 key`        | `unicode U+EF07` | This is in the Unicode Private Use area
+`f8 key`        | `unicode U+EF08` | This is in the Unicode Private Use area
+`f9 key`        | `unicode U+EF09` | This is in the Unicode Private Use area
+`f10 key`       | `unicode U+EF0A` | This is in the Unicode Private Use area
+`f11 key`       | `unicode U+EF0B` | This is in the Unicode Private Use area
+`f12 key`       | `unicode U+EF0C` | This is in the Unicode Private Use area
+`unknown key`   | `unicode U+FFFD` | Same as `unicode replacement character`: used only for damaged or unreadable input
 
-This is no longer the case: no such inclusion need now be made, and indeed, those extensions have been removed from Inform as redundant.
+Some of these characters (in particular delete, tab, escape, the function keys and the unknown key value) can only safely be used for input, not output. If said, they are likely to print back as nothing at all, or a square, or question mark. Others can in principle be printed back, but probably not in a useful way. `say unicode left key` does not move the cursor backwards on the screen: if it does anything, it draws a small leftward arrow. All in all, these named values are best used for input, not output.
+
+>	[!IMPORTANT]
+>	At one time, Inform could only use named Unicode values in a story which had first included an extension:
+>
+>		Include Unicode Character Names by Graham Nelson.
+>		Include Unicode Full Character Names by Graham Nelson.
+>
+>	This is no longer the case: no such inclusion need now be made, and indeed, those extensions have been removed from Inform as redundant.
 
 ## Displaying quotations
 
@@ -18290,13 +18324,7 @@ Inform stories ordinarily pause at the same point in each turn to wait for the p
 >
 > This phrase pauses and waits for the player to press a single key.
 
-When you get a key press from the player it could be a regular printable unicode character, or it could be a function key. Some function keys have a printable representation (like the enter or return key). Inform substitutes other unicode characters to represent some of the function keys, or uses "private use" unicode characters. So it is not necessarily safe to directly say the key the player pressed.
-
-The function keys supported by Inform are:
-
-- navigation keys: up, down, left, right, home, end, page up, page down
-- the function row: f1, f2, f3, ... f12
-- others: delete (ie, backspace), escape, return (ie, enter), tab, unknown
+For more on the `unicode character` kind, see [Unicode characters]. In particular, see the list there of named values for keys which do not correspond to symbols as such: navigation keys like `page up key`, or function keys like `f5 key`.
 
 > phrase: prompt the player to enter a line of text
 >
