@@ -18191,6 +18191,9 @@ Still more variety is possible by writing hand-made rules for the `constructing 
 >
 > Moves the cursor to the specified row and column number. Note that these begin with 1; the top left is (1, 1).
 
+> [!CAUTION]
+> While the descriptions of the phrases above refer to the main window, what they really mean by that is the "active window", that is, the one to which text is normally being output. In Inform's normal setup, that is always the main window, but some extensions allow this to be changed.
+
 ## Dividing the screen into windows
 
 On Glulx, but not the Z-machine, the screen can be divided up in many different ways.
@@ -18281,9 +18284,7 @@ Glk windows have two `number` properties, `rock number` and `glk window handle`:
 
 ^^{Key presses}
 
-Inform stories ordinarily pause at the same point in each turn to wait for the player to type something which will be parsed as a command and turned into actions. But it's possible to pause at other times, or to get typed input for other reasons.
-
-Outside of the turn sequence you may at any time ask the player to type something on their keyboard.
+Inform stories ordinarily pause at the same point in each turn to wait for the player to type something which will be parsed as a command and turned into actions. But it's possible to pause at other times, or to get typed input for other reasons. The following phrases work on both Glulx and the Z-machine.
 
 > phrase: the code of the next pressed key ... unicode character
 >
@@ -18319,11 +18320,11 @@ Inform includes a few utility phrases to handle pausing the game and waiting for
 
 > phrase: pause the game/story
 >
-> The previous two phrases do not print anything out. This phrase will say "Please press SPACE to continue." and then wait until they press the space key (or enter/return).
+> The previous two phrases do not print anything out. This phrase will say "Please press SPACE to continue." and then wait until the player presses the space key (or enter/return).
 
 > phrase: stop the game/story abruptly
 >
-> Mostly useful in Basic Inform, this phrase will tell the virtual machine to stop immediately. It does not invoke any of the end of play systems — the `shutdown rules`, the `when play ends` rules, and so on.
+> Mostly useful in Basic Inform projects, this phrase will tell the virtual machine to stop immediately. It does not invoke any of the end of play systems — the `shutdown rules`, the `when play ends` rules, and so on.
 
 # Events and Hyperlinks
 
@@ -18401,7 +18402,7 @@ Events of different event types work differently, and have to be handled in diff
 
 > phrase: {ph_glkeventwindow} window of (glk event) ... glk window
 >
-> Some events take place in or on a given window: for example, commands are typed into windows, so line events have a window, and a mouse event indicates a click or tap on a window. For those events, this returns the window in question; for events not tied to any specific window, such as a timer event, this will display an error message.
+> Some input-related events take place in or on a given window: `character event`, `line event`, `hyperlink event`, and `mouse event`. For events of those types, this phrase tells us where they took place. If used on events of any other type, i.e., events not tied to any specific window, a run-time problem is issued.
 
 ## Character and line events
 
@@ -18425,7 +18426,7 @@ Both character and line events are tied to windows, because players who type are
 
 > phrase: {ph_glkeventcharactervalue} character value of (glk event) ... unicode character
 >
-> For a character event, this returns the character in question. For any other event, it displays an error message.
+> For a character event, this returns the character in question. For any other event, a run-time problem is issued.
 
 > phrase: {ph_glkeventtextvalue} text value of (glk event) ... text
 >
@@ -18531,11 +18532,18 @@ The `[link ...]` substitution looks as if it comes in many variant versions, but
 	>
 	> A link given this outcome issues a `character event` with the specified unicode character.
 
--	**Rule**. 
+-	**Rule or rulebook**. An example with a rule was given earlier. The same mechanism can just as easily link to a whole rulebook:
+
+		When play begins:
+			say "Wow! Just look at the [link sky rules]clear blue sky[end link].";
+
+		The sky rules are a rulebook.
+
+		Sky rule: say "So blue!".
 
 	> phrase: say "[link (rule)]"
 	>
-	> A link given this outcome follows the specified rule. Any result of the rule (success or failure) is ignored.
+	> A link given this outcome follows the specified rule or rulebook. Any result of the rule (success or failure) is ignored.
 
 ## New types of hyperlink
 
@@ -18590,6 +18598,31 @@ This is using a phrase which only makes sense within the hyperlink handling rule
 >
 > Extracts the hyperlink value as the specified kind of value. This must be used with great care so that the kind of value is correct, since Inform cannot check that. The important thing is to use this phrase on a hyperlink of type 
 
+In practice, using this system will work best if the usual command prompt is removed. Inform normally prints this each time it waits for keyboard input, but that means it's still present if the player clicks on a link which enters a command instead. So stories making heavy use of hypertext normally remove the prompt, like so:
+
+	When play begins:
+		now the command prompt is "".
+
+And some authors might also want to print something like so:
+
+	Hyperlink handling rule for examination hyperlink:
+		let the item be the hyperlink value as a thing;
+		say "(examining [the item])[command clarification break]";
+		try examining the item;
+		rule succeeds.
+
+This would result in a transcript like so:
+
+``` transcript
+Churchyard
+You can see a sturdy oak here.
+
+(examining the sturdy oak)
+You see nothing special about the sturdy oak
+```
+
+where no prompt or typing is visible, but where it's clear that a command has nevertheless been entered.
+
 ### Dubious
 
 > phrase: say "[link (hyperlink tag)]"
@@ -18623,7 +18656,7 @@ The Glk interface allows us to instead _suspend_ text input. We can then output 
 
 > phrase: resume text input in (glk window)
 >
-> Resumes any text input in the specified window.
+> If text input in the given window was suspended, this resumes it. If not, this does nothing.
 
 Suspended character input is simple enough, but what about line input: what happens to what the player has already typed? This can be accessed and even changed, provided input is suspended:
 
@@ -18633,13 +18666,16 @@ Suspended character input is simple enough, but what about line input: what happ
 
 > phrase: set the current line input of (glk window) to (text)
 >
-> Updates the current line input of a suspended Glk window.
-
-By default if we suspend line input then whatever the player has already typed will remain visible. Altering that can produce quite a messy transcript. So there is an option to suspend and resume input without printing anything in between. This requires the `manual line input echoing` use option to be enabled.
+> Updates the current line input of a suspended Glk window. A run-time problem is issued if the window has either never requested line input, or is currently not suspended.
 
 > phrase: suspend text input in (glk window), without input echoing
 >
 > Suspends input without echoing the current line input.
+>
+> > [!CAUTION]
+> > By default if we suspend line input then whatever the player has already typed will remain visible. Altering that can produce quite a messy transcript. So there is an option to suspend and resume input without printing anything in between. A special use option must also be enabled for the `without input echoing` option to work properly:
+> >
+> >     Use manual line input echoing.
 
 ## Other Glk event types
 
