@@ -965,7 +965,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span class="indexgrey">external file&nbsp;<a href=inform:/wi_25_12.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A44><img border=0 src=inform:/doc_images/Below.png></a></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="indexgrey">external file&nbsp;<a href=inform:/wi_27_11.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A44><img border=0 src=inform:/doc_images/Below.png></a></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span class="indexgrey"><i>a non-file</i></span>&nbsp;
@@ -1016,7 +1016,7 @@
     </tr>
     <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            figure name&nbsp;<a href=inform:/wi_25_4.html><img border=0 src=inform:/doc_images/help.png></a> [1]&nbsp;<a href=#A60><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            figure name&nbsp;<a href=inform:/wi_27_3.html><img border=0 src=inform:/doc_images/help.png></a> [1]&nbsp;<a href=#A60><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             Figure of cover&nbsp;
@@ -1033,7 +1033,7 @@
     </tr>
     <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span class="indexgrey">sound name&nbsp;<a href=inform:/wi_25_7.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A61><img border=0 src=inform:/doc_images/Below.png></a></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="indexgrey">sound name&nbsp;<a href=inform:/wi_27_6.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A61><img border=0 src=inform:/doc_images/Below.png></a></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
             <span class="indexgrey"><i>a silent non-sound</i></span>&nbsp;
@@ -1574,7 +1574,7 @@ Like formulae in a textbook or a scientific paper, equations in Inform are writt
 <p class="halftightin1"><a name=A43></a><b>rulebook outcome</b> (<i>plural</i> rulebook outcomes)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 </p>
-<p class="halftightin1"><a name=A44></a><b>external file</b> (<i>plural</i> external files)&nbsp;<a href=inform:/wi_25_12.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A44></a><b>external file</b> (<i>plural</i> external files)&nbsp;<a href=inform:/wi_27_11.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
 When made with the Glulx setting, an Inform project can make limited use of files stored on the computer which is operating the story at run-time. An external-file is just the name of one of these files (not the filename in the usual sense, but a name given to it in the Inform source text).<br>
 </p>
@@ -1586,12 +1586,12 @@ When made with the Glulx setting, an Inform project can make limited use of file
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 An action is what happens when one of the people in the simulated world decides to do something. A full action would be something like 'dropping the box', but an action name is just the choice of which sort of thing is being done: here, it's 'the dropping action'. (Action names are always written with the word 'action' at the end, to make sure they aren't mistaken for full actions.)<br>
 </p>
-<p class="halftightin1"><a name=A60></a><b>figure name</b> (<i>plural</i> figure names)&nbsp;<a href=inform:/wi_25_4.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A60></a><b>figure name</b> (<i>plural</i> figure names)&nbsp;<a href=inform:/wi_27_3.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
 When made with the Glulx setting, an Inform project can include images as well as words, and these are called figures. A figure name is just the name of one of the figures in the current project.<br>
 <p class="tightin1"><span class="indexgrey">Figure of cover</span></p>
 </p>
-<p class="halftightin1"><a name=A61></a><b>sound name</b> (<i>plural</i> sound names)&nbsp;<a href=inform:/wi_25_7.html><img border=0 src=inform:/doc_images/help.png></a></p>
+<p class="halftightin1"><a name=A61></a><b>sound name</b> (<i>plural</i> sound names)&nbsp;<a href=inform:/wi_27_6.html><img border=0 src=inform:/doc_images/help.png></a></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
 When made with the Glulx setting, an Inform project can include sound effects or pieces of music. A sound name is just the name of one of these sounds in the current project.<br>
 </p>
