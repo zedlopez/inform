@@ -81,8 +81,8 @@ The main window object is accessible to Inter as "Main_Window".
 The status window is a text grid window.
 The status window object is accessible to Inter as "Status_Window".
 
-The quote window is a text buffer window.
-The quote window object is accessible to Inter as "Quote_Window".
+The boxed quotation window is a text buffer window.
+The boxed quotation window object is accessible to Inter as "Quote_Window".
 
 @h Basic window functions.
 Some basic Glk window functions will be supported out of the box, but others will
@@ -116,6 +116,14 @@ Glk events can be handled with the glk event handling rules.
 
 =
 Chapter - Glk events
+
+Definition: a glk event type is windowed if
+	it is character event or
+	it is line event or
+	it is mouse event or
+	it is hyperlink event.
+
+Definition: a glk event is windowed if the type of it is windowed.
 
 To decide what glk event is (evtype - glk event type) glk event:
 	(- GLK_EVENT_TY_New({-new: glk event}, {evtype}) -).
@@ -173,6 +181,9 @@ To decide what tagged hyperlink is the hyperlink value of (ev - glk event):
 To decide what text is the text of (ev - glk event)
 	(documented at ph_glkeventtextvalue):
 	(- GLK_EVENT_TY_Text({ev}, {-new: text}) -).
+
+To request timer events every (N - number) milliseconds:
+	(- glk_request_timer_events({N}); -).
 
 @ And now the glk event handling rules themselves.
 
