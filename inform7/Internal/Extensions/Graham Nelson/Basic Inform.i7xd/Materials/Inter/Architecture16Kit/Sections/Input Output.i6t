@@ -296,30 +296,48 @@ This looks up the address of a function like `TakeSub` from the table of
 Our generic screen model is that the screen is made up of windows: we tend
 to refer only to two of these, the main window and the status line, but
 others may also exist from time to time. Windows have unique ID numbers:
-the special window ID $-1$ means "all windows" or "the entire screen",
-which usually amounts to the same thing.
+in Glulx they have their own reference numbers as assigned by the interpreter,
+in Z-Machine `0` is the main window and `1` is the status window.
+
+`VM_ClearScreen` clears the entire screen.
 
 Screen height and width are measured in characters, with respect to the
 fixed-pitch font used for the status line. The main window normally contains
 variable-pitch text which may even have been kerned, and character dimensions
 make little sense there.
 
-Clearing all windows (`WIN_ALL` here) has the side-effect of collapsing the
-status line, so we need to ensure that `statuswin_cursize` is reduced to 0,
-in order to keep it accurate.
+`VM_ClearWindow`, `VM_WindowHeight`, and `VM_WindowWidth` opperate on only the
+specified window.
 
 =
-[ VM_ClearScreen window;
-    switch (window) {
-		WIN_ALL:    @erase_window -1; statuswin_cursize = 0;
-		WIN_STATUS: @erase_window 1;
-		WIN_MAIN:   @erase_window 0;
-    }
+[ VM_ClearScreen;
+	@erase_window -2;
 ];
 
-[ VM_ScreenWidth  width charw; return (HDR_SCREENWCHARS->0); ];
+[ VM_ScreenHeight;
+	return HDR_SCREENHLINES->0;
+];
 
-[ VM_ScreenHeight; return (HDR_SCREENHLINES->0); ];
+[ VM_ScreenWidth width charw;
+	return HDR_SCREENWCHARS->0;
+];
+
+[ VM_ClearWindow win;
+	@erase_window win;
+];
+
+[ VM_WindowHeight win;
+	if (win == ZMACHINE_WINDOW_MAIN) {
+		return (HDR_SCREENHLINES->0) - statuswin_cursize;
+	}
+	else {
+		return statuswin_cursize;
+	}
+];
+
+[ VM_WindowWidth;
+	return HDR_SCREENWCHARS->0;
+];
 
 @h Window Colours.
 We can now change foreground and background colours in both Z-Machine and Glulx

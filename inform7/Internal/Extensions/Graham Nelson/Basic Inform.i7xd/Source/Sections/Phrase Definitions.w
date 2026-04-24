@@ -1858,16 +1858,10 @@ Chapter 9 - Basic Input/Output
 (See the Glk Foundations for Glk-specific phrases.)
 
 =
-Section 1 - Basic Window Effects
+Section 1 - Basic Window Effects (for Z-machine only)
 
-To clear the/-- screen:
-	(- VM_ClearScreen(0); -).
-
-To clear only/-- the/-- main screen:
-	(- VM_ClearScreen(2); -).
-
-To clear only/-- the/-- status line:
-	(- VM_ClearScreen(1); -).
+To clear the/-- whole/-- screen:
+	(- VM_ClearScreen(); -).
 
 To decide what number is the/-- screen height:
 	(- VM_ScreenHeight() -).
@@ -1875,10 +1869,39 @@ To decide what number is the/-- screen height:
 To decide what number is the/-- screen width:
 	(- VM_ScreenWidth() -).
 
+To clear (win - a z-machine window):
+	(- VM_ClearWindow({win}); -).
+
+To decide what number is the height of (win - a z-machine window):
+	(- VM_WindowHeight({win}) -).
+
+To decide what number is the width of (win - a z-machine window):
+	(- VM_WindowWidth({win}) -).
+
+Section 2 - Basic Window Effects (for Glulx only)
+
+To clear the/-- whole/-- screen:
+	(- VM_ClearScreen(); -).
+
+To decide what number is the/-- screen height:
+	(- VM_ScreenHeight() -).
+
+To decide what number is the/-- screen width:
+	(- VM_ScreenWidth() -).
+
+To clear (win - a glk window):
+	(- VM_ClearWindow({win}); -).
+
+To decide what number is the height of (win - a glk window):
+	(- VM_WindowHeight({win}) -).
+
+To decide what number is the width of (win - a glk window):
+	(- VM_WindowWidth({win}) -).
+
 @ Customising the status line.
 
 =
-Section 2 - The Status Window
+Section 3 - The Status Window
 
 The status window table is a table-name that varies.
 The status window table variable translates into Inter as "status_window_table".
@@ -1902,7 +1925,7 @@ To redraw the/-- status bar/line/window:
 @ Keyboard input phrases.
 
 =
-Section 3 - Keyboard Input
+Section 4 - Keyboard Input
 
 To decide what unicode character is the code of the next pressed key:
 	(- VM_KeyChar() -).
@@ -1949,7 +1972,7 @@ The up key is always unicode U+2191.
 @ Pausing the game.
 
 =
-Section 4 - Pausing the game
+Section 5 - Pausing the game
 
 [ Exclude navigation keys ]
 To wait for any key:

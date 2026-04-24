@@ -193,12 +193,6 @@ Functions for minimal Glk windows support.
 	return nothing;
 ];
 
-[ WindowClear win;
-	if (win && win.glk_ref) {
-		glk_window_clear(win.glk_ref);
-	}
-];
-
 [ WindowFocus win;
 	if (win) {
 		if (win.glk_ref) {
@@ -211,14 +205,6 @@ Functions for minimal Glk windows support.
 	else {
 		IssueRTP("WindowIsNothing", "WindowFocus: Cannot perform this Glk window operation on nothing.", Architecture32KitRTPs);
 	}
-];
-
-[ WindowGetSize win index;
-	if (win && win.glk_ref) {
-		glk_window_get_size(win.glk_ref, gg_arguments, gg_arguments + WORDSIZE);
-		return gg_arguments-->index;
-	}
-	return 0;
 ];
 
 [ WindowMoveCursor win col row;

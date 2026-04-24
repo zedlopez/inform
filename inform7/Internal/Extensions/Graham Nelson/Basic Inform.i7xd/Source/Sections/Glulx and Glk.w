@@ -91,21 +91,9 @@ require extensions.
 =
 Section - Glk windows
 
-To clear (win - a glk window)
-	(documented at ph_glkwindowclear):
-	(- WindowClear({win}); -).
-
 To focus (win - a glk window)
 	(documented at ph_glkwindowfocus):
 	(- WindowFocus({win}); -).
-
-To decide what number is the height of (win - a glk window)
-	(documented at ph_glkwindowheight):
-	(- WindowGetSize({win}, 1) -).
-
-To decide what number is the width of (win - a glk window)
-	(documented at ph_glkwindowwidth):
-	(- WindowGetSize({win}, 0) -).
 
 To set (win - a glk window) cursor to row (row - a number) and/-- column/col (col - a number)
 	(documented at ph_glksetcursor):
