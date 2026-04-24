@@ -1124,7 +1124,7 @@ To decide what number is the number of paragraphs in (T - text)
 
 To decide what text is character number (N - a number) in (T - text)
 	(documented at ph_charnum):
-	(- TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, CHR_BLOB) -).
+	(- TEXT_TY_GetCharacter({-new:text}, {-by-reference:T}, {N}) -).
 To decide what text is word number (N - a number) in (T - text)
 	(documented at ph_wordnum):
 	(- TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, WORD_BLOB) -).

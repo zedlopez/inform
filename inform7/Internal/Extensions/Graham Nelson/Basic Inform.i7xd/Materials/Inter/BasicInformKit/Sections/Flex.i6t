@@ -588,17 +588,21 @@ only.
 [ FlexSize txb bsize n m; ! Size of an individual block, including header
 	if (txb == 0) return 0;
 	m = txb->BLK_HEADER_N;
-	for (bsize=1: n<m: bsize=bsize*2) n++;
+	#ifdef TARGET_GLULX;
+	@shiftl 1 m bsize;
+	return bsize;
+        #endif;
+	if (m <= 15) return IncreasingPowersOfTwo_TB-->m;
+	for (bsize=IncreasingPowersOfTwo_TB-->15, n = 15 : n < m : bsize = bsize*2) n++;
 	return bsize;
 ];
 
-[ FlexTotalSize txb size_in_bytes; ! Combined size of multiple-blocks for a value
+[ FlexTotalSize txb size_in_bytes m n; ! Combined size of multiple-blocks for a value
 	if (txb == 0) return 0;
 	if ((txb->BLK_HEADER_FLAGS) & BLK_FLAG_MULTIPLE == 0)
 		return FlexSize(txb) - BLK_DATA_OFFSET;
-	for (:txb~=NULL:txb=txb-->BLK_NEXT) {
+	for ( : txb ~= NULL : txb=txb-->BLK_NEXT )
 		size_in_bytes = size_in_bytes + FlexSize(txb) - BLK_DATA_MULTI_OFFSET;
-	}
 	return size_in_bytes;
 ];
 

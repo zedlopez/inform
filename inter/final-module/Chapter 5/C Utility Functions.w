@@ -47,7 +47,7 @@ char *i7_read_string(i7process_t *proc, i7word_t S);
 void i7_write_string(i7process_t *proc, i7word_t S, char *A);
 
 @<C library code@> +=
-i7word_t i7_fn_TEXT_TY_Transmute(i7process_t *proc, i7word_t i7_mgl_local_txt);
+i7word_t i7_fn_TEXT_TY_Transmute(i7process_t *proc, i7word_t i7_mgl_local_txt, i7word_t i7_mgl_local_x);
 i7word_t i7_fn_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from,
 	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect);
 i7word_t i7_fn_BlkValueWrite(i7process_t *proc, i7word_t i7_mgl_local_to,
@@ -60,7 +60,7 @@ i7word_t i7_fn_TEXT_TY_CharacterLength(i7process_t *proc,
 
 char *i7_read_string(i7process_t *proc, i7word_t S) {
 	#ifdef i7_mgl_BASICINFORMKIT
-	i7_fn_TEXT_TY_Transmute(proc, S);
+	i7_fn_TEXT_TY_Transmute(proc, S, 0);
 	int L = i7_fn_TEXT_TY_CharacterLength(proc, S, 0, 0, 0, 0, 0, 0);
 	char *A = malloc(L + 1);
 	if (A == NULL) {
@@ -78,7 +78,7 @@ char *i7_read_string(i7process_t *proc, i7word_t S) {
 
 void i7_write_string(i7process_t *proc, i7word_t S, char *A) {
 	#ifdef i7_mgl_BASICINFORMKIT
-	i7_fn_TEXT_TY_Transmute(proc, S);
+	i7_fn_TEXT_TY_Transmute(proc, S, 0);
 	i7_fn_BlkValueWrite(proc, S, 0, 0, 0);
 	if (A) {
 		int L = strlen(A);

@@ -898,7 +898,7 @@ converting between Inform 7's texts, and the I6 buffers of the Glk API.
 	buf = win.line_input_buffer_addr;
 	uni = win.line_input_buffer_uni;
 	cp = txt-->0;
-	p = TEXT_TY_Temporarily_Transmute(txt);
+	p = TEXT_TY_Transmute(txt);
 	len = BlkValueLBCapacity(txt);
 	if (len > win.line_input_buffer_maxlen) {
 		len = win.line_input_buffer_maxlen;
@@ -916,7 +916,7 @@ converting between Inform 7's texts, and the I6 buffers of the Glk API.
 			buf->i = '?';
 		}
 	}
-	TEXT_TY_Untransmute(txt, p, cp);
+	if (p) TEXT_TY_Untransmute(txt, p, cp);
 	win.line_input_buffer_curlen = i;
 	! If the current event is a line input event in this window, update event val 1
 	if (current_glk_event-->GLK_EVENT_TYPE_SF == evtype_LineInput && current_glk_event-->GLK_EVENT_WINDOW_SF == win) {
