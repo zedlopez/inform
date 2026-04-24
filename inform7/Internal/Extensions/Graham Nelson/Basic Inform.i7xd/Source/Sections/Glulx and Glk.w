@@ -223,12 +223,6 @@ To decide what K is the value of (tag - tagged hyperlink) as a/an (name of kind 
 To say link (T - tagged hyperlink):
 	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink({T}); } -).
 
-To say link (T - hyperlink tag):
-	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink({T}); } -).
-
-To say link (T - hyperlink tag) for/of/with (V - value of kind K):
-	(- TAGGED_HYPERLINK_TY_New({T}, {-by-reference:V}, {-strong-kind:K}, 1); -).
-
 To say end link:
 	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink(0); } -).
 

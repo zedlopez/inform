@@ -421,6 +421,70 @@ To say (L - a list of objects) with indefinite articles
 	(documented at phs_listindef):
 	(- LIST_OF_TY_Say({-by-reference:L}, 3); -).
 
+@ Some basic visual effects, which may or may not be rendered the way the user
+hopes: that's partly up to the virtual machine, unfortunately.
+
+See test case `BIP-SayFonts`, though since `intest` runs on plain text only,
+you may need to run this in the Inform application to be convinced.
+
+=
+Section 8 - Saying Fonts and Visual Effects
+
+To say bold type -- running on
+	(documented at phs_bold):
+	(- style bold; -).
+To say italic type -- running on
+	(documented at phs_italic):
+	(- style underline; -).
+To say roman type -- running on
+	(documented at phs_roman):
+	(- style roman; -).
+To say fixed letter spacing -- running on
+	(documented at phs_fixedspacing):
+	(- font off; -).
+To say variable letter spacing -- running on
+	(documented at phs_varspacing):
+	(- font on; -).
+
+To say reverse mode -- running on:
+	(- VM_SetReverseMode(1); -).
+To say reverse mode off -- running on:
+	(- VM_SetReverseMode(0); -).
+
+@ Basic colours are supported in both architectures, but RGB colours are only
+supported in Glulx.
+
+=
+Section 9 - Basic Colours
+
+To say (C - basic colour) letters
+	(documented at phs_colourletters):
+	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
+
+To say (C - basic colour) background
+	(documented at phs_colourbackground):
+	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
+
+To say default colours/colors:
+	(- VM_SetWindowColours(BASIC_COLOUR_DEFAULT, BASIC_COLOUR_DEFAULT); -).
+
+Section 10 - RGB Colours (for Glulx only)
+
+RGB colour is a kind of value.
+#<red level><green level><blue level> specifies a RGB colour with parts
+	red level (2 hexadecimal digits),
+	green level (2 hexadecimal digits) and
+	blue level (2 hexadecimal digits).
+
+To say (C - RGB colour) letters:
+	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
+
+To say (C - RGB colour) background:
+	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
+
+To decide what RGB colour is (C - basic colour) as a/an/-- RGB colour:
+	(- {C} -).
+
 @h Variables.
 The "now" phrase can do an extraordinary range of things, and is more or
 less a genie granting one wish.
@@ -1790,87 +1854,11 @@ Basic input/output phrases, that mostly used to be in the Basic Screen Effects e
 =
 Chapter 9 - Basic Input/Output
 
-@ Some basic visual effects, which may or may not be rendered the way the user
-hopes: that's partly up to the virtual machine, unfortunately.
-
-See test case `BIP-SayFonts`, though since `intest` runs on plain text only,
-you may need to run this in the Inform application to be convinced.
-
-=
-Section 1 - Saying Fonts and Visual Effects
-
-To say bold type -- running on
-	(documented at phs_bold):
-	(- style bold; -).
-To say italic type -- running on
-	(documented at phs_italic):
-	(- style underline; -).
-To say roman type -- running on
-	(documented at phs_roman):
-	(- style roman; -).
-To say fixed letter spacing -- running on
-	(documented at phs_fixedspacing):
-	(- font off; -).
-To say variable letter spacing -- running on
-	(documented at phs_varspacing):
-	(- font on; -).
-
-To say reverse mode -- running on:
-	(- VM_SetReverseMode(1); -).
-To say reverse mode off -- running on:
-	(- VM_SetReverseMode(0); -).
-
-@ Basic colours are supported in both architectures, but RGB colours are only
-supported in Glulx.
-
-=
-Section 2 - Basic Colours
-
-To set the foreground/-- colour/color/-- to (C - basic colour):
-	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
-
-To say (C - basic colour) letters
-	(documented at phs_colourletters):
-	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
-
-To say (C - basic colour) background
-	(documented at phs_colourbackground):
-	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
-
-To set the background colour/color/-- to (C - basic colour):
-	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
-
-To reset the screen/window colours/colors:
-	(- VM_SetWindowColours(BASIC_COLOUR_DEFAULT, BASIC_COLOUR_DEFAULT); -).
-
-To say default colours/colors:
-	(- VM_SetWindowColours(BASIC_COLOUR_DEFAULT, BASIC_COLOUR_DEFAULT); -).
-
-Section 3 - RGB Colours (for Glulx only)
-
-RGB colour is a kind of value.
-#<red level><green level><blue level> specifies a RGB colour with parts
-	red level (2 hexadecimal digits),
-	green level (2 hexadecimal digits) and
-	blue level (2 hexadecimal digits).
-
-To set the foreground/-- colour/color/-- to (C - RGB colour):
-	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
-
-To say (C - RGB colour) letters:
-	(- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).
-
-To set the background colour/color/-- to (C - RGB colour):
-	(- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).
-
-To decide what RGB colour is (C - basic colour) as a/an/-- RGB colour:
-	(- {C} -).
-
 @ Some basic window phrases, which are supported by both the Z-Machine and Glulx.
 (See the Glk Foundations for Glk-specific phrases.)
 
 =
-Section 4 - Basic Window Effects
+Section 1 - Basic Window Effects
 
 To clear the/-- screen:
 	(- VM_ClearScreen(0); -).
@@ -1890,7 +1878,7 @@ To decide what number is the/-- screen width:
 @ Customising the status line.
 
 =
-Section 5 - The Status Window
+Section 2 - The Status Window
 
 The status window table is a table-name that varies.
 The status window table variable translates into Inter as "status_window_table".
@@ -1914,7 +1902,7 @@ To redraw the/-- status bar/line/window:
 @ Keyboard input phrases.
 
 =
-Section 6 - Keyboard Input
+Section 3 - Keyboard Input
 
 To decide what unicode character is the code of the next pressed key:
 	(- VM_KeyChar() -).
@@ -1961,7 +1949,7 @@ The up key is always unicode U+2191.
 @ Pausing the game.
 
 =
-Section 7 - Pausing the game
+Section 4 - Pausing the game
 
 [ Exclude navigation keys ]
 To wait for any key:
