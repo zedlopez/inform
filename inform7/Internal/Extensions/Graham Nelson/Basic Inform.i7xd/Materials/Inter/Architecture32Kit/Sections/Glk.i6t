@@ -768,12 +768,7 @@ up into its parts again.
 			#Endif; ! DEBUG
 		}
 	}
-	if (val > 0) {
-		@shiftl val hyperlink_tag_width val;
-	}
-	else {
-		val = val & hyperlink_payload_mask;
-	}
+	@shiftl val hyperlink_tag_width val;
 	val = tag | val;
 	if (make_link && Cached_Glk_Gestalts-->gestalt_Hyperlinks) {
 		glk_set_hyperlink(val);
@@ -808,13 +803,7 @@ up into its parts again.
 		IssueRTP("HyperlinkInvalid", "TAGGED_HYPERLINK_TY_Value: Cannot process an invalid tagged hyperlink.", Architecture32KitRTPs);
 		return 0;
 	}
-	val = val & hyperlink_payload_mask;
-	if (val < 0) {
-		val = val | hyperlink_tag_mask;
-	}
-	else {
-		@ushiftr val hyperlink_tag_width val;
-	}
+	@sshiftr val hyperlink_tag_width val;
 	return val;
 ];
 
