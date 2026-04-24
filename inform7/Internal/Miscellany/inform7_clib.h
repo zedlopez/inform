@@ -118,6 +118,7 @@ void i7_opcode_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_aloadb(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_sshiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 int i7_opcode_jeq(i7process_t *proc, i7word_t x, i7word_t y);
 int i7_opcode_jleu(i7process_t *proc, i7word_t x, i7word_t y);
 int i7_opcode_jnz(i7process_t *proc, i7word_t x);
