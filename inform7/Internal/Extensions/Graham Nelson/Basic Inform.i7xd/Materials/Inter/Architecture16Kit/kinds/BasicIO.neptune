@@ -14,3 +14,14 @@ new base BASIC_COLOUR_TY {
 	instance: basic cyan    = BASIC_COLOUR_CYAN    = 8
 	instance: basic white   = BASIC_COLOUR_WHITE   = 9
 }
+
+new base ZMACHINE_WINDOW_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: z-machine window
+	plural: z-machine windows
+
+	specification-text: Represents one of the Z-Machine windows.
+
+	instance: main window   = ZMACHINE_WINDOW_MAIN   = 0
+	instance: status window = ZMACHINE_WINDOW_STATUS = 1
+}

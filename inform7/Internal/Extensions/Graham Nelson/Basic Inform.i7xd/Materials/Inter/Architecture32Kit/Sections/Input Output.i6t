@@ -700,26 +700,36 @@ Array AnyToStrArr -> GG_ANYTOSTRING_LEN+1;
 Our generic screen model is that the screen is made up of windows: we tend
 to refer only to two of these, the main window and the status line, but
 others may also exist from time to time. Windows have unique ID numbers:
-the special window ID $-1$ means "all windows" or "the entire screen",
-which usually amounts to the same thing.
+in Glulx they have their own reference numbers as assigned by the interpreter,
+in Z-Machine `0` is the main window and `1` is the status window.
+
+`VM_ClearScreen` clears the entire screen.
 
 Screen height and width are measured in characters, with respect to the
 fixed-pitch font used for the status line. The main window normally contains
 variable-pitch text which may even have been kerned, and character dimensions
 make little sense there.
 
+`VM_ClearWindow`, `VM_WindowHeight`, and `VM_WindowWidth` opperate on only the
+specified window.
+
 =
-[ VM_ClearScreen window;
-	if (window == WIN_ALL or WIN_MAIN) {
-		glk_window_clear(active_window.glk_ref);
-		if (Quote_Window.glk_ref) {
-			glk_window_close(Quote_Window.glk_ref, 0);
-			Quote_Window.glk_ref = 0;
+[ VM_ClearScreen win;
+	for (win = K_Glk_Window_First: win: win = win.K_Glk_Window_Next) {
+		if (win.glk_ref) {
+			glk_window_clear(win.glk_ref);
 		}
 	}
-	if (Status_Window.glk_ref && window == WIN_ALL or WIN_STATUS) {
-		glk_window_clear(Status_Window.glk_ref);
+];
+
+[ VM_ScreenHeight  height;
+	glk_window_get_size(active_window.glk_ref, 0, gg_arguments);
+	height = gg_arguments-->0;
+	if (Status_Window.glk_ref) {
+		glk_window_get_size(Status_Window.glk_ref, 0, gg_arguments);
+		height = height + gg_arguments-->0;
 	}
+	return height;
 ];
 
 [ VM_ScreenWidth  id;
@@ -731,14 +741,26 @@ make little sense there.
 	return gg_arguments-->0;
 ];
 
-[ VM_ScreenHeight  height;
-	glk_window_get_size(active_window.glk_ref, 0, gg_arguments);
-	height = gg_arguments-->0;
-	if (Status_Window.glk_ref) {
-		glk_window_get_size(Status_Window.glk_ref, 0, gg_arguments);
-		height = height + gg_arguments-->0;
+[ VM_ClearWindow win;
+	if (win && win.glk_ref) {
+		glk_window_clear(win.glk_ref);
 	}
-	return height;
+];
+
+[ VM_WindowHeight win;
+	if (win && win.glk_ref) {
+		glk_window_get_size(win.glk_ref, 0, gg_arguments);
+		return gg_arguments-->0;
+	}
+	return 0;
+];
+
+[ VM_WindowWidth win;
+	if (win && win.glk_ref) {
+		glk_window_get_size(win.glk_ref, gg_arguments, 0);
+		return gg_arguments-->0;
+	}
+	return 0;
 ];
 
 @h Window Colours.

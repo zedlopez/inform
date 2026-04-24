@@ -91,19 +91,6 @@ Architecture16/32Kits, these two colour codes are defined here instead.
 	Constant BASIC_COLOUR_DEFAULT = 1;
 #Endif;
 
-@h Window Numbers.
-Although Glulx can support elaborate tessellations of windows on screen (if
-the complexity of handling this can be mastered), the Z-machine has much
-more limited resources in general, so the template layer assumes a simple
-screen model: there are just two screen areas, the scrolling main window
-in which commands are typed and responses printed, and the fixed status
-line bar at the top of the screen.
-
-=
-Constant WIN_ALL     = 0; ! Both windows at once
-Constant WIN_STATUS  = 1;
-Constant WIN_MAIN    = 2;
-
 @h Function key codes.
 So that users of `VM_KeyChar()` don't need to be aware of platform differences,
 function key codes are mapped to these common codes.

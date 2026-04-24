@@ -81,8 +81,8 @@ The main window object is accessible to Inter as "Main_Window".
 The status window is a text grid window.
 The status window object is accessible to Inter as "Status_Window".
 
-The quote window is a text buffer window.
-The quote window object is accessible to Inter as "Quote_Window".
+The boxed quotation window is a text buffer window.
+The boxed quotation window object is accessible to Inter as "Quote_Window".
 
 @h Basic window functions.
 Some basic Glk window functions will be supported out of the box, but others will
@@ -91,21 +91,9 @@ require extensions.
 =
 Section - Glk windows
 
-To clear (win - a glk window)
-	(documented at ph_glkwindowclear):
-	(- WindowClear({win}); -).
-
 To focus (win - a glk window)
 	(documented at ph_glkwindowfocus):
 	(- WindowFocus({win}); -).
-
-To decide what number is the height of (win - a glk window)
-	(documented at ph_glkwindowheight):
-	(- WindowGetSize({win}, 1) -).
-
-To decide what number is the width of (win - a glk window)
-	(documented at ph_glkwindowwidth):
-	(- WindowGetSize({win}, 0) -).
 
 To set (win - a glk window) cursor to row (row - a number) and/-- column/col (col - a number)
 	(documented at ph_glksetcursor):
@@ -116,6 +104,14 @@ Glk events can be handled with the glk event handling rules.
 
 =
 Chapter - Glk events
+
+Definition: a glk event type is windowed if
+	it is character event or
+	it is line event or
+	it is mouse event or
+	it is hyperlink event.
+
+Definition: a glk event is windowed if the type of it is windowed.
 
 To decide what glk event is (evtype - glk event type) glk event:
 	(- GLK_EVENT_TY_New({-new: glk event}, {evtype}) -).
@@ -174,6 +170,9 @@ To decide what text is the text of (ev - glk event)
 	(documented at ph_glkeventtextvalue):
 	(- GLK_EVENT_TY_Text({ev}, {-new: text}) -).
 
+To request timer events every (N - number) milliseconds:
+	(- glk_request_timer_events({N}); -).
+
 @ And now the glk event handling rules themselves.
 
 =
@@ -222,12 +221,6 @@ To decide what K is the value of (tag - tagged hyperlink) as a/an (name of kind 
 
 To say link (T - tagged hyperlink):
 	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink({T}); } -).
-
-To say link (T - hyperlink tag):
-	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink({T}); } -).
-
-To say link (T - hyperlink tag) for/of/with (V - value of kind K):
-	(- TAGGED_HYPERLINK_TY_New({T}, {-by-reference:V}, {-strong-kind:K}, 1); -).
 
 To say end link:
 	(- if (Cached_Glk_Gestalts-->gestalt_Hyperlinks) { glk_set_hyperlink(0); } -).
@@ -307,8 +300,14 @@ The text input status property translates into Inter as "text_input_status".
 A glk window can be requesting mouse input.
 The requesting mouse input property translates into Inter as "requesting_mouse".
 
+To suspend text input, without input echoing:
+	(- SuspendTextInput(active_window, {phrase options}); -).
+
 To suspend text input in (win - a glk window), without input echoing:
 	(- SuspendTextInput({win}, {phrase options}); -).
+
+To resume text input:
+	(- ResumeTextInput(active_window); -).
 
 To resume text input in (win - a glk window):
 	(- ResumeTextInput({win}); -).
