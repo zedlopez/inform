@@ -70,7 +70,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../kits.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Definitions</b></li></ul></div>
 <p class="purpose">Definitions  Miscellaneous constant definitions, usually providing symbolic names for otherwise inscrutable numbers, which are used throughout the template layer.</p>
 
-<ul class="toc"><li><a href="dfntn.html#SP1">&#167;1. Identification</a></li><li><a href="dfntn.html#SP2">&#167;2. Nothing</a></li><li><a href="dfntn.html#SP3">&#167;3. Powers of Two</a></li><li><a href="dfntn.html#SP4">&#167;4. Text Styles</a></li><li><a href="dfntn.html#SP5">&#167;5. Colour Codes</a></li><li><a href="dfntn.html#SP6">&#167;6. Window Numbers</a></li><li><a href="dfntn.html#SP7">&#167;7. Function key codes</a></li><li><a href="dfntn.html#SP8">&#167;8. Paragraphing Flags</a></li><li><a href="dfntn.html#SP9">&#167;9. Descriptors in the Language of Play</a></li><li><a href="dfntn.html#SP10">&#167;10. Auxiliary file structure</a></li><li><a href="dfntn.html#SP11">&#167;11. Scope Searching Reasons</a></li><li><a href="dfntn.html#SP12">&#167;12. Token Types</a></li><li><a href="dfntn.html#SP13">&#167;13. GPR Return Values</a></li><li><a href="dfntn.html#SP14">&#167;14. List Styles</a></li><li><a href="dfntn.html#SP15">&#167;15. Lengths Of Time</a></li><li><a href="dfntn.html#SP16">&#167;16. Empty Text</a></li><li><a href="dfntn.html#SP17">&#167;17. Empty Table</a></li><li><a href="dfntn.html#SP18">&#167;18. Empty Set</a></li><li><a href="dfntn.html#SP19">&#167;19. Template Attributes</a></li><li><a href="dfntn.html#SP20">&#167;20. Template Properties</a></li><li><a href="dfntn.html#SP21">&#167;21. Formal Parameters</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="dfntn.html#SP1">&#167;1. Identification</a></li><li><a href="dfntn.html#SP2">&#167;2. Nothing</a></li><li><a href="dfntn.html#SP3">&#167;3. Powers of Two</a></li><li><a href="dfntn.html#SP4">&#167;4. Text Styles</a></li><li><a href="dfntn.html#SP5">&#167;5. Colour Codes</a></li><li><a href="dfntn.html#SP6">&#167;6. Function key codes</a></li><li><a href="dfntn.html#SP7">&#167;7. Paragraphing Flags</a></li><li><a href="dfntn.html#SP8">&#167;8. Descriptors in the Language of Play</a></li><li><a href="dfntn.html#SP9">&#167;9. Auxiliary file structure</a></li><li><a href="dfntn.html#SP10">&#167;10. Scope Searching Reasons</a></li><li><a href="dfntn.html#SP11">&#167;11. Token Types</a></li><li><a href="dfntn.html#SP12">&#167;12. GPR Return Values</a></li><li><a href="dfntn.html#SP13">&#167;13. List Styles</a></li><li><a href="dfntn.html#SP14">&#167;14. Lengths Of Time</a></li><li><a href="dfntn.html#SP15">&#167;15. Empty Text</a></li><li><a href="dfntn.html#SP16">&#167;16. Empty Table</a></li><li><a href="dfntn.html#SP17">&#167;17. Empty Set</a></li><li><a href="dfntn.html#SP18">&#167;18. Template Attributes</a></li><li><a href="dfntn.html#SP19">&#167;19. Template Properties</a></li><li><a href="dfntn.html#SP20">&#167;20. Formal Parameters</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Identification.</b> </p>
 
@@ -160,20 +160,7 @@ Architecture16/32Kits, these two colour codes are defined here instead.</p>
 <span class="plain-syntax">#</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Window Numbers.</b>  Although Glulx can support elaborate tessellations of windows on screen (if
-the complexity of handling this can be mastered), the Z-machine has much
-more limited resources in general, so the template layer assumes a simple
-screen model: there are just two screen areas, the scrolling main window
-in which commands are typed and responses printed, and the fixed status
-line bar at the top of the screen.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WIN_ALL</span><span class="plain-syntax">     = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">! Both windows at once</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WIN_STATUS</span><span class="plain-syntax">  = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WIN_MAIN</span><span class="plain-syntax">    = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Function key codes.</b>  So that users of <code>VM_KeyChar()</code> don't need to be aware of platform differences,
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Function key codes.</b>  So that users of <code>VM_KeyChar()</code> don't need to be aware of platform differences,
 function key codes are mapped to these common codes.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -204,7 +191,7 @@ function key codes are mapped to these common codes.</p>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">KEY_UP</span><span class="plain-syntax"> = </span><span class="constant-syntax">$2191</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Paragraphing Flags.</b>  I am not sure many dictionaries would countenance &quot;to paragraph&quot; as a
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Paragraphing Flags.</b>  I am not sure many dictionaries would countenance &quot;to paragraph&quot; as a
 verb, but never mind: the reference here is to the algorithm used to place
 paragraph breaks within text, which uses bitmaps composed of the following.</p>
 </div>
@@ -216,7 +203,7 @@ paragraph breaks within text, which uses bitmaps composed of the following.</p>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PARA_CONTENTEXPECTED</span><span class="plain-syntax">    = </span><span class="constant-syntax">16</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Descriptors in the Language of Play.</b>  The following constants are used in the <code>LanguageDescriptors</code> table found
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Descriptors in the Language of Play.</b>  The following constants are used in the <code>LanguageDescriptors</code> table found
 in the definition of the language of play.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -227,7 +214,7 @@ in the definition of the language of play.</p>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">UNLIGHTED_PK</span><span class="plain-syntax"> = </span><span class="constant-syntax">$104</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Auxiliary file structure.</b>  The I7 kind of value &quot;auxiliary-file&quot; is an <code>--&gt;</code> array, holding a memory
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Auxiliary file structure.</b>  The I7 kind of value &quot;auxiliary-file&quot; is an <code>--&gt;</code> array, holding a memory
 structure containing information about external files. The following
 constants specify memory offsets and values. Note the safety value stored
 as the first word of the structure: this helps protect the routines below
@@ -250,7 +237,7 @@ from accidents.</p>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AUXF_RESOURCE_ID</span><span class="plain-syntax"> = </span><span class="constant-syntax">6</span><span class="plain-syntax">; </span><span class="comment-syntax">! Only for internal files, identified by Blorb resource</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Scope Searching Reasons.</b>  The parser makes use of a mechanism for searching through the objects currently
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Scope Searching Reasons.</b>  The parser makes use of a mechanism for searching through the objects currently
 &quot;in scope&quot;, which basically means visible to the actor who would perform the
 action envisaged by the command being parsed. It is sometimes useful to
 behave differently depending on why this scope searching is being done, so
@@ -267,7 +254,7 @@ in numbering.</p>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TESTSCOPE_REASON</span><span class="plain-syntax">     = </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Token Types.</b>  Tokens are the indecomposable pieces of a grammar line making up a possible
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Token Types.</b>  Tokens are the indecomposable pieces of a grammar line making up a possible
 reading of a command; some are literal words, others stand for &quot;any named
 object in scope&quot;, and so on. The following codes identify the possibilities.
 The <code>*_TOKEN</code> constants must not be altered without modifying the I6 compiler
@@ -307,7 +294,7 @@ to match (so, basically, they must not be altered at all).</p>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDIT_TOKEN</span><span class="plain-syntax">        = </span><span class="constant-syntax">15</span><span class="plain-syntax">;   </span><span class="comment-syntax">! Value used to mean &quot;end of grammar line&quot;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. GPR Return Values.</b>  GRP stands for &quot;General Parsing Routine&quot;, an I6 routine which acts as a
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. GPR Return Values.</b>  GRP stands for &quot;General Parsing Routine&quot;, an I6 routine which acts as a
 grammar token: again, see the <em>Inform Designer's Manual</em>, 4th edition,
 for details.</p>
 <p>In Library 6/11, <code>GPR_NOUN</code> is defined as <code>$ff00</code>, but this would fail on
@@ -333,7 +320,7 @@ here regardless.</p>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_CREATURE</span><span class="plain-syntax">       = </span><span class="identifier-syntax">GPR_NOUN</span><span class="plain-syntax"> + </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. List Styles.</b>  These constants make up bitmaps of the options in use when listing objects.</p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. List Styles.</b>  These constants make up bitmaps of the options in use when listing objects.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEWLINE_BIT</span><span class="plain-syntax">        = </span><span class="constant-syntax">$$0000000000000001</span><span class="plain-syntax">; </span><span class="comment-syntax">! New-line after each entry</span>
@@ -356,7 +343,7 @@ here regardless.</p>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CFIRSTART_BIT</span><span class="plain-syntax">      = </span><span class="constant-syntax">$$0100000000000000</span><span class="plain-syntax">; </span><span class="comment-syntax">! Capitalise first article in list</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Lengths Of Time.</b>  Inform measures time in minutes.</p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Lengths Of Time.</b>  Inform measures time in minutes.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">QUARTER_HOUR</span><span class="plain-syntax"> = </span><span class="constant-syntax">15</span><span class="plain-syntax">;</span>
@@ -366,7 +353,7 @@ here regardless.</p>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TWENTY_FOUR_HOURS</span><span class="plain-syntax"> = </span><span class="constant-syntax">1440</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Empty Text.</b>  The I6 compiler does not optimise string compilation: if it needs to compile
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Empty Text.</b>  The I6 compiler does not optimise string compilation: if it needs to compile
 the (packed, read-only) string <code>&quot;exemplum&quot;</code> twice, it will compile two copies.
 This is slightly wasteful on memory, though in practice the loss is not
 enough for us to care. But we do want to avoid this in I7 because, to make
@@ -382,21 +369,21 @@ and properties: we give it a name as follows.</p>
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_VALUE</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_PACKED</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Empty Table.</b>  Similarly: the default value for the &quot;table&quot; kind of value, a Table
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Empty Table.</b>  Similarly: the default value for the &quot;table&quot; kind of value, a Table
 containing no rows and no columns.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">TheEmptyTable</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">-&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Empty Set.</b>  The falsity proposition describes the empty set of objects, and is the
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Empty Set.</b>  The falsity proposition describes the empty set of objects, and is the
 zero value for the &quot;description&quot; kind of value.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">Prop_Falsity</span><span class="plain-syntax"> </span><span class="identifier-syntax">reason</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; ];</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Template Attributes.</b>  An I6 attribute is equivalent to an I7 &quot;either/or property&quot;, though the
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Template Attributes.</b>  An I6 attribute is equivalent to an I7 &quot;either/or property&quot;, though the
 latter are not always translated into I6 attributes because the Z-machine
 has only a limited number of attributes to use. Here, we define attributes
 used by the template.</p>
@@ -457,7 +444,7 @@ are not visible to I7 source text as storage.</p>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">list_filter_permits</span><span class="plain-syntax"> = </span><span class="identifier-syntax">privately_named</span><span class="plain-syntax">; </span><span class="comment-syntax">! another I7 listwriter convenience</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Template Properties.</b>  As remarked above, these more often correspond to value properties in I7.
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Template Properties.</b>  As remarked above, these more often correspond to value properties in I7.
 To an experienced I6 user, though, the death toll of abolished I6
 properties in I7 is breathtaking: in alphabetical order, <code>after</code>,
 <code>cant_go</code>, <code>daemon</code>, <code>each_turn</code>, <code>invent</code>, <code>life</code>, <code>number</code>, <code>orders</code>,
@@ -514,7 +501,7 @@ future use.</p>
 <span class="identifier-syntax">Property</span><span class="plain-syntax"> </span><span class="identifier-syntax">short_name_indef</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">! not used by I7, but an interesting hook in the listmaker</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Formal Parameters.</b>  These are needed for efficient run-time ambiguity resolution.</p>
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Formal Parameters.</b>  These are needed for efficient run-time ambiguity resolution.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">formal_rv</span><span class="plain-syntax">;</span>

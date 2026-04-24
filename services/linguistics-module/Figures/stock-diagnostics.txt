@@ -1,4 +1,4 @@
-adjective: 147 items
+adjective: 148 items
 article: 2 items
 noun: 2599 items
 pronoun: 8 items
@@ -6,12 +6,13 @@ preposition: 278 items
 determiner: 22 items
 verb: 109 items
 verb_form: 392 items
-total in all categories: 3557
+total in all categories: 3558
 
 adjective: 'supported'
 adjective: 'unsupported'
 adjective: 'on-screen'
 adjective: 'off-screen'
+adjective: 'windowed'
 adjective: 'even'
 adjective: 'odd'
 adjective: 'positive'
@@ -897,7 +898,7 @@ noun: common: 'text buffer window'
 noun: common: 'text grid window'
 noun: proper: 'main window'
 noun: proper: 'status window'
-noun: proper: 'quote window'
+noun: proper: 'boxed quotation window'
 noun: proper: 'glk event handling'
 noun: proper: 'glk event handling rules'
 noun: proper: 'glk event handling rulebook'

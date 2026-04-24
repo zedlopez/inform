@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Extensions</a></li><li><a href="index.html">Basic Inform</a></li><li><b>Phrase Definitions</b></li></ul></div>
 <p class="purpose">The phrases making up the basic Inform language, and in terms of which all other phrases and rules are defined.</p>
 
-<ul class="toc"><li><a href="phdf.html#SP4">&#167;4. Say phrases</a></li><li><a href="phdf.html#SP13">&#167;13. Variables</a></li><li><a href="phdf.html#SP16">&#167;16. Arithmetic</a></li><li><a href="phdf.html#SP22">&#167;22. Control structures</a></li><li><a href="phdf.html#SP31">&#167;31. Values</a></li><li><a href="phdf.html#SP34">&#167;34. Text</a></li><li><a href="phdf.html#SP40">&#167;40. Adaptive text</a></li><li><a href="phdf.html#SP41">&#167;41. Data Structures</a></li><li><a href="phdf.html#SP44">&#167;44. Lists</a></li><li><a href="phdf.html#SP50">&#167;50. Functional Programming</a></li><li><a href="phdf.html#SP52">&#167;52. Rulebooks and Activities</a></li><li><a href="phdf.html#SP56">&#167;56. Basic IO</a></li><li><a href="phdf.html#SP64">&#167;64. External Files</a></li><li><a href="phdf.html#SP67">&#167;67. Use Options</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="phdf.html#SP4">&#167;4. Say phrases</a></li><li><a href="phdf.html#SP15">&#167;15. Variables</a></li><li><a href="phdf.html#SP18">&#167;18. Arithmetic</a></li><li><a href="phdf.html#SP24">&#167;24. Control structures</a></li><li><a href="phdf.html#SP33">&#167;33. Values</a></li><li><a href="phdf.html#SP36">&#167;36. Text</a></li><li><a href="phdf.html#SP42">&#167;42. Adaptive text</a></li><li><a href="phdf.html#SP43">&#167;43. Data Structures</a></li><li><a href="phdf.html#SP46">&#167;46. Lists</a></li><li><a href="phdf.html#SP52">&#167;52. Functional Programming</a></li><li><a href="phdf.html#SP54">&#167;54. Rulebooks and Activities</a></li><li><a href="phdf.html#SP58">&#167;58. Basic IO</a></li><li><a href="phdf.html#SP64">&#167;64. External Files</a></li><li><a href="phdf.html#SP67">&#167;67. Use Options</a></li></ul><hr class="tocbar">
 
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  All phrases of the Inform language itself are defined here. The Standard
@@ -460,7 +460,72 @@ the first two phrases here might list any values, not just objects.</p>
 <span class="plain-syntax">    (- LIST_OF_TY_Say({-by-reference:L}, 3); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Variables.</b>  The &quot;now&quot; phrase can do an extraordinary range of things, and is more or
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  Some basic visual effects, which may or may not be rendered the way the user
+hopes: that's partly up to the virtual machine, unfortunately.</p>
+<p>See test case <code>BIP-SayFonts</code>, though since <code>intest</code> runs on plain text only,
+you may need to run this in the Inform application to be convinced.</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">Section 8 - Saying Fonts and Visual Effects</span>
+
+<span class="plain-syntax">To say bold type -- running on</span>
+<span class="plain-syntax">    (documented at phs_bold):</span>
+<span class="plain-syntax">    (- style bold; -).</span>
+<span class="plain-syntax">To say italic type -- running on</span>
+<span class="plain-syntax">    (documented at phs_italic):</span>
+<span class="plain-syntax">    (- style underline; -).</span>
+<span class="plain-syntax">To say roman type -- running on</span>
+<span class="plain-syntax">    (documented at phs_roman):</span>
+<span class="plain-syntax">    (- style roman; -).</span>
+<span class="plain-syntax">To say fixed letter spacing -- running on</span>
+<span class="plain-syntax">    (documented at phs_fixedspacing):</span>
+<span class="plain-syntax">    (- font off; -).</span>
+<span class="plain-syntax">To say variable letter spacing -- running on</span>
+<span class="plain-syntax">    (documented at phs_varspacing):</span>
+<span class="plain-syntax">    (- font on; -).</span>
+
+<span class="plain-syntax">To say reverse mode -- running on:</span>
+<span class="plain-syntax">    (- VM_SetReverseMode(1); -).</span>
+<span class="plain-syntax">To say reverse mode off -- running on:</span>
+<span class="plain-syntax">    (- VM_SetReverseMode(0); -).</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  Basic colours are supported in both architectures, but RGB colours are only
+supported in Glulx.</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">Section 9 - Basic Colours</span>
+
+<span class="plain-syntax">To say (C - basic colour) letters</span>
+<span class="plain-syntax">    (documented at phs_colourletters):</span>
+<span class="plain-syntax">    (- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).</span>
+
+<span class="plain-syntax">To say (C - basic colour) background</span>
+<span class="plain-syntax">    (documented at phs_colourbackground):</span>
+<span class="plain-syntax">    (- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).</span>
+
+<span class="plain-syntax">To say default colours/colors:</span>
+<span class="plain-syntax">    (- VM_SetWindowColours(BASIC_COLOUR_DEFAULT, BASIC_COLOUR_DEFAULT); -).</span>
+
+<span class="plain-syntax">Section 10 - RGB Colours (for Glulx only)</span>
+
+<span class="plain-syntax">RGB colour is a kind of value.</span>
+<span class="plain-syntax">#&lt;red level&gt;&lt;green level&gt;&lt;blue level&gt; specifies a RGB colour with parts</span>
+<span class="plain-syntax">    red level (2 hexadecimal digits),</span>
+<span class="plain-syntax">    green level (2 hexadecimal digits) and</span>
+<span class="plain-syntax">    blue level (2 hexadecimal digits).</span>
+
+<span class="plain-syntax">To say (C - RGB colour) letters:</span>
+<span class="plain-syntax">    (- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).</span>
+
+<span class="plain-syntax">To say (C - RGB colour) background:</span>
+<span class="plain-syntax">    (- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).</span>
+
+<span class="plain-syntax">To decide what RGB colour is (C - basic colour) as a/an/-- RGB colour:</span>
+<span class="plain-syntax">    (- {C} -).</span>
+</pre>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Variables.</b>  The &quot;now&quot; phrase can do an extraordinary range of things, and is more or
 less a genie granting one wish.</p>
 <p>The &quot;whether or not&quot; phrase exists only to convert a condition to a value,
 and is needed because I7 does not silently cast from one to the other in
@@ -480,7 +545,7 @@ the way that C would.</p>
 <span class="plain-syntax">    (- ({C}) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  Assignment is probably the most difficult thing the type-checker has to
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  Assignment is probably the most difficult thing the type-checker has to
 cope with, since &quot;let&quot; has to work when applied to both unknown names (it
 creates a new variable) and existing ones (kind of value permitting). There
 are also four different ways to create with &quot;let&quot;, and two to use
@@ -532,7 +597,7 @@ Forsyte novel of the same name.</p>
 <span class="plain-syntax">    -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  It is not explicit in the following definitions that Inform should typecheck
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  It is not explicit in the following definitions that Inform should typecheck
 that the values held by these storage objects can be incremented or decremented
 (as an object, say, cannot, but a number can): Inform nevertheless contains
 code which does this.</p>
@@ -561,7 +626,7 @@ code which does this.</p>
 <span class="plain-syntax">    -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Arithmetic.</b>  There are nine arithmetic operations, internally numbered 0 upwards, and
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Arithmetic.</b>  There are nine arithmetic operations, internally numbered 0 upwards, and
 given verbal forms below. These are handled unusually in the type-checker
 because they need to be more polymorphic than most phrases: Inform uses
 dimension-checking to determine the kind of value resulting. (Thus a
@@ -636,7 +701,7 @@ attention.</p>
 <span class="plain-syntax">    (- {-primitive-definition:total-of} -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  Real numbers are not available in the Z-machine, but they are likely to
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  Real numbers are not available in the Z-machine, but they are likely to
 be available everywhere else, i.e., on any other platform Inform may target
 in future.</p>
 <p>See test case <code>BIP-SayRealNumbers-G</code>, which has no Z-machine counterpart.</p>
@@ -661,7 +726,7 @@ in future.</p>
 <span class="plain-syntax">    (- FloatExp({R}, {N}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b>  A number of miscellaneous mathematical functions follow, for real
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. </b>  A number of miscellaneous mathematical functions follow, for real
 numbers only; these are tested as part of <code>BIP-ArithmeticOperations-G</code>,
 already mentioned above. Note that we do not need to define real versions
 of addition, multiplication and so on: the above definitions are polymorphic
@@ -700,7 +765,7 @@ enough to have done that already.</p>
 <span class="plain-syntax">    (- REAL_NUMBER_TY_to_NUMBER_TY({R}) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  And these are tested in <code>BIP-Exponentials-G</code>.</p>
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. </b>  And these are tested in <code>BIP-Exponentials-G</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 4 - Exponential Functions (not for Z-machine)</span>
@@ -721,7 +786,7 @@ enough to have done that already.</p>
 <span class="plain-syntax">    (- REAL_NUMBER_TY_Pow({R}, {P}) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. </b>  And these are tested in <code>BIP-Trigonometry-G</code>.</p>
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. </b>  And these are tested in <code>BIP-Trigonometry-G</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 5 - Trigonometric Functions (not for Z-machine)</span>
@@ -756,7 +821,7 @@ enough to have done that already.</p>
 <span class="plain-syntax">    (- REAL_NUMBER_TY_Arctan({R}) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. </b>  And these are tested in <code>BIP-Hyperbolics-G</code>.</p>
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. </b>  And these are tested in <code>BIP-Hyperbolics-G</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 6 - Trigonometric Functions (not for Z-machine)</span>
@@ -790,7 +855,7 @@ enough to have done that already.</p>
 <span class="plain-syntax">    decide on x.</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Control structures.</b>  The term &quot;control structure&quot; conjures up the thought of conditionals and loops,
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Control structures.</b>  The term &quot;control structure&quot; conjures up the thought of conditionals and loops,
 and we'll get to those, but we'll begin with the equivalent of the C language's
 <code>return</code> statement: ending a function call with some value as an outcome.
 Inform calls this &quot;deciding&quot; something, since in Inform programs functions
@@ -826,7 +891,7 @@ as of April 2026 they are in Basic Inform.</p>
 <span class="plain-syntax">    (- return {-return-value:something}; -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. </b>  While &quot;unless&quot; is supposed to be exactly like &quot;if&quot; but with the reversed
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. </b>  While &quot;unless&quot; is supposed to be exactly like &quot;if&quot; but with the reversed
 sense of the condition, that isn't quite true. For example, there is no
 &quot;unless ... then ...&quot;: logical it might be, English it is not.</p>
 <p>The switch form of &quot;if&quot; is subtly different, and here again &quot;unless&quot; is
@@ -850,7 +915,7 @@ how much a general syntax for phrases can encode control phrases.)</p>
 <span class="plain-syntax">    (-  -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. </b>  &quot;Do nothing&quot; is a curious feature for a high-level programming language (C,
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. </b>  &quot;Do nothing&quot; is a curious feature for a high-level programming language (C,
 for example, does not have a NOP function); it entered Inform in the earliest
 days, when it was useful mainly when natural language syntax had painted users
 into a corner. (In the examples, it used to be used when conditions were
@@ -863,7 +928,7 @@ nothing&quot;s.) It is now hardly ever useful.</p>
 <span class="plain-syntax">    (- ; -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. </b>  After all that, the while loop is simplicity itself. Perhaps the presence
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. </b>  After all that, the while loop is simplicity itself. Perhaps the presence
 of &quot;unless&quot; for &quot;if&quot; argues for a similarly negated form, &quot;until&quot; for
 &quot;while&quot;, but users haven't yet petitioned for this.</p>
 <p>See test case <code>BIP-Loops</code>.</p>
@@ -876,7 +941,7 @@ of &quot;unless&quot; for &quot;if&quot; argues for a similarly negated form, &q
 <span class="plain-syntax">    (- while {c}  -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. </b>  The repeat loop looks like a single construction, but isn't, because the
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. </b>  The repeat loop looks like a single construction, but isn't, because the
 range can be given in four fundamentally different ways (and the loop variable
 then has a different kind of value accordingly). First, the equivalents of
 BASIC's <code>for</code> loop and of Inform 6's <code>objectloop</code>, respectively:</p>
@@ -900,7 +965,7 @@ BASIC's <code>for</code> loop and of Inform 6's <code>objectloop</code>, respect
 <span class="plain-syntax">        (- {-primitive-definition:repeat-through-list} -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. </b>  The following are all repeats where the range is the set of rows of a table,
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. </b>  The following are all repeats where the range is the set of rows of a table,
 taken in some order, and the repeat variable — though it does exist — is
 never specified since the relevant row is instead the one selected during
 each iteration of the loop.</p>
@@ -946,7 +1011,7 @@ each iteration of the loop.</p>
 <span class="plain-syntax">    -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. </b>  And this loops through the lines of a text file stored internally.</p>
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. </b>  And this loops through the lines of a text file stored internally.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">To repeat with (loopvar - nonexisting text variable)</span>
@@ -958,7 +1023,7 @@ each iteration of the loop.</p>
 <span class="plain-syntax">    -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. </b>  The equivalent of <code>break</code> or <code>continue</code> in C or I6, or of <code>last</code> or <code>next</code>
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31. </b>  The equivalent of <code>break</code> or <code>continue</code> in C or I6, or of <code>last</code> or <code>next</code>
 in Perl. Here &quot;in loop&quot; means &quot;in any of the forms of while or repeat&quot;.</p>
 <p>See test case <code>BIP-Break</code>.</p>
 </div>
@@ -973,7 +1038,7 @@ in Perl. Here &quot;in loop&quot; means &quot;in any of the forms of while or re
 <span class="plain-syntax">    (- continue; -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. </b>  The following innocent-looking definition throws a problem message if the
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. </b>  The following innocent-looking definition throws a problem message if the
 RTP label is not (a) literal text and (b) the leafname of a Markdown file
 (once <code>.md</code> has been added) in the <code>RTPs</code> subdirectory of the current
 extension directory: it can only be used from with a directory-format extension.</p>
@@ -985,7 +1050,7 @@ extension directory: it can only be used from with a directory-format extension.
 <span class="plain-syntax">    (- IssueRTP({-rtp-code: pcode}, -1, {-rtp-location: pcode}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31. Values.</b>  Some of the things we can do with enumerations, others being listed under
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. Values.</b>  Some of the things we can do with enumerations, others being listed under
 randomness below.</p>
 <p>See test case <code>BIP-Enumerations</code>.</p>
 </div>
@@ -1017,7 +1082,7 @@ randomness below.</p>
 <span class="plain-syntax">    decide on K before the default value of K.</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. </b>  Random numbers and random items chosen from sets of objects matching a
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. </b>  Random numbers and random items chosen from sets of objects matching a
 given description (&quot;a random closed door&quot;).</p>
 <p>See test case <code>BIP-Randomness</code>.</p>
 </div>
@@ -1047,7 +1112,7 @@ given description (&quot;a random closed door&quot;).</p>
 <span class="plain-syntax">    (- VM_Seed_RNG({N}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. </b>  A novel feature of Inform is that there is a default value of any kind: for
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. </b>  A novel feature of Inform is that there is a default value of any kind: for
 example, it is 0 for a number, or the empty text for text. When Inform compiles
 a value of a given kind but isn't told what value to compile, it always
 chooses the default, which is why the following definition works.</p>
@@ -1061,7 +1126,7 @@ chooses the default, which is why the following definition works.</p>
 <span class="plain-syntax">    (- {-new:K} -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. Text.</b>  Inform programs swim in a sea of texts, and most of the ways to make text
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. Text.</b>  Inform programs swim in a sea of texts, and most of the ways to make text
 involve substitutions; so phrases to manipulate text are nice to have, but
 are bonuses rather than being the essentials.</p>
 <p>As repetitive as the following is, it's much simpler and less prone to
@@ -1113,7 +1178,7 @@ structural levels of text (character, word, punctuated word, etc.).</p>
 <span class="plain-syntax">    (- TEXT_TY_GetBlob({-new:text}, {-by-reference:T}, {N}, PARA_BLOB) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. </b>  The &quot;substituted form of&quot; is a technicality most Inform users never need to
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. </b>  The &quot;substituted form of&quot; is a technicality most Inform users never need to
 think about; as a one-off phrase, it may as well go here.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1122,7 +1187,7 @@ think about; as a one-off phrase, it may as well go here.</p>
 <span class="plain-syntax">    (- TEXT_TY_SubstitutedForm({-new:text}, {-by-reference:T}) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b>  This condition holds when text is being expanded into its substituted form
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. </b>  This condition holds when text is being expanded into its substituted form
 in order to test whether two strings are currently equal. Very occasionally
 this is useful to know, to prevent side-effects.</p>
 </div>
@@ -1132,7 +1197,7 @@ this is useful to know, to prevent side-effects.</p>
 <span class="plain-syntax">    (- say__comp -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. </b>  A common matching engine is used for matching plain text...</p>
+<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39. </b>  A common matching engine is used for matching plain text...</p>
 <p>See test case <code>BIP-TextReplacement</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1198,7 +1263,7 @@ this is useful to know, to prevent side-effects.</p>
 <span class="plain-syntax">    (- (match0_idx2 - match0_idx) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. </b>  ...and for regular expressions, though here we also have access to the
+<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40. </b>  ...and for regular expressions, though here we also have access to the
 exact text which matched (not interesting in the plain text case since it's
 the same as the search text, up to case at least), and the values of matched
 subexpressions (which the plain text case doesn't have).</p>
@@ -1241,7 +1306,7 @@ subexpressions (which the plain text case doesn't have).</p>
 <span class="plain-syntax">        {-by-reference:replace}, {phrase options}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39. </b>  Casing of text.</p>
+<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41. </b>  Casing of text.</p>
 <p>See test case <code>BIP-TextCasing</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1267,7 +1332,7 @@ subexpressions (which the plain text case doesn't have).</p>
 <span class="plain-syntax">    (- TEXT_TY_CharactersOfCase({-by-reference:T}, 1) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40. Adaptive text.</b>  See test case <code>BIP-AdaptiveText</code>.</p>
+<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42. Adaptive text.</b>  See test case <code>BIP-AdaptiveText</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Section 5 - Adaptive Text</span>
@@ -1310,7 +1375,7 @@ subexpressions (which the plain text case doesn't have).</p>
 <span class="plain-syntax">To decide which relation of objects is meaning of (V - a verb): (- {V}(CV_MEANING) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41. Data Structures.</b>  Inform provides three main data structures: tables, lists, and relations,
+<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43. Data Structures.</b>  Inform provides three main data structures: tables, lists, and relations,
 which we will take in that order.</p>
 <p>Tables mimic tables of data as seen in books or scientific papers. Note that
 changing a table entry is not something defined here as a phrase: the
@@ -1365,7 +1430,7 @@ or &quot;blanking&quot; it — requires specialist phrases.</p>
 <span class="plain-syntax">    (- TableBlankOutAll({T}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42. </b>  These four are for debugging purposes only, and are used in the same test
+<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44. </b>  These four are for debugging purposes only, and are used in the same test
 case. &quot;Showme the contents of ...&quot; is not a text substitution, for efficiency
 reasons: for a large table it could produce a gargantuan output, and in a
 story file with memory constraints, one might not want to store that in a
@@ -1386,7 +1451,7 @@ text variable.</p>
 <span class="plain-syntax">    (- TableColumnDebug({T}, {TC}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43. </b>  Sorting.</p>
+<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45. </b>  Sorting.</p>
 <p>See test case <code>BIP-TableSort</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1406,7 +1471,7 @@ text variable.</p>
 <span class="plain-syntax">    (- TableSort({T}, 0, SORT_ASCENDING, 0, {cf}--&gt;1); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44. Lists.</b>  The following are all for adding and removing values to dynamic lists.</p>
+<p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46. Lists.</b>  The following are all for adding and removing values to dynamic lists.</p>
 <p>See test case <code>BIP-Lists</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1445,7 +1510,7 @@ text variable.</p>
 <span class="plain-syntax">    (- LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N2}, {phrase options}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45. </b>  Searching a list is implemented in a somewhat crude way at present, and the
+<p class="commentary firstcommentary"><a id="SP47" class="paragraph-anchor"></a><b>&#167;47. </b>  Searching a list is implemented in a somewhat crude way at present, and the
 following syntax may later be replaced with a suitable verb &quot;to be listed
 in&quot;, so that there's no need to imitate.</p>
 </div>
@@ -1459,7 +1524,7 @@ in&quot;, so that there's no need to imitate.</p>
 <span class="plain-syntax">    (- (LIST_OF_TY_FindItem({-by-reference:L}, {N}) == false) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46. </b>  A description is a representation of a set of objects by means of a
+<p class="commentary firstcommentary"><a id="SP48" class="paragraph-anchor"></a><b>&#167;48. </b>  A description is a representation of a set of objects by means of a
 predicate (e.g., &quot;open unlocked doors&quot;), and it converts into a list of
 current members (in creation order), but there's no reverse process.</p>
 </div>
@@ -1469,7 +1534,7 @@ current members (in creation order), but there's no reverse process.</p>
 <span class="plain-syntax">    (- {-new-list-of:list of K} -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP47" class="paragraph-anchor"></a><b>&#167;47. </b>  Determining and setting the length:</p>
+<p class="commentary firstcommentary"><a id="SP49" class="paragraph-anchor"></a><b>&#167;49. </b>  Determining and setting the length:</p>
 <p>See test case <code>BIP-ListLength</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1495,7 +1560,7 @@ current members (in creation order), but there's no reverse process.</p>
 <span class="plain-syntax">    (- LIST_OF_TY_SetLength({-lvalue-by-reference:L}, {N}, 0); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP48" class="paragraph-anchor"></a><b>&#167;48. </b>  Easy but useful list operations. Sorting ultimately uses a common sorting
+<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50. </b>  Easy but useful list operations. Sorting ultimately uses a common sorting
 mechanism, in &quot;Sort.i6t&quot;, which handles both lists and tables.</p>
 <p>See test case <code>BIP-ListOperations</code>.</p>
 </div>
@@ -1531,7 +1596,7 @@ mechanism, in &quot;Sort.i6t&quot;, which handles both lists and tables.</p>
 <span class="plain-syntax">    (- LIST_OF_TY_Sort({-lvalue-by-reference:L}, SORT_DESCENDING, {P}, {-property-holds-block-value:P}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP49" class="paragraph-anchor"></a><b>&#167;49. </b>  Relations are the final data structure given here. In some ways they are
+<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51. </b>  Relations are the final data structure given here. In some ways they are
 the most fundamental of all, but they're not either set or tested by
 procedural phrases — they lie in the linguistic structure of conditions.
 So all we have here are the route-finding phrases:</p>
@@ -1609,7 +1674,7 @@ So all we have here are the route-finding phrases:</p>
 <span class="plain-syntax">    (- {-match-right-relation-domain:L:R}RelationTest({-by-reference:R}, RELS_LOOKUP_ANY, {X}, RLANY_GET_Y) -). [2]</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50. Functional Programming.</b>  Here we have the ability to use the name of a function as a value, and to
+<p class="commentary firstcommentary"><a id="SP52" class="paragraph-anchor"></a><b>&#167;52. Functional Programming.</b>  Here we have the ability to use the name of a function as a value, and to
 apply such a function.</p>
 <p>See test case <code>BIP-Apply</code>.</p>
 </div>
@@ -1661,7 +1726,7 @@ apply such a function.</p>
 <span class="plain-syntax">    (- {-primitive-definition:function-application}; -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51. </b>  The standard map, reduce and filter operations found in most functional
+<p class="commentary firstcommentary"><a id="SP53" class="paragraph-anchor"></a><b>&#167;53. </b>  The standard map, reduce and filter operations found in most functional
 programming languages also have Inform analogues.</p>
 <p>See test case <code>BIP-Map</code>.</p>
 </div>
@@ -1696,7 +1761,7 @@ programming languages also have Inform analogues.</p>
 <span class="plain-syntax">    decide on the filtered list.</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP52" class="paragraph-anchor"></a><b>&#167;52. Rulebooks and Activities.</b>  Firing off activities:</p>
+<p class="commentary firstcommentary"><a id="SP54" class="paragraph-anchor"></a><b>&#167;54. Rulebooks and Activities.</b>  Firing off activities:</p>
 <p>See test case <code>BIP-Activities</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1715,7 +1780,7 @@ programming languages also have Inform analogues.</p>
 <span class="plain-syntax">    (- rfalse; -) - in to only.</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP53" class="paragraph-anchor"></a><b>&#167;53. </b>  Advanced activity phrases: for setting up one's own activities structured
+<p class="commentary firstcommentary"><a id="SP55" class="paragraph-anchor"></a><b>&#167;55. </b>  Advanced activity phrases: for setting up one's own activities structured
 around I7 source text. People tend not to use this much, and perhaps that's
 a good thing, but it does open up possibilities, and it's good for
 retro-fitting onto extensions to make them more customisable.</p>
@@ -1751,7 +1816,7 @@ See the documentation example <code>AntSensitiveSunglasses</code>.</p>
 <span class="plain-syntax">    (- AbandonActivity({A}, {val}); -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP54" class="paragraph-anchor"></a><b>&#167;54. </b>  Here are four different ways to invoke a rule or rulebook:</p>
+<p class="commentary firstcommentary"><a id="SP56" class="paragraph-anchor"></a><b>&#167;56. </b>  Here are four different ways to invoke a rule or rulebook:</p>
 <p>See test case <code>BIP-Rules</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -1787,7 +1852,7 @@ See the documentation example <code>AntSensitiveSunglasses</code>.</p>
 <span class="plain-syntax">    (- if (FollowRulebook({RL})) rtrue; -) - in to only.</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP55" class="paragraph-anchor"></a><b>&#167;55. </b>  Rules return <code>true</code> to indicate a decision, which could be either a success
+<p class="commentary firstcommentary"><a id="SP57" class="paragraph-anchor"></a><b>&#167;57. </b>  Rules return <code>true</code> to indicate a decision, which could be either a success
 or a failure, and optionally may also return a value. If they return <code>false</code>,
 there's no decision.</p>
 <p>See test case <code>BIP-Rules</code> once again.</p>
@@ -1817,115 +1882,61 @@ there's no decision.</p>
 <span class="plain-syntax">    (- (ResultOfRule()) -).</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP56" class="paragraph-anchor"></a><b>&#167;56. Basic IO.</b>  Basic input/output phrases, that mostly used to be in the Basic Screen Effects extension.</p>
+<p class="commentary firstcommentary"><a id="SP58" class="paragraph-anchor"></a><b>&#167;58. Basic IO.</b>  Basic input/output phrases, that mostly used to be in the Basic Screen Effects extension.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">Chapter 9 - Basic Input/Output</span>
-</pre>
-<div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP57" class="paragraph-anchor"></a><b>&#167;57. </b>  Some basic visual effects, which may or may not be rendered the way the user
-hopes: that's partly up to the virtual machine, unfortunately.</p>
-<p>See test case <code>BIP-SayFonts</code>, though since <code>intest</code> runs on plain text only,
-you may need to run this in the Inform application to be convinced.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 1 - Saying Fonts and Visual Effects</span>
-
-<span class="plain-syntax">To say bold type -- running on</span>
-<span class="plain-syntax">    (documented at phs_bold):</span>
-<span class="plain-syntax">    (- style bold; -).</span>
-<span class="plain-syntax">To say italic type -- running on</span>
-<span class="plain-syntax">    (documented at phs_italic):</span>
-<span class="plain-syntax">    (- style underline; -).</span>
-<span class="plain-syntax">To say roman type -- running on</span>
-<span class="plain-syntax">    (documented at phs_roman):</span>
-<span class="plain-syntax">    (- style roman; -).</span>
-<span class="plain-syntax">To say fixed letter spacing -- running on</span>
-<span class="plain-syntax">    (documented at phs_fixedspacing):</span>
-<span class="plain-syntax">    (- font off; -).</span>
-<span class="plain-syntax">To say variable letter spacing -- running on</span>
-<span class="plain-syntax">    (documented at phs_varspacing):</span>
-<span class="plain-syntax">    (- font on; -).</span>
-
-<span class="plain-syntax">To say reverse mode -- running on:</span>
-<span class="plain-syntax">    (- VM_SetReverseMode(1); -).</span>
-<span class="plain-syntax">To say reverse mode off -- running on:</span>
-<span class="plain-syntax">    (- VM_SetReverseMode(0); -).</span>
-</pre>
-<div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP58" class="paragraph-anchor"></a><b>&#167;58. </b>  Basic colours are supported in both architectures, but RGB colours are only
-supported in Glulx.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 2 - Basic Colours</span>
-
-<span class="plain-syntax">To set the foreground/-- colour/color/-- to (C - basic colour):</span>
-<span class="plain-syntax">    (- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).</span>
-
-<span class="plain-syntax">To say (C - basic colour) letters</span>
-<span class="plain-syntax">    (documented at phs_colourletters):</span>
-<span class="plain-syntax">    (- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).</span>
-
-<span class="plain-syntax">To say (C - basic colour) background</span>
-<span class="plain-syntax">    (documented at phs_colourbackground):</span>
-<span class="plain-syntax">    (- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).</span>
-
-<span class="plain-syntax">To set the background colour/color/-- to (C - basic colour):</span>
-<span class="plain-syntax">    (- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).</span>
-
-<span class="plain-syntax">To reset the screen/window colours/colors:</span>
-<span class="plain-syntax">    (- VM_SetWindowColours(BASIC_COLOUR_DEFAULT, BASIC_COLOUR_DEFAULT); -).</span>
-
-<span class="plain-syntax">To say default colours/colors:</span>
-<span class="plain-syntax">    (- VM_SetWindowColours(BASIC_COLOUR_DEFAULT, BASIC_COLOUR_DEFAULT); -).</span>
-
-<span class="plain-syntax">Section 3 - RGB Colours (for Glulx only)</span>
-
-<span class="plain-syntax">RGB colour is a kind of value.</span>
-<span class="plain-syntax">#&lt;red level&gt;&lt;green level&gt;&lt;blue level&gt; specifies a RGB colour with parts</span>
-<span class="plain-syntax">    red level (2 hexadecimal digits),</span>
-<span class="plain-syntax">    green level (2 hexadecimal digits) and</span>
-<span class="plain-syntax">    blue level (2 hexadecimal digits).</span>
-
-<span class="plain-syntax">To set the foreground/-- colour/color/-- to (C - RGB colour):</span>
-<span class="plain-syntax">    (- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).</span>
-
-<span class="plain-syntax">To say (C - RGB colour) letters:</span>
-<span class="plain-syntax">    (- VM_SetWindowColours({C}, BASIC_COLOUR_CURRENT); -).</span>
-
-<span class="plain-syntax">To set the background colour/color/-- to (C - RGB colour):</span>
-<span class="plain-syntax">    (- VM_SetWindowColours(BASIC_COLOUR_CURRENT, {C}); -).</span>
-
-<span class="plain-syntax">To decide what RGB colour is (C - basic colour) as a/an/-- RGB colour:</span>
-<span class="plain-syntax">    (- {C} -).</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP59" class="paragraph-anchor"></a><b>&#167;59. </b>  Some basic window phrases, which are supported by both the Z-Machine and Glulx.
 (See the Glk Foundations for Glk-specific phrases.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 4 - Basic Window Effects</span>
+<span class="plain-syntax">Section 1 - Basic Window Effects (for Z-machine only)</span>
 
-<span class="plain-syntax">To clear the/-- screen:</span>
-<span class="plain-syntax">    (- VM_ClearScreen(0); -).</span>
-
-<span class="plain-syntax">To clear only/-- the/-- main screen:</span>
-<span class="plain-syntax">    (- VM_ClearScreen(2); -).</span>
-
-<span class="plain-syntax">To clear only/-- the/-- status line:</span>
-<span class="plain-syntax">    (- VM_ClearScreen(1); -).</span>
+<span class="plain-syntax">To clear the/-- whole/-- screen:</span>
+<span class="plain-syntax">    (- VM_ClearScreen(); -).</span>
 
 <span class="plain-syntax">To decide what number is the/-- screen height:</span>
 <span class="plain-syntax">    (- VM_ScreenHeight() -).</span>
 
 <span class="plain-syntax">To decide what number is the/-- screen width:</span>
 <span class="plain-syntax">    (- VM_ScreenWidth() -).</span>
+
+<span class="plain-syntax">To clear (win - a z-machine window):</span>
+<span class="plain-syntax">    (- VM_ClearWindow({win}); -).</span>
+
+<span class="plain-syntax">To decide what number is the height of (win - a z-machine window):</span>
+<span class="plain-syntax">    (- VM_WindowHeight({win}) -).</span>
+
+<span class="plain-syntax">To decide what number is the width of (win - a z-machine window):</span>
+<span class="plain-syntax">    (- VM_WindowWidth({win}) -).</span>
+
+<span class="plain-syntax">Section 2 - Basic Window Effects (for Glulx only)</span>
+
+<span class="plain-syntax">To clear the/-- whole/-- screen:</span>
+<span class="plain-syntax">    (- VM_ClearScreen(); -).</span>
+
+<span class="plain-syntax">To decide what number is the/-- screen height:</span>
+<span class="plain-syntax">    (- VM_ScreenHeight() -).</span>
+
+<span class="plain-syntax">To decide what number is the/-- screen width:</span>
+<span class="plain-syntax">    (- VM_ScreenWidth() -).</span>
+
+<span class="plain-syntax">To clear (win - a glk window):</span>
+<span class="plain-syntax">    (- VM_ClearWindow({win}); -).</span>
+
+<span class="plain-syntax">To decide what number is the height of (win - a glk window):</span>
+<span class="plain-syntax">    (- VM_WindowHeight({win}) -).</span>
+
+<span class="plain-syntax">To decide what number is the width of (win - a glk window):</span>
+<span class="plain-syntax">    (- VM_WindowWidth({win}) -).</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP60" class="paragraph-anchor"></a><b>&#167;60. </b>  Customising the status line.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 5 - The Status Window</span>
+<span class="plain-syntax">Section 3 - The Status Window</span>
 
 <span class="plain-syntax">The status window table is a table-name that varies.</span>
 <span class="plain-syntax">The status window table variable translates into Inter as "status_window_table".</span>
@@ -1950,9 +1961,9 @@ supported in Glulx.</p>
 <p class="commentary firstcommentary"><a id="SP61" class="paragraph-anchor"></a><b>&#167;61. </b>  Keyboard input phrases.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 6 - Keyboard Input</span>
+<span class="plain-syntax">Section 4 - Keyboard Input</span>
 
-<span class="plain-syntax">To decide what unicode character is the code of the next pressed key:</span>
+<span class="plain-syntax">To decide what unicode character is the next pressed key:</span>
 <span class="plain-syntax">    (- VM_KeyChar() -).</span>
 
 <span class="plain-syntax">To prompt the player to enter a line of text:</span>
@@ -1999,12 +2010,12 @@ private use area codes.</p>
 <p class="commentary firstcommentary"><a id="SP63" class="paragraph-anchor"></a><b>&#167;63. </b>  Pausing the game.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Section 7 - Pausing the game</span>
+<span class="plain-syntax">Section 5 - Pausing the game</span>
 
 <span class="plain-syntax">[ Exclude navigation keys ]</span>
 <span class="plain-syntax">To wait for any key:</span>
 <span class="plain-syntax">    while 1 is 1:</span>
-<span class="plain-syntax">        let code be the code of the next pressed key;</span>
+<span class="plain-syntax">        let code be the next pressed key;</span>
 <span class="plain-syntax">        if code is:</span>
 <span class="plain-syntax">            -- the down key:</span>
 <span class="plain-syntax">                next;</span>
@@ -2022,7 +2033,7 @@ private use area codes.</p>
 <span class="plain-syntax">[ Technically the space or return key ]</span>
 <span class="plain-syntax">To wait for the/-- SPACE key/bar:</span>
 <span class="plain-syntax">    while 1 is 1:</span>
-<span class="plain-syntax">        let code be the code of the next pressed key;</span>
+<span class="plain-syntax">        let code be the next pressed key;</span>
 <span class="plain-syntax">        if code is:</span>
 <span class="plain-syntax">            -- unicode U+0020 [space]:</span>
 <span class="plain-syntax">                break;</span>

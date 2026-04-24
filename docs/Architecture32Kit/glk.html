@@ -243,12 +243,6 @@
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="reserved-syntax">nothing</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
-<span class="plain-syntax">[ </span><span class="identifier-syntax">WindowClear</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">glk_window_clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">];</span>
-
 <span class="plain-syntax">[ </span><span class="identifier-syntax">WindowFocus</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
@@ -261,14 +255,6 @@
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"WindowIsNothing"</span><span class="plain-syntax">, </span><span class="string-syntax">"WindowFocus: Cannot perform this Glk window operation on nothing."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">];</span>
-
-<span class="plain-syntax">[ </span><span class="identifier-syntax">WindowGetSize</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax"> </span><span class="identifier-syntax">index</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">glk_window_get_size</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">, </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">, </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax"> + </span><span class="identifier-syntax">WORDSIZE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">index</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">WindowMoveCursor</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax"> </span><span class="identifier-syntax">col</span><span class="plain-syntax"> </span><span class="identifier-syntax">row</span><span class="plain-syntax">;</span>
@@ -834,12 +820,7 @@ up into its parts again.</p>
 <span class="plain-syntax">            #</span><span class="identifier-syntax">Endif</span><span class="plain-syntax">; </span><span class="comment-syntax">! DEBUG</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">val</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        @</span><span class="identifier-syntax">shiftl</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperlink_tag_width</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">hyperlink_payload_mask</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">shiftl</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperlink_tag_width</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">tag</span><span class="plain-syntax"> | </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">make_link</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">Cached_Glk_Gestalts</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">gestalt_Hyperlinks</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">glk_set_hyperlink</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">);</span>
@@ -874,13 +855,7 @@ up into its parts again.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">IssueRTP</span><span class="plain-syntax">(</span><span class="string-syntax">"HyperlinkInvalid"</span><span class="plain-syntax">, </span><span class="string-syntax">"TAGGED_HYPERLINK_TY_Value: Cannot process an invalid tagged hyperlink."</span><span class="plain-syntax">, </span><span class="identifier-syntax">Architecture32KitRTPs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">hyperlink_payload_mask</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">val</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax"> | </span><span class="identifier-syntax">hyperlink_tag_mask</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        @</span><span class="identifier-syntax">ushiftr</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperlink_tag_width</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">sshiftr</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperlink_tag_width</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>

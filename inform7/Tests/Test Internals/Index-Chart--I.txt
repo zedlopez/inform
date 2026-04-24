@@ -1266,7 +1266,7 @@ conceptual, like ideas, or are needed for internal book-keeping.<br>
 <p class="tightin4"></p>
 <p class="halftightin4"><a name=K104_text_buffer_window></a><b>text buffer window</b> (<i>plural</i> text buffer windows)</p>
 <p class="tightin4"></p>
-<p class="tightin4"><span class="indexgrey">main window</span>, <span class="indexgrey">quote window</span></p>
+<p class="tightin4"><span class="indexgrey">main window</span>, <span class="indexgrey">boxed quotation window</span></p>
 <p class="halftightin4"><a name=K105_text_grid_window></a><b>text grid window</b> (<i>plural</i> text grid windows)</p>
 <p class="tightin4"></p>
 <p class="tightin4"><span class="indexgrey">status window</span></p>

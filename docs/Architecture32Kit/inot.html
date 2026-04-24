@@ -755,25 +755,33 @@ set stored here is once again ZSCII, not Unicode.</p>
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. The Screen.</b>  Our generic screen model is that the screen is made up of windows: we tend
 to refer only to two of these, the main window and the status line, but
 others may also exist from time to time. Windows have unique ID numbers:
-the special window ID \INWEBMATH(-1\INWEBMATH) means &quot;all windows&quot; or &quot;the entire screen&quot;,
-which usually amounts to the same thing.</p>
+in Glulx they have their own reference numbers as assigned by the interpreter,
+in Z-Machine <code>0</code> is the main window and <code>1</code> is the status window.</p>
+<p><code>VM_ClearScreen</code> clears the entire screen.</p>
 <p>Screen height and width are measured in characters, with respect to the
 fixed-pitch font used for the status line. The main window normally contains
 variable-pitch text which may even have been kerned, and character dimensions
 make little sense there.</p>
+<p><code>VM_ClearWindow</code>, <code>VM_WindowHeight</code>, and <code>VM_WindowWidth</code> opperate on only the
+specified window.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_ClearScreen</span><span class="plain-syntax"> </span><span class="identifier-syntax">window</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">window</span><span class="plain-syntax"> == </span><span class="identifier-syntax">WIN_ALL</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">WIN_MAIN</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">glk_window_clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">active_window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Quote_Window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">glk_window_close</span><span class="plain-syntax">(</span><span class="identifier-syntax">Quote_Window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Quote_Window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_ClearScreen</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax"> = </span><span class="identifier-syntax">K_Glk_Window_First</span><span class="plain-syntax">: </span><span class="identifier-syntax">win</span><span class="plain-syntax">: </span><span class="identifier-syntax">win</span><span class="plain-syntax"> = </span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">K_Glk_Window_Next</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">glk_window_clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Status_Window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">window</span><span class="plain-syntax"> == </span><span class="identifier-syntax">WIN_ALL</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">WIN_STATUS</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">glk_window_clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">Status_Window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_ScreenHeight</span><span class="plain-syntax">  </span><span class="identifier-syntax">height</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">glk_window_get_size</span><span class="plain-syntax">(</span><span class="identifier-syntax">active_window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">height</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">--&gt;0;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Status_Window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">glk_window_get_size</span><span class="plain-syntax">(</span><span class="identifier-syntax">Status_Window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">height</span><span class="plain-syntax"> = </span><span class="identifier-syntax">height</span><span class="plain-syntax"> + </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">--&gt;0;</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">height</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">VM_ScreenWidth</span><span class="plain-syntax">  </span><span class="identifier-syntax">id</span><span class="plain-syntax">;</span>
@@ -785,14 +793,26 @@ make little sense there.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">--&gt;0;</span>
 <span class="plain-syntax">];</span>
 
-<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_ScreenHeight</span><span class="plain-syntax">  </span><span class="identifier-syntax">height</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">glk_window_get_size</span><span class="plain-syntax">(</span><span class="identifier-syntax">active_window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">height</span><span class="plain-syntax"> = </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">--&gt;0;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Status_Window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">glk_window_get_size</span><span class="plain-syntax">(</span><span class="identifier-syntax">Status_Window</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">height</span><span class="plain-syntax"> = </span><span class="identifier-syntax">height</span><span class="plain-syntax"> + </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">--&gt;0;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_ClearWindow</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">glk_window_clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">height</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_WindowHeight</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">glk_window_get_size</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">--&gt;0;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">VM_WindowWidth</span><span class="plain-syntax"> </span><span class="identifier-syntax">win</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">win</span><span class="plain-syntax"> &amp;&amp; </span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">glk_window_get_size</span><span class="plain-syntax">(</span><span class="identifier-syntax">win</span><span class="plain-syntax">.</span><span class="identifier-syntax">glk_ref</span><span class="plain-syntax">, </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">gg_arguments</span><span class="plain-syntax">--&gt;0;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
