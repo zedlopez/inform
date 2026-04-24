@@ -14,5 +14,5 @@ The "code of the next pressed key" phrase returns a unicode character of the pla
 	
 	Last startup rule:
 		while 1 is 1:
-			let code be the code of the next pressed key;
+			let code be the next pressed key;
 			say "You pressed: [code][line break]";
