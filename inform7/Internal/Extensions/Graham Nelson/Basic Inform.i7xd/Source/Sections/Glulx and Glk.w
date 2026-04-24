@@ -300,8 +300,14 @@ The text input status property translates into Inter as "text_input_status".
 A glk window can be requesting mouse input.
 The requesting mouse input property translates into Inter as "requesting_mouse".
 
+To suspend text input, without input echoing:
+	(- SuspendTextInput(active_window, {phrase options}); -).
+
 To suspend text input in (win - a glk window), without input echoing:
 	(- SuspendTextInput({win}, {phrase options}); -).
+
+To resume text input:
+	(- ResumeTextInput(active_window); -).
 
 To resume text input in (win - a glk window):
 	(- ResumeTextInput({win}); -).

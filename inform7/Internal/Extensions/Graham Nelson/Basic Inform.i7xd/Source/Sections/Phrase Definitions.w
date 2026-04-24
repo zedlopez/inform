@@ -1927,7 +1927,7 @@ To redraw the/-- status bar/line/window:
 =
 Section 4 - Keyboard Input
 
-To decide what unicode character is the code of the next pressed key:
+To decide what unicode character is the next pressed key:
 	(- VM_KeyChar() -).
 
 To prompt the player to enter a line of text:
@@ -1977,7 +1977,7 @@ Section 5 - Pausing the game
 [ Exclude navigation keys ]
 To wait for any key:
 	while 1 is 1:
-		let code be the code of the next pressed key;
+		let code be the next pressed key;
 		if code is:
 			-- the down key:
 				next;
@@ -1995,7 +1995,7 @@ To wait for any key:
 [ Technically the space or return key ]
 To wait for the/-- SPACE key/bar:
 	while 1 is 1:
-		let code be the code of the next pressed key;
+		let code be the next pressed key;
 		if code is:
 			-- unicode U+0020 [space]:
 				break;
