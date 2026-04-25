@@ -2,7 +2,7 @@
 # in the inform repository. Do not edit ".gitignore" directly. Instead,
 # edit this script, and then rebuild ".gitignore" with the command:
 
-# ../inweb/Tangled/inweb -prototype scripts/inform.giscript -gitignore .gitignore
+# ../inweb/Tangled/inweb make-gitignore -script scripts/inform.giscript
 
 # (Or type "make gitignores", which will remake all of the .gitignore files in
 # this repository from their scripts, including this one.)
@@ -32,6 +32,8 @@ resources/Documentation/Examples/_Results_Actual/
 inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7x
 inform7/Internal/Extensions/Graham Nelson/English Language.i7xd/Materials/Languages/English/Syntax.preform
 inform7/Internal/Miscellany/definitions.html
+inform7/Internal/Miscellany/inform7_clib.c
+inform7/Internal/Miscellany/inform7_clib.h
 inform7/Internal/Inter/*.interb
 
 retrospective/*/cBlorb

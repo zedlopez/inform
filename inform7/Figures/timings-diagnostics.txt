@@ -1,11 +1,11 @@
 100.0% in inform7 run
-     58.9% in compilation to Inter
-         39.1% in //Sequence::undertake_queued_tasks//
-          4.5% in //MajorNodes::pre_pass//
-          3.3% in //MajorNodes::pass_1//
+     58.4% in compilation to Inter
+         38.9% in //Sequence::undertake_queued_tasks//
+          3.8% in //MajorNodes::pre_pass//
+          3.6% in //MajorNodes::pass_1//
           2.1% in //RTKindConstructors::compile//
           1.4% in //ImperativeDefinitions::assess_all//
-          1.1% in //RTPhrasebook::compile_entries//
+          1.2% in //RTPhrasebook::compile_entries//
           0.7% in //ImperativeDefinitions::compile_first_block//
           0.7% in //Sequence::lint_inter//
           0.4% in //MajorNodes::pass_2//
@@ -13,15 +13,14 @@
           0.2% in //CompletionModule::compile//
           0.2% in //InferenceSubjects::emit_all//
           0.2% in //Instances::make_instances_from_Neptune//
-          0.2% in //RTKindConstructors::compile_permissions//
           0.2% in //Sequence::undertake_queued_tasks//
           0.2% in //Sequence::undertake_queued_tasks//
           0.2% in //Task::make_built_in_kind_constructors//
-          3.1% not specifically accounted for
-     21.1% in supervisor
-     19.4% in running Inter pipeline
+          3.4% not specifically accounted for
+     21.3% in supervisor
+     19.7% in running Inter pipeline
           6.4% in step 14/15: generate inform6 -> auto.inf
-          4.9% in step 5/15: load-binary-kits
+          5.0% in step 5/15: load-binary-kits
           4.0% in step 6/15: make-synoptic-module
           1.4% in step 9/15: make-identifiers-unique
           0.2% in step 11/15: eliminate-redundant-labels
@@ -29,5 +28,5 @@
           0.2% in step 4/15: compile-splats
           0.2% in step 7/15: shorten-wiring
           0.2% in step 8/15: detect-indirect-calls
-          1.4% not specifically accounted for
+          1.5% not specifically accounted for
       0.5% not specifically accounted for

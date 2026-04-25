@@ -1,4 +1,4 @@
-# This gitignore was automatically written by inweb -gitignore
+# This gitignore was automatically written by inweb make-gitignore
 # and is not intended for human editing
 
 .DS_Store
@@ -26,6 +26,8 @@ resources/Documentation/Examples/_Results_Actual/
 inform7/Internal/Extensions/Graham Nelson/Standard Rules.i7x
 inform7/Internal/Extensions/Graham Nelson/English Language.i7xd/Materials/Languages/English/Syntax.preform
 inform7/Internal/Miscellany/definitions.html
+inform7/Internal/Miscellany/inform7_clib.c
+inform7/Internal/Miscellany/inform7_clib.h
 inform7/Internal/Inter/*.interb
 
 retrospective/*/cBlorb
