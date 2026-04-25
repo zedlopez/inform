@@ -1975,6 +1975,7 @@ void Hierarchy::establish(void) {
 
 @e LITERALS_HAP
 @e TEXT_LITERAL_HL
+@e UTEXT_LITERAL_HL
 @e LIST_LITERAL_HL
 @e TEXT_SUBSTITUTION_HL
 @e TEXT_SUBSTITUTION_FN_HL
@@ -1997,6 +1998,7 @@ void Hierarchy::establish(void) {
 	H_BEGIN(LocationRequirements::any_enclosure())
 		H_BEGIN_AP(LITERALS_HAP,              I"literal", I"_literal")
 			H_C_U(TEXT_LITERAL_HL,            I"text")
+			H_C_U(UTEXT_LITERAL_HL,           I"utext")
 			H_C_U(LIST_LITERAL_HL,            I"list")
 			H_C_U(TEXT_SUBSTITUTION_HL,       I"ts_array")
 			H_F_U(TEXT_SUBSTITUTION_FN_HL,    I"ts_fn")

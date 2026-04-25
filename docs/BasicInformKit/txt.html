@@ -64,12 +64,11 @@ distinguish between the two basic methods of text storage, roughly
 equivalent to the pre-2013 kinds &quot;text&quot; and &quot;indexed text&quot;. But why
 do we need four?</p>
 <p><code>CONSTANT_PACKED_TEXT_STORAGE</code> is easy to explain: the BlkValue routines
-normally detect constants using metadata in their long blocks, but of
-course that won't work for values which haven't got any long blocks.
-We use this instead. We don't need a <code>CONSTANT_UNPACKED_TEXT_STORAGE</code>
-because I7 never compiles constant text in unpacked form. Despite the
-name, the short block's value at offset 1 might be a Routine, not the
-address of an I6 string.</p>
+normally detect constants using metadata in their long blocks, but of course
+that won't work for values which haven't got any long blocks. We use this
+instead. Despite the name, the short block's value at offset 1 might be a
+Routine, not the address of an I6 string. <code>CONSTANT_UNPACKED_TEXT_STORAGE</code>,
+added in 2026, is used when I7 compiles constant text in unpacked form.</p>
 <p>The surprising one is <code>CONSTANT_PERISHABLE_TEXT_STORAGE</code>. This is a
 constant created by the I7 compiler which is marked as being tricky
 because its value is a text substitution containing references to local
@@ -78,11 +77,11 @@ stored away to be expanded later: it must be expanded into unpacked
 text before it perishes.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain-syntax">     = </span><span class="identifier-syntax">BLK_BVBITMAP_TEXT</span><span class="plain-syntax"> + </span><span class="identifier-syntax">BLK_BVBITMAP_CONSTANT</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_PERISHABLE_TEXT_STORAGE</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BLK_BVBITMAP_TEXT</span><span class="plain-syntax"> + </span><span class="identifier-syntax">BLK_BVBITMAP_CONSTANT</span><span class="plain-syntax"> + </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PACKED_TEXT_STORAGE</span><span class="plain-syntax">              = </span><span class="identifier-syntax">BLK_BVBITMAP_TEXT</span><span class="plain-syntax"> + </span><span class="constant-syntax">3</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">UNPACKED_TEXT_STORAGE</span><span class="plain-syntax">            = </span><span class="identifier-syntax">BLK_BVBITMAP_TEXT</span><span class="plain-syntax"> + </span><span class="identifier-syntax">BLK_BVBITMAP_LONGBLOCK</span><span class="plain-syntax"> + </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_UNPACKED_TEXT_STORAGE</span><span class="plain-syntax">   = </span><span class="identifier-syntax">UNPACKED_TEXT_STORAGE</span><span class="plain-syntax"> + </span><span class="identifier-syntax">BLK_BVBITMAP_CONSTANT</span><span class="plain-syntax">;</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Extent Of Long Block.</b>  When there's a long block, we need enough of the entries to store the
@@ -127,8 +126,9 @@ choosing the character set here. For Unicode, use Glulx.</p>
 <span class="plain-syntax">        </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain-syntax">:     </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" = cp~"</span><span class="plain-syntax">, (</span><span class="identifier-syntax">PrintI6Text</span><span class="plain-syntax">) </span><span class="identifier-syntax">txt</span><span class="plain-syntax">--&gt;1, </span><span class="string-syntax">"~"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">CONSTANT_PERISHABLE_TEXT_STORAGE</span><span class="plain-syntax">: </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" = cp~"</span><span class="plain-syntax">, (</span><span class="identifier-syntax">PrintI6Text</span><span class="plain-syntax">) </span><span class="identifier-syntax">txt</span><span class="plain-syntax">--&gt;1, </span><span class="string-syntax">"~"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PACKED_TEXT_STORAGE</span><span class="plain-syntax">:              </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" = p~"</span><span class="plain-syntax">, (</span><span class="identifier-syntax">PrintI6Text</span><span class="plain-syntax">) </span><span class="identifier-syntax">txt</span><span class="plain-syntax">--&gt;1, </span><span class="string-syntax">"~"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">CONSTANT_UNPACKED_TEXT_STORAGE</span><span class="plain-syntax">:   </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" = c~"</span><span class="plain-syntax">, (</span><span class="identifier-syntax">TEXT_TY_Say</span><span class="plain-syntax">) </span><span class="identifier-syntax">txt</span><span class="plain-syntax">, </span><span class="string-syntax">"~"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">UNPACKED_TEXT_STORAGE</span><span class="plain-syntax">:            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" = ~"</span><span class="plain-syntax">, (</span><span class="identifier-syntax">TEXT_TY_Say</span><span class="plain-syntax">) </span><span class="identifier-syntax">txt</span><span class="plain-syntax">, </span><span class="string-syntax">"~"</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">default</span><span class="plain-syntax">:                          </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" broken?"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">default</span><span class="plain-syntax">:                          </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">" broken? "</span><span class="plain-syntax">, </span><span class="identifier-syntax">txt</span><span class="plain-syntax">--&gt;0, </span><span class="string-syntax">" "</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">];</span>
 </pre>
@@ -140,7 +140,7 @@ choosing the character set here. For Unicode, use Glulx.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TEXT_TY_Create</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind_id</span><span class="plain-syntax"> </span><span class="identifier-syntax">sb_address</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">short_block</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">short_block</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CreatePVShortBlock</span><span class="plain-syntax">(</span><span class="identifier-syntax">sb_address</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind_id</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">short_block</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CreatePVShortBlock</span><span class="plain-syntax">(</span><span class="identifier-syntax">sb_address</span><span class="plain-syntax">, </span><span class="identifier-syntax">TEXT_TY</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">short_block</span><span class="plain-syntax">--&gt;0 = </span><span class="identifier-syntax">PACKED_TEXT_STORAGE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">short_block</span><span class="plain-syntax">--&gt;1 = </span><span class="identifier-syntax">EMPTY_TEXT_PACKED</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">short_block</span><span class="plain-syntax">;</span>
@@ -156,9 +156,13 @@ choosing the character set here. For Unicode, use Glulx.</p>
 any more.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">TEXT_TY_CopyShortBlock</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_bv</span><span class="plain-syntax"> </span><span class="identifier-syntax">from_bv</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">TEXT_TY_CopyShortBlock</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_bv</span><span class="plain-syntax"> </span><span class="identifier-syntax">from_bv</span><span class="plain-syntax"> </span><span class="identifier-syntax">h</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CopyPVShortBlock</span><span class="plain-syntax">(</span><span class="identifier-syntax">to_bv</span><span class="plain-syntax">, </span><span class="identifier-syntax">from_bv</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">to_bv</span><span class="plain-syntax">--&gt;0 &amp; </span><span class="identifier-syntax">BLK_BVBITMAP_CONSTANTMASK</span><span class="plain-syntax">) </span><span class="identifier-syntax">to_bv</span><span class="plain-syntax">--&gt;0 = </span><span class="identifier-syntax">PACKED_TEXT_STORAGE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">h</span><span class="plain-syntax"> = </span><span class="identifier-syntax">to_bv</span><span class="plain-syntax">--&gt;0;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">h</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTANT_PERISHABLE_TEXT_STORAGE</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">to_bv</span><span class="plain-syntax">--&gt;0 = </span><span class="identifier-syntax">PACKED_TEXT_STORAGE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">h</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CONSTANT_UNPACKED_TEXT_STORAGE</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">to_bv</span><span class="plain-syntax">--&gt;0 = </span><span class="identifier-syntax">UNPACKED_TEXT_STORAGE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
 <div class="lsmarkdown">
@@ -171,7 +175,6 @@ it's only temporary, and will soon be followed by an un-transmutation.</p>
 <span class="plain-syntax">[ </span><span class="identifier-syntax">TEXT_TY_Transmute</span><span class="plain-syntax"> </span><span class="identifier-syntax">txt</span><span class="plain-syntax">  </span><span class="identifier-syntax">x</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">txt</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">txt</span><span class="plain-syntax">--&gt;0 &amp; </span><span class="identifier-syntax">BLK_BVBITMAP_LONGBLOCKMASK</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">txt</span><span class="plain-syntax">--&gt;1; </span><span class="comment-syntax">! The old value was a packed string</span>
-
 <span class="plain-syntax">        </span><span class="identifier-syntax">txt</span><span class="plain-syntax">--&gt;0 = </span><span class="identifier-syntax">UNPACKED_TEXT_STORAGE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">txt</span><span class="plain-syntax">--&gt;1 = </span><span class="identifier-syntax">FlexAllocate</span><span class="plain-syntax">(32, </span><span class="identifier-syntax">TEXT_TY</span><span class="plain-syntax">, </span><span class="identifier-syntax">TEXT_TY_Storage_Flags</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> ~= </span><span class="identifier-syntax">EMPTY_TEXT_PACKED</span><span class="plain-syntax">) </span><span class="identifier-syntax">TEXT_TY_CastPrimitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">txt</span><span class="plain-syntax">, </span><span class="reserved-syntax">false</span><span class="plain-syntax">, </span><span class="identifier-syntax">x</span><span class="plain-syntax">);</span>
@@ -196,8 +199,9 @@ it's only temporary, and will soon be followed by an un-transmutation.</p>
 constants are never created in unpacked form.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">[ </span><span class="identifier-syntax">TEXT_TY_Mutable</span><span class="plain-syntax"> </span><span class="identifier-syntax">txt</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">txt</span><span class="plain-syntax">--&gt;0 &amp; </span><span class="identifier-syntax">BLK_BVBITMAP_LONGBLOCKMASK</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">[ </span><span class="identifier-syntax">TEXT_TY_Mutable</span><span class="plain-syntax"> </span><span class="identifier-syntax">txt</span><span class="plain-syntax"> </span><span class="identifier-syntax">h</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">h</span><span class="plain-syntax"> = </span><span class="identifier-syntax">txt</span><span class="plain-syntax">--&gt;0;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">h</span><span class="plain-syntax"> &amp; </span><span class="identifier-syntax">BLK_BVBITMAP_LONGBLOCKMASK</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEXT_TY_Transmute</span><span class="plain-syntax">(</span><span class="identifier-syntax">txt</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>

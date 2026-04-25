@@ -15,12 +15,11 @@ equivalent to the pre-2013 kinds "text" and "indexed text". But why
 do we need four?
 
 `CONSTANT_PACKED_TEXT_STORAGE` is easy to explain: the BlkValue routines
-normally detect constants using metadata in their long blocks, but of
-course that won't work for values which haven't got any long blocks.
-We use this instead. We don't need a `CONSTANT_UNPACKED_TEXT_STORAGE`
-because I7 never compiles constant text in unpacked form. Despite the
-name, the short block's value at offset 1 might be a Routine, not the
-address of an I6 string.
+normally detect constants using metadata in their long blocks, but of course
+that won't work for values which haven't got any long blocks. We use this
+instead. Despite the name, the short block's value at offset 1 might be a
+Routine, not the address of an I6 string. `CONSTANT_UNPACKED_TEXT_STORAGE`,
+added in 2026, is used when I7 compiles constant text in unpacked form.
 
 The surprising one is `CONSTANT_PERISHABLE_TEXT_STORAGE`. This is a
 constant created by the I7 compiler which is marked as being tricky
@@ -29,13 +28,12 @@ variables. Unlike other text substitutions, this can't meaningfully be
 stored away to be expanded later: it must be expanded into unpacked
 text before it perishes.
 
-
 =
-
 Constant CONSTANT_PACKED_TEXT_STORAGE     = BLK_BVBITMAP_TEXT + BLK_BVBITMAP_CONSTANT + 1;
 Constant CONSTANT_PERISHABLE_TEXT_STORAGE = BLK_BVBITMAP_TEXT + BLK_BVBITMAP_CONSTANT + 2;
 Constant PACKED_TEXT_STORAGE              = BLK_BVBITMAP_TEXT + 3;
 Constant UNPACKED_TEXT_STORAGE            = BLK_BVBITMAP_TEXT + BLK_BVBITMAP_LONGBLOCK + 4;
+Constant CONSTANT_UNPACKED_TEXT_STORAGE   = UNPACKED_TEXT_STORAGE + BLK_BVBITMAP_CONSTANT;
 
 @h Extent Of Long Block.
 When there's a long block, we need enough of the entries to store the
@@ -81,8 +79,9 @@ This shows the various forms a text's short block can take:
 		CONSTANT_PACKED_TEXT_STORAGE:     print " = cp~", (PrintI6Text) txt-->1, "~";
 		CONSTANT_PERISHABLE_TEXT_STORAGE: print " = cp~", (PrintI6Text) txt-->1, "~";
 		PACKED_TEXT_STORAGE:              print " = p~", (PrintI6Text) txt-->1, "~";
+		CONSTANT_UNPACKED_TEXT_STORAGE:   print " = c~", (TEXT_TY_Say) txt, "~";
 		UNPACKED_TEXT_STORAGE:            print " = ~", (TEXT_TY_Say) txt, "~";
-		default:                          print " broken?";
+		default:                          print " broken? ", txt-->0, " ";
 	}
 ];
 
@@ -96,7 +95,7 @@ A newly created text is a two-word short block with no long block, like this:
 =
 [ TEXT_TY_Create kind_id sb_address
 	short_block;
-	short_block = CreatePVShortBlock(sb_address, kind_id);
+	short_block = CreatePVShortBlock(sb_address, TEXT_TY);
 	short_block-->0 = PACKED_TEXT_STORAGE;
 	short_block-->1 = EMPTY_TEXT_PACKED;
 	return short_block;
@@ -112,9 +111,13 @@ When a short block for a constant is copied, the new copy isn't a constant
 any more.
 
 =
-[ TEXT_TY_CopyShortBlock to_bv from_bv;
+[ TEXT_TY_CopyShortBlock to_bv from_bv h;
 	CopyPVShortBlock(to_bv, from_bv, 2);
-	if (to_bv-->0 & BLK_BVBITMAP_CONSTANTMASK) to_bv-->0 = PACKED_TEXT_STORAGE;
+	h = to_bv-->0;
+	if (h == CONSTANT_PACKED_TEXT_STORAGE or CONSTANT_PERISHABLE_TEXT_STORAGE)
+		to_bv-->0 = PACKED_TEXT_STORAGE;
+	if (h == CONSTANT_UNPACKED_TEXT_STORAGE)
+		to_bv-->0 = UNPACKED_TEXT_STORAGE;
 ];
 
 @h Transmutation.
@@ -127,7 +130,6 @@ it's only temporary, and will soon be followed by an un-transmutation.
 [ TEXT_TY_Transmute txt  x;
 	if ((txt) && (txt-->0 & BLK_BVBITMAP_LONGBLOCKMASK == 0)) {
 		x = txt-->1; ! The old value was a packed string
-
 		txt-->0 = UNPACKED_TEXT_STORAGE;
 		txt-->1 = FlexAllocate(32, TEXT_TY, TEXT_TY_Storage_Flags);
 		if (x ~= EMPTY_TEXT_PACKED) TEXT_TY_CastPrimitive(txt, false, x);
@@ -152,8 +154,9 @@ That neatly handles the question of how to make a text mutable. (Note that
 constants are never created in unpacked form.)
 
 =
-[ TEXT_TY_Mutable txt;
-	if (txt-->0 & BLK_BVBITMAP_LONGBLOCKMASK == 0) {
+[ TEXT_TY_Mutable txt h;
+	h = txt-->0;
+	if (h & BLK_BVBITMAP_LONGBLOCKMASK == 0) {
 		TEXT_TY_Transmute(txt);
 		rfalse;
 	}

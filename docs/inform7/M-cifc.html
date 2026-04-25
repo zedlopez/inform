@@ -3,20 +3,20 @@
 	<head>
 		<title>Calling Inform from C</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -570,8 +570,9 @@ What are we to do with this? In fact, it's easy to convert to and from a C strin
 <pre class="displayed-code all-displayed-code code-font"><span class="identifier-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">i7_read_string</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_meaning</span><span class="plain-syntax">));
 </span><span class="identifier-syntax">printf</span><span class="plain-syntax">(</span><span class="string-syntax">"[C program reads 'meaning' as %s]\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">M</span><span class="plain-syntax">);
 </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);
-</span><span class="identifier-syntax">i7_write_string</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_meaning</span><span class="plain-syntax">),
-	</span><span class="string-syntax">"the goddess of the winds beckons you!"</span><span class="plain-syntax">);
+</span><span class="identifier-syntax">i7_write_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_meaning</span><span class="plain-syntax">,
+	</span><span class="identifier-syntax">i7_write_string</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_read_variable</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_V_meaning</span><span class="plain-syntax">),
+		</span><span class="string-syntax">"the goddess of the winds beckons you!"</span><span class="plain-syntax">));
 </span><span class="identifier-syntax">i7_try</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">proc</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_A_Examine</span><span class="plain-syntax">, </span><span class="identifier-syntax">i7_I_Linear_B_tablet</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);
 </span></pre>
 <p>And this produces the following:</p>

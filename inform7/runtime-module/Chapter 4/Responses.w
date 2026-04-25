@@ -258,7 +258,7 @@ void Responses::compilation_agent(compilation_subtask *t) {
 	Emit::text_constant(resp->group_md_iname, QT);
 	DISCARD_TEXT(QT)
 
-	TextLiterals::compile_value_to(resp->value_iname, resp->launcher_iname);
+	TextLiterals::compile_SB_array(resp->value_iname, resp->launcher_iname, FALSE);
 
 	packaging_state save = Functions::begin(resp->launcher_iname);
 

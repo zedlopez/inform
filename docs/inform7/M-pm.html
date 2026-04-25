@@ -3,21 +3,21 @@
 	<head>
 		<title>Performance Metrics</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Downloads.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -68,36 +68,36 @@ Performance scales roughly linearly with the size of the source text.</p>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Running time.</b>  The following tabulates all main stages of compilation (see <a href="../core-module/1-htc.html" class="internal">How To Compile (in core)</a>)
 which take more than 1/1000th of the total running time.</p>
 <p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">100.0% in inform7 run
-     55.8% in compilation to Inter
-         37.1% in //Sequence::undertake_queued_tasks//
-          3.6% in //MajorNodes::pre_pass//
-          3.0% in //MajorNodes::pass_1//
+     57.9% in compilation to Inter
+         38.7% in //Sequence::undertake_queued_tasks//
+          4.0% in //MajorNodes::pre_pass//
+          3.3% in //MajorNodes::pass_1//
+          1.6% in //ImperativeDefinitions::assess_all//
           1.6% in //RTKindConstructors::compile//
-          1.3% in //ImperativeDefinitions::assess_all//
-          1.3% in //RTPhrasebook::compile_entries//
-          0.8% in //Sequence::lint_inter//
-          0.5% in //ImperativeDefinitions::compile_first_block//
-          0.5% in //MajorNodes::pass_2//
-          0.5% in //World::stage_V//
+          1.1% in //RTPhrasebook::compile_entries//
+          0.7% in //ImperativeDefinitions::compile_first_block//
+          0.7% in //MajorNodes::pass_2//
+          0.7% in //Sequence::lint_inter//
+          0.7% in //World::stage_V//
           0.2% in //CompletionModule::compile//
-          0.2% in //RTKindConstructors::compile_permissions//
+          0.2% in //InferenceSubjects::emit_all//
           0.2% in //Sequence::undertake_queued_tasks//
           0.2% in //Sequence::undertake_queued_tasks//
           0.2% in //Task::make_built_in_kind_constructors//
-          3.6% not specifically accounted for
-     22.0% in running Inter pipeline
-          7.2% in step 14/15: generate inform6 -&gt; auto.inf
-          5.8% in step 5/15: load-binary-kits
-          4.4% in step 6/15: make-synoptic-module
-          1.6% in step 9/15: make-identifiers-unique
+          3.3% not specifically accounted for
+     21.9% in supervisor
+     19.6% in running Inter pipeline
+          6.3% in step 14/15: generate inform6 -&gt; auto.inf
+          5.2% in step 5/15: load-binary-kits
+          4.0% in step 6/15: make-synoptic-module
+          1.4% in step 9/15: make-identifiers-unique
           0.2% in step 11/15: eliminate-redundant-labels
           0.2% in step 12/15: eliminate-redundant-operations
           0.2% in step 4/15: compile-splats
           0.2% in step 7/15: shorten-wiring
           0.2% in step 8/15: detect-indirect-calls
           1.4% not specifically accounted for
-     21.5% in supervisor
-      0.6% not specifically accounted for</span></pre>
+      0.5% not specifically accounted for</span></pre>
 </p>
 </div>
 <div class="lsmarkdown">
@@ -105,147 +105,148 @@ which take more than 1/1000th of the total running time.</p>
 instances, and also of how Inform's memory tends to be used in practice.
 Entries with a dash instead of a percentage are negligible, in that they
 represent less than 1/1000th of the total.</p>
-<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Total memory consumption was 168133K = 164 MB
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Total memory consumption was 190359K = 186 MB
 
- ---- was used for 2361189 objects, in 425591 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2468388 objects, in 429184 frames in 0 x 800K = 0K = 0 MB:
 
-    26.3%  inter_tree_node_array                    63 x 8192 = 516096 objects, 45418464 bytes
-    19.6%  text_stream_array                        5994 x 100 = 599400 objects, 33758208 bytes
-    17.7%  linked_list                              54662 objects, 30610720 bytes
-    10.7%  scan_directory                           4473 objects, 18464544 bytes
-     8.7%  inter_symbol_array                       142 x 1024 = 145408 objects, 15126976 bytes
-     6.8%  inter_error_stash_array                  110 x 1024 = 112640 objects, 11718080 bytes
-     6.5%  parse_node                               140117 objects, 11209360 bytes
-     4.4%  verb_conjugation                         165 objects, 7657320 bytes
-     3.4%  parse_node_annotation_array              373 x 500 = 186500 objects, 5979936 bytes
-     2.1%  pcalc_prop_array                         27 x 1000 = 27000 objects, 3672864 bytes
-     2.0%  inter_name_array                         72 x 1000 = 72000 objects, 3458304 bytes
-     1.6%  kind_array                               71 x 1000 = 71000 objects, 2842272 bytes
-     1.5%  ls_line                                  10670 objects, 2646160 bytes
-     1.2%  inter_schema_token                       14722 objects, 2237744 bytes
-     1.2%  inter_name_generator_array               55 x 1000 = 55000 objects, 2201760 bytes
-     1.1%  package_request                          22153 objects, 1949464 bytes
-     1.0%  vocabulary_entry_array                   168 x 100 = 16800 objects, 1886976 bytes
-     1.0%  dict_entry_array                         563 x 100 = 56300 objects, 1819616 bytes
-     0.9%  inter_symbols_table                      27946 objects, 1564976 bytes
-     0.8%  i6_schema_array                          25 x 100 = 2500 objects, 1500800 bytes
-     0.8%  match_trie_array                         11 x 1000 = 11000 objects, 1496352 bytes
-     0.8%  map_data                                 843 objects, 1416240 bytes
-     0.7%  inter_package                            27946 objects, 1341408 bytes
-     0.7%  id_body                                  1058 objects, 1210352 bytes
-     0.6%  excerpt_meaning                          3658 objects, 1141296 bytes
-     0.6%  adjective_meaning                        218 objects, 1079536 bytes
-     0.6%  inter_schema_node                        9423 objects, 1055376 bytes
-     0.5%  individual_form                          2791 objects, 937776 bytes
-     0.5%  production                               4029 objects, 934728 bytes
-     0.5%  grammatical_usage                        3850 objects, 924000 bytes
-     0.5%  ptoken                                   8793 objects, 914472 bytes
-     0.4%  unary_predicate_array                    18 x 1000 = 18000 objects, 720576 bytes
-     0.2%  dictionary                               8299 objects, 398352 bytes
+    22.9%  inter_tree_node_array                    62 x 8192 = 507904 objects, 44697536 bytes
+    19.3%  text_stream_array                        6685 x 100 = 668500 objects, 37649920 bytes
+    15.7%  linked_list                              54840 objects, 30710400 bytes
+     9.4%  scan_directory                           4473 objects, 18464544 bytes
+     7.7%  inter_symbol_array                       142 x 1024 = 145408 objects, 15126976 bytes
+     6.0%  inter_error_stash_array                  110 x 1024 = 112640 objects, 11718080 bytes
+     5.7%  parse_node                               141090 objects, 11287200 bytes
+     3.9%  verb_conjugation                         165 objects, 7657320 bytes
+     3.0%  parse_node_annotation_array              375 x 500 = 187500 objects, 6012000 bytes
+     1.8%  pcalc_prop_array                         27 x 1000 = 27000 objects, 3672864 bytes
+     1.7%  inter_name_array                         72 x 1000 = 72000 objects, 3458304 bytes
+     1.4%  kind_array                               72 x 1000 = 72000 objects, 2882304 bytes
+     1.3%  ls_line                                  10784 objects, 2674432 bytes
+     1.1%  inter_schema_token                       14791 objects, 2248232 bytes
+     1.1%  inter_name_generator_array               55 x 1000 = 55000 objects, 2201760 bytes
+     1.0%  dict_entry_array                         636 x 100 = 63600 objects, 2055552 bytes
+     1.0%  package_request                          22393 objects, 1970584 bytes
+     0.9%  vocabulary_entry_array                   170 x 100 = 17000 objects, 1909440 bytes
+     0.8%  inter_symbols_table                      28161 objects, 1577016 bytes
+     0.7%  i6_schema_array                          25 x 100 = 2500 objects, 1500800 bytes
+     0.7%  match_trie_array                         11 x 1000 = 11000 objects, 1496352 bytes
+     0.7%  map_data                                 850 objects, 1428000 bytes
+     0.6%  inter_package                            28161 objects, 1351728 bytes
+     0.6%  id_body                                  1075 objects, 1229800 bytes
+     0.5%  excerpt_meaning                          3680 objects, 1148160 bytes
+     0.5%  adjective_meaning                        219 objects, 1084488 bytes
+     0.5%  inter_schema_node                        9464 objects, 1059968 bytes
+     0.4%  production                               4070 objects, 944240 bytes
+     0.4%  individual_form                          2810 objects, 944160 bytes
+     0.4%  grammatical_usage                        3869 objects, 928560 bytes
+     0.4%  ptoken                                   8890 objects, 924560 bytes
+     0.3%  unary_predicate_array                    18 x 1000 = 18000 objects, 720576 bytes
+     0.2%  holon_splice_array                       71 x 100 = 7100 objects, 399872 bytes
+     0.2%  dictionary                               8297 objects, 398256 bytes
      0.2%  verb_usage                               1148 objects, 394912 bytes
-     0.2%  holon_splice_array                       70 x 100 = 7000 objects, 394240 bytes
-     0.2%  rule                                     494 objects, 387296 bytes
-     0.2%  local_variable_array                     52 x 100 = 5200 objects, 376064 bytes
-     0.2%  verb_form                                392 objects, 354368 bytes
-     0.1%  inference_subject                        838 objects, 328496 bytes
-     0.1%  noun                                     2582 objects, 309840 bytes
-     0.1%  compilation_subtask                      3524 objects, 281920 bytes
+     0.2%  rule                                     501 objects, 392784 bytes
+     0.1%  local_variable_array                     50 x 100 = 5000 objects, 361600 bytes
+     0.1%  verb_form                                392 objects, 354368 bytes
+     0.1%  inference_subject                        845 objects, 331240 bytes
+     0.1%  noun                                     2599 objects, 311880 bytes
+     0.1%  compilation_subtask                      3510 objects, 280800 bytes
      0.1%  inter_annotation_array                   2 x 8192 = 16384 objects, 262208 bytes
-     0.1%  vanilla_function                         3993 objects, 255552 bytes
+     0.1%  vanilla_function                         3987 objects, 255168 bytes
      0.1%  colouring_rule                           130 objects, 224640 bytes
      0.1%  ls_notation_rule                         284 objects, 218112 bytes
      0.1%  ls_chunk_array                           10 x 100 = 1000 objects, 216320 bytes
      0.1%  binary_predicate                         374 objects, 197472 bytes
-     0.1%  hierarchy_location                       1265 objects, 182160 bytes
-     0.1%  programming_language                     21 objects, 175056 bytes
-     ----  linguistic_stock_item                    3541 objects, 169968 bytes
-     ----  filename                                 4119 objects, 164760 bytes
-     ----  rule_family_data                         408 objects, 150144 bytes
-     ----  nascent_array                            2299 objects, 147136 bytes
-     ----  nonterminal                              778 objects, 143152 bytes
-     ----  inference                                1779 objects, 128088 bytes
+     ----  hierarchy_location                       1286 objects, 185184 bytes
+     ----  programming_language                     21 objects, 175056 bytes
+     ----  linguistic_stock_item                    3558 objects, 170784 bytes
+     ----  nascent_array                            2597 objects, 166208 bytes
+     ----  filename                                 4152 objects, 166080 bytes
+     ----  rule_family_data                         414 objects, 152352 bytes
+     ----  nonterminal                              784 objects, 144256 bytes
+     ----  unicode_lookup_value_array               34 x 1000 = 34000 objects, 136816 bytes
+     ----  inference                                1783 objects, 128376 bytes
      ----  pcalc_term_array                         3 x 1000 = 3000 objects, 120096 bytes
-     ----  documentation_ref                        1324 objects, 116512 bytes
-     ----  inter_schema                             1616 objects, 116352 bytes
+     ----  documentation_ref                        1335 objects, 117480 bytes
+     ----  inter_schema                             1627 objects, 117144 bytes
      ----  linked_list_item_array                   7 x 1000 = 7000 objects, 112224 bytes
      ----  markdown_item_array                      1 x 1000 objects, 112032 bytes
-     ----  imperative_defn                          1494 objects, 107568 bytes
-     ----  noun_usage                               2621 objects, 104840 bytes
-     ----  pathname                                 2565 objects, 102600 bytes
+     ----  imperative_defn                          1512 objects, 108864 bytes
+     ----  noun_usage                               2640 objects, 105600 bytes
+     ----  pathname                                 2567 objects, 102680 bytes
+     ----  kind_constructor                         96 objects, 100608 bytes
      ----  colouring_language_block                 59 objects, 100536 bytes
-     ----  ls_paragraph                             472 objects, 98176 bytes
-     ----  kind_constructor                         94 objects, 97008 bytes
-     ----  inter_tree                               7 objects, 96656 bytes
+     ----  ls_paragraph                             477 objects, 99216 bytes
+     ----  inter_tree                               7 objects, 96992 bytes
      ----  anl_entry_array                          2 x 1000 = 2000 objects, 96064 bytes
-     ----  label_namespace                          1470 objects, 94080 bytes
+     ----  label_namespace                          1476 objects, 94464 bytes
      ----  preposition                              278 objects, 88960 bytes
-     ----  lexical_cluster                          2730 objects, 87360 bytes
-     ----  spatial_data                             843 objects, 80928 bytes
-     ----  rulebook                                 417 objects, 80064 bytes
-     ----  kind_variable_declaration                1659 objects, 79632 bytes
+     ----  lexical_cluster                          2747 objects, 87904 bytes
+     ----  spatial_data                             850 objects, 81600 bytes
+     ----  kind_variable_declaration                1681 objects, 80688 bytes
+     ----  rulebook                                 418 objects, 80256 bytes
+     ----  scenes_rcd_data                          2150 objects, 68800 bytes
+     ----  actions_rcd_data                         2150 objects, 68800 bytes
      ----  pl_regexp_set                            231 objects, 68376 bytes
-     ----  scenes_rcd_data                          2116 objects, 67712 bytes
-     ----  actions_rcd_data                         2116 objects, 67712 bytes
-     ----  booking                                  893 objects, 64296 bytes
+     ----  booking                                  901 objects, 64872 bytes
      ----  kind_macro_definition                    9 objects, 62280 bytes
      ----  response_message                         406 objects, 58464 bytes
      ----  command_grammar                          130 objects, 58240 bytes
      ----  table                                    7 objects, 56840 bytes
+     ----  ls_holon_array                           5 x 100 = 500 objects, 56160 bytes
      ----  pcalc_func_array                         1 x 1000 objects, 56032 bytes
-     ----  property_inference_data                  1391 objects, 55640 bytes
+     ----  property_inference_data                  1395 objects, 55800 bytes
      ----  cg_token                                 620 objects, 54560 bytes
      ----  cg_line                                  235 objects, 54520 bytes
-     ----  heading                                  226 objects, 50624 bytes
-     ----  ls_holon_array                           5 x 100 = 500 objects, 48160 bytes
-     ----  to_family_data                           598 objects, 47840 bytes
-     ----  parsing_data                             843 objects, 47208 bytes
-     ----  text_substitution                        436 objects, 41856 bytes
-     ----  regions_data                             843 objects, 40464 bytes
-     ----  counting_data                            843 objects, 40464 bytes
-     ----  ap_clause_array                          1 x 1000 objects, 40032 bytes
-     ----  anl_clause_array                         1 x 1000 objects, 40032 bytes
+     ----  heading                                  229 objects, 51296 bytes
+     ----  to_family_data                           607 objects, 48560 bytes
+     ----  parsing_data                             850 objects, 47600 bytes
+     ----  text_substitution                        437 objects, 41952 bytes
+     ----  counting_data                            850 objects, 40800 bytes
+     ----  regions_data                             850 objects, 40800 bytes
      ----  action_pattern_array                     1 x 1000 objects, 40032 bytes
+     ----  ap_clause_array                          1 x 1000 objects, 40032 bytes
      ----  activity_list_array                      1 x 1000 objects, 40032 bytes
-     ----  method                                   813 objects, 39024 bytes
-     ----  production_list                          631 objects, 35336 bytes
-     ----  property_permission                      103 objects, 33784 bytes
+     ----  anl_clause_array                         1 x 1000 objects, 40032 bytes
+     ----  method                                   815 objects, 39120 bytes
+     ----  production_list                          637 objects, 35672 bytes
+     ----  property_permission                      102 objects, 33456 bytes
      ----  HTML_tag_array                           1 x 1000 objects, 32032 bytes
+     ----  nonlocal_variable                        141 objects, 30456 bytes
+     ----  stack_frame_box                          311 objects, 29856 bytes
      ----  verb_sense                               412 objects, 29664 bytes
-     ----  nonlocal_variable                        136 objects, 29376 bytes
-     ----  stack_frame_box                          304 objects, 29184 bytes
      ----  parse_node_tree                          33 objects, 28776 bytes
-     ----  backdrops_data                           843 objects, 26976 bytes
+     ----  instance                                 227 objects, 27240 bytes
+     ----  backdrops_data                           850 objects, 27200 bytes
+     ----  inter_node_list                          839 objects, 26848 bytes
      ----  JSON_value                               305 objects, 26840 bytes
-     ----  inter_node_list                          834 objects, 26688 bytes
      ----  open_source_licence                      648 objects, 25920 bytes
-     ----  property                                 168 objects, 25536 bytes
-     ----  instance                                 227 objects, 25424 bytes
+     ----  property                                 167 objects, 25384 bytes
      ----  hash_table_entry                         356 objects, 22784 bytes
-     ----  shared_variable_set                      543 objects, 21720 bytes
+     ----  shared_variable_set                      544 objects, 21760 bytes
      ----  action_name                              91 objects, 20384 bytes
      ----  pipeline_step                            15 objects, 20280 bytes
      ----  build_vertex                             166 objects, 19920 bytes
-     ----  timed_rules_rfd_data                     408 objects, 19584 bytes
+     ----  timed_rules_rfd_data                     414 objects, 19872 bytes
      ----  to_phrase_request                        67 objects, 18224 bytes
      ----  pcalc_prop_deferral                      86 objects, 17888 bytes
+     ----  ls_classifier                            525 objects, 16800 bytes
      ----  adjective                                148 objects, 16576 bytes
-     ----  ls_classifier                            515 objects, 16480 bytes
      ----  index_markup_notation                    2 objects, 16464 bytes
      ----  tangle_target                            2 objects, 16112 bytes
      ----  understanding_reference_array            2 x 100 = 200 objects, 16064 bytes
-     ----  match_avinue_array                       1 x 1000 objects, 16032 bytes
      ----  action_name_list_array                   1 x 1000 objects, 16032 bytes
+     ----  match_avinue_array                       1 x 1000 objects, 16032 bytes
      ----  wcl_declaration                          58 objects, 15776 bytes
-     ----  ls_code_excerpt                          444 objects, 14208 bytes
+     ----  ls_code_excerpt                          449 objects, 14368 bytes
      ----  ls_section                               78 objects, 13728 bytes
-     ----  adjective_iname_holder                   337 objects, 13480 bytes
-     ----  booking_list                             417 objects, 13344 bytes
-     ----  uniqueness_count                         486 objects, 11664 bytes
+     ----  adjective_iname_holder                   336 objects, 13440 bytes
+     ----  booking_list                             418 objects, 13376 bytes
      ----  reserved_word                            356 objects, 11392 bytes
+     ----  uniqueness_count                         466 objects, 11184 bytes
      ----  inter_construct                          32 objects, 11008 bytes
+     ----  shared_variable_access_list_array        13 x 100 = 1300 objects, 10816 bytes
      ----  heading_tree                             33 objects, 10296 bytes
      ----  stopwatch_timer                          127 objects, 10160 bytes
-     ----  shared_variable_access_list_array        12 x 100 = 1200 objects, 9984 bytes
      ----  understanding_item_array                 4 x 100 = 400 objects, 9728 bytes
      ----  inbuild_work                             147 objects, 9408 bytes
      ----  inbuild_copy                             65 objects, 9360 bytes
@@ -254,77 +255,77 @@ represent less than 1/1000th of the total.</p>
      ----  semver_range                             77 objects, 8008 bytes
      ----  equation_node                            68 objects, 7616 bytes
      ----  determiner                               22 objects, 7216 bytes
-     ----  text_literal_holder                      180 objects, 7200 bytes
      ----  hierarchy_attachment_point               80 objects, 7040 bytes
      ----  inbuild_edition                          97 objects, 6984 bytes
      ----  verb                                     109 objects, 6976 bytes
      ----  fsm_transition                           86 objects, 6880 bytes
      ----  inform_extension                         32 objects, 6144 bytes
      ----  value_property_data                      104 objects, 5824 bytes
+     ----  method_set                               177 objects, 5664 bytes
      ----  shared_variable_array                    1 x 100 objects, 5632 bytes
-     ----  method_set                               175 objects, 5600 bytes
-     ----  compatibility_specification              113 objects, 5424 bytes
+     ----  compatibility_specification              115 objects, 5520 bytes
      ----  build_script                             166 objects, 5312 bytes
+     ----  ls_notation                              5 objects, 5280 bytes
      ----  md_doc_state                             1 object, 5240 bytes
-     ----  ls_notation                              5 objects, 5200 bytes
      ----  inbuild_licence                          65 objects, 5200 bytes
      ----  activity                                 35 objects, 5040 bytes
-     ----  parsing_pp_data                          103 objects, 4944 bytes
+     ----  use_option                               35 objects, 5040 bytes
+     ----  parsing_pp_data                          102 objects, 4896 bytes
      ----  explicit_action_array                    1 x 100 objects, 4832 bytes
-     ----  use_option                               34 objects, 4624 bytes
      ----  command_line_switch                      56 objects, 4480 bytes
      ----  fsm_state                                55 objects, 4400 bytes
-     ----  property_setting_bp_data                 104 objects, 4160 bytes
+     ----  parsed_use_option_setting                55 objects, 4400 bytes
      ----  ls_unit                                  13 objects, 4160 bytes
-     ----  either_or_property_data                  64 objects, 4096 bytes
+     ----  property_setting_bp_data                 104 objects, 4160 bytes
      ----  parse_node_annotation_type               127 objects, 4064 bytes
-     ----  definition                               52 objects, 3744 bytes
-     ----  parsed_use_option_setting                50 objects, 3600 bytes
-     ----  submodule_request                        88 objects, 3520 bytes
+     ----  either_or_property_data                  63 objects, 4032 bytes
+     ----  definition                               54 objects, 3888 bytes
+     ----  submodule_request                        87 objects, 3480 bytes
      ----  JSON_type                                47 objects, 3384 bytes
      ----  kind_constructor_comparison_schema_array 1 x 100 objects, 3232 bytes
      ----  JSON_single_requirement                  64 objects, 3072 bytes
      ----  target_vm                                21 objects, 3024 bytes
-     ----  part_of_inference_data                   79 objects, 2528 bytes
      ----  parentage_inference_data                 79 objects, 2528 bytes
+     ----  part_of_inference_data                   79 objects, 2528 bytes
      ----  local_parking_lot                        63 objects, 2520 bytes
-     ----  literal_pattern                          1 object, 2432 bytes
+     ----  literal_pattern                          1 object, 2440 bytes
+     ----  kind_constructor_instance_array          1 x 100 objects, 2432 bytes
      ----  kind_constructor_casting_rule_array      1 x 100 objects, 2432 bytes
      ----  kind_constructor_instance_rule_array     1 x 100 objects, 2432 bytes
-     ----  kind_constructor_instance_array          1 x 100 objects, 2432 bytes
      ----  equation_symbol                          30 objects, 2400 bytes
      ----  scene                                    1 object, 2352 bytes
      ----  finite_state_machine                     31 objects, 2232 bytes
      ----  ls_web                                   9 objects, 2088 bytes
      ----  arithmetic_schema_array                  1 x 50 objects, 2032 bytes
+     ----  markdown_feature                         42 objects, 2016 bytes
      ----  build_step                               28 objects, 2016 bytes
      ----  inbuild_requirement                      48 objects, 1920 bytes
-     ----  markdown_feature                         40 objects, 1920 bytes
-     ----  compiler_feature                         30 objects, 1680 bytes
      ----  pronoun_usage                            42 objects, 1680 bytes
+     ----  compiler_feature                         30 objects, 1680 bytes
      ----  table_column                             16 objects, 1664 bytes
-     ----  JSON_requirement                         51 objects, 1632 bytes
      ----  table_contribution_array                 1 x 100 objects, 1632 bytes
+     ----  JSON_requirement                         51 objects, 1632 bytes
      ----  notation_rewriter                        40 objects, 1600 bytes
      ----  ls_holon_namespace                       22 objects, 1584 bytes
      ----  inform_pipeline                          24 objects, 1536 bytes
      ----  special_meaning_holder                   36 objects, 1440 bytes
+     ----  constant_phrase                          20 objects, 1440 bytes
      ----  noun_filter_token                        22 objects, 1408 bytes
      ----  inter_node_array                         35 objects, 1400 bytes
-     ----  constant_phrase                          20 objects, 1280 bytes
+     ----  markdown_variation                       6 objects, 1248 bytes
      ----  inbuild_search_result                    31 objects, 1240 bytes
-     ----  invocation_options_array                 1 x 100 objects, 1224 bytes
      ----  ls_chapter                               9 objects, 1224 bytes
+     ----  invocation_options_array                 1 x 100 objects, 1224 bytes
      ----  notation_rewriting_machine               30 objects, 1200 bytes
      ----  direction_inference_data                 30 objects, 1200 bytes
-     ----  markdown_variation                       6 objects, 1200 bytes
      ----  JSON_pair_requirement                    37 objects, 1184 bytes
      ----  tree_inventory_item                      28 objects, 1120 bytes
-     ----  submodule_identity                       34 objects, 1088 bytes
+     ----  submodule_identity                       33 objects, 1056 bytes
      ----  runtime_kind_structure                   13 objects, 1040 bytes
      ----  quantifier                               16 objects, 1024 bytes
      ----  pipeline_stage                           20 objects, 960 bytes
      ----  custom_colour                            24 objects, 960 bytes
+     ----  text_literal_holder                      24 objects, 960 bytes
      ----  named_rulebook_outcome                   15 objects, 960 bytes
      ----  kit_configuration                        23 objects, 920 bytes
      ----  cached_understanding                     21 objects, 840 bytes
@@ -337,11 +338,12 @@ represent less than 1/1000th of the total.</p>
      ----  ls_module                                9 objects, 648 bytes
      ----  relation_guard                           5 objects, 640 bytes
      ----  implication                              13 objects, 624 bytes
+     ----  local_block_value                        11 objects, 616 bytes
      ----  index_lemma                              4 objects, 608 bytes
      ----  code_generation                          1 object, 600 bytes
+     ----  inter_warehouse_room                     10 objects, 560 bytes
      ----  generated_segment                        14 objects, 560 bytes
      ----  inter_annotation_form                    14 objects, 560 bytes
-     ----  inter_warehouse_room                     10 objects, 560 bytes
      ----  rulebook_outcome                         17 objects, 544 bytes
      ----  small_word_set                           11 objects, 528 bytes
      ----  IFM_example                              4 objects, 512 bytes
@@ -352,80 +354,80 @@ represent less than 1/1000th of the total.</p>
      ----  inference_family                         11 objects, 440 bytes
      ----  compiled_documentation                   1 object, 440 bytes
      ----  article_usage                            8 objects, 384 bytes
-     ----  door_dir_notice                          5 objects, 320 bytes
-     ----  tree_inventory                           1 object, 320 bytes
-     ----  grammatical_category                     8 objects, 320 bytes
-     ----  pronoun                                  8 objects, 320 bytes
-     ----  cached_kind_declaration                  8 objects, 320 bytes
+     ----  cached_kind_declaration                  9 objects, 360 bytes
      ----  module_request                           8 objects, 320 bytes
+     ----  tree_inventory                           1 object, 320 bytes
+     ----  pronoun                                  8 objects, 320 bytes
+     ----  door_dir_notice                          5 objects, 320 bytes
+     ----  grammatical_category                     8 objects, 320 bytes
      ----  inter_pipeline                           1 object, 312 bytes
      ----  up_family                                9 objects, 288 bytes
-     ----  explicit_bp_data                         5 objects, 280 bytes
-     ----  contents_entry                           7 objects, 280 bytes
-     ----  door_to_notice                           5 objects, 280 bytes
      ----  compilation_unit                         5 objects, 280 bytes
-     ----  kit_dependency                           5 objects, 240 bytes
+     ----  contents_entry                           7 objects, 280 bytes
+     ----  explicit_bp_data                         5 objects, 280 bytes
+     ----  door_to_notice                           5 objects, 280 bytes
      ----  verb_usage_tier                          5 objects, 240 bytes
+     ----  kit_dependency                           5 objects, 240 bytes
      ----  inbuild_nest                             6 objects, 240 bytes
      ----  inform_project                           1 object, 232 bytes
-     ----  local_block_value                        4 objects, 224 bytes
      ----  adjective_meaning_family                 7 objects, 224 bytes
      ----  test_scenario                            1 object, 216 bytes
-     ----  release_instructions                     1 object, 208 bytes
      ----  code_generator                           5 objects, 200 bytes
-     ----  build_skill                              5 objects, 200 bytes
      ----  attachment_instruction                   5 objects, 200 bytes
+     ----  build_skill                              5 objects, 200 bytes
+     ----  release_instructions                     1 object, 200 bytes
+     ----  element_activation                       6 objects, 192 bytes
      ----  index_reference                          4 objects, 192 bytes
      ----  plural_dictionary_entry                  4 objects, 192 bytes
-     ----  element_activation                       6 objects, 192 bytes
      ----  additional_property                      4 objects, 192 bytes
-     ----  imperative_defn_family                   4 objects, 160 bytes
      ----  inference_subject_family                 5 objects, 160 bytes
-     ----  indexing_category                        2 objects, 160 bytes
      ----  inter_architecture                       4 objects, 160 bytes
+     ----  indexing_category                        2 objects, 160 bytes
+     ----  imperative_defn_family                   4 objects, 160 bytes
      ----  inform_language                          1 object, 104 bytes
-     ----  compile_task_data                        1 object, 80 bytes
      ----  group_together_function                  2 objects, 80 bytes
      ----  article                                  2 objects, 80 bytes
+     ----  compile_task_data                        1 object, 80 bytes
      ----  cd_volume                                1 object, 72 bytes
      ----  command_line_subcommand                  1 object, 64 bytes
+     ----  figures_data                             1 object, 56 bytes
      ----  build_methodology                        1 object, 56 bytes
      ----  inter_warehouse                          1 object, 56 bytes
-     ----  figures_data                             1 object, 56 bytes
-     ----  HTML_file_state                          1 object, 48 bytes
-     ----  I6_generation_data                       1 object, 48 bytes
      ----  cd_pageset                               1 object, 48 bytes
+     ----  HTML_file_state                          1 object, 48 bytes
      ----  star_invention                           1 object, 48 bytes
+     ----  I6_generation_data                       1 object, 48 bytes
      ----  inform_kit_ittt                          1 object, 48 bytes
      ----  ls_holon_scanner                         1 object, 48 bytes
-     ----  kind_template_definition                 1 object, 40 bytes
-     ----  additional_property_set                  1 object, 40 bytes
      ----  loop_over_scope                          1 object, 40 bytes
      ----  by_function_bp_data                      1 object, 40 bytes
+     ----  kind_template_definition                 1 object, 40 bytes
+     ----  additional_property_set                  1 object, 40 bytes
      ----  md_links_dictionary                      1 object, 32 bytes
      ----  i6_memory_setting                        1 object, 32 bytes
 
-99.9% was used for memory not allocated for objects:
+100.0% was used for memory not allocated for objects:
 
-    67.4%  text stream storage                      116207080 bytes in 634120 claims
-     3.6%  dictionary storage                       6338368 bytes in 8299 claims
-     ----  sorting                                  20984 bytes in 2640 claims
-     4.1%  source text                              7200000 bytes in 3 claims
-     6.2%  source text details                      10800000 bytes in 2 claims
+    66.8%  text stream storage                      130388952 bytes in 710929 claims
+     4.3%  dictionary storage                       8430912 bytes in 8297 claims
+     ----  sorting                                  20984 bytes in 2690 claims
+     3.6%  source text                              7200000 bytes in 3 claims
+     5.5%  source text details                      10800000 bytes in 2 claims
      0.1%  documentation fragments                  262144 bytes in 1 claim
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
-     2.8%  inter symbols storage                    4905872 bytes in 29425 claims
-     9.7%  inter bytecode storage                   16773620 bytes in 15 claims
-     3.6%  inter links storage                      6222976 bytes in 11 claims
-     0.1%  inter tree location list storage         191232 bytes in 32 claims
-     1.5%  instance-of-kind counting                2715904 bytes in 1 claim
-     ----  compilation workspace for objects        27976 bytes in 25 claims
+     2.5%  inter symbols storage                    4927440 bytes in 29622 claims
+     8.6%  inter bytecode storage                   16776356 bytes in 15 claims
+     3.1%  inter links storage                      6222976 bytes in 11 claims
+     ----  inter tree location list storage         171008 bytes in 30 claims
+     3.2%  Unicode data                             6291456 bytes in 18 claims
+     1.4%  instance-of-kind counting                2762244 bytes in 1 claim
+     ----  compilation workspace for objects        28256 bytes in 25 claims
      ----  lists for type-checking invocations      16000 bytes in 1 claim
-     ----  code generation workspace for objects    3616 bytes in 19 claims
-     0.1%  emitter array storage                    295200 bytes in 2112 claims
+     ----  code generation workspace for objects    2368 bytes in 19 claims
+     0.2%  emitter array storage                    439840 bytes in 2567 claims
 
--133.0% was overhead - -228989024 bytes = -223622K = -218 MB</span></pre>
+-119.-5% was overhead - -233018864 bytes = -227557K = -222 MB</span></pre>
 </p>
 </div>
 <div class="lsmarkdown">
@@ -433,39 +435,39 @@ represent less than 1/1000th of the total.</p>
 with optimisation details and hit/miss statistics added, is also long: it's
 roughly 10,000 lines of text, so we won't quote it in full here. This is a
 sample, showing the nonterminal used to parse literals in Inform 7 source text:</p>
-<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;s-literal&gt; hits 2162/25526 nti 19 constraint (none) extremes [1, infinity)
+<p><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;s-literal&gt; hits 2171/25552 nti 20 constraint (none) extremes [1, infinity)
     English:
         (@1)&lt;cardinal-number&gt;=1 
           (hits 183/183) (matched: '100') constraint CS = {r0} extremes [1, 1]
         (@1)minus (@2)&lt;cardinal-number&gt;=1 
-          (hits 0/1402) constraint DS = {19} extremes [2, 2]
+          (hits 0/1403) constraint DS = {20} extremes [2, 2]
         (@1)hexadecimal (@2)&lt;hexadecimal-number&gt;=1 
-          (hits 0/1402) constraint DS = {19} extremes [2, 2]
+          (hits 0/1403) constraint DS = {20} extremes [2, 2]
         (@1)binary (@2)&lt;binary-number&gt;=1 
-          (hits 0/1402) constraint DS = {19} extremes [2, 2]
+          (hits 0/1403) constraint DS = {20} extremes [2, 2]
         (@1)octal (@2)&lt;octal-number&gt;=1 
-          (hits 0/1402) constraint DS = {19} extremes [2, 2]
+          (hits 0/1403) constraint DS = {20} extremes [2, 2]
         (@1)&lt;quoted-text&gt;=1 (@2)( (@3)&lt;response-letter&gt;=2 (@4)) 
-          (hits 271/716) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {19} extremes [4, 4]
+          (hits 276/722) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {20} extremes [4, 4]
         (@1)&lt;quoted-text&gt;=1 
-          (hits 1570/5910) (matched: 'Can be used for objects which are purely
+          (hits 1574/5921) (matched: 'Can be used for objects which are purely
         conceptual, like ideas, or are needed for internal book-keeping.') constraint (none) extremes [1, 1]
         &lt;s-literal-real-number&gt;=1 
-          (hits 11/10739) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
+          (hits 11/10743) (matched: 'plus infinity') constraint (none) extremes [1, infinity)
         &lt;s-literal-version-number&gt;=1 
-          (hits 0/10728) constraint (none) extremes [1, infinity)
+          (hits 0/10732) constraint (none) extremes [1, infinity)
         (@1)&lt;s-literal-truth-state&gt;=1 
-          (hits 100/486) (matched: 'false') constraint CS = {13} extremes [1, 1]
+          (hits 100/424) (matched: 'false') constraint CS = {14} extremes [1, 1]
         &lt;s-literal-list&gt;=1 
-          (hits 0/3268) constraint DS = {15} extremes [2, infinity)
+          (hits 0/3035) constraint DS = {16} extremes [2, infinity)
         (@1)unicode (@2)( &lt;s-unicode-character&gt;=1 (@-1)) 
-          (hits 0/1545) constraint DS = {19} extremes [4, infinity)
+          (hits 0/1513) constraint DS = {20} extremes [4, infinity)
         (@1)unicode &lt;s-unicode-character&gt;=1 
-          (hits 27/3539) (matched: 'unicode u+0008') constraint DS = {19} extremes [2, infinity)
+          (hits 27/3508) (matched: 'unicode u+0008') constraint DS = {20} extremes [2, infinity)
         &lt;s-literal-time&gt;=1 
-          (hits 0/3915) constraint DW = {16, 17, 18} extremes [2, 5]
+          (hits 0/3539) constraint DW = {17, 18, 19} extremes [2, 5]
         &lt;s-literal-unit-notation&gt;=1 
-          (hits 0/10601) constraint (none) extremes [1, infinity)</span></pre>
+          (hits 0/10605) constraint (none) extremes [1, infinity)</span></pre>
 </p>
 <p>The unabridged grammar is here:</p>
 <p><div class="download-container">
@@ -473,7 +475,7 @@ sample, showing the nonterminal used to parse literals in Inform 7 source text:<
 		<a href="preform-diagnostics.txt" download>
 			<button class="download-button">
 				<img src="../docs-assets/download.png" alt="download icon" height=16 width=16>
-				Download <b>preform-diagnostics.txt</b> (Preform diagnostics file, 406.8kB)
+				Download <b>preform-diagnostics.txt</b> (Preform diagnostics file, 411.4kB)
 			</button>
 		</a>
 	</p>
@@ -518,8 +520,8 @@ for a lengthy read:</p>
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
             UNPARSED_NOUN_NT'asking for information'
             UNPARSED_NOUN_NT'out of world'
-        IMPERATIVE_NT'carry out asking for information' {unit: 3} {imperative definition: 912}
-        IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 913}
+        IMPERATIVE_NT'carry out asking for information' {unit: 3} {imperative definition: 929}
+        IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 930}
         HEADING_NT'section 1 - errands' {heading 5} {under: H5'section 1 - errands'} {unit: 3}
             SENTENCE_NT'the current actor is a person which varies' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -529,8 +531,8 @@ for a lengthy read:</p>
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'current owner' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'current owner' {nonlocal: 'current owner'(var)person}} {created here}
                 COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=people variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 914}
-            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 915}
+            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 931}
+            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 932}
             SENTENCE_NT'a person can be active or passive' {unit: 3} {classified}
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'a person' {refined} {refers: infs'person'} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}
@@ -540,40 +542,40 @@ for a lengthy read:</p>
                         UNPARSED_NOUN_NT'passive'
             SENTENCE_NT'the player is passive' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'yourself'} {eval: CONSTANT_NT'yourself' {kind: person} {instance: I94'yourself'} {enumeration: 0}} {turned already}
+                PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'yourself'} {eval: CONSTANT_NT'yourself' {kind: person} {instance: I119'yourself'} {enumeration: 0}} {turned already}
                 ADJECTIVE_NT'passive' {refined} {predicate: passive} {creation: &lt;&lt; passive(x) ^ passive(x) &gt;&gt;}
             SENTENCE_NT'the character movement rules are a rulebook' {unit: 3} {classified} {clears pronouns} {interpretation of subject: infs'yourself'}
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
                 PROPER_NOUN_NT'character movement rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: character movement}} {created here}
                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: &lt;&lt; kind=rulebook(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'the first character movement rule' {unit: 3} {imperative definition: 916}
-            IMPERATIVE_NT'a character movement rule' {unit: 3} {imperative definition: 917}
-            IMPERATIVE_NT'a character movement rule' {unit: 3} {imperative definition: 918}
-            IMPERATIVE_NT'to decide whether movement has not yet occurred' {unit: 3} {imperative definition: 919}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 920}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 921}
+            IMPERATIVE_NT'the first character movement rule' {unit: 3} {imperative definition: 933}
+            IMPERATIVE_NT'a character movement rule' {unit: 3} {imperative definition: 934}
+            IMPERATIVE_NT'a character movement rule' {unit: 3} {imperative definition: 935}
+            IMPERATIVE_NT'to decide whether movement has not yet occurred' {unit: 3} {imperative definition: 936}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 937}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 938}
             SENTENCE_NT'the shopowner rules is a rulebook' {unit: 3} {classified} {clears pronouns}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shopowner rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: shopowner}} {created here}
                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: &lt;&lt; kind=rulebook(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'a shopowner rule' {unit: 3} {imperative definition: 922}
-            IMPERATIVE_NT'report someone closing a door when the person asked owns the' {unit: 3} {imperative definition: 923}
-            IMPERATIVE_NT'report vanessa closing the metal door when the metal door is' {unit: 3} {imperative definition: 924}
-            IMPERATIVE_NT'a shopowner rule' {unit: 3} {imperative definition: 925}
+            IMPERATIVE_NT'a shopowner rule' {unit: 3} {imperative definition: 939}
+            IMPERATIVE_NT'report someone closing a door when the person asked owns the' {unit: 3} {imperative definition: 940}
+            IMPERATIVE_NT'report vanessa closing the metal door when the metal door is' {unit: 3} {imperative definition: 941}
+            IMPERATIVE_NT'a shopowner rule' {unit: 3} {imperative definition: 942}
             SENTENCE_NT'filing is an action applying to one thing' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'filing'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'before someone filing something which is not carried by the ' {unit: 3} {imperative definition: 926}
-            IMPERATIVE_NT'carry out someone filing' {unit: 3} {imperative definition: 927}
-            IMPERATIVE_NT'report someone filing' {unit: 3} {imperative definition: 928}
+            IMPERATIVE_NT'before someone filing something which is not carried by the ' {unit: 3} {imperative definition: 943}
+            IMPERATIVE_NT'carry out someone filing' {unit: 3} {imperative definition: 944}
+            IMPERATIVE_NT'report someone filing' {unit: 3} {imperative definition: 945}
             SENTENCE_NT'the shopper rules is a rulebook' {unit: 3} {classified} {clears pronouns}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shopper rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: shopper}} {created here}
                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: &lt;&lt; kind=rulebook(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'a shopper rule' {unit: 3} {imperative definition: 929}
-            IMPERATIVE_NT'a shopper rule' {unit: 3} {imperative definition: 930}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 931}
+            IMPERATIVE_NT'a shopper rule' {unit: 3} {imperative definition: 946}
+            IMPERATIVE_NT'a shopper rule' {unit: 3} {imperative definition: 947}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 948}
             DEFN_CONT_NT'a room is air-conditioned' {unit: 3}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
@@ -631,8 +633,8 @@ for a lengthy read:</p>
                 COMMON_NOUN_NT'artwork' {indefinite 'an' n/m/f nom/acc s} {refined} {creation: &lt;&lt; kind=artwork(x) &gt;&gt;} {refers: infs'artwork'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                     COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: &lt;&lt; kind=thing(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before printing the name of an artwork' {unit: 3} {imperative definition: 932}
-            IMPERATIVE_NT'after printing the name of an artwork' {unit: 3} {imperative definition: 933}
+            IMPERATIVE_NT'before printing the name of an artwork' {unit: 3} {imperative definition: 949}
+            IMPERATIVE_NT'after printing the name of an artwork' {unit: 3} {imperative definition: 950}
             SENTENCE_NT'an artwork can be submitted or reserved' {unit: 3} {classified}
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'an artwork' {refined} {refers: infs'artwork'} {creation: &lt;&lt; kind=artwork(x) &gt;&gt;} {eval: TEST_VALUE_NT}
@@ -645,49 +647,49 @@ for a lengthy read:</p>
                 COMMON_NOUN_NT'book' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: &lt;&lt; kind=book(x) &gt;&gt;} {refers: infs'book'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of artwork' {refined} {refers: infs'artwork'}
                     COMMON_NOUN_NT'artwork' {refined} {refers: infs'artwork'} {creation: &lt;&lt; kind=artwork(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before someone resolving a book when the person asked is not' {unit: 3} {imperative definition: 934}
-            IMPERATIVE_NT'carry out someone resolving a book' {unit: 3} {imperative definition: 935}
-            IMPERATIVE_NT'report someone resolving a book' {unit: 3} {imperative definition: 936}
-            IMPERATIVE_NT'before listing contents' {unit: 3} {imperative definition: 937}
-            IMPERATIVE_NT'before grouping together books' {unit: 3} {imperative definition: 938}
+            IMPERATIVE_NT'before someone resolving a book when the person asked is not' {unit: 3} {imperative definition: 951}
+            IMPERATIVE_NT'carry out someone resolving a book' {unit: 3} {imperative definition: 952}
+            IMPERATIVE_NT'report someone resolving a book' {unit: 3} {imperative definition: 953}
+            IMPERATIVE_NT'before listing contents' {unit: 3} {imperative definition: 954}
+            IMPERATIVE_NT'before grouping together books' {unit: 3} {imperative definition: 955}
             SENTENCE_NT'a stamped envelope is a kind of thing' {unit: 3} {classified} {interpretation of subject: infs'book'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'stamped envelope' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: &lt;&lt; kind=stamped envelope(x) &gt;&gt;} {refers: infs'stamped envelope'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                     COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: &lt;&lt; kind=thing(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before someone resolving a stamped envelope when the person ' {unit: 3} {imperative definition: 939}
-            IMPERATIVE_NT'carry out someone resolving a stamped envelope' {unit: 3} {imperative definition: 940}
-            IMPERATIVE_NT'report someone resolving a stamped envelope' {unit: 3} {imperative definition: 941}
-            IMPERATIVE_NT'instead of someone resolving a stamped envelope when the per' {unit: 3} {imperative definition: 942}
+            IMPERATIVE_NT'before someone resolving a stamped envelope when the person ' {unit: 3} {imperative definition: 956}
+            IMPERATIVE_NT'carry out someone resolving a stamped envelope' {unit: 3} {imperative definition: 957}
+            IMPERATIVE_NT'report someone resolving a stamped envelope' {unit: 3} {imperative definition: 958}
+            IMPERATIVE_NT'instead of someone resolving a stamped envelope when the per' {unit: 3} {imperative definition: 959}
             SENTENCE_NT'a dvd is a kind of artwork' {unit: 3} {classified} {interpretation of subject: infs'stamped envelope'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'dvd' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: &lt;&lt; kind=dvd(x) &gt;&gt;} {refers: infs'dvd'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of artwork' {refined} {refers: infs'artwork'}
                     COMMON_NOUN_NT'artwork' {refined} {refers: infs'artwork'} {creation: &lt;&lt; kind=artwork(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before someone resolving a dvd when the person asked is not ' {unit: 3} {imperative definition: 943}
-            IMPERATIVE_NT'carry out someone resolving a dvd' {unit: 3} {imperative definition: 944}
-            IMPERATIVE_NT'report someone resolving a dvd' {unit: 3} {imperative definition: 945}
-            IMPERATIVE_NT'instead of someone resolving a dvd when the person asked car' {unit: 3} {imperative definition: 946}
-            IMPERATIVE_NT'before listing contents' {unit: 3} {imperative definition: 947}
-            IMPERATIVE_NT'before grouping together dvds' {unit: 3} {imperative definition: 948}
+            IMPERATIVE_NT'before someone resolving a dvd when the person asked is not ' {unit: 3} {imperative definition: 960}
+            IMPERATIVE_NT'carry out someone resolving a dvd' {unit: 3} {imperative definition: 961}
+            IMPERATIVE_NT'report someone resolving a dvd' {unit: 3} {imperative definition: 962}
+            IMPERATIVE_NT'instead of someone resolving a dvd when the person asked car' {unit: 3} {imperative definition: 963}
+            IMPERATIVE_NT'before listing contents' {unit: 3} {imperative definition: 964}
+            IMPERATIVE_NT'before grouping together dvds' {unit: 3} {imperative definition: 965}
             SENTENCE_NT'approaching is an action applying to one thing' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'approaching'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'carry out someone approaching' {unit: 3} {imperative definition: 949}
+            IMPERATIVE_NT'carry out someone approaching' {unit: 3} {imperative definition: 966}
             SENTENCE_NT'a coupon is a kind of thing' {unit: 3} {classified} {interpretation of subject: infs'dvd'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'coupon' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: &lt;&lt; kind=coupon(x) &gt;&gt;} {refers: infs'coupon'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                     COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: &lt;&lt; kind=thing(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'carry out someone resolving a coupon' {unit: 3} {imperative definition: 950}
+            IMPERATIVE_NT'carry out someone resolving a coupon' {unit: 3} {imperative definition: 967}
             SENTENCE_NT'the block giving rule is not listed in any rulebook' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: negative} {special meaning: rule-listed-in}
                 UNPARSED_NOUN_NT'the block giving rule'
                 UNPARSED_NOUN_NT'in any rulebook'
-            IMPERATIVE_NT'check giving something to someone ( this is the block player' {unit: 3} {imperative definition: 951}
-            IMPERATIVE_NT'before someone resolving a coupon when the person asked is n' {unit: 3} {imperative definition: 952}
-            IMPERATIVE_NT'after someone giving a coupon to vanessa' {unit: 3} {imperative definition: 953}
+            IMPERATIVE_NT'check giving something to someone ( this is the block player' {unit: 3} {imperative definition: 968}
+            IMPERATIVE_NT'before someone resolving a coupon when the person asked is n' {unit: 3} {imperative definition: 969}
+            IMPERATIVE_NT'after someone giving a coupon to vanessa' {unit: 3} {imperative definition: 970}
             SENTENCE_NT'infection color is a kind of value' {unit: 3} {classified} {interpretation of subject: infs'coupon'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'infection color' {refined} {creation: &lt;&lt; kind=infection color(x) &gt;&gt;} {refers: infs'object'-k} {eval: TEST_VALUE_NT} {created here}
@@ -747,7 +749,7 @@ for a lengthy read:</p>
                                                                                                                 AND_NT',' {refined}
                                                                                                                     PROPER_NOUN_NT'saffron silk' {refined} {refers: infs'saffron silk'} {eval: CONSTANT_NT'saffron silk' {kind: infection color} {instance: I146'saffron silk'[infection color]} {enumeration: 25}} {created here}
                                                                                                                     PROPER_NOUN_NT'cookie dough cream' {refined} {refers: infs'cookie dough cream'} {eval: CONSTANT_NT'cookie dough cream' {kind: infection color} {instance: I147'cookie dough cream'[infection color]} {enumeration: 26}} {created here}
-            IMPERATIVE_NT'to say list of flavors' {unit: 3} {imperative definition: 954}
+            IMPERATIVE_NT'to say list of flavors' {unit: 3} {imperative definition: 971}
             SENTENCE_NT'understand "ask vanessa for [flavored ice cream]" as buying ' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"ask vanessa for [flavored ice cream]"'
@@ -760,8 +762,8 @@ for a lengthy read:</p>
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'buying the flavor'
                 UNPARSED_NOUN_NT'applying to one infection color'
-            IMPERATIVE_NT'check buying the flavor' {unit: 3} {imperative definition: 955}
-            IMPERATIVE_NT'carry out buying the flavor' {unit: 3} {imperative definition: 956}
+            IMPERATIVE_NT'check buying the flavor' {unit: 3} {imperative definition: 972}
+            IMPERATIVE_NT'carry out buying the flavor' {unit: 3} {imperative definition: 973}
             SENTENCE_NT'understand "ice cream" or "cream" or "ice" or "sherbet" or "' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"ice cream" or "cream" or "ice" or "sherbet" or "sorbet"'
@@ -795,12 +797,12 @@ for a lengthy read:</p>
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'the infection color property'
                 UNPARSED_NOUN_NT'referring to an ice cream cone'
-            IMPERATIVE_NT'carry out someone resolving an ice cream cone' {unit: 3} {imperative definition: 957}
-            IMPERATIVE_NT'instead of someone eating a fresh ice cream cone' {unit: 3} {imperative definition: 958}
-            IMPERATIVE_NT'report someone eating an ice cream cone' {unit: 3} {imperative definition: 959}
-            IMPERATIVE_NT'before printing the name of an ice cream cone' {unit: 3} {imperative definition: 960}
+            IMPERATIVE_NT'carry out someone resolving an ice cream cone' {unit: 3} {imperative definition: 974}
+            IMPERATIVE_NT'instead of someone eating a fresh ice cream cone' {unit: 3} {imperative definition: 975}
+            IMPERATIVE_NT'report someone eating an ice cream cone' {unit: 3} {imperative definition: 976}
+            IMPERATIVE_NT'before printing the name of an ice cream cone' {unit: 3} {imperative definition: 977}
         HEADING_NT'section 2 - infection rules' {heading 5} {under: H5'section 2 - infection rules'} {unit: 3}
-            IMPERATIVE_NT'this is the infection rule' {unit: 3} {imperative definition: 961}
+            IMPERATIVE_NT'this is the infection rule' {unit: 3} {imperative definition: 978}
             SENTENCE_NT'a person can be infected or clean' {unit: 3} {classified}
                 VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}
                 COMMON_NOUN_NT'a person' {refined} {refers: infs'person'} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}
@@ -813,11 +815,11 @@ for a lengthy read:</p>
                 COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'person'} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}
                 ALLOWED_NT'has' {refined}
                     UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s} {refined}
-            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 962}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 963}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 964}
-            IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 965}
-            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 966}
+            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 979}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 980}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 981}
+            IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 982}
+            IMPERATIVE_NT'every turn' {unit: 3} {imperative definition: 983}
             SENTENCE_NT'understand "sneeze on [something]" as sneezing on' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"sneeze on [something]"'
@@ -826,11 +828,11 @@ for a lengthy read:</p>
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'sneezing on'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'check sneezing on' {unit: 3} {imperative definition: 967}
-            IMPERATIVE_NT'carry out sneezing on' {unit: 3} {imperative definition: 968}
-            IMPERATIVE_NT'carry out someone sneezing on' {unit: 3} {imperative definition: 969}
-            IMPERATIVE_NT'report sneezing on' {unit: 3} {imperative definition: 970}
-            IMPERATIVE_NT'report someone sneezing on' {unit: 3} {imperative definition: 971}
+            IMPERATIVE_NT'check sneezing on' {unit: 3} {imperative definition: 984}
+            IMPERATIVE_NT'carry out sneezing on' {unit: 3} {imperative definition: 985}
+            IMPERATIVE_NT'carry out someone sneezing on' {unit: 3} {imperative definition: 986}
+            IMPERATIVE_NT'report sneezing on' {unit: 3} {imperative definition: 987}
+            IMPERATIVE_NT'report someone sneezing on' {unit: 3} {imperative definition: 988}
             SENTENCE_NT'understand "inject [someone] with [something]" as injecting ' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"inject [someone] with [something]"'
@@ -851,10 +853,10 @@ for a lengthy read:</p>
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'injecting it with'
                 UNPARSED_NOUN_NT'applying to two things'
-            IMPERATIVE_NT'check injecting it with' {unit: 3} {imperative definition: 972}
-            IMPERATIVE_NT'carry out injecting it with' {unit: 3} {imperative definition: 973}
-            IMPERATIVE_NT'after injecting the player with something' {unit: 3} {imperative definition: 974}
-            IMPERATIVE_NT'report injecting it with' {unit: 3} {imperative definition: 975}
+            IMPERATIVE_NT'check injecting it with' {unit: 3} {imperative definition: 989}
+            IMPERATIVE_NT'carry out injecting it with' {unit: 3} {imperative definition: 990}
+            IMPERATIVE_NT'after injecting the player with something' {unit: 3} {imperative definition: 991}
+            IMPERATIVE_NT'report injecting it with' {unit: 3} {imperative definition: 992}
         HEADING_NT'section 3 - geography' {heading 5} {under: H5'section 3 - geography'} {unit: 3}
             INCLUSION_NT'include locksmith by emily short' {unit: 3}
                 HEADING_NT'version 14 of locksmith by emily short begins here' {heading 0} {under: H0'version 14 of locksmith by emily short begins here'} {includes: Locksmith by Emily Short v14 } {unit: 3}
@@ -879,9 +881,9 @@ for a lengthy read:</p>
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'going toward'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'check going toward' {unit: 3} {imperative definition: 1013}
-            IMPERATIVE_NT'carry out going toward' {unit: 3} {imperative definition: 1014}
-            IMPERATIVE_NT'instead of waiting when the destination of the player is not' {unit: 3} {imperative definition: 1015}
+            IMPERATIVE_NT'check going toward' {unit: 3} {imperative definition: 1030}
+            IMPERATIVE_NT'carry out going toward' {unit: 3} {imperative definition: 1031}
+            IMPERATIVE_NT'instead of waiting when the destination of the player is not' {unit: 3} {imperative definition: 1032}
             SENTENCE_NT'understand "stop" or "cease" as stopping' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"stop" or "cease"'
@@ -890,11 +892,11 @@ for a lengthy read:</p>
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'stopping'
                 UNPARSED_NOUN_NT'applying to nothing'
-            IMPERATIVE_NT'carry out stopping' {unit: 3} {imperative definition: 1016}
-            IMPERATIVE_NT'report stopping' {unit: 3} {imperative definition: 1017}
-            IMPERATIVE_NT'after going to an air-conditioned room' {unit: 3} {imperative definition: 1018}
-            IMPERATIVE_NT'after going from an air-conditioned room' {unit: 3} {imperative definition: 1019}
-            IMPERATIVE_NT'instead of listening to an air-conditioned room' {unit: 3} {imperative definition: 1020}
+            IMPERATIVE_NT'carry out stopping' {unit: 3} {imperative definition: 1033}
+            IMPERATIVE_NT'report stopping' {unit: 3} {imperative definition: 1034}
+            IMPERATIVE_NT'after going to an air-conditioned room' {unit: 3} {imperative definition: 1035}
+            IMPERATIVE_NT'after going from an air-conditioned room' {unit: 3} {imperative definition: 1036}
+            IMPERATIVE_NT'instead of listening to an air-conditioned room' {unit: 3} {imperative definition: 1037}
             SENTENCE_NT'the alfred cralle pool hall is a room' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'alfred cralle pool hall'} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: object} {instance: I148'alfred cralle pool hall'} {enumeration: 0}} {created here}
@@ -910,7 +912,7 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: object} {instance: I150'felt door'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is west of' {meaning: west-map-r} {refined}
                     PROPER_NOUN_NT'pool hall' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'alfred cralle pool hall'} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: room} {instance: I148'alfred cralle pool hall'} {enumeration: 0}}
-                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I89'west'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I114'west'} {enumeration: 0}} {refined}
             SENTENCE_NT'the felt door is a door' {unit: 3} {classified} {interpretation of subject: infs'felt door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: object} {instance: I150'felt door'} {enumeration: 0}}
@@ -936,13 +938,13 @@ for a lengthy read:</p>
                     PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I150'felt door'} {enumeration: 0}}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"It has a prominent lock, designed for an old-fashioned key.' {refined} {eval: CONSTANT_NT'"It has a prominent lock, designed for an old-fashioned key.' {kind: text}}
-            IMPERATIVE_NT'after locking a door with something in the presence of an ot' {unit: 3} {imperative definition: 1021}
+            IMPERATIVE_NT'after locking a door with something in the presence of an ot' {unit: 3} {imperative definition: 1038}
             SENTENCE_NT'nancy johnson memorial square is west of the felt door' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}
                 PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I152'nancy johnson memorial square'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is west of' {meaning: west-map-r} {refined}
                     PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I150'felt door'} {enumeration: 0}}
-                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I89'west'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I114'west'} {enumeration: 0}} {refined}
             SENTENCE_NT'the description of nancy johnson memorial square is "Waves o' {unit: 3} {classified} {interpretation of subject: infs'nancy johnson memorial square'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of nancy johnson memorial square' {definite 'the' n/m/f s/p nom/acc} {refined}
@@ -988,7 +990,7 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'post office' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'post office'} {eval: CONSTANT_NT'post office' {kind: object} {instance: I156'post office'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is northwest of' {meaning: northwest-map-r} {refined}
                     PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I152'nancy johnson memorial square'} {enumeration: 0}}
-                    PROPER_NOUN_NT'northwest' {refers: infs'northwest'} {eval: CONSTANT_NT'northwest' {kind: direction} {instance: I84'northwest'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'northwest' {refers: infs'northwest'} {eval: CONSTANT_NT'northwest' {kind: direction} {instance: I109'northwest'} {enumeration: 0}} {refined}
             SENTENCE_NT'"Service at the post office is on the slow side since everyt' {unit: 3} {classified}
             SENTENCE_NT'the slot is scenery in the post office' {unit: 3} {classified} {interpretation of subject: infs'post office'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -998,21 +1000,21 @@ for a lengthy read:</p>
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'slot'} {eval: CONSTANT_NT'slot' {kind: object} {instance: I157'slot'} {enumeration: 0}}
                 COMMON_NOUN_NT'container' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'container'} {creation: &lt;&lt; kind=container(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'carry out inserting something into the slot' {unit: 3} {imperative definition: 1022}
-            IMPERATIVE_NT'report inserting something into the slot' {unit: 3} {imperative definition: 1023}
+            IMPERATIVE_NT'carry out inserting something into the slot' {unit: 3} {imperative definition: 1039}
+            IMPERATIVE_NT'report inserting something into the slot' {unit: 3} {imperative definition: 1040}
             SENTENCE_NT'hamwi street is northeast of an iron gate' {unit: 3} {classified} {interpretation of subject: infs'slot'}
                 VERB_NT'is northeast of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: northeast of}
                 PROPER_NOUN_NT'hamwi street' {refined} {refers: infs'hamwi street'} {eval: CONSTANT_NT'hamwi street' {kind: object} {instance: I158'hamwi street'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is northeast of' {meaning: northeast-map-r} {refined}
                     PROPER_NOUN_NT'iron gate' {indefinite 'an' n/m/f nom/acc s} {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: object} {instance: I159'iron gate'} {enumeration: 0}} {created here}
-                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I83'northeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I108'northeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'"A U-shaped street running from Main Street around to the Me' {unit: 3} {classified}
             SENTENCE_NT'the iron gate is northeast of nancy johnson memorial square' {unit: 3} {classified} {interpretation of subject: infs'hamwi street'}
                 VERB_NT'is northeast of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: northeast of}
                 PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: object} {instance: I159'iron gate'} {enumeration: 0}}
                 RELATIONSHIP_NT'is northeast of' {meaning: northeast-map-r} {refined}
                     PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I152'nancy johnson memorial square'} {enumeration: 0}}
-                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I83'northeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I108'northeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'the iron gate is a door' {unit: 3} {classified} {interpretation of subject: infs'iron gate'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'iron gate' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'iron gate'} {eval: CONSTANT_NT'iron gate' {kind: object} {instance: I159'iron gate'} {enumeration: 0}}
@@ -1023,19 +1025,19 @@ for a lengthy read:</p>
                 AND_NT'and' {refined}
                     ADJECTIVE_NT'lockable' {refined} {predicate: lockable} {creation: &lt;&lt; lockable(x) ^ lockable(x) &gt;&gt;}
                     ADJECTIVE_NT'unlocked' {refined} {predicate: unlocked} {creation: &lt;&lt; unlocked(x) ^ unlocked(x) &gt;&gt;}
-            IMPERATIVE_NT'before printing the name of the iron gate while not opening ' {unit: 3} {imperative definition: 1024}
+            IMPERATIVE_NT'before printing the name of the iron gate while not opening ' {unit: 3} {imperative definition: 1041}
             SENTENCE_NT'cold comfort ice cream is north of a metal door' {unit: 3} {classified} {interpretation of subject: infs'iron gate'}
                 VERB_NT'is north of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: north of}
                 PROPER_NOUN_NT'cold comfort ice cream' {refined} {refers: infs'cold comfort ice cream'} {eval: CONSTANT_NT'cold comfort ice cream' {kind: object} {instance: I160'cold comfort ice cream'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is north of' {meaning: north-map-r} {refined}
                     PROPER_NOUN_NT'metal door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'metal door'} {eval: CONSTANT_NT'metal door' {kind: object} {instance: I161'metal door'} {enumeration: 0}} {created here}
-                    PROPER_NOUN_NT'north' {refers: infs'north'} {eval: CONSTANT_NT'north' {kind: direction} {instance: I82'north'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'north' {refers: infs'north'} {eval: CONSTANT_NT'north' {kind: direction} {instance: I107'north'} {enumeration: 0}} {refined}
             SENTENCE_NT'the metal door is north of hamwi street' {unit: 3} {classified} {interpretation of subject: infs'cold comfort ice cream'}
                 VERB_NT'is north of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: north of}
                 PROPER_NOUN_NT'metal door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'metal door'} {eval: CONSTANT_NT'metal door' {kind: object} {instance: I161'metal door'} {enumeration: 0}}
                 RELATIONSHIP_NT'is north of' {meaning: north-map-r} {refined}
                     PROPER_NOUN_NT'hamwi street' {refined} {refers: infs'hamwi street'} {eval: CONSTANT_NT'hamwi street' {kind: object} {instance: I158'hamwi street'} {enumeration: 0}}
-                    PROPER_NOUN_NT'north' {refers: infs'north'} {eval: CONSTANT_NT'north' {kind: direction} {instance: I82'north'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'north' {refers: infs'north'} {eval: CONSTANT_NT'north' {kind: direction} {instance: I107'north'} {enumeration: 0}} {refined}
             SENTENCE_NT'a poster is fixed in place in cold comfort' {unit: 3} {classified} {interpretation of subject: infs'metal door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'poster' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'poster'} {eval: CONSTANT_NT'poster' {kind: object} {instance: I162'poster'} {enumeration: 0}} {created here}
@@ -1068,14 +1070,14 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'marciony street' {refined} {refers: infs'marciony street'} {eval: CONSTANT_NT'marciony street' {kind: object} {instance: I163'marciony street'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is southeast of' {meaning: southeast-map-r} {refined}
                     PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I152'nancy johnson memorial square'} {enumeration: 0}}
-                    PROPER_NOUN_NT'southeast' {refers: infs'southeast'} {eval: CONSTANT_NT'southeast' {kind: direction} {instance: I86'southeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'southeast' {refers: infs'southeast'} {eval: CONSTANT_NT'southeast' {kind: direction} {instance: I111'southeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'"A semi-circular terrace, named somewhat fancifully after on' {unit: 3} {classified}
             SENTENCE_NT'the movie rental store is west of a glass door' {unit: 3} {classified} {interpretation of subject: infs'marciony street'}
                 VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}
                 PROPER_NOUN_NT'movie rental store' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'movie rental store'} {eval: CONSTANT_NT'movie rental store' {kind: object} {instance: I164'movie rental store'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is west of' {meaning: west-map-r} {refined}
                     PROPER_NOUN_NT'glass door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: object} {instance: I165'glass door'} {enumeration: 0}} {created here}
-                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I89'west'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I114'west'} {enumeration: 0}} {refined}
             SENTENCE_NT'the glass door is a door' {unit: 3} {classified} {interpretation of subject: infs'movie rental store'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: object} {instance: I165'glass door'} {enumeration: 0}}
@@ -1085,7 +1087,7 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'it' {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: door} {instance: I165'glass door'} {enumeration: 0}}
                 RELATIONSHIP_NT'is west of' {meaning: west-map-r} {refined}
                     PROPER_NOUN_NT'marciony street' {refined} {refers: infs'marciony street'} {eval: CONSTANT_NT'marciony street' {kind: object} {instance: I163'marciony street'} {enumeration: 0}}
-                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I89'west'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'west' {refers: infs'west'} {eval: CONSTANT_NT'west' {kind: direction} {instance: I114'west'} {enumeration: 0}} {refined}
             SENTENCE_NT'the glass door is lockable and unlocked' {unit: 3} {classified} {interpretation of subject: infs'glass door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'glass door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'glass door'} {eval: CONSTANT_NT'glass door' {kind: door} {instance: I165'glass door'} {enumeration: 0}}
@@ -1102,13 +1104,13 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I166'main street'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is southeast of' {meaning: southeast-map-r} {refined}
                     PROPER_NOUN_NT'hamwi street' {refined} {refers: infs'hamwi street'} {eval: CONSTANT_NT'hamwi street' {kind: object} {instance: I158'hamwi street'} {enumeration: 0}}
-                    PROPER_NOUN_NT'southeast' {refers: infs'southeast'} {eval: CONSTANT_NT'southeast' {kind: direction} {instance: I86'southeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'southeast' {refers: infs'southeast'} {eval: CONSTANT_NT'southeast' {kind: direction} {instance: I111'southeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'main street is northeast of some bronze gates' {unit: 3} {classified} {interpretation of subject: infs'main street'}
                 VERB_NT'is northeast of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: northeast of}
                 PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I166'main street'} {enumeration: 0}}
                 RELATIONSHIP_NT'is northeast of' {meaning: northeast-map-r} {refined}
                     PROPER_NOUN_NT'bronze gates' {indefinite 'some' n/m/f nom/acc p} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: object} {instance: I167'bronze gates'} {enumeration: 0}} {created here}
-                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I83'northeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I108'northeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'the emergency box is in main street' {unit: 3} {classified} {interpretation of subject: infs'main street'}
                 VERB_NT'is in' {verb 'be' 3p s act IS_TENSE +ve} {prep1: in}
                 PROPER_NOUN_NT'emergency box' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'emergency box'} {eval: CONSTANT_NT'emergency box' {kind: object} {instance: I168'emergency box'} {enumeration: 0}} {created here}
@@ -1129,8 +1131,8 @@ for a lengthy read:</p>
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"glass"'
                 UNPARSED_NOUN_NT'the box'
-            IMPERATIVE_NT'instead of attacking the closed emergency box' {unit: 3} {imperative definition: 1025}
-            IMPERATIVE_NT'instead of attacking the open emergency box' {unit: 3} {imperative definition: 1026}
+            IMPERATIVE_NT'instead of attacking the closed emergency box' {unit: 3} {imperative definition: 1042}
+            IMPERATIVE_NT'instead of attacking the open emergency box' {unit: 3} {imperative definition: 1043}
             SENTENCE_NT'the syringe is in the emergency box' {unit: 3} {classified} {interpretation of subject: infs'emergency box'}
                 VERB_NT'is in' {verb 'be' 3p s act IS_TENSE +ve} {prep1: in}
                 PROPER_NOUN_NT'syringe' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'syringe'} {eval: CONSTANT_NT'syringe' {kind: object} {instance: I169'syringe'} {enumeration: 0}} {created here}
@@ -1147,7 +1149,7 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: object} {instance: I167'bronze gates'} {enumeration: 0}}
                 RELATIONSHIP_NT'are northeast of' {meaning: northeast-map-r} {refined}
                     PROPER_NOUN_NT'marciony street' {refined} {refers: infs'marciony street'} {eval: CONSTANT_NT'marciony street' {kind: object} {instance: I163'marciony street'} {enumeration: 0}}
-                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I83'northeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'northeast' {refers: infs'northeast'} {eval: CONSTANT_NT'northeast' {kind: direction} {instance: I108'northeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'the bronze gates are a door' {unit: 3} {classified} {interpretation of subject: infs'bronze gates'}
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
                 PROPER_NOUN_NT'bronze gates' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'bronze gates'} {eval: CONSTANT_NT'bronze gates' {kind: object} {instance: I167'bronze gates'} {enumeration: 0}}
@@ -1169,7 +1171,7 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'public library' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'public library'} {eval: CONSTANT_NT'public library' {kind: object} {instance: I170'public library'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is east of' {meaning: east-map-r} {refined}
                     PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I166'main street'} {enumeration: 0}}
-                    PROPER_NOUN_NT'east' {refers: infs'east'} {eval: CONSTANT_NT'east' {kind: direction} {instance: I88'east'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'east' {refers: infs'east'} {eval: CONSTANT_NT'east' {kind: direction} {instance: I113'east'} {enumeration: 0}} {refined}
             SENTENCE_NT'"Built in the 1920s during the height of the dairy boom, the' {unit: 3} {classified}
             SENTENCE_NT'the incongruous sign is scenery in the public library' {unit: 3} {classified} {interpretation of subject: infs'public library'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -1186,7 +1188,7 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'town hall' {refined} {refers: infs'town hall'} {eval: CONSTANT_NT'town hall' {kind: object} {instance: I172'town hall'} {enumeration: 0}} {created here}
                 RELATIONSHIP_NT'is southeast of' {meaning: southeast-map-r} {refined}
                     PROPER_NOUN_NT'main street' {refined} {refers: infs'main street'} {eval: CONSTANT_NT'main street' {kind: object} {instance: I166'main street'} {enumeration: 0}}
-                    PROPER_NOUN_NT'southeast' {refers: infs'southeast'} {eval: CONSTANT_NT'southeast' {kind: direction} {instance: I86'southeast'} {enumeration: 0}} {refined}
+                    PROPER_NOUN_NT'southeast' {refers: infs'southeast'} {eval: CONSTANT_NT'southeast' {kind: direction} {instance: I111'southeast'} {enumeration: 0}} {refined}
             SENTENCE_NT'"Town Hall was built during the slow days of the ice-cream b' {unit: 3} {classified}
             SENTENCE_NT'the key to the city is in town hall' {unit: 3} {classified} {interpretation of subject: infs'town hall'}
                 VERB_NT'is in' {verb 'be' 3p s act IS_TENSE +ve} {prep1: in}
@@ -1233,8 +1235,8 @@ for a lengthy read:</p>
             SENTENCE_NT'use full-length room descriptions' {unit: 3} {classified}
                 VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                 UNPARSED_NOUN_NT'full-length room descriptions'
-            IMPERATIVE_NT'after looking in an outdoors room' {unit: 3} {imperative definition: 1027}
-            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 1028}
+            IMPERATIVE_NT'after looking in an outdoors room' {unit: 3} {imperative definition: 1044}
+            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 1045}
             DEFN_CONT_NT'a door is proximate' {unit: 3}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
@@ -1255,7 +1257,7 @@ for a lengthy read:</p>
                                 INVOCATION_NT'yes' {phrase invoked: &lt;no-inter-name&gt;}
                     INVOCATION_LIST_NT'no' {unit: 3}
                         INVOCATION_NT'no' {phrase invoked: &lt;no-inter-name&gt;}
-            IMPERATIVE_NT'before exiting when the player is in an indoors room' {unit: 3} {imperative definition: 1029}
+            IMPERATIVE_NT'before exiting when the player is in an indoors room' {unit: 3} {imperative definition: 1046}
             SENTENCE_NT'blank is a room' {unit: 3} {classified} {interpretation of subject: infs'key to the city'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'blank' {refined} {refers: infs'blank'} {eval: CONSTANT_NT'blank' {kind: object} {instance: I173'blank'} {enumeration: 0}} {created here}
@@ -1263,7 +1265,7 @@ for a lengthy read:</p>
             SENTENCE_NT'the destination of the player is blank' {unit: 3} {classified} {interpretation of subject: infs'blank'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'destination of the player' {definite 'the' n/m/f s/p nom/acc} {refined}
-                    PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'yourself'} {eval: CONSTANT_NT'yourself' {kind: person} {instance: I94'yourself'} {enumeration: 0}} {turned already}
+                    PROPER_NOUN_NT'player' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'yourself'} {eval: CONSTANT_NT'yourself' {kind: person} {instance: I119'yourself'} {enumeration: 0}} {turned already}
                     PROPER_NOUN_NT'destination' {refined} {eval: CONSTANT_NT {kind: rooms valued property} {property: 'destination'=room}}
                 PROPER_NOUN_NT'blank' {refined} {refers: infs'blank'} {eval: CONSTANT_NT'blank' {kind: room} {instance: I173'blank'} {enumeration: 0}}
             SENTENCE_NT'blank contains 15 ice cream cones' {unit: 3} {classified} {interpretation of subject: infs'blank'}
@@ -1271,34 +1273,34 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'blank' {refined} {refers: infs'blank'} {eval: CONSTANT_NT'blank' {kind: room} {instance: I173'blank'} {enumeration: 0}}
                 RELATIONSHIP_NT'contains' {meaning: is-in} {refined}
                     AND_NT
-                        PROPER_NOUN_NT {refers: infs534} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I174} {enumeration: 0}} {created here}
+                        PROPER_NOUN_NT {refers: infs540} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I174} {enumeration: 0}} {created here}
                         AND_NT
-                            PROPER_NOUN_NT {refers: infs535} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I175} {enumeration: 0}} {created here}
+                            PROPER_NOUN_NT {refers: infs541} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I175} {enumeration: 0}} {created here}
                             AND_NT
-                                PROPER_NOUN_NT {refers: infs536} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I176} {enumeration: 0}} {created here}
+                                PROPER_NOUN_NT {refers: infs542} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I176} {enumeration: 0}} {created here}
                                 AND_NT
-                                    PROPER_NOUN_NT {refers: infs537} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I177} {enumeration: 0}} {created here}
+                                    PROPER_NOUN_NT {refers: infs543} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I177} {enumeration: 0}} {created here}
                                     AND_NT
-                                        PROPER_NOUN_NT {refers: infs538} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I178} {enumeration: 0}} {created here}
+                                        PROPER_NOUN_NT {refers: infs544} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I178} {enumeration: 0}} {created here}
                                         AND_NT
-                                            PROPER_NOUN_NT {refers: infs539} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I179} {enumeration: 0}} {created here}
+                                            PROPER_NOUN_NT {refers: infs545} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I179} {enumeration: 0}} {created here}
                                             AND_NT
-                                                PROPER_NOUN_NT {refers: infs540} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I180} {enumeration: 0}} {created here}
+                                                PROPER_NOUN_NT {refers: infs546} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I180} {enumeration: 0}} {created here}
                                                 AND_NT
-                                                    PROPER_NOUN_NT {refers: infs541} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I181} {enumeration: 0}} {created here}
+                                                    PROPER_NOUN_NT {refers: infs547} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I181} {enumeration: 0}} {created here}
                                                     AND_NT
-                                                        PROPER_NOUN_NT {refers: infs542} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I182} {enumeration: 0}} {created here}
+                                                        PROPER_NOUN_NT {refers: infs548} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I182} {enumeration: 0}} {created here}
                                                         AND_NT
-                                                            PROPER_NOUN_NT {refers: infs543} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I183} {enumeration: 0}} {created here}
+                                                            PROPER_NOUN_NT {refers: infs549} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I183} {enumeration: 0}} {created here}
                                                             AND_NT
-                                                                PROPER_NOUN_NT {refers: infs544} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I184} {enumeration: 0}} {created here}
+                                                                PROPER_NOUN_NT {refers: infs550} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I184} {enumeration: 0}} {created here}
                                                                 AND_NT
-                                                                    PROPER_NOUN_NT {refers: infs545} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I185} {enumeration: 0}} {created here}
+                                                                    PROPER_NOUN_NT {refers: infs551} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I185} {enumeration: 0}} {created here}
                                                                     AND_NT
-                                                                        PROPER_NOUN_NT {refers: infs546} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I186} {enumeration: 0}} {created here}
+                                                                        PROPER_NOUN_NT {refers: infs552} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I186} {enumeration: 0}} {created here}
                                                                         AND_NT
-                                                                            PROPER_NOUN_NT {refers: infs547} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I187} {enumeration: 0}} {created here}
-                                                                            PROPER_NOUN_NT {refers: infs548} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I188} {enumeration: 0}} {created here}
+                                                                            PROPER_NOUN_NT {refers: infs553} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I187} {enumeration: 0}} {created here}
+                                                                            PROPER_NOUN_NT {refers: infs554} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I188} {enumeration: 0}} {created here}
         HEADING_NT'section 4 - other players' {heading 5} {under: H5'section 4 - other players'} {unit: 3}
             SENTENCE_NT'vanessa is a woman in cold comfort' {unit: 3} {classified}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
@@ -1332,10 +1334,10 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I193'lewis'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
                     AND_NT
-                        PROPER_NOUN_NT {refers: infs554} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I194} {enumeration: 0}} {created here}
+                        PROPER_NOUN_NT {refers: infs560} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I194} {enumeration: 0}} {created here}
                         AND_NT
-                            PROPER_NOUN_NT {refers: infs555} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I195} {enumeration: 0}} {created here}
-                            PROPER_NOUN_NT {refers: infs556} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I196} {enumeration: 0}} {created here}
+                            PROPER_NOUN_NT {refers: infs561} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I195} {enumeration: 0}} {created here}
+                            PROPER_NOUN_NT {refers: infs562} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I196} {enumeration: 0}} {created here}
             SENTENCE_NT'lewis carries a book called idiot's guide to dating' {unit: 3} {classified} {interpretation of subject: infs'lewis'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'lewis' {refined} {refers: infs'lewis'} {eval: CONSTANT_NT'lewis' {kind: man} {instance: I193'lewis'} {enumeration: 0}}
@@ -1364,7 +1366,7 @@ for a lengthy read:</p>
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I201'gene'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs562} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I202} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs568} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I202} {enumeration: 0}} {created here}
             SENTENCE_NT'gene carries a dvd called casablanca' {unit: 3} {classified} {interpretation of subject: infs'gene'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I201'gene'} {enumeration: 0}}
@@ -1374,7 +1376,7 @@ for a lengthy read:</p>
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'gene' {refined} {refers: infs'gene'} {eval: CONSTANT_NT'gene' {kind: man} {instance: I201'gene'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs564} {eval: CONSTANT_NT {kind: coupon} {instance: I204} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs570} {eval: CONSTANT_NT {kind: coupon} {instance: I204} {enumeration: 0}} {created here}
             SENTENCE_NT'rhoda is a woman in marciony street' {unit: 3} {classified} {interpretation of subject: infs'gene'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'rhoda' {refined} {refers: infs'rhoda'} {eval: CONSTANT_NT'rhoda' {kind: object} {instance: I205'rhoda'} {enumeration: 0}} {created here}
@@ -1407,7 +1409,7 @@ for a lengthy read:</p>
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'martin' {refined} {refers: infs'martin'} {eval: CONSTANT_NT'martin' {kind: man} {instance: I209'martin'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs571} {eval: CONSTANT_NT {kind: coupon} {instance: I211} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs577} {eval: CONSTANT_NT {kind: coupon} {instance: I211} {enumeration: 0}} {created here}
             SENTENCE_NT'antony is a man in movie rental' {unit: 3} {classified} {interpretation of subject: infs'martin'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: object} {instance: I212'antony'} {enumeration: 0}} {created here}
@@ -1416,7 +1418,7 @@ for a lengthy read:</p>
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: man} {instance: I212'antony'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs573} {eval: CONSTANT_NT {kind: coupon} {instance: I213} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs579} {eval: CONSTANT_NT {kind: coupon} {instance: I213} {enumeration: 0}} {created here}
             SENTENCE_NT'antony carries a stamped envelope called a postcard' {unit: 3} {classified} {interpretation of subject: infs'antony'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'antony' {refined} {refers: infs'antony'} {eval: CONSTANT_NT'antony' {kind: man} {instance: I212'antony'} {enumeration: 0}}
@@ -1436,24 +1438,24 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I215'shelby'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
                     AND_NT
-                        PROPER_NOUN_NT {refers: infs577} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I217} {enumeration: 0}} {created here}
+                        PROPER_NOUN_NT {refers: infs583} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I217} {enumeration: 0}} {created here}
                         AND_NT
-                            PROPER_NOUN_NT {refers: infs578} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I218} {enumeration: 0}} {created here}
+                            PROPER_NOUN_NT {refers: infs584} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I218} {enumeration: 0}} {created here}
                             AND_NT
-                                PROPER_NOUN_NT {refers: infs579} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I219} {enumeration: 0}} {created here}
+                                PROPER_NOUN_NT {refers: infs585} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I219} {enumeration: 0}} {created here}
                                 AND_NT
-                                    PROPER_NOUN_NT {refers: infs580} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I220} {enumeration: 0}} {created here}
-                                    PROPER_NOUN_NT {refers: infs581} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I221} {enumeration: 0}} {created here}
+                                    PROPER_NOUN_NT {refers: infs586} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I220} {enumeration: 0}} {created here}
+                                    PROPER_NOUN_NT {refers: infs587} {eval: CONSTANT_NT {kind: stamped envelope} {instance: I221} {enumeration: 0}} {created here}
             SENTENCE_NT'shelby carries an ice cream cone' {unit: 3} {classified} {interpretation of subject: infs'shelby'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I215'shelby'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs582} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I222} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs588} {eval: CONSTANT_NT {kind: ice cream cone} {instance: I222} {enumeration: 0}} {created here}
             SENTENCE_NT'shelby carries a coupon' {unit: 3} {classified} {interpretation of subject: infs'shelby'}
                 VERB_NT'carries' {verb 'carry' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shelby' {refined} {refers: infs'shelby'} {eval: CONSTANT_NT'shelby' {kind: man} {instance: I215'shelby'} {enumeration: 0}}
                 RELATIONSHIP_NT'carries' {meaning: is-carried-by} {refined}
-                    PROPER_NOUN_NT {refers: infs583} {eval: CONSTANT_NT {kind: coupon} {instance: I223} {enumeration: 0}} {created here}
+                    PROPER_NOUN_NT {refers: infs589} {eval: CONSTANT_NT {kind: coupon} {instance: I223} {enumeration: 0}} {created here}
             SENTENCE_NT'christopher is a man in the library' {unit: 3} {classified} {interpretation of subject: infs'shelby'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'christopher' {refined} {refers: infs'christopher'} {eval: CONSTANT_NT'christopher' {kind: object} {instance: I224'christopher'} {enumeration: 0}} {created here}
@@ -1481,15 +1483,15 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'ned' {refined} {refers: infs'ned'} {eval: CONSTANT_NT'ned' {kind: man} {instance: I226'ned'} {enumeration: 0}}
                 RELATIONSHIP_NT'owns' {meaning: ownership-r} {refined}
                     PROPER_NOUN_NT'movie rental' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'movie rental store'} {eval: CONSTANT_NT'movie rental store' {kind: object} {instance: I164'movie rental store'} {enumeration: 0}}
-            IMPERATIVE_NT'after printing the name of someone ( called target ) while l' {unit: 3} {imperative definition: 1030}
+            IMPERATIVE_NT'after printing the name of someone ( called target ) while l' {unit: 3} {imperative definition: 1047}
             SENTENCE_NT'the description of a person is usually "[The noun] [if the n' {unit: 3} {classified} {interpretation of subject: infs'ned'}
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'description of a person' {definite 'the' n/m/f s/p nom/acc} {refined}
                     COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'person'} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {refined} {eval: CONSTANT_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {kind: text}}
-            IMPERATIVE_NT'after examining another person who is carrying something' {unit: 3} {imperative definition: 1031}
-            IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 1032}
+            IMPERATIVE_NT'after examining another person who is carrying something' {unit: 3} {imperative definition: 1048}
+            IMPERATIVE_NT'when play begins' {unit: 3} {imperative definition: 1049}
         HEADING_NT'section 5 - conversation' {heading 5} {under: H5'section 5 - conversation'} {unit: 3}
             SENTENCE_NT'a person has a table name called conversation' {unit: 3} {classified}
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
@@ -1498,8 +1500,8 @@ for a lengthy read:</p>
                     PROPERTYCALLED_NT'called'
                         UNPARSED_NOUN_NT'table name' {indefinite 'a' n/m/f nom/acc s}
                         UNPARSED_NOUN_NT'conversation'
-            IMPERATIVE_NT'instead of asking someone about something' {unit: 3} {imperative definition: 1033}
-            IMPERATIVE_NT'instead of telling someone about something' {unit: 3} {imperative definition: 1034}
+            IMPERATIVE_NT'instead of asking someone about something' {unit: 3} {imperative definition: 1050}
+            IMPERATIVE_NT'instead of telling someone about something' {unit: 3} {imperative definition: 1051}
             SENTENCE_NT'understand "recap" or "recall" or "review" as recalling conv' {unit: 3} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"recap" or "recall" or "review"'
@@ -1508,7 +1510,7 @@ for a lengthy read:</p>
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'recalling conversations'
                 UNPARSED_NOUN_NT'applying to nothing'
-            IMPERATIVE_NT'carry out recalling conversations' {unit: 3} {imperative definition: 1035}
+            IMPERATIVE_NT'carry out recalling conversations' {unit: 3} {imperative definition: 1052}
             SENTENCE_NT'the conversation of a person is usually table of general chi' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'conversation of a person' {definite 'the' n/m/f s/p nom/acc} {refined}
@@ -1523,7 +1525,7 @@ for a lengthy read:</p>
                     PROPER_NOUN_NT'conversation' {refined} {eval: CONSTANT_NT {kind: table names valued property} {property: 'conversation'=table name}}
                 PROPER_NOUN_NT'table of vanessa chatter' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT'table of vanessa chatter' {kind: table name} {table: table_data} {meaning: {table of vanessa chatter = TABLE_MC}}}
             TABLE_NT'table of vanessa chatter topic reply summary turn stamp char' {unit: 3}
-            IMPERATIVE_NT'after reading a command' {unit: 3} {imperative definition: 1036}
+            IMPERATIVE_NT'after reading a command' {unit: 3} {imperative definition: 1053}
         HEADING_NT'section 6 - movement description' {heading 5} {under: H5'section 6 - movement description'} {unit: 3}
             SENTENCE_NT'a person has some text called walk style' {unit: 3} {classified}
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
@@ -1570,8 +1572,8 @@ for a lengthy read:</p>
                 PROPER_NOUN_NT'"sashay"' {refined} {eval: CONSTANT_NT'"sashay"' {kind: text}}
             TABLE_NT'table of visible exits character second third heading chosen' {unit: 3}
             TABLE_NT'table of visible entrances character second third heading ch' {unit: 3}
-            IMPERATIVE_NT'to clear ( current table - a table name )' {unit: 3} {imperative definition: 1037}
-            IMPERATIVE_NT'to tidy departures of ( current table - a table name )' {unit: 3} {imperative definition: 1038}
+            IMPERATIVE_NT'to clear ( current table - a table name )' {unit: 3} {imperative definition: 1054}
+            IMPERATIVE_NT'to tidy departures of ( current table - a table name )' {unit: 3} {imperative definition: 1055}
             SENTENCE_NT'a door has a person called last opener' {unit: 3} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: &lt;&lt; kind=door(x) &gt;&gt;} {eval: TEST_VALUE_NT}
@@ -1579,21 +1581,21 @@ for a lengthy read:</p>
                     PROPERTYCALLED_NT'called'
                         UNPARSED_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
                         UNPARSED_NOUN_NT'last opener'
-            IMPERATIVE_NT'report someone opening a door' {unit: 3} {imperative definition: 1039}
-            IMPERATIVE_NT'report someone going through a door ( called route )' {unit: 3} {imperative definition: 1040}
+            IMPERATIVE_NT'report someone opening a door' {unit: 3} {imperative definition: 1056}
+            IMPERATIVE_NT'report someone going through a door ( called route )' {unit: 3} {imperative definition: 1057}
             SENTENCE_NT'the last thing named is a thing that varies' {unit: 3} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'last thing named' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'last thing named' {nonlocal: 'last thing named'(var)thing}} {created here}
                 COMMON_NOUN_NT'thing that varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=things variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before printing the name of something ( called target ) whic' {unit: 3} {imperative definition: 1041}
-            IMPERATIVE_NT'report someone going a direction' {unit: 3} {imperative definition: 1042}
-            IMPERATIVE_NT'this is the movement reporting rule' {unit: 3} {imperative definition: 1043}
-            IMPERATIVE_NT'to generate descriptions from ( current table - a table name' {unit: 3} {imperative definition: 1044}
+            IMPERATIVE_NT'before printing the name of something ( called target ) whic' {unit: 3} {imperative definition: 1058}
+            IMPERATIVE_NT'report someone going a direction' {unit: 3} {imperative definition: 1059}
+            IMPERATIVE_NT'this is the movement reporting rule' {unit: 3} {imperative definition: 1060}
+            IMPERATIVE_NT'to generate descriptions from ( current table - a table name' {unit: 3} {imperative definition: 1061}
             SENTENCE_NT'the last person named is a person that varies' {unit: 3} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'last person named' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'last person named' {nonlocal: 'last person named'(var)person}} {created here}
                 COMMON_NOUN_NT'person that varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=people variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before printing the name of a person ( called target )' {unit: 3} {imperative definition: 1045}
+            IMPERATIVE_NT'before printing the name of a person ( called target )' {unit: 3} {imperative definition: 1062}
             SENTENCE_NT'group size is a number that varies' {unit: 3} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'group size' {refined} {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number}} {created here}
@@ -1602,19 +1604,19 @@ for a lengthy read:</p>
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'group size' {refined} {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number} {meaning: {group size = VARIABLE_MC}}}
                 PROPER_NOUN_NT'1' {refined} {eval: CONSTANT_NT'1' {kind: number} {explicit literal} {number: 1}}
-            IMPERATIVE_NT'to clear marked people' {unit: 3} {imperative definition: 1046}
-            IMPERATIVE_NT'before listing nondescript items' {unit: 3} {imperative definition: 1047}
-            IMPERATIVE_NT'to describe patients' {unit: 3} {imperative definition: 1048}
-            IMPERATIVE_NT'to say ( named character - a man ) as pronoun' {unit: 3} {imperative definition: 1049}
-            IMPERATIVE_NT'to say ( named character - a woman ) as pronoun' {unit: 3} {imperative definition: 1050}
-            IMPERATIVE_NT'to say looks as though dipped in for ( index - a number )' {unit: 3} {imperative definition: 1051}
+            IMPERATIVE_NT'to clear marked people' {unit: 3} {imperative definition: 1063}
+            IMPERATIVE_NT'before listing nondescript items' {unit: 3} {imperative definition: 1064}
+            IMPERATIVE_NT'to describe patients' {unit: 3} {imperative definition: 1065}
+            IMPERATIVE_NT'to say ( named character - a man ) as pronoun' {unit: 3} {imperative definition: 1066}
+            IMPERATIVE_NT'to say ( named character - a woman ) as pronoun' {unit: 3} {imperative definition: 1067}
+            IMPERATIVE_NT'to say looks as though dipped in for ( index - a number )' {unit: 3} {imperative definition: 1068}
             TABLE_NT'table of dipping phrases dipping "looks as though dipped in"' {unit: 3}
             SENTENCE_NT'a door is usually scenery' {unit: 3} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: &lt;&lt; kind=door(x) &gt;&gt;} {eval: TEST_VALUE_NT}
                 ADJECTIVE_NT'scenery' {refined} {predicate: scenery} {creation: &lt;&lt; scenery(x) ^ scenery(x) &gt;&gt;}
-            IMPERATIVE_NT'to make delimiter ( index - a number ) of ( count - a number' {unit: 3} {imperative definition: 1052}
-            IMPERATIVE_NT'to say optional comma' {unit: 3} {imperative definition: 1053}
+            IMPERATIVE_NT'to make delimiter ( index - a number ) of ( count - a number' {unit: 3} {imperative definition: 1069}
+            IMPERATIVE_NT'to say optional comma' {unit: 3} {imperative definition: 1070}
             SENTENCE_NT'test me with go to cold comfort / z / z / z / z / ask vaness' {unit: 3} {classified}
                 VERB_NT'test' {verb 'test' 3p p act IS_TENSE +ve} {prep2: with} {special meaning: test-with}
                 UNPARSED_NOUN_NT'me'
@@ -1623,10 +1625,10 @@ for a lengthy read:</p>
                 VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                 UNPARSED_NOUN_NT'fast route-finding'
     HEADING_NT'invented sentences' {under: H0'invented sentences'} {heading 0} {implied}
-        IMPERATIVE_NT'to decide which number is red level part of ( full - rgb col' {imperative definition: 1054}
-        IMPERATIVE_NT'to decide which number is green level part of ( full - rgb c' {imperative definition: 1055}
-        IMPERATIVE_NT'to decide which number is blue level part of ( full - rgb co' {imperative definition: 1056}
-        IMPERATIVE_NT'to decide which rgb colour is rgb colour with red level part' {imperative definition: 1057}
+        IMPERATIVE_NT'to decide which number is red level part of ( full - rgb col' {imperative definition: 1071}
+        IMPERATIVE_NT'to decide which number is green level part of ( full - rgb c' {imperative definition: 1072}
+        IMPERATIVE_NT'to decide which number is blue level part of ( full - rgb co' {imperative definition: 1073}
+        IMPERATIVE_NT'to decide which rgb colour is rgb colour with red level part' {imperative definition: 1074}
         SENTENCE_NT'number understood is a number which varies' {classified}
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'number understood' {refined} {eval: NONLOCAL_VARIABLE_NT'number understood' {nonlocal: 'number understood'(var)number}} {created here}
@@ -1691,6 +1693,10 @@ for a lengthy read:</p>
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'sound name understood' {refined} {eval: NONLOCAL_VARIABLE_NT'sound name understood' {nonlocal: 'sound name understood'(var)sound name}} {created here}
             COMMON_NOUN_NT'sound name which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=sound names variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}
+        SENTENCE_NT'command parser error understood is a command parser error wh' {classified}
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+            PROPER_NOUN_NT'command parser error understood' {refined} {eval: NONLOCAL_VARIABLE_NT'command parser error understood' {nonlocal: 'command parser error understood'(var)command parser error}} {created here}
+            COMMON_NOUN_NT'command parser error which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=command parser errors variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}
         SENTENCE_NT'natural language understood is a natural language which vari' {classified}
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'natural language understood' {refined} {eval: NONLOCAL_VARIABLE_NT'natural language understood' {nonlocal: 'natural language understood'(var)natural language}} {created here}
@@ -1699,6 +1705,10 @@ for a lengthy read:</p>
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'rgb colour understood' {refined} {eval: NONLOCAL_VARIABLE_NT'rgb colour understood' {nonlocal: 'rgb colour understood'(var)rgb colour}} {created here}
             COMMON_NOUN_NT'rgb colour which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=rgb colours variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}
+        SENTENCE_NT'hyperlink tag understood is a hyperlink tag which varies' {classified}
+            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+            PROPER_NOUN_NT'hyperlink tag understood' {refined} {eval: NONLOCAL_VARIABLE_NT'hyperlink tag understood' {nonlocal: 'hyperlink tag understood'(var)hyperlink tag}} {created here}
+            COMMON_NOUN_NT'hyperlink tag which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=hyperlink tags variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}
         SENTENCE_NT'grammatical tense understood is a grammatical tense which va' {classified}
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'grammatical tense understood' {refined} {eval: NONLOCAL_VARIABLE_NT'grammatical tense understood' {nonlocal: 'grammatical tense understood'(var)grammatical tense}} {created here}
@@ -1715,10 +1725,6 @@ for a lengthy read:</p>
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'grammatical gender understood' {refined} {eval: NONLOCAL_VARIABLE_NT'grammatical gender understood' {nonlocal: 'grammatical gender understood'(var)grammatical gender}} {created here}
             COMMON_NOUN_NT'grammatical gender which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=grammatical genders variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}
-        SENTENCE_NT'command parser error understood is a command parser error wh' {classified}
-            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-            PROPER_NOUN_NT'command parser error understood' {refined} {eval: NONLOCAL_VARIABLE_NT'command parser error understood' {nonlocal: 'command parser error understood'(var)command parser error}} {created here}
-            COMMON_NOUN_NT'command parser error which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=command parser errors variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}
         SENTENCE_NT'infection color understood is a infection color which varies' {classified}
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
             PROPER_NOUN_NT'infection color understood' {refined} {eval: NONLOCAL_VARIABLE_NT'infection color understood' {nonlocal: 'infection color understood'(var)infection color}} {created here}

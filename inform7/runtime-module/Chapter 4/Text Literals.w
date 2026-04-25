@@ -23,12 +23,15 @@ Text at runtime is stored in small blocks, always of size 2:
 	                    content
 ```
 
-The format can be one of four possible alternatives at runtime, and the runtime
+The format can be one of five possible alternatives at runtime, and the runtime
 system may dynamically switch between them; essentially it uses this to
 decompress text from its "packed" form to a character-accessible form only
 on demand.
 
-The compiler generates only one of these formats: `CONSTANT_PACKED_TEXT_STORAGE`.
+The compiler generates only three of these formats: `CONSTANT_PACKED_TEXT_STORAGE`,
+`CONSTANT_UNPACKED_TEXT_STORAGE` and `CONSTANT_PERISHABLE_TEXT_STORAGE_HL`.
+For an explanation of the latter, see //Text Substitutions//.
+
 In this format, the `content` can be either a packed string, or a function,
 so although there is no long block to make, we do always have something else
 to make besides the small block.
@@ -39,15 +42,35 @@ it will always be a function.
 =
 inter_name *TextLiterals::small_block(inter_name *content) {
 	inter_name *small_block = Enclosures::new_small_block_for_constant();
-	TextLiterals::compile_value_to(small_block, content);
+	TextLiterals::compile_SB_array(small_block, content, FALSE);
 	return small_block;
 }
 
-void TextLiterals::compile_value_to(inter_name *at, inter_name *content) {
+void TextLiterals::compile_SB_array(inter_name *at, inter_name *content, int perishable) {
 	packaging_state save = EmitArrays::begin_unchecked(at);
-	EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
+	if (perishable)
+		EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PERISHABLE_TEXT_STORAGE_HL));
+	else
+		EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
 	EmitArrays::iname_entry(content);
 	EmitArrays::end(save);
+}
+
+inter_name *TextLiterals::long_block(inter_name *at, text_stream *whatever) {
+	packaging_state save = EmitArrays::begin_unchecked(at);
+	TheHeap::emit_block_value_header(K_text, TRUE, Str::len(whatever) + 1);
+	for (int i=0; i<Str::len(whatever); i++)
+		EmitArrays::numeric_entry(Str::get_at(whatever, i));
+	EmitArrays::numeric_entry(0);
+	EmitArrays::end(save);
+
+	inter_name *small_block = Enclosures::new_small_block_for_constant();
+	save = EmitArrays::begin_unchecked(small_block);
+	EmitArrays::iname_entry(Hierarchy::find(CONSTANT_UNPACKED_TEXT_STORAGE_HL));
+	EmitArrays::iname_entry(at);
+	EmitArrays::end(save);
+
+	return small_block;
 }
 
 @h Default value.
@@ -94,9 +117,15 @@ inter_name *TextLiterals::to_value_inner(wording W, int unesc) {
 	if (Wide::cmp(Lexer::word_text(w1), U"\"\"") == 0)
 		return TextLiterals::default_text();
 
-	inter_name *content_iname = Enclosures::new_iname(LITERALS_HAP, TEXT_LITERAL_HL);
+	int unpacked = TRUE;
+	if (TargetVMs::is_16_bit(Task::vm())) unpacked = FALSE;
+	int lit = TEXT_LITERAL_HL;
+	if (unpacked) lit = UTEXT_LITERAL_HL;
+
+	inter_name *content_iname = Enclosures::new_iname(LITERALS_HAP, lit);
 	if (Task::wraps_existing_storyfile()) {
 		Emit::text_constant_literal(content_iname, I"--");
+		return TextLiterals::small_block(content_iname);
 	} else {
 		TEMPORARY_TEXT(TLT)
 		int options = CT_DEQUOTE;
@@ -107,10 +136,16 @@ inter_name *TextLiterals::to_value_inner(wording W, int unesc) {
 				options += CT_RECOGNISE_UNICODE_SUBSTITUTION;
 			}
 		}
-		TranscodeText::from_wide_string(TLT, Lexer::word_text(w1), options);
-		Emit::text_constant_literal(content_iname, TLT);
+		if (unpacked) TranscodeText::from_wide_string_for_emission(TLT, Lexer::word_text(w1));
+		else TranscodeText::from_wide_string(TLT, Lexer::word_text(w1), options);
+		inter_name *result = NULL;
+		if (unpacked) {
+			result = TextLiterals::long_block(content_iname, TLT);
+		} else {
+			Emit::text_constant_literal(content_iname, TLT);
+			result = TextLiterals::small_block(content_iname);
+		}
 		DISCARD_TEXT(TLT)
+		return result;
 	}
-
-	return TextLiterals::small_block(content_iname);
 }

@@ -8,8 +8,9 @@ int main(int argc, char **argv) {
 		char *M = i7_read_string(&proc, i7_read_variable(&proc, i7_V_meaning));
 		printf("[C program reads 'meaning' as %s]\n", M);
 		i7_try(&proc, i7_A_Examine, i7_I_Linear_B_tablet, 0);	
-		i7_write_string(&proc, i7_read_variable(&proc, i7_V_meaning),
-			"the goddess of the winds beckons you!");
+		i7_write_variable(&proc, i7_V_meaning,
+			i7_write_string(&proc, i7_read_variable(&proc, i7_V_meaning),
+				"the goddess of the winds beckons you!"));
 		i7_try(&proc, i7_A_Examine, i7_I_Linear_B_tablet, 0);	
 
 		int L = 0;

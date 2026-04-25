@@ -90,10 +90,7 @@ void ShortNames::compilation_agent(compilation_subtask *t) {
 	EmitCode::rtrue();
 	Functions::end(save);
 
-	save = EmitArrays::begin_unchecked(notice->snn_iname);
-	EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
-	EmitArrays::iname_entry(notice->routine_iname);
-	EmitArrays::end(save);
+	TextLiterals::compile_SB_array(notice->snn_iname, notice->routine_iname, FALSE);
 }
 
 @<Print the owner's short name@> =

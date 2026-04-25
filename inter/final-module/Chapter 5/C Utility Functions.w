@@ -44,10 +44,13 @@ to be converted to or from null-terminated C strings.
 
 @<C library header@> +=
 char *i7_read_string(i7process_t *proc, i7word_t S);
-void i7_write_string(i7process_t *proc, i7word_t S, char *A);
+i7word_t i7_write_string(i7process_t *proc, i7word_t S, char *A);
 
 @<C library code@> +=
+i7word_t i7_fn_TEXT_TY_Create(i7process_t *proc, i7word_t i7_mgl_kind_id, i7word_t i7_mgl_sa, i7word_t i7_mgl_sb);
 i7word_t i7_fn_TEXT_TY_Transmute(i7process_t *proc, i7word_t i7_mgl_local_txt, i7word_t i7_mgl_local_x);
+i7word_t i7_fn_BlkValueSetLBCapacity(i7process_t *proc, i7word_t i7_mgl_bv, i7word_t i7_mgl_cap, i7word_t i7_mgl_d);
+i7word_t i7_fn_BlkValueFree(i7process_t *proc, i7word_t i7_mgl_bv, i7word_t i7_mgl_d);
 i7word_t i7_fn_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from,
 	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect);
 i7word_t i7_fn_BlkValueWrite(i7process_t *proc, i7word_t i7_mgl_local_to,
@@ -76,16 +79,22 @@ char *i7_read_string(i7process_t *proc, i7word_t S) {
 	#endif
 }
 
-void i7_write_string(i7process_t *proc, i7word_t S, char *A) {
+i7word_t i7_write_string(i7process_t *proc, i7word_t S, char *A) {
+	i7word_t N = 0;
 	#ifdef i7_mgl_BASICINFORMKIT
-	i7_fn_TEXT_TY_Transmute(proc, S, 0);
-	i7_fn_BlkValueWrite(proc, S, 0, 0, 0);
+	i7_fn_BlkValueFree(proc, S, 0);
+	N = i7_fn_TEXT_TY_Create(proc, 0, 0, 0);
+	i7_fn_TEXT_TY_Transmute(proc, N, 0);
+	i7_fn_BlkValueSetLBCapacity(proc, N, A?(strlen(A)+1):1, 0);
+	i7_fn_BlkValueWrite(proc, N, 0, 0, 0);
 	if (A) {
 		int L = strlen(A);
 		for (int i=0; i<L; i++)
-			i7_fn_BlkValueWrite(proc, S, i, A[i], 0);
+			i7_fn_BlkValueWrite(proc, N, i, A[i], 0);
+		i7_fn_BlkValueWrite(proc, N, L, 0, 0);
 	}
 	#endif
+	return N;
 }
 
 @ And similarly for list values, which we convert to and from C arrays.

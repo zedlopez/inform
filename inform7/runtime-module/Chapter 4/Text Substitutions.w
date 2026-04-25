@@ -66,13 +66,10 @@ we expand this on the spot, i.e., inside the original stack frame.
 =
 void TextSubstitutions::compile_value(inter_name *at, inter_name *fn,
 	int makes_local_references) {
-	packaging_state save = EmitArrays::begin_unchecked(at);
 	if (makes_local_references)
-		EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PERISHABLE_TEXT_STORAGE_HL));
+		TextLiterals::compile_SB_array(at, fn, TRUE);
 	else
-		EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PACKED_TEXT_STORAGE_HL));
-	EmitArrays::iname_entry(fn);
-	EmitArrays::end(save);
+		TextLiterals::compile_SB_array(at, fn, FALSE);
 }
 
 @h Cues.
