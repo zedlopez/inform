@@ -327,18 +327,18 @@ void i7_restore_snapshot(i7process_t *proc) {
 	int was = proc->snapshot_pos;
 	proc->snapshot_pos = will_be;
 }
-#line 380 "inter/final-module/Chapter 5/C Assembly.w"
+#line 381 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_call(i7process_t *proc, i7word_t fn_ref, i7word_t varargc, i7word_t *z) {
 	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	for (int i=0; i<varargc; i++) args[i] = i7_pull(proc);
 	i7word_t rv = i7_gen_call(proc, fn_ref, args, varargc);
 	if (z) *z = rv;
 }
-#line 397 "inter/final-module/Chapter 5/C Assembly.w"
+#line 398 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_copy(i7process_t *proc, i7word_t x, i7word_t *y) {
 	if (y) *y = x;
 }
-#line 409 "inter/final-module/Chapter 5/C Assembly.w"
+#line 410 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_aload(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	if (z) *z = i7_read_word(proc, x, y);
 }
@@ -350,7 +350,7 @@ void i7_opcode_aloads(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 void i7_opcode_aloadb(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	if (z) *z = i7_read_byte(proc, x+y);
 }
-#line 428 "inter/final-module/Chapter 5/C Assembly.w"
+#line 430 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	i7word_t value = 0;
 	if ((y >= 0) && (y < 32)) value = (x << y);
@@ -358,10 +358,22 @@ void i7_opcode_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 }
 void i7_opcode_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	i7word_t value = 0;
-	if ((y >= 0) && (y < 32)) value = (x >> y);
+	if ((y >= 0) && (y < 32)) value = ((unsigned_i7word_t)x >> y);
 	if (z) *z = value;
 }
-#line 453 "inter/final-module/Chapter 5/C Assembly.w"
+void i7_opcode_sshiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+	i7word_t value = 0;
+	if ((y >= 0) && (y < 32)) {
+		value = (x >> y);
+	}
+	else {
+		if (x & 0x80000000) {
+			value = -1;
+		}
+	}
+	if (z) *z = value;
+}
+#line 467 "inter/final-module/Chapter 5/C Assembly.w"
 int i7_opcode_jeq(i7process_t *proc, i7word_t x, i7word_t y) {
 	if (x == y) return 1;
 	return 0;
@@ -383,7 +395,7 @@ int i7_opcode_jz(i7process_t *proc, i7word_t x) {
 	if (x == 0) return 1;
 	return 0;
 }
-#line 487 "inter/final-module/Chapter 5/C Assembly.w"
+#line 501 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_nop(i7process_t *proc) {
 }
 
@@ -394,7 +406,7 @@ void i7_opcode_quit(i7process_t *proc) {
 void i7_opcode_verify(i7process_t *proc, i7word_t *z) {
 	if (z) *z = 0;
 }
-#line 519 "inter/final-module/Chapter 5/C Assembly.w"
+#line 533 "inter/final-module/Chapter 5/C Assembly.w"
 #ifdef i7_mgl_DealWithUndo
 i7word_t i7_fn_DealWithUndo(i7process_t *proc);
 #endif
@@ -424,7 +436,7 @@ void i7_opcode_hasundo(i7process_t *proc, i7word_t *x) {
 void i7_opcode_discardundo(i7process_t *proc) {
 	i7_destroy_latest_snapshot(proc);
 }
-#line 568 "inter/final-module/Chapter 5/C Assembly.w"
+#line 582 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_restart(i7process_t *proc) {
 	printf("(RESTART is not implemented on this C program.)\n");
 }
@@ -436,7 +448,7 @@ void i7_opcode_restore(i7process_t *proc, i7word_t x, i7word_t *y) {
 void i7_opcode_save(i7process_t *proc, i7word_t x, i7word_t *y) {
 	printf("(SAVE is not implemented on this C program.)\n");
 }
-#line 588 "inter/final-module/Chapter 5/C Assembly.w"
+#line 602 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_streamnum(i7process_t *proc, i7word_t x) {
 	i7_print_decimal(proc, x);
 }
@@ -448,7 +460,7 @@ void i7_opcode_streamchar(i7process_t *proc, i7word_t x) {
 void i7_opcode_streamunichar(i7process_t *proc, i7word_t x) {
 	i7_print_char(proc, x);
 }
-#line 624 "inter/final-module/Chapter 5/C Assembly.w"
+#line 638 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize,
 	i7word_t start, i7word_t structsize, i7word_t numstructs, i7word_t keyoffset,
 	i7word_t options, i7word_t *s1) {
@@ -511,7 +523,7 @@ void i7_opcode_binarysearch(i7process_t *proc, i7word_t key, i7word_t keysize,
 	
 	if (options & serop_ReturnIndex) *s1 = -1; else *s1 = 0;
 }
-#line 700 "inter/final-module/Chapter 5/C Assembly.w"
+#line 714 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z) {
     if (z < y)
 		for (i7word_t i=0; i<x; i++)
@@ -534,7 +546,7 @@ void i7_opcode_mfree(i7process_t *proc, i7word_t x) {
 	printf("Unimplemented: i7_opcode_mfree.\n");
 	i7_fatal_exit(proc);
 }
-#line 740 "inter/final-module/Chapter 5/C Assembly.w"
+#line 754 "inter/final-module/Chapter 5/C Assembly.w"
 i7rngseed_t i7_initial_rng_seed(void) {
 	i7rngseed_t seed;
 	seed.A = 1;
@@ -571,10 +583,10 @@ void i7_opcode_setrandom(i7process_t *proc, i7word_t s) {
 		proc->state.seed.interval = 0;
     }
 }
-#line 786 "inter/final-module/Chapter 5/C Assembly.w"
+#line 800 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_setiosys(i7process_t *proc, i7word_t x, i7word_t y) {
 }
-#line 797 "inter/final-module/Chapter 5/C Assembly.w"
+#line 811 "inter/final-module/Chapter 5/C Assembly.w"
 void i7_opcode_gestalt(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	int r = 0;
 	switch (x) {

@@ -221,6 +221,7 @@ C_supported_opcode *CAssembly::find_opcode(code_generation *gen, text_stream *na
 	CAssembly::new_opcode(gen, I"@sub",              3, -1, -1);
 	CAssembly::new_opcode(gen, I"@tan",              2, -1, -1);
 	CAssembly::new_opcode(gen, I"@ushiftr",          3, -1, -1);
+	CAssembly::new_opcode(gen, I"@sshiftr",          3, -1, -1);
 	CAssembly::new_opcode(gen, I"@verify",           1, -1, -1);
 
 @ Speculative opcodes cannot store and cannot have varargs. Also, since they
@@ -423,6 +424,7 @@ void i7_opcode_aloadb(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 @<C library header@> +=
 void i7_opcode_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 void i7_opcode_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
+void i7_opcode_sshiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z);
 
 @<C library code@> +=
 void i7_opcode_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
@@ -432,7 +434,19 @@ void i7_opcode_shiftl(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 }
 void i7_opcode_ushiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
 	i7word_t value = 0;
-	if ((y >= 0) && (y < 32)) value = (x >> y);
+	if ((y >= 0) && (y < 32)) value = ((unsigned_i7word_t)x >> y);
+	if (z) *z = value;
+}
+void i7_opcode_sshiftr(i7process_t *proc, i7word_t x, i7word_t y, i7word_t *z) {
+	i7word_t value = 0;
+	if ((y >= 0) && (y < 32)) {
+		value = (x >> y);
+	}
+	else {
+		if (x & 0x80000000) {
+			value = -1;
+		}
+	}
 	if (z) *z = value;
 }
 
