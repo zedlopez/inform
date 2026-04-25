@@ -1621,14 +1621,14 @@ For an explanation of the use of the word "blob", see "Text.i6t".
 =
 [ TEXT_TY_Replace_RE ftxtype txt ftxt rtxt insens exactly
 	r p p1 p2 cp cp1 cp2;
-	if (rtxt == 0 or 1) { cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt); }
+	if (rtxt == 0 or 1) { cp = txt-->0; p = TEXT_TY_Transmute(txt); }
 	else TEXT_TY_Transmute(txt);
-	cp1 = ftxt-->0; p1 = TEXT_TY_Temporarily_Transmute(ftxt);
-	cp2 = rtxt-->0; p2 = TEXT_TY_Temporarily_Transmute(rtxt);
+	cp1 = ftxt-->0; p1 = TEXT_TY_Transmute(ftxt);
+	cp2 = rtxt-->0; p2 = TEXT_TY_Transmute(rtxt);
 	r = TEXT_TY_Replace_REI(ftxtype, txt, ftxt, rtxt, insens, exactly);
-	TEXT_TY_Untransmute(ftxt, p1, cp1);
-	TEXT_TY_Untransmute(rtxt, p2, cp2);
-	if (rtxt == 0 or 1) TEXT_TY_Untransmute(txt, p, cp);
+	if (p1) TEXT_TY_Untransmute(ftxt, p1, cp1);
+	if (p2) TEXT_TY_Untransmute(rtxt, p2, cp2);
+	if ((rtxt == 0 or 1) && p) TEXT_TY_Untransmute(txt, p, cp);
 	return r;
 ];
 

@@ -18,7 +18,9 @@ do we need four?
 normally detect constants using metadata in their long blocks, but of
 course that won't work for values which haven't got any long blocks.
 We use this instead. We don't need a `CONSTANT_UNPACKED_TEXT_STORAGE`
-because I7 never compiles constant text in unpacked form.
+because I7 never compiles constant text in unpacked form. Despite the
+name, the short block's value at offset 1 might be a Routine, not the
+address of an I6 string.
 
 The surprising one is `CONSTANT_PERISHABLE_TEXT_STORAGE`. This is a
 constant created by the I7 compiler which is marked as being tricky
@@ -27,7 +29,9 @@ variables. Unlike other text substitutions, this can't meaningfully be
 stored away to be expanded later: it must be expanded into unpacked
 text before it perishes.
 
+
 =
+
 Constant CONSTANT_PACKED_TEXT_STORAGE     = BLK_BVBITMAP_TEXT + BLK_BVBITMAP_CONSTANT + 1;
 Constant CONSTANT_PERISHABLE_TEXT_STORAGE = BLK_BVBITMAP_TEXT + BLK_BVBITMAP_CONSTANT + 2;
 Constant PACKED_TEXT_STORAGE              = BLK_BVBITMAP_TEXT + 3;
@@ -71,6 +75,7 @@ Constant TEXT_TY_Storage_Flags = BLK_FLAG_MULTIPLE + BLK_FLAG_WORD;
 This shows the various forms a text's short block can take:
 
 =
+
 [ TEXT_TY_Debug txt;
 	switch (txt-->0) {
 		CONSTANT_PACKED_TEXT_STORAGE:     print " = cp~", (PrintI6Text) txt-->1, "~";
@@ -100,9 +105,7 @@ A newly created text is a two-word short block with no long block, like this:
 @h Copy.
 
 =
-[ TEXT_TY_Copy to_bv from_bv kind recycling;
-	CopyPVRawData(to_bv, from_bv, kind, recycling);
-];
+Constant TEXT_TY_Copy = CopyPVRawData;
 
 @h Copy Short Block.
 When a short block for a constant is copied, the new copy isn't a constant
@@ -121,11 +124,7 @@ it into long block form. Sometimes this is a permanent change, but often
 it's only temporary, and will soon be followed by an un-transmutation.
 
 =
-[ TEXT_TY_Transmute txt;
-	TEXT_TY_Temporarily_Transmute(txt);
-];
-
-[ TEXT_TY_Temporarily_Transmute txt  x;
+[ TEXT_TY_Transmute txt  x;
 	if ((txt) && (txt-->0 & BLK_BVBITMAP_LONGBLOCKMASK == 0)) {
 		x = txt-->1; ! The old value was a packed string
 
@@ -143,7 +142,7 @@ it's only temporary, and will soon be followed by an un-transmutation.
 		x = txt-->1; ! The old value was an unpacked string
 		FlexFree(x);
 		txt-->0 = cp;
-		txt-->1 = pk; ! The value earlier returned by TEXT_TY_Temporarily_Transmute
+		txt-->1 = pk; ! The value earlier returned by TEXT_TY_Transmute
 	}
 	return txt;
 ];
@@ -350,22 +349,22 @@ and "17" can be equal as texts if X is 17.
 			return left_txt-->1 - right_txt-->1;
  		if ((left_txt-->1 ofclass Routine) && (right_txt-->1 ofclass Routine))
 			if (left_txt-->1 == right_txt-->1) return 0;
-		cpl = left_txt-->0; cl = TEXT_TY_Temporarily_Transmute(left_txt);
-		cpr = right_txt-->0; cr = TEXT_TY_Temporarily_Transmute(right_txt);
+		cpl = left_txt-->0; cl = TEXT_TY_Transmute(left_txt);
+		cpr = right_txt-->0; cr = TEXT_TY_Transmute(right_txt);
 	} else if (fl) {
-		cpl = left_txt-->0; cl = TEXT_TY_Temporarily_Transmute(left_txt);
+		cpl = left_txt-->0; cl = TEXT_TY_Transmute(left_txt);
 	} else if (fr) {
-		cpr = right_txt-->0; cr = TEXT_TY_Temporarily_Transmute(right_txt);
+		cpr = right_txt-->0; cr = TEXT_TY_Transmute(right_txt);
 	}
 	if ((cl) || (cr)) {
 		pos = TEXT_TY_Compare(left_txt, right_txt);
-		TEXT_TY_Untransmute(left_txt, cl, cpl);
-		TEXT_TY_Untransmute(right_txt, cr, cpr);
+		if (cl) TEXT_TY_Untransmute(left_txt, cl, cpl);
+		if (cr) TEXT_TY_Untransmute(right_txt, cr, cpr);
 		return pos;
 	}
 	capacity_left = PVFieldCapacity(left_txt);
 	capacity_right = PVFieldCapacity(right_txt);
-	for (pos=0:(pos<capacity_left) && (pos<capacity_right):pos++) {
+	for (pos=0:(pos<capacity_left) && (pos<capacity_right):pos++ ) {
 		ch1 = PVField(left_txt, pos);
 		ch2 = PVField(right_txt, pos);
 		if (ch1 ~= ch2) return ch1-ch2;
@@ -385,12 +384,12 @@ This calculates a hash value for the string, using Bernstein's algorithm.
 
 =
 [ TEXT_TY_Hash txt  rv len i p cp;
-	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
+	cp = txt-->0;
+	p = TEXT_TY_Transmute(txt);
 	rv = 0;
 	len = PVFieldCapacity(txt);
-	for (i=0: i<len: i++)
-		rv = rv * 33 + PVField(txt, i);
-	TEXT_TY_Untransmute(txt, p, cp);
+	for (i=0: i<len: i++ ) rv = rv * 33 + PVField(txt, i);
+	if (p) TEXT_TY_Untransmute(txt, p, cp);
 	return rv;
 ];
 
@@ -401,7 +400,7 @@ This calculates a hash value for the string, using Bernstein's algorithm.
 	if (txt==0) rfalse;
 	if (txt-->0 & BLK_BVBITMAP_LONGBLOCKMASK == 0) return PrintI6Text(txt-->1);
 	dsize = PVFieldCapacity(txt);
-	for (i=0: i<dsize: i++) {
+	for (i=0: i<dsize: i++ ) {
 		ch = PVField(txt, i);
 		if (ch == 0) break;
 		print (char) ch;
@@ -438,10 +437,10 @@ a semicolon: thus `S65,66,67,0;` is the serialised form of the text "ABC".
 
 =
 [ TEXT_TY_Serialise txt len pos ch p cp;
-	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
+	cp = txt-->0; p = TEXT_TY_Transmute(txt);
 	len = PVFieldCapacity(txt);
 	print "S";
-	for (pos=0: pos<=len: pos++) {
+	for (pos=0: pos<=len: pos++ ) {
 		if (pos == len) ch = 0; else ch = PVField(txt, pos);
 		if (ch == 0) {
 			print "0;"; break;
@@ -449,7 +448,7 @@ a semicolon: thus `S65,66,67,0;` is the serialised form of the text "ABC".
 			print ch, ",";
 		}
 	}
-	TEXT_TY_Untransmute(txt, p, cp);
+	if (p) TEXT_TY_Untransmute(txt, p, cp);
 ];
 
 @h Unserialisation.
@@ -483,6 +482,15 @@ them.
 
 @h Substitution.
 
+The result of TEXT_TY_SubstitutedForm is always a text that has been expanded
+into a long block.
+
+TEXT_TY_IsSubstituted is true for any non-dynamic text, which could be either an
+expanded text or a text whose value is an I6 String (i.e., not a Routine).
+
+TEXT_TY_IsExpanded is true if and only if the text has been expanded into a
+long block.
+
 =
 [ TEXT_TY_SubstitutedForm to txt;
 	if (txt) {
@@ -497,6 +505,10 @@ them.
 		(txt-->0 & BLK_BVBITMAP_LONGBLOCKMASK == 0) &&
 		(txt-->1 ofclass Routine)) rfalse;
 	rtrue;
+];
+
+[ TEXT_TY_IsExpanded txt;
+	return ((txt) && (txt-->0 & BLK_BVBITMAP_LONGBLOCKMASK));
 ];
 
 @h Perishability.
@@ -560,13 +572,13 @@ Constant ACCEPTEDPN_BRM = 6;
 	p1 p2 cp1 cp2 r;
 	if (txt==0) return 0;
 	if (blobtype == CHR_BLOB) return TEXT_TY_CharacterLength(txt);
-	cp1 = txt-->0; p1 = TEXT_TY_Temporarily_Transmute(txt);
-	cp2 = rtxt-->0; p2 = TEXT_TY_Temporarily_Transmute(rtxt);
+	cp1 = txt-->0; p1 = TEXT_TY_Transmute(txt);
+	cp2 = rtxt-->0; p2 = TEXT_TY_Transmute(rtxt);
 	TEXT_TY_Transmute(ctxt);
 	if (ctxt) BlkMakeMutable(ctxt);
 	r = TEXT_TY_BlobAccessI(txt, blobtype, ctxt, wanted, rtxt);
-	TEXT_TY_Untransmute(txt, p1, cp1);
-	TEXT_TY_Untransmute(rtxt, p2, cp2);
+	if (p1) TEXT_TY_Untransmute(txt, p1, cp1);
+	if (p2) TEXT_TY_Untransmute(rtxt, p2, cp2);
 	return r;
 ];
 [ TEXT_TY_BlobAccessI txt blobtype ctxt wanted rtxt
@@ -574,14 +586,14 @@ Constant ACCEPTEDPN_BRM = 6;
 	dsize = PVFieldCapacity(txt);
 	if ((rtxt) && (ctxt == 0)) "*** rtxt without ctxt ***";
 	brm = WS_BRM;
-	for (i=0:i<dsize:i++) {
+	for (i=0:i<dsize:i++ ) {
 		ch = PVField(txt, i);
 		if (ch == 0) break;
 		oldbrm = brm;
 		if (ch == 10 or 13 or 32 or 9) {
 			if (oldbrm ~= WS_BRM) {
 				gp = 0;
-				for (j=i:j<dsize:j++) {
+				for (j=i:j<dsize:j++ ) {
 					ch = PVField(txt, j);
 					if (ch == 0) { brm = WS_BRM; break; }
 					if (ch == 10 or 13) { gp++; continue; }
@@ -713,7 +725,7 @@ characters are handled directly to avoid incurring all that overhead.)
 [ TEXT_TY_ReplaceBlob blobtype txt wanted rtxt ctxt ilen rlen i p cp;
 	TEXT_TY_Transmute(txt);
 	cp = rtxt-->0;
-	p = TEXT_TY_Temporarily_Transmute(rtxt);
+	p = TEXT_TY_Transmute(rtxt);
 	if (blobtype == CHR_BLOB) {
 		ilen = TEXT_TY_CharacterLength(txt);
 		rlen = TEXT_TY_CharacterLength(rtxt);
@@ -725,11 +737,11 @@ characters are handled directly to avoid incurring all that overhead.)
 				ctxt = CreatePV(TEXT_TY);
 				TEXT_TY_Transmute(ctxt);
 				if (SetPVFieldCapacity(ctxt, ilen+rlen+1)) {
-					for (i=0:i<wanted:i++)
+					for (i=0:i<wanted:i++ )
 						WritePVField(ctxt, i, PVField(txt, i));
-					for (i=0:i<rlen:i++)
+					for (i=0:i<rlen:i++ )
 						WritePVField(ctxt, wanted+i, PVField(rtxt, i));
-					for (i=wanted+1:i<ilen:i++)
+					for (i=wanted+1:i<ilen:i++ )
 						WritePVField(ctxt, rlen+i-1, PVField(txt, i));
 					WritePVField(ctxt, rlen+ilen, 0);
 					CopyPV(txt, ctxt);
@@ -743,7 +755,7 @@ characters are handled directly to avoid incurring all that overhead.)
 		CopyPV(txt, ctxt);
 		DestroyPV(ctxt);
 	}
-	TEXT_TY_Untransmute(rtxt, p, cp);
+	if (p) TEXT_TY_Untransmute(rtxt, p, cp);
 ];
 
 @h Replace Text.
@@ -761,11 +773,11 @@ than something literal to find: see "RegExp.i6t" for what happens next.
 [ TEXT_TY_ReplaceText blobtype txt ftxt rtxt
 	r p1 p2 cp1 cp2;
 	TEXT_TY_Transmute(txt);
-	cp1 = ftxt-->0; p1 = TEXT_TY_Temporarily_Transmute(ftxt);
-	cp2 = rtxt-->0; p2 = TEXT_TY_Temporarily_Transmute(rtxt);
+	cp1 = ftxt-->0; p1 = TEXT_TY_Transmute(ftxt);
+	cp2 = rtxt-->0; p2 = TEXT_TY_Transmute(rtxt);
 	r = TEXT_TY_ReplaceTextI(blobtype, txt, ftxt, rtxt);
-	TEXT_TY_Untransmute(ftxt, p1, cp1);
-	TEXT_TY_Untransmute(rtxt, p2, cp2);
+	if (p1) TEXT_TY_Untransmute(ftxt, p1, cp1);
+	if (p2) TEXT_TY_Untransmute(rtxt, p2, cp2);
 	return r;
 ];
 
@@ -782,10 +794,10 @@ than something literal to find: see "RegExp.i6t" for what happens next.
 	mpos = 0;
 
 	whitespace = true; punctuation = false;
-	for (i=0:i<=ilen:i++) {
+	for (i=0:i<=ilen:i++ ) {
 		ch = PVField(txt, i);
 		.MoreMatching;
-		chm = PVField(ftxt, mpos++);
+		chm = PVField(ftxt, mpos++ );
 		if (mpos == 1) {
 			switch (blobtype) {
 				WORD_BLOB:
@@ -837,15 +849,17 @@ When accessing at the character-by-character level, things are much easier
 and we needn't go through any finite state machine palaver.
 
 =
+
 [ TEXT_TY_CharacterLength txt ch i dsize p cp r;
 	if (txt==0) return 0;
-	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
-	dsize = PVFieldCapacity(txt); r = dsize;
-	for (i=0:i<dsize:i++) {
+	cp = txt-->0;
+	p = TEXT_TY_Transmute(txt);
+	dsize = PVFieldCapacity(txt);
+	for (i=0:i<dsize:i++ ) {
 		ch = PVField(txt, i);
 		if (ch == 0) { r = i; break; }
 	}
-	TEXT_TY_Untransmute(txt, p, cp);
+	if (p) TEXT_TY_Untransmute(txt, p, cp);
 	return r;
 ];
 
@@ -864,16 +878,23 @@ Characters in a text are numbered upwards from 1 by the users of this
 routine: which is why we subtract 1 when reading the array in the
 block-value, which counts from 0.
 
+If the 4th parameter, `u` is true, it returns the character's value
+itself. In this case, the first parameter, `ctxt` is never used so its
+value is irrelevant.
+
 =
-[ TEXT_TY_GetCharacter ctxt txt i ch p cp;
+
+[ TEXT_TY_GetCharacter ctxt txt i u ch p cp;
 	if (txt==0) return 0;
-	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
+	cp = txt-->0;
+	p = TEXT_TY_Transmute(txt);
 	TEXT_TY_Transmute(ctxt);
 	if ((i<=0) || (i>TEXT_TY_CharacterLength(txt))) ch = 0;
 	else ch = PVField(txt, i-1);
+	if (u) return ch; ! returning a unicode char
 	WritePVField(ctxt, 0, ch);
 	WritePVField(ctxt, 1, 0);
-	TEXT_TY_Untransmute(txt, p, cp);
+	if (p) TEXT_TY_Untransmute(txt, p, cp);
 	return ctxt;
 ];
 
@@ -894,14 +915,14 @@ long.
 =
 [ TEXT_TY_CharactersOfCase txt case i ch len p cp r;
 	if (txt==0) return 0;
-	cp = txt-->0; p = TEXT_TY_Temporarily_Transmute(txt);
+	cp = txt-->0; p = TEXT_TY_Transmute(txt);
 	len = TEXT_TY_CharacterLength(txt);
 	r = true;
-	for (i=0:i<len:i++) {
+	for (i=0:i<len:i++ ) {
 		ch = PVField(txt, i);
 		if ((ch) && (CharIsOfCase(ch, case) == false)) { r = false; break; }
 	}
-	TEXT_TY_Untransmute(txt, p, cp);
+	if (p) TEXT_TY_Untransmute(txt, p, cp);
 	return r;
 ];
 
@@ -914,12 +935,12 @@ are as specified in the ZSCII and Unicode standards.
 =
 [ TEXT_TY_CharactersToCase ctxt txt case i ch len bnd pk cp;
 	if (txt==0) return 0;
-	cp = txt-->0; pk = TEXT_TY_Temporarily_Transmute(txt);
+	cp = txt-->0; pk = TEXT_TY_Transmute(txt);
 	TEXT_TY_Transmute(ctxt);
 	len = TEXT_TY_CharacterLength(txt);
 	if (SetPVFieldCapacity(ctxt, len+1)) {
 		bnd = 1;
-		for (i=0:i<len:i++) {
+		for (i=0:i<len:i++ ) {
 			ch = PVField(txt, i);
 			if (case < 2) {
 				WritePVField(ctxt, i, CharToCase(ch, case));
@@ -944,7 +965,7 @@ are as specified in the ZSCII and Unicode standards.
 		}
 		WritePVField(ctxt, len, 0);
 	}
-	TEXT_TY_Untransmute(txt, pk, cp);
+	if (pk) TEXT_TY_Untransmute(txt, pk, cp);
 	return ctxt;
 ];
 
@@ -964,9 +985,9 @@ expression search-and-replace is going on: see "RegExp.i6t".
 	if (to_txt==0) rfalse;
 	if (from_txt==0) return to_txt;
 	TEXT_TY_Transmute(to_txt);
-	cp = from_txt-->0; p = TEXT_TY_Temporarily_Transmute(from_txt);
+	cp = from_txt-->0; p = TEXT_TY_Transmute(from_txt);
 	r = TEXT_TY_ConcatenateI(to_txt, from_txt, blobtype, ref_txt);
-	TEXT_TY_Untransmute(from_txt, p, cp);
+	if (p) TEXT_TY_Untransmute(from_txt, p, cp);
 	return r;
 ];
 
@@ -977,7 +998,7 @@ expression search-and-replace is going on: see "RegExp.i6t".
 			pos = TEXT_TY_CharacterLength(to_txt);
 			len = TEXT_TY_CharacterLength(from_txt);
 			if (SetPVFieldCapacity(to_txt, pos+len+1) == false) return to_txt;
-			for (i=0:i<len:i++) {
+			for (i=0:i<len:i++ ) {
 				ch = PVField(from_txt, i);
 				WritePVField(to_txt, i+pos, ch);
 			}
