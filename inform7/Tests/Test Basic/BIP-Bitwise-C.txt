@@ -1,0 +1,44 @@
+Test: BIP-Bitwise-C
+Language: Basic
+For: C
+
+To begin:
+	let num be hexadecimal 87654321;
+	say    "@shiftl:  [num in 8 hexadecimal digits] << 0  = [num shifted left by 0 places in 8 hexadecimal digits] (expected 87654321)
+[line break]@shiftl:  [num in 8 hexadecimal digits] << 16 = [num shifted left by 16 places in 8 hexadecimal digits] (expected 43210000)
+[line break]@shiftl:  [num in 8 hexadecimal digits] << 32 = [num shifted left by 32 places in 8 hexadecimal digits] (expected 00000000)
+
+@ushiftr: [num in 8 hexadecimal digits] >> 0  = [num shifted right unsigned by 0 places in 8 hexadecimal digits] (expected 87654321)
+[line break]@ushiftr: [num in 8 hexadecimal digits] >> 16 = [num shifted right unsigned by 16 places in 8 hexadecimal digits] (expected 00008765)
+[line break]@ushiftr: [num in 8 hexadecimal digits] >> 32 = [num shifted right unsigned by 32 places in 8 hexadecimal digits] (expected 00000000)
+
+@sshiftr: [num in 8 hexadecimal digits] >> 0  = [num shifted right signed by 0 places in 8 hexadecimal digits] (expected 87654321)
+[line break]@sshiftr: [num in 8 hexadecimal digits] >> 16 = [num shifted right signed by 16 places in 8 hexadecimal digits] (expected FFFF8765)
+[line break]@sshiftr: [num in 8 hexadecimal digits] >> 32 = [num shifted right signed by 32 places in 8 hexadecimal digits] (expected FFFFFFFF)
+[line break]@sshiftr: 00000000 >> 32 = [0 shifted right signed by 32 places in 8 hexadecimal digits] (expected 00000000)";
+
+To decide what number is (x - number) shifted left by (p - number) place/places:
+	(- shiftl({x}, {p}) -).
+
+To decide what number is (x - number) shifted right unsigned by (p - number) place/places:
+	(- ushiftr({x}, {p}) -).
+
+To decide what number is (x - number) shifted right signed by (p - number) place/places:
+	(- sshiftr({x}, {p}) -).
+
+Include (-
+[ shiftl x p res;
+	@shiftl x p res;
+	return res;
+];
+
+[ ushiftr x p res;
+	@ushiftr x p res;
+	return res;
+];
+
+[ sshiftr x p res;
+	@sshiftr x p res;
+	return res;
+];
+-).

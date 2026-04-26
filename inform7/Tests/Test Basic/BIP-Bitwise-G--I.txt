@@ -1,0 +1,12 @@
+@shiftl:  87654321 << 0  = 87654321 (expected 87654321) 
+@shiftl:  87654321 << 16 = 43210000 (expected 43210000) 
+@shiftl:  87654321 << 32 = 00000000 (expected 00000000)
+
+@ushiftr: 87654321 >> 0  = 87654321 (expected 87654321) 
+@ushiftr: 87654321 >> 16 = 00008765 (expected 00008765) 
+@ushiftr: 87654321 >> 32 = 00000000 (expected 00000000)
+
+@sshiftr: 87654321 >> 0  = 87654321 (expected 87654321) 
+@sshiftr: 87654321 >> 16 = FFFF8765 (expected FFFF8765) 
+@sshiftr: 87654321 >> 32 = FFFFFFFF (expected FFFFFFFF) 
+@sshiftr: 00000000 >> 32 = 00000000 (expected 00000000)
