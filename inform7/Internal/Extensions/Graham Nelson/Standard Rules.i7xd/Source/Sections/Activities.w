@@ -185,7 +185,8 @@ Last for printing the banner text rule (this is the standard printing the banner
 	say "[bold type][story title][roman type][line break]" (A);
 	say "[story headline][if story author is not empty] by [story author][end if][line break]" (B);
 	say "Release [release number] / Serial number [story serial code] / Inform 7 v[inform version number][if we are requesting the story file version]+[inform build code][end if]" (C);
-	say " / D[line break]" (D).
+	say " / D" (D);
+	say line break.
 
 Section 2b (for release only)
 
@@ -193,7 +194,8 @@ Last for printing the banner text rule (this is the standard printing the banner
 	say "[bold type][story title][roman type][line break]" (A);
 	say "[story headline][if story author is not empty] by [story author][end if][line break]" (B);
 	say "Release [release number] / Serial number [story serial code] / Inform 7 v[inform version number][if we are requesting the story file version]+[inform build code][end if]" (C);
-	say "" (D).
+	say "" (D);
+	say line break.
 
 @h Parsing activites.
 Now a brace of activities to intervene in how the command parser does its
